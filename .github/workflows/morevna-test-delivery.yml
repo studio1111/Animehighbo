@@ -1,8 +1,14 @@
 name: One-time licensed Morevna Telegram test
 
 on:
-  # Manual only until previous Telegram delivery receipts are confirmed; avoids duplicate uploads.
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/morevna_test_delivery.py'
+      - 'tools/bilingual_subtitles.py'
+      - 'tests/test_subtitles.py'
+      - '.github/workflows/morevna-test-delivery.yml'
 permissions:
   contents: write
 
@@ -64,6 +70,9 @@ jobs:
           TELEGRAM_API_BASE_URL: http://127.0.0.1:8081
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash
+          REQUIRE_GEMINI: '1'
+          SAMPLE_VERSION: reviewed-v2
+          SAMPLE_QUALITIES: 1080p
         run: python tools/morevna_test_delivery.py
       - name: Persist delivery receipts to prevent duplicate sends
         if: always()
