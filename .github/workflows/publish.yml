@@ -15,7 +15,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -70,7 +70,6 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ANIMEHIGHBO_DRY_RUN: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
-          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
         run: python app.py
       - name: Persist duplicate-prevention state
