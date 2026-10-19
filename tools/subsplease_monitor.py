@@ -45,7 +45,7 @@ def local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1].lower()
 
 
-def parse_releases(xml_text: str, quality: str, limit: int = 30) -> list[dict[str, str]]:
+def parse_releases(xml_text: str, quality: str = "1080p", limit: int = 30) -> list[dict[str, str]]:
     """Extract only title/quality identity; never retain or expose magnet URLs."""
     root = ET.fromstring(xml_text)
     entries: list[dict[str, str]] = []
