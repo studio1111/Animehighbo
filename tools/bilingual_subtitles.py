@@ -216,6 +216,81 @@ class GeminiSubtitleTranslator:
             )
         return translated
 
+    def review_batch(self, source_cues: list[Cue], translated_cues: list[Cue]) -> list[Cue]:
+        """Run a second Gemini pass to catch obvious meaning, fluency, and omission errors."""
+        if len(source_cues) != len(translated_cues):
+            raise RuntimeError("Subtitle review received mismatched source and translation cue counts.")
+        reviewed: list[Cue] = []
+        batch_size = 20
+        for offset in range(0, len(source_cues), batch_size):
+            sources = source_cues[offset:offset + batch_size]
+            translations = translated_cues[offset:offset + batch_size]
+            payload = [
+                {"id": src.index, "english": src.text, "persian": dst.text}
+                for src, dst in zip(sources, translations)
+            ]
+            prompt = (
+                "You are a senior Persian subtitle editor reviewing a draft translation. "
+                "Compare each Persian line with its English source. Correct only clear meaning "
+                "errors, omissions, unnatural wording, overly long subtitle phrasing, or broken "
+                "format placeholders. Keep natural conversational Persian, character tone, names, "
+                "and placeholders such as ZZSUBTAG0ZZ exactly unchanged. Do not add explanations. "
+                "Keep every cue separate and return JSON only. If a line is already good, keep it.\n\n"
+                + json.dumps(payload, ensure_ascii=False)
+            )
+            body = {
+                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.1,
+                    "responseMimeType": "application/json",
+                    "responseSchema": {
+                        "type": "OBJECT",
+                        "properties": {
+                            "translations": {
+                                "type": "ARRAY",
+                                "items": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                        "id": {"type": "INTEGER"},
+                                        "text": {"type": "STRING"}
+                                    },
+                                    "required": ["id", "text"]
+                                }
+                            }
+                        },
+                        "required": ["translations"]
+                    }
+                }
+            }
+            try:
+                response = requests.post(
+                    self.endpoint, params={"key": self.api_key}, json=body,
+                    timeout=(20, 120),
+                )
+                response.raise_for_status()
+                data = response.json()
+                raw = "".join(
+                    part.get("text", "")
+                    for part in data["candidates"][0]["content"]["parts"]
+                )
+                items = json.loads(raw)["translations"]
+                by_id = {int(item["id"]): str(item["text"]).strip() for item in items}
+            except (requests.RequestException, ValueError, KeyError, TypeError, IndexError) as exc:
+                raise RuntimeError(
+                    f"Gemini subtitle review failed for cues "
+                    f"{sources[0].index}-{sources[-1].index}; refusing unreviewed output."
+                ) from exc
+            expected = {cue.index for cue in sources}
+            if set(by_id) != expected or any(not text for text in by_id.values()):
+                raise RuntimeError(
+                    f"Gemini subtitle review returned incomplete cues "
+                    f"{sources[0].index}-{sources[-1].index}."
+                )
+            reviewed.extend(
+                Cue(cue.index, cue.timing, by_id[cue.index]) for cue in translations
+            )
+        return reviewed
+
     def translate(self, text: str) -> str:
         # Compatibility for callers that translate one line at a time.
         result = self.translate_batch([Cue(1, "00:00:00,000 --> 00:00:01,000", text)])
@@ -291,6 +366,8 @@ def translate_cues(cues: list[Cue], translator) -> list[Cue]:
             tag_maps[cue.index] = tags
             tagged_cues.append(Cue(cue.index, cue.timing, text))
         translated = translator.translate_batch(tagged_cues)
+        if hasattr(translator, "review_batch"):
+            translated = translator.review_batch(tagged_cues, translated)
         restored: list[Cue] = []
         for cue in translated:
             text = cue.text
