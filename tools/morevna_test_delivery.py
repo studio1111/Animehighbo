@@ -15,7 +15,7 @@ ATTRIBUTION = (
     "Source: https://commons.wikimedia.org/wiki/File:Morevna_Episode_3.0.2_(English).webm\n"
     "License: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/\n"
     "Changes: Persian subtitles translated from the community English subtitles; "
-    "re-encoded for 480p, 720p and 1080p. Independent fan test, not endorsed by the creators."
+    "re-encoded as MKV/H.265 for 480p, 720p and 1080p. Independent fan test, not endorsed by the creators."
 )
 
 def run(args):
@@ -57,7 +57,7 @@ def main():
     if not token or not chat:
         raise RuntimeError("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID secret.")
     state = load_state()
-    wanted = ["480p", "720p", "1080p"]
+    wanted = ["480p_mkv_h265", "720p_mkv_h265", "1080p_mkv_h265"]
     if all(state["sent"].get(q) for q in wanted):
         print("All three test videos are already marked sent; no duplicate uploads.")
         return
@@ -89,19 +89,20 @@ def main():
         "1080p": (1920, 1080, "4500k"),
     }
     for quality, (width, height, bitrate) in specs.items():
-        if state["sent"].get(quality):
-            print(f"{quality} already sent; skipping.")
+        receipt_key = quality + "_mkv_h265"
+        if state["sent"].get(receipt_key):
+            print(f"{quality} MKV H.265 already sent; skipping.")
             continue
-        output = OUT / f"Morevna_Episode_3_Persian_{quality}.mp4"
+        output = OUT / f"Morevna_Episode_3_Persian_{quality}_H265.mkv"
         if not output.exists():
             run([
                 "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
                 "-i", str(source), "-i", str(english), "-i", str(persian),
                 "-map", "0:v:0", "-map", "0:a?", "-map", "1:0", "-map", "2:0",
                 "-vf", f"scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2",
-                "-c:v", "libx264", "-preset", "veryfast", "-b:v", bitrate, "-maxrate", bitrate,
+                "-c:v", "libx265", "-preset", "medium", "-tag:v", "hvc1", "-b:v", bitrate, "-maxrate", bitrate,
                 "-bufsize", str(int(bitrate[:-1]) * 2) + "k",
-                "-c:a", "aac", "-b:a", "128k", "-c:s", "mov_text",
+                "-c:a", "aac", "-b:a", "128k", "-c:s", "srt",
                 "-metadata", "title=Morevna Episode 3.0.2 - " + quality,
                 "-metadata:s:s:0", "language=eng", "-metadata:s:s:0", "title=English",
                 "-metadata:s:s:1", "language=fas", "-metadata:s:s:1", "title=فارسی",
@@ -114,9 +115,9 @@ def main():
         caption = f"🎬 Morevna Episode 3.0.2 | {quality}\n{ATTRIBUTION}"
         with output.open("rb") as video:
             response = requests.post(
-                f"{api}/bot{token}/sendVideo",
-                data={"chat_id": chat, "caption": caption, "supports_streaming": "true"},
-                files={"video": (output.name, video, "video/mp4")},
+                f"{api}/bot{token}/sendDocument",
+                data={"chat_id": chat, "caption": caption},
+                files={"document": (output.name, video, "video/x-matroska")},
                 timeout=(60, 1800),
             )
         response.raise_for_status()
@@ -124,14 +125,14 @@ def main():
         if not isinstance(result, dict) or result.get("ok") is not True:
             raise RuntimeError(f"Telegram rejected {quality}: {result.get('description', result)}")
         msg = result.get("result", {})
-        state["sent"][quality] = {
+        state["sent"][receipt_key] = {
             "message_id": msg.get("message_id"),
             "file_id": (msg.get("video") or {}).get("file_id"),
             "bytes": size,
             "sent_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
         save_state(state)
-        print(f"TELEGRAM_SENT {quality} message_id={msg.get('message_id')} bytes={size}", flush=True)
+        print(f"TELEGRAM_SENT {quality} MKV_H265 message_id={msg.get('message_id')} bytes={size}", flush=True)
     print("Delivery attempt finished.", flush=True)
 
 if __name__ == "__main__":
