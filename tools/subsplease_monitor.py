@@ -141,6 +141,18 @@ def send_release(token: str, chat_id: str, item: dict[str, str]) -> None:
         raise RuntimeError(f"Telegram sendPhoto failed: {detail}")
 
 
+def merge_queue(queue: list[dict[str, str]], releases: list[dict[str, str]], seen: set[str]) -> list[dict[str, str]]:
+    """Append unseen releases once, preserving the feed's newest-first order."""
+    queued_ids = {item.get("id") for item in queue}
+    merged = list(queue)
+    for item in releases:
+        release_id = item.get("id", "")
+        if release_id and release_id not in seen and release_id not in queued_ids:
+            merged.append(item)
+            queued_ids.add(release_id)
+    return merged[-1000:]
+
+
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     for url in FEEDS.values():
@@ -167,46 +179,51 @@ def main() -> int:
         return 0
 
     state = load_state()
+    state.setdefault("queue", [])
     seen = set(state["seen"])
     if not seen:
-        # Safe initial baseline prevents a flood of historical releases on first setup.
         state["seen"] = list(dict.fromkeys(item["id"] for item in releases))[-1000:]
+        state["queue"] = []
         save_state(state)
         logging.info("Initialized baseline with %d releases; no historical messages sent.", len(releases))
         return 0
 
-    fresh = [item for item in releases if item["id"] not in seen]
-    if not fresh:
-        logging.info("SubsPlease feeds connected; no new releases.")
+    queue = merge_queue(state["queue"], releases, seen)
+    if not queue:
+        logging.info("SubsPlease feeds connected; no pending or new releases.")
         return 0
 
     dry_run_value = os.getenv("SUBSPLEASE_DRY_RUN", "").strip().lower()
-    # GitHub Actions exposes an unset repository variable as an empty string.
-    # Treat empty as safe dry-run; live publishing requires an explicit false value.
     dry_run = not dry_run_value or dry_run_value not in {"0", "false", "no", "off"}
     token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
     if not dry_run and (not token or not chat_id):
         raise RuntimeError("Live notifications require TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.")
 
+    batch = queue[:5]
+    logging.info("Queue contains %d releases; this run will process at most %d.", len(queue), len(batch))
+    if dry_run:
+        for item in batch:
+            logging.info("[DRY RUN] Would publish %s release: %s", item["quality"], item["title"])
+        state["queue"] = queue
+        save_state(state)
+        return 0
+
     processed: list[str] = []
-    for item in fresh:
-        if dry_run:
-            logging.info("[DRY RUN] New %s release: %s", item["quality"], item["title"])
-            continue
+    for item in batch:
         try:
             send_release(token, chat_id, item)
             processed.append(item["id"])
             logging.info("Published poster-backed %s release: %s", item["quality"], item["title"])
         except Exception:
-            # Do not mark failed posts as seen; the next scheduled run can retry.
-            logging.exception("Could not publish release: %s", item["title"])
+            logging.exception("Could not publish release; it remains queued: %s", item["title"])
 
-    if not dry_run:
-        state["seen"] = list(dict.fromkeys(state["seen"] + processed))[-1000:]
-        save_state(state)
+    processed_set = set(processed)
+    state["seen"] = list(dict.fromkeys(state["seen"] + processed))[-1000:]
+    state["queue"] = [item for item in queue if item["id"] not in processed_set]
+    save_state(state)
+    logging.info("Batch complete: %d published, %d still queued.", len(processed), len(state["queue"]))
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
