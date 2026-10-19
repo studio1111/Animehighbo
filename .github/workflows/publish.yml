@@ -37,7 +37,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
         run: |
-          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ]; then
+          needs_file_api=false
+          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); sys.exit(0 if c.get("mode") != "links" and c.get("feeds") else 1)'; then
+            needs_file_api=true
+          fi
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ] && [ "$needs_file_api" = "true" ]; then
             if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
               echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID and TELEGRAM_API_HASH secrets plus TELEGRAM_BOT_TOKEN."
               exit 1
