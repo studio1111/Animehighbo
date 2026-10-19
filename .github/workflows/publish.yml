@@ -63,6 +63,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
           ANIMEHIGHBO_DRY_RUN: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
         run: python app.py
       - name: Persist duplicate-prevention state
         if: always()
