@@ -273,18 +273,28 @@ def _quality_from_title(title: str) -> str:
 
 
 def _season_label(title: str, media: dict) -> str:
-    normalized = title.lower()
-    if re.search(r"\b(ova|oav)\b", normalized):
+    catalog_title = ((media.get("title") or {}).get("english") or "")
+    combined = f"{title} {catalog_title}".strip()
+    normalized = combined.lower()
+    if re.search(r"\b(ova|oav)\b", normalized) or media.get("format") == "OVA":
         return "OVA"
-    if re.search(r"\b(ona)\b", normalized):
+    if re.search(r"\b(ona)\b", normalized) or media.get("format") == "ONA":
         return "ONA"
-    if re.search(r"\b(movie|film)\b", normalized):
+    if re.search(r"\b(movie|film)\b", normalized) or media.get("format") == "MOVIE":
         return "فیلم"
-    match = re.search(r"(?i)\b(?:season|s)\s*[- ]?(\d{1,2})\b", title)
+    match = re.search(r"(?i)\b(?:season|s)\s*[- ]?(\d{1,2})\b", combined)
     if match:
         return f"فصل {match.group(1)}"
-    if media.get("format") in {"OVA", "SPECIAL"}:
-        return "OVA" if media.get("format") == "OVA" else "ویژه"
+    ordinal = re.search(r"(?i)\b(2nd|3rd|4th|5th|second|third|fourth|fifth)\s+season\b", combined)
+    if ordinal:
+        number = {"2nd": "2", "second": "2", "3rd": "3", "third": "3",
+                  "4th": "4", "fourth": "4", "5th": "5", "fifth": "5"}[ordinal.group(1).lower()]
+        return f"فصل {number}"
+    if re.search(r"(?i)\bfinal season\b", combined):
+        part = re.search(r"(?i)\bpart\s*(\d+)\b", combined)
+        return f"فصل پایانی، بخش {part.group(1)}" if part else "فصل پایانی"
+    if media.get("format") == "SPECIAL":
+        return "قسمت ویژه"
     if media.get("format") == "TV":
         return "فصل اول"
     return "نامشخص"
