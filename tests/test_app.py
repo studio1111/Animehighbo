@@ -1,6 +1,6 @@
 import unittest
 
-from app import (allowed_media_url, episode_details, parse_episode_feed, parse_feed, safe_filename, telegram_method_for_file)
+from app import (allowed_media_url, episode_details, parse_episode_feed, parse_feed, safe_filename, telegram_api_endpoint, telegram_method_for_file)
 
 
 class FeedParserTests(unittest.TestCase):
@@ -49,3 +49,33 @@ class FeedParserTests(unittest.TestCase):
         self.assertEqual(telegram_method_for_file("episode.MP4"), "sendVideo")
         self.assertEqual(telegram_method_for_file("episode.mkv"), "sendDocument")
         self.assertEqual(telegram_method_for_file("episode.webm"), "sendDocument")
+
+    def test_telegram_api_endpoint_defaults_to_cloud_api(self):
+        import os
+        previous = os.environ.pop("TELEGRAM_API_BASE_URL", None)
+        try:
+            self.assertEqual(
+                telegram_api_endpoint("test-token", "sendDocument"),
+                "https://api.telegram.org/bottest-token/sendDocument",
+            )
+        finally:
+            if previous is not None:
+                os.environ["TELEGRAM_API_BASE_URL"] = previous
+
+    def test_telegram_api_endpoint_accepts_local_loopback_http_only(self):
+        import os
+        previous = os.environ.get("TELEGRAM_API_BASE_URL")
+        try:
+            os.environ["TELEGRAM_API_BASE_URL"] = "http://127.0.0.1:8081/"
+            self.assertEqual(
+                telegram_api_endpoint("test-token", "sendDocument"),
+                "http://127.0.0.1:8081/bottest-token/sendDocument",
+            )
+            os.environ["TELEGRAM_API_BASE_URL"] = "http://example.com"
+            with self.assertRaisesRegex(ValueError, "must be HTTPS"):
+                telegram_api_endpoint("test-token", "sendDocument")
+        finally:
+            if previous is None:
+                os.environ.pop("TELEGRAM_API_BASE_URL", None)
+            else:
+                os.environ["TELEGRAM_API_BASE_URL"] = previous
