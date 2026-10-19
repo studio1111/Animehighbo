@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from app import (allowed_media_url, build_episode_caption, episode_details, load_config, parse_episode_feed, parse_feed, safe_filename, telegram_api_endpoint, telegram_method_for_file)
+from tools.subsplease_monitor import parse_releases
 
 
 class FeedParserTests(unittest.TestCase):
@@ -156,4 +157,27 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         with patch("app.translate_title_to_persian", return_value="حمله به تایتان"):
             caption = build_episode_caption("Attack on Titan Episode 01 720p", "01", metadata=metadata)
         self.assertIn("فصل انیمه: فصل پایانی", caption)
+
+class SubsPleaseConnectionParsingTests(unittest.TestCase):
+    def test_parses_release_titles_and_quality_without_retaining_magnet_links(self):
+        xml = """<rss><channel>
+          <item><title>[SubsPlease] PSYREN - 03 (1080p) [6DC795E8].mkv</title>
+            <link>magnet:?xt=urn:btih:SECRET</link><guid>release-1080</guid></item>
+        </channel></rss>"""
+        releases = parse_releases(xml, "1080p")
+        self.assertEqual(len(releases), 1)
+        self.assertEqual(releases[0]["quality"], "1080p")
+        self.assertEqual(releases[0]["title"], "[SubsPlease] PSYREN - 03 (1080p) [6DC795E8].mkv")
+        self.assertNotIn("url", releases[0])
+        self.assertNotIn("magnet", str(releases[0]))
+
+    def test_extracts_episode_number_from_subsplease_release_title(self):
+        self.assertEqual(
+            episode_details("[SubsPlease] PSYREN - 03 (1080p) [6DC795E8].mkv"),
+            ("PSYREN", "03"),
+        )
+        self.assertEqual(
+            episode_details("[SubsPlease] Bleach - Sennen Kessen Hen - 49 (1080p) [3DCF4BD3].mkv"),
+            ("Bleach - Sennen Kessen Hen", "49"),
+        )
 
