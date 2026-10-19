@@ -190,11 +190,23 @@ def main() -> int:
     state.setdefault("queue", [])
     seen = set(state["seen"])
     if not seen:
-        state["seen"] = list(dict.fromkeys(item["id"] for item in releases))[-1000:]
-        state["queue"] = []
+        # On first activation, publish only the newest 1080p release as a
+        # launch post. Mark the rest of the current feed as historical so we
+        # do not flood the channel with old episodes.
+        launch_item = next(
+            (item for item in releases if item.get("quality") == "1080p"),
+            releases[0],
+        )
+        state["seen"] = list(dict.fromkeys(
+            item["id"] for item in releases if item["id"] != launch_item["id"]
+        ))[-1000:]
+        state["queue"] = [launch_item]
         save_state(state)
-        logging.info("Initialized baseline with %d releases; no historical messages sent.", len(releases))
-        return 0
+        logging.info(
+            "Initialized baseline with %d historical releases; queued one launch post: %s",
+            len(state["seen"]), launch_item["title"],
+        )
+        seen = set(state["seen"])
 
     queue = merge_queue(state["queue"], releases, seen)
     if not queue:
