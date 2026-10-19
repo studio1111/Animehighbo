@@ -1,6 +1,9 @@
 name: One-time licensed Morevna Telegram test
 
 on:
+  push:
+    paths:
+      - '.github/workflows/morevna-test-delivery.yml'
   workflow_dispatch:
   schedule:
     # Run automatically until all three resolution variants have been delivered.
