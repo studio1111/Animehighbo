@@ -181,7 +181,10 @@ def main() -> int:
         logging.info("SubsPlease feeds connected; no new releases.")
         return 0
 
-    dry_run = os.getenv("SUBSPLEASE_DRY_RUN", "true").strip().lower() not in {"0", "false", "no", "off"}
+    dry_run_value = os.getenv("SUBSPLEASE_DRY_RUN", "").strip().lower()
+    # GitHub Actions exposes an unset repository variable as an empty string.
+    # Treat empty as safe dry-run; live publishing requires an explicit false value.
+    dry_run = not dry_run_value or dry_run_value not in {"0", "false", "no", "off"}
     token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
     if not dry_run and (not token or not chat_id):
