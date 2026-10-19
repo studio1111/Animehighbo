@@ -62,6 +62,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_API_BASE_URL: http://127.0.0.1:8081
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-flash
         run: python tools/morevna_test_delivery.py
       - name: Persist delivery receipts to prevent duplicate sends
         if: always()
