@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """One-time licensed Morevna test delivery to Telegram in three resolutions."""
 from __future__ import annotations
-import json, os, subprocess, time
+import json, os, subprocess, time, sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import requests
 
 VIDEO_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/Morevna_Episode_3.0.2_(English).webm"
@@ -91,7 +92,7 @@ def main():
         if state["sent"].get(quality):
             print(f"{quality} already sent; skipping.")
             continue
-        output = OUT / f"Morevna_Episode_3_Persian_{quality}.mkv"
+        output = OUT / f"Morevna_Episode_3_Persian_{quality}.mp4"
         if not output.exists():
             run([
                 "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
@@ -100,7 +101,7 @@ def main():
                 "-vf", f"scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2",
                 "-c:v", "libx264", "-preset", "veryfast", "-b:v", bitrate, "-maxrate", bitrate,
                 "-bufsize", str(int(bitrate[:-1]) * 2) + "k",
-                "-c:a", "aac", "-b:a", "128k", "-c:s", "srt",
+                "-c:a", "aac", "-b:a", "128k", "-c:s", "mov_text",
                 "-metadata", "title=Morevna Episode 3.0.2 - " + quality,
                 "-metadata:s:s:0", "language=eng", "-metadata:s:s:0", "title=English",
                 "-metadata:s:s:1", "language=fas", "-metadata:s:s:1", "title=فارسی",
@@ -115,7 +116,7 @@ def main():
             response = requests.post(
                 f"{api}/bot{token}/sendVideo",
                 data={"chat_id": chat, "caption": caption, "supports_streaming": "true"},
-                files={"video": (output.name, video, "video/x-matroska")},
+                files={"video": (output.name, video, "video/mp4")},
                 timeout=(60, 1800),
             )
         response.raise_for_status()
