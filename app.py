@@ -321,8 +321,21 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     broadcast_season = _season_fa(media.get("season"))
     year_season = f"{year} فصل {broadcast_season}" if isinstance(year, int) and broadcast_season != "نامشخص" else "نامشخص"
 
+    genre_fa = {
+        "Action": "اکشن", "Adventure": "ماجراجویی", "Comedy": "کمدی",
+        "Drama": "درام", "Fantasy": "فانتزی", "Romance": "عاشقانه",
+        "Sci-Fi": "علمی‌تخیلی", "Science Fiction": "علمی‌تخیلی",
+        "Slice of Life": "روزمرگی", "Supernatural": "فراطبیعی",
+        "Mystery": "معمایی", "Horror": "ترسناک", "Thriller": "هیجان‌انگیز",
+        "Sports": "ورزشی", "Music": "موسیقی", "Psychological": "روان‌شناختی",
+        "Mecha": "مکا", "Mahou Shoujo": "دختر جادویی", "Hentai": "محتوای بزرگسالانه",
+        "Ecchi": "اکچی", "Historical": "تاریخی", "School": "مدرسه‌ای",
+        "Super Power": "قدرت‌های ویژه", "Award Winning": "برگزیدهٔ جوایز",
+        "Gourmet": "آشپزی", "Workplace": "محیط کار", "Girls Love": "عاشقانهٔ دخترانه",
+        "Boys Love": "عاشقانهٔ پسرانه", "Avant Garde": "آوانگارد",
+    }
     genres = media.get("genres")
-    genres_text = "، ".join(str(item) for item in genres[:6]) if isinstance(genres, list) and genres else "نامشخص"
+    genres_text = "، ".join(genre_fa.get(str(item), str(item)) for item in genres[:6]) if isinstance(genres, list) and genres else "نامشخص"
     if media.get("isAdult") is True:
         age_rating = "۱۸+"
     else:
@@ -372,7 +385,10 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
         raise RuntimeError("Telegram bot token or channel ID is missing.")
     anime_title, inferred_episode = episode_details(title)
     episode = episode or inferred_episode
-    media = anime_catalog_metadata(anime_title)
+    catalog_title = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", anime_title)
+    catalog_title = re.sub(r"\\[[^\\]]*\\]|\\([^)]*\\)", " ", catalog_title)
+    catalog_title = re.sub(r"\\s+", " ", catalog_title).strip(" -_")
+    media = anime_catalog_metadata(catalog_title or anime_title)
     caption = build_episode_caption(title, episode, page_url, media)
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
     endpoint = telegram_api_endpoint(token, "sendPhoto")
