@@ -1,0 +1,4 @@
+# Optional dependencies for tools/bilingual_subtitles.py
+# Install separately from the main bot dependencies:
+#   python -m pip install -r requirements-subtitles.txt
+argostranslate>=1.9.6,<2

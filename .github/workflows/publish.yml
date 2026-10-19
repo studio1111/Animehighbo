@@ -15,18 +15,67 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Install optional subtitle dependencies
+        run: |
+          if python -c 'import json,sys; sys.exit(0 if json.load(open("config.json", encoding="utf-8")).get("bilingual_subtitles", False) else 1)'; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+            pip install -r requirements-subtitles.txt
+          fi
+      - name: Configure Telegram API endpoint
+        env:
+          TELEGRAM_LOCAL_API: ${{ vars.TELEGRAM_LOCAL_API }}
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
+        run: |
+          needs_file_api=false
+          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); sys.exit(0 if c.get("mode") != "links" and c.get("feeds") else 1)'; then
+            needs_file_api=true
+          fi
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ] && [ "$needs_file_api" = "true" ]; then
+            if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+              echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID and TELEGRAM_API_HASH secrets plus TELEGRAM_BOT_TOKEN."
+              exit 1
+            fi
+            docker run --pull always --detach --name animehighbo-local-bot-api \
+              --publish 127.0.0.1:8081:8081 \
+              --env TELEGRAM_API_ID="$TELEGRAM_API_ID" \
+              --env TELEGRAM_API_HASH="$TELEGRAM_API_HASH" \
+              --env TELEGRAM_LOCAL=1 \
+              aiogram/telegram-bot-api:latest
+            ready=false
+            for attempt in $(seq 1 60); do
+              if curl --silent --show-error --fail \
+                "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+                ready=true
+                break
+              fi
+              sleep 2
+            done
+            if [ "$ready" != "true" ]; then
+              docker logs animehighbo-local-bot-api || true
+              echo "Local Telegram Bot API did not become ready."
+              exit 1
+            fi
+            echo "TELEGRAM_API_BASE_URL=http://127.0.0.1:8081" >> "$GITHUB_ENV"
+          elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
+            echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
+          fi
       - name: Run publisher
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ANIMEHIGHBO_DRY_RUN: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
         run: python app.py
       - name: Persist duplicate-prevention state
         if: always()

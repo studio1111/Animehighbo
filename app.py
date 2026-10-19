@@ -35,10 +35,21 @@ def load_config(path: str = "config.json") -> dict:
     if not isinstance(config.get("allowed_download_hosts"), list):
         raise ValueError("'allowed_download_hosts' must be a list")
     config.setdefault("max_file_size_mb", 45)
+    max_size_override = os.getenv("ANIMEHIGHBO_MAX_FILE_SIZE_MB", "").strip()
+    if max_size_override:
+        try:
+            max_size_mb = int(max_size_override)
+        except ValueError as exc:
+            raise ValueError("ANIMEHIGHBO_MAX_FILE_SIZE_MB must be an integer.") from exc
+        if not 1 <= max_size_mb <= 1900:
+            raise ValueError("ANIMEHIGHBO_MAX_FILE_SIZE_MB must be between 1 and 1900.")
+        config["max_file_size_mb"] = max_size_mb
     config.setdefault("download_dir", "downloads")
     config.setdefault("state_file", "data/state.json")
     config.setdefault("dry_run", True)
     config.setdefault("mode", "links")
+    config.setdefault("bilingual_subtitles", False)
+    config.setdefault("subtitle_stream_index", None)
     config.setdefault("poll_limit_per_feed", 30)
     config.setdefault("request_timeout_seconds", 30)
     return config
@@ -219,7 +230,7 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
     caption += f"\n📺 قسمت {episode}" if episode else "\n📺 شمارهٔ قسمت در منبع مشخص نشده"
     caption += f"\n\n🔗 لینک تماشا: {page_url}\n\nAnimehighbo"
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
-    endpoint = f"https://api.telegram.org/bot{token}/sendPhoto"
+    endpoint = telegram_api_endpoint(token, "sendPhoto")
     response = requests.post(
         endpoint,
         data={
@@ -406,6 +417,22 @@ def download_media(url: str, title: str, config: dict) -> Path:
         raise
 
 
+def telegram_api_endpoint(token: str, method: str) -> str:
+    """Build an API endpoint for Telegram cloud API or a local Bot API server.
+
+    Plain HTTP is allowed only for loopback hosts because local Bot API servers
+    normally listen on HTTP. Remote API endpoints must use HTTPS.
+    """
+    base = os.getenv("TELEGRAM_API_BASE_URL", "").strip().rstrip("/") or "https://api.telegram.org"
+    parsed = urlparse(base)
+    is_loopback_http = parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost", "::1"}
+    if not parsed.hostname or (parsed.scheme != "https" and not is_loopback_http):
+        raise ValueError("TELEGRAM_API_BASE_URL must be HTTPS, except for a local loopback Bot API server.")
+    if parsed.username or parsed.password or parsed.query or parsed.fragment:
+        raise ValueError("TELEGRAM_API_BASE_URL must not contain credentials, query parameters, or a fragment.")
+    return f"{base}/bot{token}/{method}"
+
+
 def telegram_method_for_file(filename: str) -> str:
     """Use Telegram's video method only for MP4; keep other containers as documents."""
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
@@ -418,7 +445,7 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
     if not chat_id:
         raise RuntimeError("TELEGRAM_CHAT_ID secret is not configured.")
     method = telegram_method_for_file(path.name)
-    endpoint = f"https://api.telegram.org/bot{token}/{method}"
+    endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024]}
     if method == "sendVideo":
@@ -501,16 +528,32 @@ def run() -> int:
                 LOG.info("[DRY RUN] Would download and publish: %s", entry["title"])
                 continue
             media_path = None
+            publish_path = None
+            generated_paths = []
             try:
                 media_path = download_media(url, entry["title"], config)
-                file_hash = sha256_file(media_path)
+                publish_path = media_path
+                if config.get("bilingual_subtitles", False):
+                    from tools.bilingual_subtitles import process as process_bilingual_subtitles
+                    publish_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
+                    english_srt = publish_path.with_name(publish_path.stem + ".en.srt")
+                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                    generated_paths.extend([publish_path, english_srt, persian_srt])
+                    stream_index = config.get("subtitle_stream_index")
+                    process_bilingual_subtitles(media_path, publish_path, stream_index)
+                    if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                        raise ValueError("Bilingual MKV exceeds the configured media size limit.")
+                    LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
+                file_hash = sha256_file(publish_path)
                 if file_hash in state["seen"]:
                     LOG.info("Skipping duplicate file hash: %s", entry["title"])
                     state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
                     save_state(config["state_file"], state)
                     continue
                 caption = f"🎬 {entry['title']}\n\nAnimehighbo"
-                message_id = telegram_upload_and_send(token, chat_id, media_path, caption)
+                if config.get("bilingual_subtitles", False):
+                    caption = f"🎬 {entry['title']}\n🇬🇧 English + 🇮🇷 فارسی (دو ترک زیرنویس)\n\nAnimehighbo"
+                message_id = telegram_upload_and_send(token, chat_id, publish_path, caption)
                 state["seen"][file_hash] = identity
                 state["published"][identity] = {
                     "title": entry["title"],
@@ -518,6 +561,7 @@ def run() -> int:
                     "file_sha256": file_hash,
                     "message_id": message_id,
                     "published_at": int(time.time()),
+                    "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
@@ -525,8 +569,13 @@ def run() -> int:
             except Exception as exc:
                 LOG.exception("Failed to process %s: %s", entry["title"], exc)
             finally:
-                if media_path and media_path.exists():
-                    media_path.unlink(missing_ok=True)
+                cleanup = set(generated_paths)
+                if media_path:
+                    cleanup.add(media_path)
+                for path in cleanup:
+                    if path.exists():
+                        path.unlink(missing_ok=True)
+
 
     LOG.info("Run complete. Published %d item(s).", published_count)
     return 0
