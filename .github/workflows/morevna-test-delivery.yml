@@ -3,10 +3,6 @@ name: One-time licensed Morevna Telegram test
 on:
   # Manual only until previous Telegram delivery receipts are confirmed; avoids duplicate uploads.
   workflow_dispatch:
-  schedule:
-    # Run automatically until all three resolution variants have been delivered.
-    - cron: '17,47 * * * *'
-
 permissions:
   contents: write
 
