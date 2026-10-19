@@ -167,6 +167,7 @@ def main():
     if os.environ.get("REQUIRE_GEMINI", "0").strip() == "1" and not os.environ.get("GEMINI_API_KEY", "").strip():
         raise RuntimeError("REQUIRE_GEMINI=1 but GEMINI_API_KEY is missing; refusing an unreviewed sample.")
 
+    state = load_state()
     OUT.mkdir(parents=True, exist_ok=True)
     source = OUT / "morevna_source.webm"
     english = OUT / "english.srt"
@@ -215,9 +216,6 @@ def main():
         receipt_key = f"{quality}_mkv_h265_{sample_version}"
         if state["sent"].get(receipt_key):
             print(f"{quality} {sample_version} already sent; skipping duplicate.")
-            continue
-        if state["sent"].get(receipt_key):
-            print(f"{quality} MKV H.265 already sent; skipping.")
             continue
 
         output = OUT / f"Morevna_Episode_3_Persian_{quality}_H265_{sample_version}.mkv"
