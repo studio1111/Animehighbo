@@ -550,9 +550,9 @@ def run() -> int:
                     state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
                     save_state(config["state_file"], state)
                     continue
-                caption = f"🎬 {entry['title']}\\n\\nAnimehighbo"
+                caption = f"🎬 {entry['title']}\n\nAnimehighbo"
                 if config.get("bilingual_subtitles", False):
-                    caption = f"🎬 {entry['title']}\\n🇬🇧 English + 🇮🇷 فارسی (دو ترک زیرنویس)\\n\\nAnimehighbo"
+                    caption = f"🎬 {entry['title']}\n🇬🇧 English + 🇮🇷 فارسی (دو ترک زیرنویس)\n\nAnimehighbo"
                 message_id = telegram_upload_and_send(token, chat_id, publish_path, caption)
                 state["seen"][file_hash] = identity
                 state["published"][identity] = {
