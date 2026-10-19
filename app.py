@@ -385,9 +385,9 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
         raise RuntimeError("Telegram bot token or channel ID is missing.")
     anime_title, inferred_episode = episode_details(title)
     episode = episode or inferred_episode
-    catalog_title = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", anime_title)
-    catalog_title = re.sub(r"\\[[^\\]]*\\]|\\([^)]*\\)", " ", catalog_title)
-    catalog_title = re.sub(r"\\s+", " ", catalog_title).strip(" -_")
+    catalog_title = re.sub(r"(?i)\b(?:480|720|1080|1440|2160)p\b", " ", anime_title)
+    catalog_title = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", catalog_title)
+    catalog_title = re.sub(r"\s+", " ", catalog_title).strip(" -_")
     media = anime_catalog_metadata(catalog_title or anime_title)
     caption = build_episode_caption(title, episode, page_url, media)
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
