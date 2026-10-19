@@ -35,6 +35,7 @@ jobs:
           TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
         run: |
           if [ "${TELEGRAM_LOCAL_API,,}" = "true" ]; then
             if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
@@ -68,8 +69,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
           ANIMEHIGHBO_DRY_RUN: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
         run: python app.py
       - name: Persist duplicate-prevention state
