@@ -41,7 +41,7 @@ Hello there.
         self.assertEqual(choose_english_stream(streams, 2), 2)
 
     def test_missing_english_track_produces_actionable_error(self):
-        with self.assertRaisesRegex(ValueError, "No English subtitle track"):
+        with self.assertRaisesRegex(ValueError, "No English text subtitle track"):
             choose_english_stream([{"index": 2, "tags": {"language": "jpn"}}], None)
 
     def test_translation_preserves_cue_timing_and_formatting_tags(self):
