@@ -16,7 +16,7 @@ VIDEO_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/Morevna_Ep
 SRT_URL = "https://commons.wikimedia.org/wiki/TimedText:Morevna_Episode_3.0.2_(English).webm.en.srt?action=raw"
 STATE = Path("data/morevna_test_delivery.json")
 OUT = Path("work/morevna")
-CRF = "21"
+CRF = "22"
 PRESET = "slow"
 MIN_VALID_DURATION = 1.0
 ATTRIBUTION = (
@@ -154,14 +154,18 @@ def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     api = os.environ.get("TELEGRAM_API_BASE_URL", "http://127.0.0.1:8081").rstrip("/")
+    sample_version = os.environ.get("SAMPLE_VERSION", "v1").strip()
+    requested_qualities = [
+        quality.strip() for quality in
+        os.environ.get("SAMPLE_QUALITIES", "480p,720p,1080p").split(",")
+        if quality.strip()
+    ]
     if not token or not chat:
         raise RuntimeError("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID secret.")
-
-    state = load_state()
-    wanted = ["480p_mkv_h265", "720p_mkv_h265", "1080p_mkv_h265"]
-    if all(state["sent"].get(key) for key in wanted):
-        print("All three test videos are already marked sent; no duplicate uploads.")
-        return
+    if not sample_version or any(not q for q in requested_qualities):
+        raise RuntimeError("Invalid sample version or quality list.")
+    if os.environ.get("REQUIRE_GEMINI", "0").strip() == "1" and not os.environ.get("GEMINI_API_KEY", "").strip():
+        raise RuntimeError("REQUIRE_GEMINI=1 but GEMINI_API_KEY is missing; refusing an unreviewed sample.")
 
     OUT.mkdir(parents=True, exist_ok=True)
     source = OUT / "morevna_source.webm"
@@ -184,6 +188,8 @@ def main():
     if not persian.exists() or not persian.read_text(encoding="utf-8").strip():
         translator = get_english_to_persian_translator()
         translated = translate_cues(cues, translator)
+        if os.environ.get("REQUIRE_GEMINI", "0").strip() == "1" and not hasattr(translator, "review_batch"):
+            raise RuntimeError("A Gemini-reviewed subtitle translator is required for this sample.")
         persian.write_text(render_srt(translated), encoding="utf-8")
 
     source_info = probe_media(source)
@@ -200,20 +206,28 @@ def main():
         "720p": (1280, 720),
         "1080p": (1920, 1080),
     }
+    unknown_qualities = sorted(set(requested_qualities) - set(specs))
+    if unknown_qualities:
+        raise RuntimeError(f"Unknown sample quality values: {unknown_qualities}")
     for quality, (width, height) in specs.items():
-        receipt_key = quality + "_mkv_h265"
+        if quality not in requested_qualities:
+            continue
+        receipt_key = f"{quality}_mkv_h265_{sample_version}"
+        if state["sent"].get(receipt_key):
+            print(f"{quality} {sample_version} already sent; skipping duplicate.")
+            continue
         if state["sent"].get(receipt_key):
             print(f"{quality} MKV H.265 already sent; skipping.")
             continue
 
-        output = OUT / f"Morevna_Episode_3_Persian_{quality}_H265.mkv"
+        output = OUT / f"Morevna_Episode_3_Persian_{quality}_H265_{sample_version}.mkv"
         encode_if_needed(source, english, persian, output, width, height)
         info = validate_output(output, width, height)
         size = output.stat().st_size
         if size > 1900 * 1024 * 1024:
             raise RuntimeError(f"{quality} output is too large for this test: {size} bytes")
 
-        caption = f"🎬 Morevna Episode 3.0.2 | {quality}\n{ATTRIBUTION}"
+        caption = f"🎬 Morevna Episode 3.0.2 | {quality} | Persian subtitle reviewed\n{ATTRIBUTION}"
         with output.open("rb") as video:
             response = requests.post(
                 f"{api}/bot{token}/sendDocument",
@@ -238,7 +252,7 @@ def main():
         }
         save_state(state)
         print(
-            f"TELEGRAM_SENT {quality} MKV_H265 message_id={message.get('message_id')} "
+            f"TELEGRAM_SENT {quality} MKV_H265 version={sample_version} message_id={message.get('message_id')} "
             f"bytes={size} duration={info['format']['duration']}s",
             flush=True,
         )
