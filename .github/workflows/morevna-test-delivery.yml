@@ -1,0 +1,78 @@
+name: One-time licensed Morevna Telegram test
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run automatically until all three resolution variants have been delivered.
+    - cron: '17,47 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: morevna-one-time-telegram-delivery
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install FFmpeg and subtitle translation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip
+          pip install requests
+          pip install -r requirements-subtitles.txt
+      - name: Start local Telegram Bot API for large video uploads
+        env:
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+            echo "::error::Missing TELEGRAM_API_ID, TELEGRAM_API_HASH, or TELEGRAM_BOT_TOKEN secret."
+            exit 1
+          fi
+          docker run --pull always --detach --name morevna-local-bot-api \
+            --publish 127.0.0.1:8081:8081 \
+            --env TELEGRAM_API_ID="$TELEGRAM_API_ID" \
+            --env TELEGRAM_API_HASH="$TELEGRAM_API_HASH" \
+            --env TELEGRAM_LOCAL=1 \
+            aiogram/telegram-bot-api:latest
+          ready=false
+          for attempt in $(seq 1 60); do
+            if curl --silent --show-error --fail \
+              "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          if [ "$ready" != "true" ]; then
+            docker logs morevna-local-bot-api || true
+            echo "::error::Local Telegram Bot API did not become ready."
+            exit 1
+          fi
+          echo "TELEGRAM_API_BASE_URL=http://127.0.0.1:8081" >> "$GITHUB_ENV"
+      - name: Translate subtitles, encode 480p/720p/1080p, and deliver to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_API_BASE_URL: http://127.0.0.1:8081
+        run: python tools/morevna_test_delivery.py
+      - name: Persist delivery receipts to prevent duplicate sends
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/morevna_test_delivery.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/morevna_test_delivery.json
+            git commit -m "chore: persist Morevna Telegram delivery receipts [skip ci]"
+            git push
+          fi
