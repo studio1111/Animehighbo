@@ -12,7 +12,8 @@ class SubsPleaseMonitorTests(unittest.TestCase):
         releases = parse_releases(xml)
         self.assertEqual(len(releases), 2)
         self.assertEqual(releases[0]["title"], "[Group] Anime Name - 03 (1080p)")
-        self.assertEqual(set(releases[0]), {"title", "id"})
+        self.assertEqual(set(releases[0]), {"title", "id", "quality"})
+        self.assertEqual(releases[0]["quality"], "1080p")
         self.assertNotIn("magnet", str(releases))
         self.assertNotIn("torrent", str(releases))
 
