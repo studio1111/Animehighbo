@@ -144,3 +144,16 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         self.assertIn("سال و فصل پخش: نامشخص", caption)
         self.assertIn("رده‌بندی رسمی اعلام نشده", caption)
         self.assertTrue(caption.endswith("<b>Animehighbo</b>"))
+
+    def test_sequel_season_is_not_mislabeled_as_first_season(self):
+        from unittest.mock import patch
+        metadata = {
+            "title": {"english": "Attack on Titan: The Final Season"},
+            "format": "TV",
+            "episodes": 16,
+            "isAdult": False,
+        }
+        with patch("app.translate_title_to_persian", return_value="حمله به تایتان"):
+            caption = build_episode_caption("Attack on Titan Episode 01 720p", "01", metadata=metadata)
+        self.assertIn("فصل انیمه: فصل پایانی", caption)
+
