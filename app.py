@@ -48,6 +48,8 @@ def load_config(path: str = "config.json") -> dict:
     config.setdefault("state_file", "data/state.json")
     config.setdefault("dry_run", True)
     config.setdefault("mode", "links")
+    config.setdefault("bilingual_subtitles", False)
+    config.setdefault("subtitle_stream_index", None)
     config.setdefault("poll_limit_per_feed", 30)
     config.setdefault("request_timeout_seconds", 30)
     return config
@@ -526,16 +528,32 @@ def run() -> int:
                 LOG.info("[DRY RUN] Would download and publish: %s", entry["title"])
                 continue
             media_path = None
+            publish_path = None
+            generated_paths = []
             try:
                 media_path = download_media(url, entry["title"], config)
-                file_hash = sha256_file(media_path)
+                publish_path = media_path
+                if config.get("bilingual_subtitles", False):
+                    from tools.bilingual_subtitles import process as process_bilingual_subtitles
+                    publish_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
+                    english_srt = publish_path.with_name(publish_path.stem + ".en.srt")
+                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                    generated_paths.extend([publish_path, english_srt, persian_srt])
+                    stream_index = config.get("subtitle_stream_index")
+                    process_bilingual_subtitles(media_path, publish_path, stream_index)
+                    if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                        raise ValueError("Bilingual MKV exceeds the configured media size limit.")
+                    LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
+                file_hash = sha256_file(publish_path)
                 if file_hash in state["seen"]:
                     LOG.info("Skipping duplicate file hash: %s", entry["title"])
                     state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
                     save_state(config["state_file"], state)
                     continue
-                caption = f"🎬 {entry['title']}\n\nAnimehighbo"
-                message_id = telegram_upload_and_send(token, chat_id, media_path, caption)
+                caption = f"🎬 {entry['title']}\\n\\nAnimehighbo"
+                if config.get("bilingual_subtitles", False):
+                    caption = f"🎬 {entry['title']}\\n🇬🇧 English + 🇮🇷 فارسی (دو ترک زیرنویس)\\n\\nAnimehighbo"
+                message_id = telegram_upload_and_send(token, chat_id, publish_path, caption)
                 state["seen"][file_hash] = identity
                 state["published"][identity] = {
                     "title": entry["title"],
@@ -543,6 +561,7 @@ def run() -> int:
                     "file_sha256": file_hash,
                     "message_id": message_id,
                     "published_at": int(time.time()),
+                    "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
@@ -550,8 +569,13 @@ def run() -> int:
             except Exception as exc:
                 LOG.exception("Failed to process %s: %s", entry["title"], exc)
             finally:
-                if media_path and media_path.exists():
-                    media_path.unlink(missing_ok=True)
+                cleanup = set(generated_paths)
+                if media_path:
+                    cleanup.add(media_path)
+                for path in cleanup:
+                    if path.exists():
+                        path.unlink(missing_ok=True)
+
 
     LOG.info("Run complete. Published %d item(s).", published_count)
     return 0
