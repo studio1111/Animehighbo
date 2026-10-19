@@ -1,6 +1,6 @@
 import unittest
 
-from tools.subsplease_monitor import parse_releases
+from tools.subsplease_monitor import merge_queue, parse_releases
 
 
 class SubsPleaseMonitorTests(unittest.TestCase):
@@ -16,6 +16,13 @@ class SubsPleaseMonitorTests(unittest.TestCase):
         self.assertEqual(releases[0]["quality"], "1080p")
         self.assertNotIn("magnet", str(releases))
         self.assertNotIn("torrent", str(releases))
+
+    def test_queue_deduplicates_and_keeps_only_unseen_releases(self):
+        first = {"id": "1", "title": "A", "quality": "720p"}
+        second = {"id": "2", "title": "B", "quality": "1080p"}
+        queue = [{"id": "queued", "title": "Queued", "quality": "720p"}]
+        merged = merge_queue(queue, [first, second, first], {"2"})
+        self.assertEqual([item["id"] for item in merged], ["queued", "1"])
 
 
 if __name__ == "__main__":
