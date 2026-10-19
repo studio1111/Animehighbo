@@ -2,6 +2,12 @@ name: SubsPlease release monitor
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/subsplease_monitor.py'
+      - '.github/workflows/subsplease-monitor.yml'
+      - 'app.py'
   schedule:
     - cron: '*/5 * * * *'
 
@@ -26,7 +32,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          SUBSPLEASE_DRY_RUN: ${{ vars.SUBSPLEASE_DRY_RUN }}
+          SUBSPLEASE_DRY_RUN: 'false'
         run: python tools/subsplease_monitor.py
       - name: Persist monitor state
         if: always()
