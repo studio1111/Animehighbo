@@ -44,6 +44,23 @@ Hello there.
         with self.assertRaisesRegex(ValueError, "No English text subtitle track"):
             choose_english_stream([{"index": 2, "tags": {"language": "jpn"}}], None)
 
+    def test_batch_translation_runs_review_and_preserves_placeholders(self):
+        class FakeTranslator:
+            def translate_batch(self, cues):
+                return [Cue(c.index, c.timing, c.text.replace("Hello", "سلام")) for c in cues]
+
+            def review_batch(self, source, translated):
+                self.review_called = True
+                return [Cue(c.index, c.timing, c.text.replace("سلام", "درود")) for c in translated]
+
+        translator = FakeTranslator()
+        cues = [Cue(1, "00:00:01,000 --> 00:00:02,000", "<i>Hello</i>")]
+        translated = translate_cues(cues, translator)
+        self.assertTrue(translator.review_called)
+        self.assertEqual(translated[0].timing, cues[0].timing)
+        self.assertIn("<i>", translated[0].text)
+        self.assertIn("درود", translated[0].text)
+
     def test_translation_preserves_cue_timing_and_formatting_tags(self):
         class FakeTranslator:
             def translate(self, text):
