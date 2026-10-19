@@ -14,6 +14,14 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+import sys
+
+# When executed as `python tools/subsplease_monitor.py`, Python puts the
+# tools/ directory (not the repository root) on sys.path. Add the project root
+# so shared helpers in app.py resolve consistently in GitHub Actions and locally.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from app import (
     anime_catalog_metadata,
