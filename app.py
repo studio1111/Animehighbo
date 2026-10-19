@@ -106,7 +106,7 @@ def episode_details(title: str) -> tuple[str, str]:
         r"\s[-–]\s*(\d{1,4})(?=\s*(?:\(|\[|$))",
     ]
     episode = ""
-    clean = title.strip()
+    clean = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title.strip())
     for pattern in patterns:
         match = re.search(pattern, clean)
         if match:
