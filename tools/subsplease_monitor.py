@@ -24,7 +24,6 @@ from app import (
 )
 
 FEEDS = {
-    "480p": "https://subsplease.org/rss/?r=480",
     "720p": "https://subsplease.org/rss/?r=720",
     "1080p": "https://subsplease.org/rss/?r=1080",
 }
