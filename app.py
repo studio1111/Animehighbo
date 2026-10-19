@@ -6,6 +6,7 @@ Torrent pages, HTML pages, magnets, and unapproved hosts are rejected.
 from __future__ import annotations
 
 import hashlib
+import html
 import json
 import logging
 import os
@@ -216,27 +217,171 @@ def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024
         return data, content_type
 
 
+def translate_title_to_persian(title: str, timeout: int = 10) -> str:
+    """Translate an English anime title to Persian using a free translation endpoint."""
+    try:
+        response = requests.get(
+            "https://translate.googleapis.com/translate_a/single",
+            params={"client": "gtx", "sl": "en", "tl": "fa", "dt": "t", "q": title},
+            timeout=timeout,
+            headers={"User-Agent": USER_AGENT},
+        )
+        response.raise_for_status()
+        data = response.json()
+        translated = "".join(
+            part[0] for part in (data[0] if data and data[0] else [])
+            if part and isinstance(part[0], str)
+        ).strip()
+        if translated and translated.lower() != title.lower():
+            return translated
+    except Exception as exc:
+        LOG.warning("Persian title translation unavailable for %r: %s", title, exc)
+    return "ترجمهٔ فارسی در دسترس نیست"
+
+
+def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
+    """Fetch anime facts from AniList; unknown data is never guessed."""
+    query = """
+    query ($search: String) {
+      Media(search: $search, type: ANIME) {
+        title { english romaji native }
+        season seasonYear episodes genres format isAdult description(asHtml: false)
+      }
+    }
+    """
+    try:
+        response = requests.post(
+            "https://graphql.anilist.co",
+            json={"query": query, "variables": {"search": title}},
+            timeout=timeout,
+            headers={"User-Agent": USER_AGENT, "Content-Type": "application/json"},
+        )
+        response.raise_for_status()
+        payload = response.json()
+        media = (payload.get("data") or {}).get("Media")
+        if not isinstance(media, dict):
+            return {}
+        return media
+    except Exception as exc:
+        LOG.warning("Anime metadata lookup failed for %r: %s", title, exc)
+        return {}
+
+
+def _quality_from_title(title: str) -> str:
+    match = re.search(r"(?i)\b(480|720|1080|1440|2160)\s*p\b", title)
+    return f"{match.group(1)}p" if match else "نامشخص"
+
+
+def _season_label(title: str, media: dict) -> str:
+    normalized = title.lower()
+    if re.search(r"\b(ova|oav)\b", normalized):
+        return "OVA"
+    if re.search(r"\b(ona)\b", normalized):
+        return "ONA"
+    if re.search(r"\b(movie|film)\b", normalized):
+        return "فیلم"
+    match = re.search(r"(?i)\b(?:season|s)\s*[- ]?(\d{1,2})\b", title)
+    if match:
+        return f"فصل {match.group(1)}"
+    if media.get("format") in {"OVA", "SPECIAL"}:
+        return "OVA" if media.get("format") == "OVA" else "ویژه"
+    if media.get("format") == "TV":
+        return "فصل اول"
+    return "نامشخص"
+
+
+def _season_fa(season: str | None) -> str:
+    return {
+        "WINTER": "زمستان",
+        "SPRING": "بهار",
+        "SUMMER": "تابستان",
+        "FALL": "پاییز",
+    }.get(str(season or "").upper(), "نامشخص")
+
+
+def _safe_caption_text(value: str) -> str:
+    return html.escape(value, quote=False)
+
+
+def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
+    """Build the requested Persian-only metadata caption with a collapsible synopsis."""
+    media = metadata if isinstance(metadata, dict) else {}
+    titles = media.get("title") or {}
+    english_title = str(titles.get("english") or episode_details(title)[0]).strip()
+    persian_title = translate_title_to_persian(english_title)
+    episode_number = episode or episode_details(title)[1] or "نامشخص"
+
+    # Use the exact release quality found in the feed title. Do not infer it from poster art.
+    quality = _quality_from_title(title)
+    season = _season_label(title, media)
+    episodes_total = media.get("episodes")
+    episodes_text = str(episodes_total) if isinstance(episodes_total, int) and episodes_total > 0 else "نامشخص"
+
+    year = media.get("seasonYear")
+    broadcast_season = _season_fa(media.get("season"))
+    year_season = f"{year} فصل {broadcast_season}" if isinstance(year, int) and broadcast_season != "نامشخص" else "نامشخص"
+
+    genres = media.get("genres")
+    genres_text = "، ".join(str(item) for item in genres[:6]) if isinstance(genres, list) and genres else "نامشخص"
+    if media.get("isAdult") is True:
+        age_rating = "۱۸+"
+    else:
+        age_rating = "رده‌بندی رسمی اعلام نشده"
+
+    synopsis = re.sub(r"\s+", " ", str(media.get("description") or "")).strip()
+    # Telegram photo captions are limited; keep the requested collapsible synopsis short enough.
+    synopsis = re.sub(r"<[^>]+>", "", synopsis)
+    synopsis = html.unescape(synopsis)
+    if not synopsis:
+        synopsis = "خلاصهٔ معتبر در دسترس نیست."
+    if len(synopsis) > 155:
+        synopsis = synopsis[:152].rsplit(" ", 1)[0].rstrip(" ،؛:") + "…"
+
+    lines = [
+        f"🎬 <b>{_safe_caption_text(english_title)}</b> | <b>{_safe_caption_text(persian_title)}</b>",
+        f"📺 قسمت: {_safe_caption_text(str(episode_number))}",
+        f"🎞 کیفیت: {_safe_caption_text(quality)}",
+        f"📚 فصل انیمه: {_safe_caption_text(season)}",
+        f"🔢 تعداد کامل قسمت‌ها: {_safe_caption_text(episodes_text)}",
+        f"📅 سال و فصل پخش: {_safe_caption_text(year_season)}",
+        f"🏷 ژانر: {_safe_caption_text(genres_text)}",
+        f"🔞 ردهٔ سنی: {_safe_caption_text(age_rating)}",
+        f"<blockquote expandable>📝 خلاصه: {_safe_caption_text(synopsis)}</blockquote>",
+        "<b>Animehighbo</b>",
+    ]
+    caption = "\n".join(lines)
+    # Telegram's sendPhoto caption limit is 1024 characters. Shrink synopsis only if needed.
+    if len(caption) > 1000:
+        excess = len(caption) - 1000
+        synopsis = synopsis[:max(24, len(synopsis) - excess - 3)].rstrip() + "…"
+        lines[-2] = f"<blockquote expandable>📝 خلاصه: {_safe_caption_text(synopsis)}</blockquote>"
+        caption = "\n".join(lines)
+    if len(caption) > 1024:
+        # Very long titles/genre names should not prevent delivery.
+        lines[6] = "🏷 ژانر: نامشخص"
+        caption = "\n".join(lines)
+    if len(caption) > 1024:
+        raise ValueError("Persian anime caption exceeds Telegram's 1024-character caption limit.")
+    return caption
+
+
 def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_type: str,
                           title: str, episode: str, page_url: str) -> str:
-    """Publish a poster with anime title, known episode number, and a watch link button."""
+    """Publish one episode poster and only the requested Persian metadata."""
     if not token or not chat_id:
         raise RuntimeError("Telegram bot token or channel ID is missing.")
-    from urllib.parse import urlparse as _urlparse
-    if _urlparse(page_url).scheme != "https":
-        raise ValueError("Episode watch link must use HTTPS.")
     anime_title, inferred_episode = episode_details(title)
     episode = episode or inferred_episode
-    caption = f"🎬 {anime_title}"
-    caption += f"\n📺 قسمت {episode}" if episode else "\n📺 شمارهٔ قسمت در منبع مشخص نشده"
-    caption += f"\n\n🔗 لینک تماشا: {page_url}\n\nAnimehighbo"
+    media = anime_catalog_metadata(anime_title)
+    caption = build_episode_caption(title, episode, page_url, media)
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
     endpoint = telegram_api_endpoint(token, "sendPhoto")
     response = requests.post(
         endpoint,
         data={
             "chat_id": chat_id,
-            "caption": caption[:1024],
-            "reply_markup": json.dumps({"inline_keyboard": [[{"text": "▶️ مشاهده قسمت", "url": page_url}]]}),
+            "caption": caption,
+            "parse_mode": "HTML",
         },
         files={"photo": (f"anime-poster.{extension}", image_data, image_type)},
         timeout=(30, 60),
@@ -247,7 +392,6 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
         description = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
         raise RuntimeError(f"Telegram sendPhoto failed: {description}")
     return str(result.get("result", {}).get("message_id", ""))
-
 
 def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id: str) -> int:
     """Publish episode links with downloaded posters, without downloading episode videos."""
