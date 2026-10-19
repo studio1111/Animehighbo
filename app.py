@@ -102,6 +102,8 @@ def episode_details(title: str) -> tuple[str, str]:
         r"(?i)\b(?:episode|ep)\s*[-.#:]?\s*(\d{1,4}(?:\.\d+)?)\b",
         r"第\s*(\d{1,4}(?:\.\d+)?)\s*[話话集期]",
         r"(?i)\bS\d{1,2}\s*E(\d{1,4})\b",
+        # Common release naming: "[Group] Anime Title - 03 (1080p) [hash].mkv".
+        r"\s[-–]\s*(\d{1,4})(?=\s*(?:\(|\[|$))",
     ]
     episode = ""
     clean = title.strip()
@@ -111,6 +113,11 @@ def episode_details(title: str) -> tuple[str, str]:
             episode = match.group(1)
             clean = re.sub(pattern, " ", clean).strip(" -|:[]()")
             break
+    # Remove release-group wrappers, quality labels, file extensions, and hashes.
+    clean = re.sub(r"(?i)\b(?:480|720|1080|1440|2160)p\b", " ", clean)
+    clean = re.sub(r"(?i)\.(?:mkv|mp4|webm|mov)$", " ", clean)
+    clean = re.sub(r"\[[^\]]*\]", " ", clean)
+    clean = re.sub(r"\s+", " ", clean).strip(" -|:[]()")
     return (re.sub(r"\s+", " ", clean) or title.strip(), episode)
 
 
@@ -245,6 +252,7 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     query ($search: String) {
       Media(search: $search, type: ANIME) {
         title { english romaji native }
+        coverImage { extraLarge large medium }
         season seasonYear episodes genres format isAdult description(asHtml: false)
       }
     }
