@@ -3,7 +3,7 @@ name: SubsPlease release monitor
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
