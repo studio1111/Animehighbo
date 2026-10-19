@@ -100,7 +100,7 @@ def main():
                 "-i", str(source), "-i", str(english), "-i", str(persian),
                 "-map", "0:v:0", "-map", "0:a?", "-map", "1:0", "-map", "2:0",
                 "-vf", f"scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2",
-                "-c:v", "libx265", "-preset", "medium", "-tag:v", "hvc1", "-b:v", bitrate, "-maxrate", bitrate,
+                "-c:v", "libx265", "-preset", "medium", "-b:v", bitrate, "-maxrate", bitrate,
                 "-bufsize", str(int(bitrate[:-1]) * 2) + "k",
                 "-c:a", "aac", "-b:a", "128k", "-c:s", "srt",
                 "-metadata", "title=Morevna Episode 3.0.2 - " + quality,
