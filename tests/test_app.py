@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import (allowed_media_url, episode_details, load_config, parse_episode_feed, parse_feed, safe_filename, telegram_api_endpoint, telegram_method_for_file)
+from app import (allowed_media_url, build_episode_caption, episode_details, load_config, parse_episode_feed, parse_feed, safe_filename, telegram_api_endpoint, telegram_method_for_file)
 
 
 class FeedParserTests(unittest.TestCase):
@@ -104,3 +104,43 @@ class FeedParserTests(unittest.TestCase):
                 os.environ.pop("ANIMEHIGHBO_MAX_FILE_SIZE_MB", None)
             else:
                 os.environ["ANIMEHIGHBO_MAX_FILE_SIZE_MB"] = previous
+
+
+class PersianAnimeCaptionTests(unittest.TestCase):
+    def test_caption_contains_requested_fields_and_collapsible_synopsis(self):
+        metadata = {
+            "title": {"english": "Moonlit Saga"},
+            "season": "FALL",
+            "seasonYear": 2026,
+            "episodes": 12,
+            "genres": ["Action", "Fantasy"],
+            "format": "TV",
+            "isAdult": False,
+            "description": "A young traveler discovers a hidden world beneath the city.",
+        }
+        from unittest.mock import patch
+        with patch("app.translate_title_to_persian", return_value="حماسه مهتاب"):
+            caption = build_episode_caption(
+                "Moonlit Saga Episode 07 1080p", "07", metadata=metadata
+            )
+        self.assertIn("Moonlit Saga", caption)
+        self.assertIn("حماسه مهتاب", caption)
+        self.assertIn("قسمت: 07", caption)
+        self.assertIn("کیفیت: 1080p", caption)
+        self.assertIn("فصل اول", caption)
+        self.assertIn("تعداد کامل قسمت‌ها: 12", caption)
+        self.assertIn("2026 فصل پاییز", caption)
+        self.assertIn("اکشن، فانتزی", caption)
+        self.assertIn("<blockquote expandable>", caption)
+        self.assertTrue(caption.endswith("<b>Animehighbo</b>"))
+        self.assertLessEqual(len(caption), 1024)
+        self.assertNotIn("لینک تماشا", caption)
+
+    def test_unknown_metadata_is_not_invented(self):
+        from unittest.mock import patch
+        with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"):
+            caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
+        self.assertIn("تعداد کامل قسمت‌ها: نامشخص", caption)
+        self.assertIn("سال و فصل پخش: نامشخص", caption)
+        self.assertIn("رده‌بندی رسمی اعلام نشده", caption)
+        self.assertTrue(caption.endswith("<b>Animehighbo</b>"))
