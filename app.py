@@ -219,7 +219,7 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
     caption += f"\n📺 قسمت {episode}" if episode else "\n📺 شمارهٔ قسمت در منبع مشخص نشده"
     caption += f"\n\n🔗 لینک تماشا: {page_url}\n\nAnimehighbo"
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
-    endpoint = f"https://api.telegram.org/bot{token}/sendPhoto"
+    endpoint = telegram_api_endpoint(token, "sendPhoto")
     response = requests.post(
         endpoint,
         data={
@@ -406,6 +406,22 @@ def download_media(url: str, title: str, config: dict) -> Path:
         raise
 
 
+def telegram_api_endpoint(token: str, method: str) -> str:
+    """Build an API endpoint for Telegram cloud API or a local Bot API server.
+
+    Plain HTTP is allowed only for loopback hosts because local Bot API servers
+    normally listen on HTTP. Remote API endpoints must use HTTPS.
+    """
+    base = os.getenv("TELEGRAM_API_BASE_URL", "https://api.telegram.org").strip().rstrip("/")
+    parsed = urlparse(base)
+    is_loopback_http = parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost", "::1"}
+    if not parsed.hostname or (parsed.scheme != "https" and not is_loopback_http):
+        raise ValueError("TELEGRAM_API_BASE_URL must be HTTPS, except for a local loopback Bot API server.")
+    if parsed.username or parsed.password or parsed.query or parsed.fragment:
+        raise ValueError("TELEGRAM_API_BASE_URL must not contain credentials, query parameters, or a fragment.")
+    return f"{base}/bot{token}/{method}"
+
+
 def telegram_method_for_file(filename: str) -> str:
     """Use Telegram's video method only for MP4; keep other containers as documents."""
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
@@ -418,7 +434,7 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
     if not chat_id:
         raise RuntimeError("TELEGRAM_CHAT_ID secret is not configured.")
     method = telegram_method_for_file(path.name)
-    endpoint = f"https://api.telegram.org/bot{token}/{method}"
+    endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024]}
     if method == "sendVideo":
