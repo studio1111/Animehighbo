@@ -9,9 +9,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
+import time
+import requests
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -109,13 +112,133 @@ def render_srt(cues: list[Cue]) -> str:
     return "\n\n".join(blocks) + "\n"
 
 
+class GeminiSubtitleTranslator:
+    """Translate subtitle batches with Gemini, preserving cue IDs and dialogue context."""
+
+    def __init__(self, api_key: str, model: str | None = None):
+        self.api_key = api_key
+        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")).strip()
+        self.endpoint = (
+            "https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{self.model}:generateContent"
+        )
+
+    def translate_batch(self, cues: list[Cue]) -> list[Cue]:
+        if not cues:
+            return []
+        # Keep requests bounded and give Gemini adjacent dialogue for context.
+        translated: list[Cue] = []
+        batch_size = 20
+        for offset in range(0, len(cues), batch_size):
+            batch = cues[offset:offset + batch_size]
+            payload = [{"id": cue.index, "text": cue.text} for cue in batch]
+            prompt = (
+                "You are a professional Persian anime subtitle localizer. Translate the English "
+                "dialogue into natural, readable contemporary Persian with conversational phrasing. "
+                "Preserve meaning, emotion, humor, character voice, names, and subtitle formatting "
+                "tags such as <i>...</i>. Do not translate or alter placeholder tokens. Do not add "
+                "explanations, omit dialogue, or merge cues. Keep every input id exactly once and "
+                "return only JSON matching the requested schema. Prefer concise Persian suitable "
+                "for on-screen subtitles. The source cues are in chronological order.\n\n"
+                + json.dumps(payload, ensure_ascii=False)
+            )
+            body = {
+                "systemInstruction": {
+                    "parts": [{
+                        "text": "Return faithful, idiomatic Persian subtitle translations. "
+                                "Output must contain exactly one translation for each supplied id."
+                    }]
+                },
+                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.2,
+                    "responseMimeType": "application/json",
+                    "responseSchema": {
+                        "type": "OBJECT",
+                        "properties": {
+                            "translations": {
+                                "type": "ARRAY",
+                                "items": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                        "id": {"type": "INTEGER"},
+                                        "text": {"type": "STRING"}
+                                    },
+                                    "required": ["id", "text"]
+                                }
+                            }
+                        },
+                        "required": ["translations"]
+                    }
+                }
+            }
+            response = None
+            for attempt in range(3):
+                try:
+                    response = requests.post(
+                        self.endpoint,
+                        params={"key": self.api_key},
+                        json=body,
+                        timeout=(20, 120),
+                    )
+                    if response.status_code in {429, 500, 502, 503, 504} and attempt < 2:
+                        time.sleep(2 ** attempt)
+                        continue
+                    response.raise_for_status()
+                    break
+                except requests.RequestException as exc:
+                    if attempt == 2:
+                        raise RuntimeError(
+                            f"Gemini translation request failed for cues "
+                            f"{batch[0].index}-{batch[-1].index}: {exc}"
+                        ) from exc
+                    time.sleep(2 ** attempt)
+            try:
+                response_data = response.json()
+                parts = response_data["candidates"][0]["content"]["parts"]
+                raw_text = "".join(part.get("text", "") for part in parts)
+                decoded = json.loads(raw_text)
+                items = decoded["translations"]
+                by_id = {int(item["id"]): str(item["text"]).strip() for item in items}
+            except (ValueError, KeyError, TypeError, IndexError) as exc:
+                raise RuntimeError(
+                    f"Gemini returned an invalid translation response for cues "
+                    f"{batch[0].index}-{batch[-1].index}."
+                ) from exc
+            expected = {cue.index for cue in batch}
+            if set(by_id) != expected or any(not text for text in by_id.values()):
+                raise RuntimeError(
+                    f"Gemini omitted, duplicated, or emptied subtitle cues "
+                    f"{batch[0].index}-{batch[-1].index}; refusing a partial translation."
+                )
+            translated.extend(
+                Cue(cue.index, cue.timing, by_id[cue.index]) for cue in batch
+            )
+        return translated
+
+    def translate(self, text: str) -> str:
+        # Compatibility for callers that translate one line at a time.
+        result = self.translate_batch([Cue(1, "00:00:00,000 --> 00:00:01,000", text)])
+        return result[0].text
+
+
 def get_english_to_persian_translator():
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if api_key:
+        print(
+            "Subtitle translator: Gemini "
+            f"({os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')})",
+            flush=True,
+        )
+        return GeminiSubtitleTranslator(api_key)
+
+    # Optional offline fallback for local runs without a Gemini secret.
     try:
         import argostranslate.package
         import argostranslate.translate
     except ImportError as exc:
         raise RuntimeError(
-            "Offline translation dependency is missing. Install requirements-subtitles.txt."
+            "GEMINI_API_KEY is not configured and the offline Argos dependency is missing."
         ) from exc
 
     languages = argostranslate.translate.get_installed_languages()
@@ -124,9 +247,9 @@ def get_english_to_persian_translator():
     if english and persian:
         translation = english.get_translation(persian)
         if translation:
+            print("Subtitle translator: offline Argos fallback", flush=True)
             return translation
 
-    # Install the free, open-source English -> Persian Argos model on first use.
     argostranslate.package.update_package_index()
     package = next(
         (
@@ -147,30 +270,59 @@ def get_english_to_persian_translator():
     translation = english.get_translation(persian)
     if not translation:
         raise RuntimeError("English-to-Persian translation is not available after model installation.")
+    print("Subtitle translator: offline Argos fallback", flush=True)
     return translation
 
 
 def translate_cues(cues: list[Cue], translator) -> list[Cue]:
+    # Gemini gets small chronological batches, improving consistency and reducing API calls.
+    if hasattr(translator, "translate_batch"):
+        tagged_cues: list[Cue] = []
+        tag_maps: dict[int, list[str]] = {}
+        for cue in cues:
+            tags: list[str] = []
+            def hold_tag(match):
+                tags.append(match.group(0))
+                return f" ZZSUBTAG{len(tags) - 1}ZZ "
+            text = re.sub(
+                r"</?(?:i|b|u|font|span|ruby|rt)(?:\s+[^>]*)?>",
+                hold_tag, cue.text, flags=re.I
+            )
+            tag_maps[cue.index] = tags
+            tagged_cues.append(Cue(cue.index, cue.timing, text))
+        translated = translator.translate_batch(tagged_cues)
+        restored: list[Cue] = []
+        for cue in translated:
+            text = cue.text
+            for index, tag in enumerate(tag_maps.get(cue.index, [])):
+                text = re.sub(
+                    re.escape(f"ZZSUBTAG{index}ZZ"), lambda _match: tag, text, flags=re.I
+                )
+            restored.append(Cue(cue.index, cue.timing, text.strip()))
+        return restored
+
+    # Compatibility with the existing offline translator.
     translated: list[Cue] = []
     for cue in cues:
-        # Keep common subtitle formatting tags intact while translating dialogue.
         tags: list[str] = []
         def hold_tag(match):
             tags.append(match.group(0))
             return f" ZZSUBTAG{len(tags) - 1}ZZ "
-        text = re.sub(r"</?(?:i|b|u|font|span|ruby|rt)(?:\s+[^>]*)?>", hold_tag, cue.text, flags=re.I)
+        text = re.sub(
+            r"</?(?:i|b|u|font|span|ruby|rt)(?:\s+[^>]*)?>",
+            hold_tag, cue.text, flags=re.I
+        )
         try:
             result = translator.translate(text)
         except Exception as exc:
             raise RuntimeError(f"Translation failed at subtitle cue {cue.index}: {exc}") from exc
         for index, tag in enumerate(tags):
-            result = result.replace(f"ZZSUBTAG{index}ZZ", tag).replace(f"ZZSUBTAG{index}ZZ".lower(), tag)
-        result = result.strip()
-        if not result:
-            result = cue.text
+            result = result.replace(f"ZZSUBTAG{index}ZZ", tag).replace(
+                f"ZZSUBTAG{index}ZZ".lower(), tag
+            )
+        result = result.strip() or cue.text
         translated.append(Cue(cue.index, cue.timing, result))
     return translated
-
 
 def make_bilingual_mkv(video: Path, english_srt: Path, persian_srt: Path, output: Path) -> None:
     if output.suffix.lower() != ".mkv":
