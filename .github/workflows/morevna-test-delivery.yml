@@ -79,9 +79,24 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/morevna_test_delivery.json
             git commit -m "chore: persist Morevna Telegram delivery receipts [skip ci]"
-            # Other repository changes may land while encoding/uploading takes place.
-            # Rebase the receipt commit on the latest main before pushing.
-            git fetch origin main
-            git rebase origin/main
-            git push origin HEAD:main
+            # Retry if another commit reaches main between fetch and push.
+            pushed=false
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "::error::Could not rebase delivery receipts onto the latest main."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                pushed=true
+                break
+              fi
+              echo "Push attempt $attempt was rejected; retrying after fetching latest main."
+              sleep "$attempt"
+            done
+            if [ "$pushed" != "true" ]; then
+              echo "::error::Could not push delivery receipts after 5 attempts."
+              exit 1
+            fi
           fi
