@@ -117,7 +117,7 @@ class GeminiSubtitleTranslator:
 
     def __init__(self, api_key: str, model: str | None = None):
         self.api_key = api_key
-        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")).strip()
+        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")).strip()
         self.endpoint = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"{self.model}:generateContent"
@@ -302,7 +302,7 @@ def get_english_to_persian_translator():
     if api_key:
         print(
             "Subtitle translator: Gemini "
-            f"({os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')})",
+            f"({os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')})",
             flush=True,
         )
         return GeminiSubtitleTranslator(api_key)
