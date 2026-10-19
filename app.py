@@ -35,6 +35,15 @@ def load_config(path: str = "config.json") -> dict:
     if not isinstance(config.get("allowed_download_hosts"), list):
         raise ValueError("'allowed_download_hosts' must be a list")
     config.setdefault("max_file_size_mb", 45)
+    max_size_override = os.getenv("ANIMEHIGHBO_MAX_FILE_SIZE_MB", "").strip()
+    if max_size_override:
+        try:
+            max_size_mb = int(max_size_override)
+        except ValueError as exc:
+            raise ValueError("ANIMEHIGHBO_MAX_FILE_SIZE_MB must be an integer.") from exc
+        if not 1 <= max_size_mb <= 1900:
+            raise ValueError("ANIMEHIGHBO_MAX_FILE_SIZE_MB must be between 1 and 1900.")
+        config["max_file_size_mb"] = max_size_mb
     config.setdefault("download_dir", "downloads")
     config.setdefault("state_file", "data/state.json")
     config.setdefault("dry_run", True)
