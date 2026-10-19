@@ -11,6 +11,8 @@
   "download_dir": "downloads",
   "state_file": "data/state.json",
   "dry_run": true,
+  "bilingual_subtitles": false,
+  "subtitle_stream_index": null,
   "poll_limit_per_feed": 30,
   "request_timeout_seconds": 30
 }
