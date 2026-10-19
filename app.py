@@ -412,7 +412,7 @@ def telegram_api_endpoint(token: str, method: str) -> str:
     Plain HTTP is allowed only for loopback hosts because local Bot API servers
     normally listen on HTTP. Remote API endpoints must use HTTPS.
     """
-    base = os.getenv("TELEGRAM_API_BASE_URL", "https://api.telegram.org").strip().rstrip("/")
+    base = os.getenv("TELEGRAM_API_BASE_URL", "").strip().rstrip("/") or "https://api.telegram.org"
     parsed = urlparse(base)
     is_loopback_http = parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost", "::1"}
     if not parsed.hostname or (parsed.scheme != "https" and not is_loopback_http):
