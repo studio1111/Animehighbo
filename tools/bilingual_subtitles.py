@@ -49,9 +49,16 @@ def subtitle_streams(video: Path) -> list[dict]:
 
 
 def choose_english_stream(streams: list[dict], requested: int | None) -> int:
+    text_codecs = {"subrip", "ass", "ssa", "webvtt", "mov_text", "text", "ttml"}
     if requested is not None:
         for stream in streams:
             if stream["index"] == requested:
+                codec = str(stream.get("codec_name", "")).lower()
+                if codec and codec not in text_codecs:
+                    raise ValueError(
+                        f"Subtitle stream {requested} uses {codec}, which is not a text subtitle. "
+                        "Bitmap subtitles need OCR first; this tool does not perform OCR."
+                    )
                 return requested
         available = ", ".join(str(s["index"]) for s in streams) or "none"
         raise ValueError(f"Subtitle stream {requested} not found. Available global stream indexes: {available}")
@@ -59,14 +66,18 @@ def choose_english_stream(streams: list[dict], requested: int | None) -> int:
         tags = stream.get("tags") or {}
         language = str(tags.get("language", "")).lower()
         title = str(tags.get("title", "")).lower()
-        if language in {"en", "eng", "english"} or "english" in title:
+        codec = str(stream.get("codec_name", "")).lower()
+        if (language in {"en", "eng", "english"} or "english" in title) and (
+            not codec or codec in text_codecs
+        ):
             return stream["index"]
     available = ", ".join(
-        f"{s['index']}({(s.get('tags') or {}).get('language', 'unknown')})" for s in streams
+        f"{s['index']}({(s.get('tags') or {}).get('language', 'unknown')},"
+        f"{s.get('codec_name', 'unknown')})" for s in streams
     ) or "none"
     raise ValueError(
-        "No English subtitle track was detected automatically. "
-        f"Available tracks: {available}. Pass --subtitle-stream with a global stream index."
+        "No English text subtitle track was detected automatically. "
+        f"Available tracks: {available}. Bitmap subtitles need OCR first."
     )
 
 
@@ -168,7 +179,7 @@ def make_bilingual_mkv(video: Path, english_srt: Path, persian_srt: Path, output
     run_command([
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
         "-i", str(video), "-i", str(english_srt), "-i", str(persian_srt),
-        "-map", "0:v?", "-map", "0:a?", "-map", "0:d?", "-map", "0:t?",
+        "-map", "0:v?", "-map", "0:a?",
         "-map", "1:0", "-map", "2:0", "-map_metadata", "0", "-map_chapters", "0",
         "-c", "copy",
         "-metadata:s:s:0", "language=eng",
