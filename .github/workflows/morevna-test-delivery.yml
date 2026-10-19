@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/morevna-test-delivery.yml'
       - 'tools/morevna_test_delivery.py'
+      - 'tools/__init__.py'
   workflow_dispatch:
   schedule:
     # Run automatically until all three resolution variants have been delivered.
