@@ -80,17 +80,17 @@ def build_ffmpeg_command(
         "-map", "0:v:0", "-map", "0:a?", "-map", "0:s?",
         "-map_metadata", "0", "-map_chapters", "0",
     ]
+    filters = []
     if target_height is not None:
-        args.extend(["-vf", f"scale=-2:{target_height}:flags=lanczos"])
+        filters.append(f"scale=-2:{target_height}:flags=lanczos")
     if burn_subtitle is not None:
         if not burn_subtitle.is_file():
             raise FileNotFoundError(f"Persian subtitle file not found: {burn_subtitle}")
         subtitle_path = burn_subtitle.resolve().as_posix()
         subtitle_path = subtitle_path.replace("\\", "\\\\").replace(":", "\\:")
-        args.extend([
-            "-vf",
-            f"subtitles=filename='{subtitle_path}':force_style='{PERSIAN_SUBTITLE_STYLE}'",
-        ])
+        filters.append(f"subtitles=filename='{subtitle_path}':force_style='{PERSIAN_SUBTITLE_STYLE}'")
+    if filters:
+        args.extend(["-vf", ",".join(filters)])
     args.extend([
         "-c:v", "libx265", "-preset", preset, "-b:v", video_bitrate,
         "-maxrate", video_bitrate, "-bufsize", str(int(video_bitrate[:-1]) * 2) + "k",
@@ -148,9 +148,12 @@ def encode_h265(
                 raise RuntimeError(f"Encoded output lost {stream_type} stream(s).")
         source_video = source_info["video"]
         output_video = output_info["video"]
-        for dimension in ("width", "height"):
-            if source_video.get(dimension) and output_video.get(dimension) != source_video[dimension]:
-                raise RuntimeError(f"Encoded output changed video {dimension}.")
+        if target_height is None:
+            for dimension in ("width", "height"):
+                if source_video.get(dimension) and output_video.get(dimension) != source_video[dimension]:
+                    raise RuntimeError(f"Encoded output changed video {dimension}.")
+        elif int(output_video.get("height", 0)) != target_height:
+            raise RuntimeError(f"Encoded output height is not the requested {target_height}p.")
         temporary_path.replace(output_path)
         if output_path.stat().st_size >= input_path.stat().st_size:
             LOG.warning("H.265 output is not smaller than its input; source may already be highly compressed.")
