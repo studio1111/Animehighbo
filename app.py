@@ -763,6 +763,7 @@ def run() -> int:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
     published_count = 0
+    failure_count = 0
     pending = []
     for feed in config["feeds"]:
         feed_url = str(feed.get("url", "")).strip()
@@ -919,6 +920,7 @@ def run() -> int:
                     published_count += 1
                     LOG.info("Published %s %s as %s", group["title"], quality, publish_path.name)
                 except Exception as exc:
+                    failure_count += 1
                     LOG.exception("Failed to process %s: %s", entry["title"], exc)
                 finally:
                     cleanup = set(generated_paths)
@@ -930,8 +932,16 @@ def run() -> int:
                         if path.exists():
                             path.unlink(missing_ok=True)
         except Exception as exc:
+            failure_count += 1
             LOG.exception("Could not publish poster for %s; its video files remain unprocessed: %s",
                           group["title"], exc)
+    if failure_count:
+        LOG.error(
+            "Run completed with %d failed media item(s); published %d item(s). "
+            "Returning a non-zero exit code so GitHub Actions exposes the failure.",
+            failure_count, published_count,
+        )
+        return 1
     LOG.info("Run complete. Published %d item(s).", published_count)
     return 0
 
