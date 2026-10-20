@@ -42,9 +42,13 @@ class TorrentSourceConfigTests(unittest.TestCase):
             response = Mock()
             response.json.return_value = {"ok": True, "result": {"message_id": 77}}
             with patch("app.requests.post", return_value=response) as post:
-                message_id = telegram_upload_and_send("test-token", "@test-channel", media, "caption")
+                message_id = telegram_upload_and_send(
+                    "test-token", "@test-channel", media, "caption",
+                    reply_to_message_id=42,
+                )
         self.assertEqual(message_id, "77")
         self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
+        self.assertEqual(post.call_args.kwargs["data"]["reply_to_message_id"], "42")
 
     def test_accepts_both_uri_and_url_source_keys(self):
         magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
@@ -358,6 +362,9 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             "episodes": 12,
             "genres": ["Action", "Fantasy"],
             "format": "TV",
+            "status": "RELEASING",
+            "averageScore": 87,
+            "studios": {"nodes": [{"name": "Moonlight Studio"}]},
             "isAdult": False,
             "description": "A young traveler discovers a hidden world beneath the city.",
         }
@@ -369,6 +376,13 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         self.assertIn("Moonlit Saga", caption)
         self.assertIn("حماسه مهتاب", caption)
         self.assertIn("قسمت 07", caption)
+        self.assertIn("ژانر: Action، Fantasy", caption)
+        self.assertIn("سال پخش: 2026", caption)
+        self.assertIn("وضعیت پخش: در حال پخش", caption)
+        self.assertIn("امتیاز: 8.7/10", caption)
+        self.assertIn("استودیو: Moonlight Studio", caption)
+        self.assertIn("<tg-spoiler>📝 ", caption)
+        self.assertIn("</tg-spoiler>", caption)
         self.assertIn("@Animehighbo", caption)
         self.assertEqual(caption.splitlines()[-1], "@Animehighbo")
         self.assertLess(caption.index("📝 "), caption.rindex("@Animehighbo"))
