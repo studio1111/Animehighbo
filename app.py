@@ -772,7 +772,7 @@ def run() -> int:
     groups = {}
     for entry in pending:
         group_id, anime_title, episode = _episode_group(entry["title"])
-        identity = hashlib.sha256(entry["url"].encode("utf-8")).hexdigest()
+        identity = entry.get("identity") or hashlib.sha256(entry["url"].encode("utf-8")).hexdigest()
         if identity in state["published"]:
             continue
         group = groups.setdefault(group_id, {
