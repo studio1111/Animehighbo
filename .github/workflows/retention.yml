@@ -39,9 +39,11 @@ jobs:
                 per_page: 100
               }
             );
-            runs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            const obsolete = runs.slice(30);
-            core.info(`Found ${runs.length} runs; keeping ${Math.min(30, runs.length)} and deleting ${obsolete.length}.`);
+            const completed = runs
+              .filter(run => run.status === "completed")
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            const obsolete = completed.slice(30);
+            core.info(`Found ${runs.length} total runs and ${completed.length} completed runs; keeping ${Math.min(30, completed.length)} completed runs and deleting ${obsolete.length}. Active runs are never deleted.`);
             for (const run of obsolete) {
               await github.rest.actions.deleteWorkflowRun({
                 owner: context.repo.owner,
