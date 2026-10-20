@@ -49,8 +49,45 @@ class WorkflowContractTests(unittest.TestCase):
     def test_retention_runs_daily_and_keeps_only_latest_thirty_runs(self):
         workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
         self.assertIn("cron: '43 4 * * *'", workflow)
-        self.assertIn("runs.slice(30)", workflow)
+        self.assertIn("completed.slice(30)", workflow)
+        self.assertIn('filter(run => run.status === "completed")', workflow)
+        self.assertIn("Active runs are never deleted.", workflow)
         self.assertIn("actions: write", workflow)
+        self.assertIn("workflow_run:", workflow)
+        self.assertIn("types: [completed]", workflow)
+        workflow_run_block = workflow.split("workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
+        self.assertIn("workflows:", workflow_run_block)
+        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config"):
+            self.assertIn(f"- {name}", workflow_run_block)
+        self.assertIn("group: animehighbo-run-retention", workflow)
+        self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
+
+
+    def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
+        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        for name in (
+            "GEMINI_API_KEY",
+            "GEMINI_API_KEY_1",
+            "GEMINI_API_KEY_2",
+            "GEMINI_API_KEY_3",
+            "GEMINI_API_KEY_4",
+        ):
+            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
+        self.assertIn(
+            'if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && '
+            '[ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && '
+            '[ -z "$GEMINI_API_KEY_4" ]',
+            workflow,
+        )
+
+
+    def test_one_time_delivery_is_manual_only_and_receives_gemini_fallback_keys(self):
+        workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
+        trigger_block = workflow.split("permissions:", 1)[0]
+        self.assertIn("workflow_dispatch:", trigger_block)
+        self.assertNotIn("push:", trigger_block)
+        for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
 
 
 if __name__ == "__main__":
