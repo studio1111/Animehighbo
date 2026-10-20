@@ -53,5 +53,23 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions: write", workflow)
 
 
+    def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
+        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        for name in (
+            "GEMINI_API_KEY",
+            "GEMINI_API_KEY_1",
+            "GEMINI_API_KEY_2",
+            "GEMINI_API_KEY_3",
+            "GEMINI_API_KEY_4",
+        ):
+            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
+        self.assertIn(
+            'if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && '
+            '[ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && '
+            '[ -z "$GEMINI_API_KEY_4" ]',
+            workflow,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
