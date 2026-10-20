@@ -1,7 +1,13 @@
+import os
 import unittest
+from unittest.mock import patch, Mock
+
+import requests
 
 from tools.bilingual_subtitles import (
     Cue,
+    GeminiSubtitleTranslator,
+    get_english_to_persian_translator,
     choose_english_stream,
     parse_srt,
     render_srt,
@@ -71,6 +77,49 @@ Hello there.
         self.assertEqual(translated[0].timing, cues[0].timing)
         self.assertIn("<i>", translated[0].text)
         self.assertIn("سلام", translated[0].text)
+
+
+class GeminiKeyRotationTests(unittest.TestCase):
+    def test_translation_rotates_to_next_key_after_quota_response(self):
+        limited = Mock(status_code=429)
+        limited.raise_for_status.side_effect = requests.HTTPError("quota")
+        success = Mock(status_code=200)
+        success.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator(["primary", "backup"])
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, \\
+             patch("tools.bilingual_subtitles.time.sleep"):
+            result = translator.translate_batch([cue])
+
+        self.assertEqual(result[0].text, "سلام")
+        self.assertEqual(post.call_count, 2)
+        self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
+        self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "backup")
+
+    def test_environment_loader_collects_all_configured_gemini_keys(self):
+        env = {
+            "GEMINI_API_KEY": "primary",
+            "GEMINI_API_KEY_2": "backup-two",
+            "GEMINI_API_KEY_3": "backup-three",
+            "GEMINI_API_KEY_4": "backup-four",
+        }
+        with patch.dict(os.environ, env, clear=True):
+            translator = get_english_to_persian_translator()
+
+        self.assertIsInstance(translator, GeminiSubtitleTranslator)
+        self.assertEqual(
+            translator.api_keys,
+            ["primary", "backup-two", "backup-three", "backup-four"],
+        )
+
+    def test_duplicate_keys_are_removed_without_reordering(self):
+        translator = GeminiSubtitleTranslator(["same", "same", "next", ""])
+        self.assertEqual(translator.api_keys, ["same", "next"])
 
 
 if __name__ == "__main__":
