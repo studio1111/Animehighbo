@@ -58,6 +58,31 @@ class TorrentSourceConfigTests(unittest.TestCase):
         source["authorized_for_redistribution"] = False
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
+    def test_rss_feed_failure_returns_nonzero_for_actions(self):
+        config = {
+            "mode": "files",
+            "feeds": [{"name": "Authorized sample", "url": "https://media.example.org/feed.xml"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+            "allowed_download_hosts": ["cdn.example.org"],
+            "torrent_sources": [],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        env = {
+            "ANIMEHIGHBO_DRY_RUN": "false",
+            "TELEGRAM_BOT_TOKEN": "test-token",
+            "TELEGRAM_CHAT_ID": "@test-channel",
+        }
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.requests.Session") as session_factory, \
+             patch.dict(os.environ, env, clear=False):
+            session_factory.return_value.get.side_effect = RuntimeError("simulated feed failure")
+            self.assertEqual(run_app(), 1)
+
     def test_empty_file_pipeline_does_not_require_telegram_secrets(self):
         config = {
             "mode": "files",
