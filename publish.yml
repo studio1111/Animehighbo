@@ -1,0 +1,195 @@
+name: Animehighbo publisher
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app.py'
+      - 'config.json'
+      - 'tools/torrent_downloader.py'
+      - 'tools/video_encoder.py'
+  schedule:
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: animehighbo-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Detect configured media sources
+        run: |
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json
+          from app import has_file_media_source
+          with open("config.json", encoding="utf-8") as stream:
+              config = json.load(stream)
+          file_pipeline = config.get("mode") != "links" and has_file_media_source(config)
+          needs_media_tools = file_pipeline and any(
+              config.get(name, False)
+              for name in ("bilingual_subtitles", "encode_h265", "burn_persian_subtitles")
+          )
+          needs_subtitle_fallback = (
+              file_pipeline and bool(config.get("bilingual_subtitles", False))
+          )
+          print(f"ANIMEHIGHBO_FILE_PIPELINE={str(file_pipeline).lower()}")
+          print(f"ANIMEHIGHBO_NEEDS_MEDIA_TOOLS={str(needs_media_tools).lower()}")
+          print(f"ANIMEHIGHBO_NEEDS_SUBTITLE_FALLBACK={str(needs_subtitle_fallback).lower()}")
+          PY
+      - name: Install aria2 for explicitly authorized torrent sources
+        run: |
+          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); enabled=bool(c.get("torrent_feed_hosts")) or any(isinstance(x,dict) and x.get("authorized_for_redistribution") is True for x in c.get("torrent_sources", [])); sys.exit(0 if enabled else 1)'; then
+            sudo apt-get update
+            sudo apt-get install -y aria2
+          fi
+      - name: Install optional media processing tools
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+        run: |
+          if [ "$ANIMEHIGHBO_NEEDS_MEDIA_TOOLS" = "true" ]; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg fonts-noto-core
+          fi
+          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && [ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && [ -z "$GEMINI_API_KEY_4" ] && [ "$ANIMEHIGHBO_NEEDS_SUBTITLE_FALLBACK" = "true" ]; then
+            pip install -r requirements-subtitles.txt
+          fi
+      - name: Configure Telegram API endpoint
+        env:
+          TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
+          TELEGRAM_LOCAL_API_VAR: ${{ vars.TELEGRAM_LOCAL_API }}
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
+        run: |
+          if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_SECRET"
+            local_api_source="repository secret"
+          elif [ -n "$TELEGRAM_LOCAL_API_VAR" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_VAR"
+            local_api_source="repository variable"
+          else
+            TELEGRAM_LOCAL_API="false"
+            local_api_source="default"
+          fi
+          echo "Local Bot API setting source: $local_api_source"
+          needs_file_api=false
+          if [ "$ANIMEHIGHBO_FILE_PIPELINE" = "true" ]; then
+            needs_file_api=true
+          fi
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ] && [ "$needs_file_api" = "true" ]; then
+            if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+              echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID and TELEGRAM_API_HASH secrets plus TELEGRAM_BOT_TOKEN."
+              exit 1
+            fi
+            docker run --pull always --detach --name animehighbo-local-bot-api \
+              --publish 127.0.0.1:8081:8081 \
+              --env TELEGRAM_API_ID="$TELEGRAM_API_ID" \
+              --env TELEGRAM_API_HASH="$TELEGRAM_API_HASH" \
+              --env TELEGRAM_LOCAL=1 \
+              aiogram/telegram-bot-api:latest
+            ready=false
+            for attempt in $(seq 1 60); do
+              if curl --silent --show-error --fail \
+                "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+                ready=true
+                break
+              fi
+              sleep 2
+            done
+            if [ "$ready" != "true" ]; then
+              docker logs animehighbo-local-bot-api || true
+              echo "Local Telegram Bot API did not become ready."
+              exit 1
+            fi
+            echo "TELEGRAM_API_BASE_URL=http://127.0.0.1:8081" >> "$GITHUB_ENV"
+          elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
+            echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
+          fi
+      - name: Run publisher
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
+        run: |
+          if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"
+            dry_run_source="repository secret"
+          elif [ -n "$ANIMEHIGHBO_DRY_RUN_VAR" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
+            dry_run_source="repository variable"
+          else
+            # No Actions setting is present: honor the explicit config.json setting.
+            export ANIMEHIGHBO_DRY_RUN="$(python -c 'import json; print(str(json.load(open("config.json", encoding="utf-8")).get("dry_run", True)).lower())')"
+            dry_run_source="config.json"
+          fi
+          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
+            size_source="repository secret"
+          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
+            size_source="repository variable"
+          else
+            unset ANIMEHIGHBO_MAX_FILE_SIZE_MB
+            size_source="config.json default"
+          fi
+          case "${ANIMEHIGHBO_DRY_RUN,,}" in
+            false|0|no|off) dry_run_state="disabled" ;;
+            *) dry_run_state="enabled" ;;
+          esac
+          echo "Publisher dry-run state: $dry_run_state"
+          echo "Publisher dry-run setting source: $dry_run_source"
+          echo "Publisher maximum file-size source: $size_source"
+          python app.py
+      - name: Persist duplicate-prevention state
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/state.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/state.json
+            git commit -m "chore: update Animehighbo publication state [skip ci]"
+            git fetch origin main
+            git rebase origin/main
+            for attempt in 1 2 3; do
+              if git push origin HEAD:main; then
+                echo "Publication state persisted to main."
+                exit 0
+              fi
+              echo "Push attempt $attempt was rejected; refreshing main before retry."
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "State persistence has a merge conflict; refusing to overwrite newer state."
+                exit 1
+              fi
+              sleep 2
+            done
+            echo "Could not persist publication state after three attempts."
+            exit 1
+          fi
