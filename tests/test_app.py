@@ -161,7 +161,9 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         self.assertIn("Moonlit Saga", caption)
         self.assertIn("حماسه مهتاب", caption)
         self.assertIn("قسمت 07", caption)
-        self.assertIn("@Animehighbot", caption)
+        self.assertIn("@Animehighbo", caption)
+        self.assertEqual(caption.splitlines()[-1], "@Animehighbo")
+        self.assertLess(caption.index("📝 "), caption.rindex("@Animehighbo"))
         self.assertNotIn("1080p", caption)
         self.assertNotIn("تعداد کامل قسمت‌ها", caption)
         self.assertLessEqual(len(caption), 1024)
@@ -172,7 +174,7 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"):
             caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
         self.assertIn("خلاصهٔ این انیمه فعلاً در دسترس نیست.", caption)
-        self.assertIn("@Animehighbot", caption)
+        self.assertIn("@Animehighbo", caption)
 
     def test_sequel_season_is_not_mislabeled_as_first_season(self):
         from unittest.mock import patch
@@ -185,12 +187,12 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         with patch("app.translate_title_to_persian", return_value="حمله به تایتان"):
             caption = build_episode_caption("Attack on Titan Episode 01 720p", "01", metadata=metadata)
         self.assertIn("حمله به تایتان", caption)
-        self.assertIn("@Animehighbot", caption)
+        self.assertIn("@Animehighbo", caption)
 
     def test_processed_filename_has_only_anime_quality_and_channel(self):
         self.assertEqual(
             processed_filename("[SubsPlease] PSYREN - 03 (1080p) [ABC123].mkv", "1080p"),
-            "PSYREN 1080p @Animehighbot.mkv",
+            "PSYREN 1080p @Animehighbo.mkv",
         )
 
     def test_episode_group_matches_different_quality_releases(self):
