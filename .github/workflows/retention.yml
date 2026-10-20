@@ -9,8 +9,12 @@ on:
       - '.github/workflows/retention.yml'
   schedule:
     - cron: '43 4 * * *'
-  # Omit the workflows filter so every workflow completion triggers cleanup.
   workflow_run:
+    workflows:
+      - CI
+      - Animehighbo publisher
+      - One-time licensed Morevna Telegram test
+      - Sync RSS input to config
     types: [completed]
 
 permissions:
