@@ -21,6 +21,10 @@ permissions:
   actions: write
   contents: read
 
+concurrency:
+  group: animehighbo-run-retention
+  cancel-in-progress: false
+
 jobs:
   cleanup:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.name != 'Retain latest 30 workflow runs'
