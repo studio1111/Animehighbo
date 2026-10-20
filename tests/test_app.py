@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _quality_rank, _preferred_source)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source)
 from tools.subsplease_monitor import parse_releases
 
 
@@ -40,6 +40,12 @@ class PreferredSourceTests(unittest.TestCase):
             {"title": "Sample - 01"},
         ]
         self.assertIsNone(_preferred_source(entries))
+
+
+class ArchivePosterIdentityTests(unittest.TestCase):
+    def test_archive_mode_uses_fresh_poster_identity_after_channel_cleanup(self):
+        self.assertNotEqual(_poster_identity("series:01", False), _poster_identity("series:01", True))
+        self.assertEqual(_poster_identity("series:01", True), "archive:series:01")
 
 
 class ArchiveManifestTests(unittest.TestCase):
