@@ -392,7 +392,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
     lines.append(f"📝 {_safe_caption_text(synopsis)}")
-    lines.append("@Animehighbot")
+    lines.append("@Animehighbo")
     caption = "\n".join(lines)
     if len(caption) > 1024:
         synopsis = synopsis[:max(40, 1024 - len(caption) - 3)].rstrip() + "…"
@@ -421,7 +421,7 @@ def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str
     clean = re.sub(r"\s+", " ", clean).strip(" ._-") or "Anime"
     quality = quality if quality in {"480p", "720p", "1080p", "1440p", "2160p"} else "quality-unknown"
     extension = extension if extension.startswith(".") else f".{extension}"
-    return f"{clean} {quality} @Animehighbot{extension}"
+    return f"{clean} {quality} @Animehighbo{extension}"
 
 
 def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
@@ -840,7 +840,7 @@ def run() -> int:
                         state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
                         save_state(config["state_file"], state)
                         continue
-                    file_caption = f"{group['title']} {_quality_from_title(entry['title'])} @Animehighbot"
+                    file_caption = f"{group['title']} {_quality_from_title(entry['title'])} @Animehighbo"
                     message_id = telegram_upload_and_send(token, chat_id, publish_path, file_caption)
                     state["seen"][file_hash] = identity
                     state["published"][identity] = {
