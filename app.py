@@ -265,7 +265,7 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
       Media(search: $search, type: ANIME) {
         title { english romaji native }
         coverImage { extraLarge large medium }
-        season seasonYear episodes genres format isAdult description(asHtml: false)
+        season seasonYear episodes genres format status averageScore source studios { nodes { name } } isAdult description(asHtml: false)
       }
     }
     """
@@ -385,25 +385,61 @@ def translate_anime_synopsis(description: str) -> str:
 
 
 def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build a compact poster caption with a conversational Persian synopsis."""
+    """Build a detailed poster caption; keep the synopsis collapsed behind Telegram's spoiler UI."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
-    english_title = str(titles.get("english") or episode_details(title)[0]).strip()
+    english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
     persian_title = translate_title_to_persian(english_title)
     episode_number = episode or episode_details(title)[1]
     synopsis = translate_anime_synopsis(str(media.get("description") or ""))
+    details = []
+    season = _season_label(title, media)
+    if season != "نامشخص":
+        details.append(season)
+    year = media.get("seasonYear")
+    if year:
+        details.append(f"سال پخش: {year}")
+    if media.get("episodes"):
+        details.append(f"تعداد قسمت‌ها: {media['episodes']}")
+    genres = media.get("genres") or []
+    if genres:
+        details.append("ژانر: " + "، ".join(str(item) for item in genres[:6]))
+    anime_format = str(media.get("format") or "").strip()
+    if anime_format:
+        format_fa = {"TV": "سریالی", "MOVIE": "فیلم سینمایی", "OVA": "OVA", "ONA": "ONA", "SPECIAL": "قسمت ویژه"}.get(anime_format, anime_format)
+        details.append(f"قالب: {format_fa}")
+    status = str(media.get("status") or "").strip()
+    if status:
+        status_fa = {"FINISHED": "پایان‌یافته", "RELEASING": "در حال پخش", "NOT_YET_RELEASED": "هنوز پخش نشده", "CANCELLED": "لغوشده", "HIATUS": "متوقف‌شده"}.get(status, status)
+        details.append(f"وضعیت پخش: {status_fa}")
+    score = media.get("averageScore")
+    if score:
+        details.append(f"امتیاز: {float(score) / 10:.1f}/10")
+    studios = ((media.get("studios") or {}).get("nodes") or [])
+    if studios:
+        names = [str(item.get("name", "")) for item in studios[:3] if item.get("name")]
+        if names:
+            details.append("استودیو: " + "، ".join(names))
+    if media.get("isAdult") is True:
+        details.append("رده‌بندی: بزرگسال")
     lines = [f"🎬 <b>{_safe_caption_text(english_title)}</b> | <b>{_safe_caption_text(persian_title)}</b>"]
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
-    lines.append(f"📝 {_safe_caption_text(synopsis)}")
+    lines.extend(f"ℹ️ {_safe_caption_text(item)}" for item in details)
+    lines.append(f"<tg-spoiler>📝 {_safe_caption_text(synopsis)}</tg-spoiler>")
     lines.append("@Animehighbo")
     caption = "\n".join(lines)
     if len(caption) > 1024:
-        synopsis = synopsis[:max(40, 1024 - len(caption) - 3)].rstrip() + "…"
-        lines[-2] = f"📝 {_safe_caption_text(synopsis)}"
+        overflow = len(caption) - 1024
+        synopsis = synopsis[:max(0, len(synopsis) - overflow - 1)].rstrip()
+        lines[-2] = f"<tg-spoiler>📝 {_safe_caption_text(synopsis)}…</tg-spoiler>"
         caption = "\n".join(lines)
+    if len(caption) > 1024:
+        lines = lines[:2] + [line for line in lines[2:-2] if len(line) < 120][:5] + lines[-2:]
+        caption = "\n".join(lines)
+    if len(caption) > 1024:
+        caption = caption[:1000] + "…\n@Animehighbo"
     return caption
-
 
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
@@ -737,8 +773,9 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str) -> str:
-    """Upload a locally verified, authorized media file to a Telegram chat/channel."""
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
+                            reply_to_message_id: str | int | None = None) -> str:
+    """Upload a verified media file as a reply under its anime poster."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
     if not chat_id:
@@ -747,6 +784,8 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
     endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024]}
+    if reply_to_message_id:
+        payload["reply_to_message_id"] = str(reply_to_message_id)
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
@@ -911,11 +950,12 @@ def run() -> int:
         )
         selected_source = _preferred_source(entries)
         if selected_source is None:
-            LOG.warning("No 1080p or 720p release available for %s; refusing lower-quality source.", group["title"])
-            continue
+            LOG.warning("No 1080p or 720p release available for %s; stopping to preserve channel order.", group["title"])
+            break
         # Download one source only. Lower-resolution releases are never downloaded.
         entries = [selected_source]
         LOG.info("Selected single %s source for %s.", _quality_from_title(selected_source["title"]), group["title"])
+        group_failed = False
         try:
             poster_identity = group_id
             if poster_identity not in state["posters"]:
@@ -935,6 +975,10 @@ def run() -> int:
                     "message_id": poster_message_id, "published_at": int(time.time()),
                 }
                 save_state(config["state_file"], state)
+
+            poster_message_id = state["posters"][poster_identity].get("message_id")
+            if not poster_message_id:
+                raise RuntimeError("Poster state has no Telegram message ID; refusing to send ungrouped files.")
 
             for entry in entries:
                 identity = entry["identity"]
@@ -1013,7 +1057,10 @@ def run() -> int:
                             completed_qualities.append(quality)
                             continue
                         file_caption = f"{group['title']} {quality} @Animehighbo"
-                        message_id = telegram_upload_and_send(token, chat_id, output_path, file_caption)
+                        message_id = telegram_upload_and_send(
+                            token, chat_id, output_path, file_caption,
+                            reply_to_message_id=poster_message_id,
+                        )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
                             "title": group["title"], "quality": quality, "source_quality": source_quality,
@@ -1033,7 +1080,8 @@ def run() -> int:
                         save_state(config["state_file"], state)
                 except Exception as exc:
                     failure_count += 1
-                    LOG.exception("Failed to process %s: %s", entry["title"], exc)
+                    group_failed = True
+                    LOG.exception("Failed to process %s; stopping before the next anime to preserve order: %s", entry["title"], exc)
                 finally:
                     cleanup = set(generated_paths)
                     if media_path:
@@ -1043,10 +1091,13 @@ def run() -> int:
                     for path in cleanup:
                         if path.exists():
                             path.unlink(missing_ok=True)
+                if group_failed:
+                    break
         except Exception as exc:
             failure_count += 1
-            LOG.exception("Could not publish poster for %s; its video files remain unprocessed: %s",
+            LOG.exception("Could not complete anime group %s; stopping before the next anime: %s",
                           group["title"], exc)
+            break
     if failure_count:
         LOG.error(
             "Run completed with %d failed media item(s); published %d item(s). "
