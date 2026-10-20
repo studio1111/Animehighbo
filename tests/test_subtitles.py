@@ -92,8 +92,7 @@ class GeminiKeyRotationTests(unittest.TestCase):
         translator = GeminiSubtitleTranslator(["primary", "backup"])
         cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
 
-        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, \\
-             patch("tools.bilingual_subtitles.time.sleep"):
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep"):
             result = translator.translate_batch([cue])
 
         self.assertEqual(result[0].text, "سلام")
