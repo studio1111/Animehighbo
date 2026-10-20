@@ -810,6 +810,48 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     message = result.get("result", {})
     return str(message.get("message_id", ""))
 
+def load_archive_manifest(path: str) -> list[dict]:
+    """Load a strictly ordered backfill queue of episodes authorized for redistribution."""
+    manifest_path = Path(path)
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"Archive manifest not found: {manifest_path}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest, list):
+        raise ValueError("Archive manifest must be a JSON list.")
+    result = []
+    seen_sources = set()
+    for index, item in enumerate(manifest):
+        if not isinstance(item, dict):
+            raise ValueError(f"Archive entry {index + 1} must be an object.")
+        title = str(item.get("title", "")).strip()
+        uri = torrent_source_uri(item)
+        if not title or not uri:
+            raise ValueError(f"Archive entry {index + 1} requires title and url/uri.")
+        if item.get("authorized_for_redistribution") is not True:
+            raise PermissionError(
+                f"Archive entry {index + 1} must explicitly set authorized_for_redistribution=true."
+            )
+        if "[batch]" in title.casefold():
+            raise ValueError(f"Archive entry {index + 1} must contain a single episode, not a batch.")
+        _, episode = episode_details(title)
+        if not episode:
+            raise ValueError(f"Archive entry {index + 1} has no detectable episode number: {title}")
+        identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+        if identity in seen_sources:
+            raise ValueError(f"Duplicate archive source at entry {index + 1}: {title}")
+        seen_sources.add(identity)
+        result.append({
+            "title": title,
+            "url": uri,
+            "feed": "episode archive manifest",
+            "identity": identity,
+            "torrent_source": True,
+            "authorized_for_redistribution": True,
+            "archive_order": index,
+        })
+    return result
+
+
 def run() -> int:
     logging.basicConfig(
         level=logging.INFO,
@@ -853,7 +895,15 @@ def run() -> int:
     published_count = 0
     failure_count = 0
     pending = []
-    for feed in config["feeds"]:
+    archive_mode = bool(config.get("archive_mode", False))
+    if archive_mode:
+        try:
+            pending.extend(load_archive_manifest(str(config.get("archive_manifest", "data/archive_manifest.json"))))
+        except Exception as exc:
+            LOG.exception("Could not load archive manifest: %s", exc)
+            return 1
+        LOG.info("Archive mode enabled; loaded %d ordered episode entries.", len(pending))
+    for feed in ([] if archive_mode else config["feeds"]):
         feed_url = str(feed.get("url", "")).strip()
         feed_name = str(feed.get("name", "Authorized feed")).strip()
         parsed_feed_url = urlparse(feed_url)
@@ -909,8 +959,8 @@ def run() -> int:
             else:
                 LOG.info("Skipping non-direct, non-magnet, or non-allow-listed entry: %s", entry["title"])
 
-    # Torrent sources are opt-in and must explicitly attest redistribution permission.
-    for source in config.get("torrent_sources", []):
+    # Static one-off torrent sources are ignored in archive mode so they cannot jump the queue.
+    for source in ([] if archive_mode else config.get("torrent_sources", [])):
         if not isinstance(source, dict) or source.get("authorized_for_redistribution") is not True:
             LOG.warning("Skipping torrent source without explicit redistribution authorization.")
             continue
