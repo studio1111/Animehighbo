@@ -1,10 +1,19 @@
 import unittest
 from datetime import date
 
-from tools.archive_catalog import select_show_episodes
+from tools.archive_catalog import _show_page_url, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
+    def test_subsplease_show_slug_is_resolved_under_shows_path(self):
+        self.assertEqual(
+            _show_page_url({"page": "mairimashita-iruma-kun-s4"}),
+            "https://subsplease.org/shows/mairimashita-iruma-kun-s4",
+        )
+
+    def test_external_show_page_urls_are_rejected(self):
+        self.assertEqual(_show_page_url({"page": "https://evil.example/show"}), "")
+
     def test_new_series_since_cutoff_includes_episode_one_through_latest(self):
         rows = [
             {"title": "New Saga - 01", "episode": "1", "release_date": "2026-09-05T10:00:00Z",
