@@ -51,6 +51,10 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("cron: '43 4 * * *'", workflow)
         self.assertIn("runs.slice(30)", workflow)
         self.assertIn("actions: write", workflow)
+        self.assertIn("workflow_run:", workflow)
+        self.assertIn("types: [completed]", workflow)
+        self.assertIn("group: animehighbo-run-retention", workflow)
+        self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
 
 
     def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
