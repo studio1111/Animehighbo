@@ -69,12 +69,24 @@ jobs:
           fi
       - name: Configure Telegram API endpoint
         env:
-          TELEGRAM_LOCAL_API: ${{ secrets.TELEGRAM_LOCAL_API || vars.TELEGRAM_LOCAL_API }}
+          TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
+          TELEGRAM_LOCAL_API_VAR: ${{ vars.TELEGRAM_LOCAL_API }}
           TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
         run: |
+          if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_SECRET"
+            local_api_source="repository secret"
+          elif [ -n "$TELEGRAM_LOCAL_API_VAR" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_VAR"
+            local_api_source="repository variable"
+          else
+            TELEGRAM_LOCAL_API="false"
+            local_api_source="default"
+          fi
+          echo "Local Bot API setting source: $local_api_source"
           needs_file_api=false
           if [ "$ANIMEHIGHBO_FILE_PIPELINE" = "true" ]; then
             needs_file_api=true
@@ -112,11 +124,37 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ANIMEHIGHBO_DRY_RUN: ${{ secrets.ANIMEHIGHBO_DRY_RUN || vars.ANIMEHIGHBO_DRY_RUN || 'true' }}
-          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
-        run: python app.py
+        run: |
+          if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"
+            dry_run_source="repository secret"
+          elif [ -n "$ANIMEHIGHBO_DRY_RUN_VAR" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
+            dry_run_source="repository variable"
+          else
+            export ANIMEHIGHBO_DRY_RUN="true"
+            dry_run_source="safe default"
+          fi
+          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
+            size_source="repository secret"
+          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
+            size_source="repository variable"
+          else
+            unset ANIMEHIGHBO_MAX_FILE_SIZE_MB
+            size_source="config.json default"
+          fi
+          echo "Publisher dry-run setting source: $dry_run_source"
+          echo "Publisher dry-run effective value: $ANIMEHIGHBO_DRY_RUN"
+          echo "Publisher maximum file-size source: $size_source"
+          python app.py
       - name: Persist duplicate-prevention state
         if: always()
         run: |
