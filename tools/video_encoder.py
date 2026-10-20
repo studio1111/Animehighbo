@@ -122,6 +122,12 @@ def encode_h265(
         tolerance = max(2.0, source_info["duration"] * 0.03)
         if abs(source_info["duration"] - output_info["duration"]) > tolerance:
             raise RuntimeError("Encoded output duration differs too much from the source.")
+        # ffprobe validates the container and streams; a full decode catches truncated/corrupt frames.
+        run_command([
+            "ffmpeg", "-hide_banner", "-v", "error", "-xerror",
+            "-i", str(temporary_path), "-map", "0:v:0", "-map", "0:a?",
+            "-f", "null", "-",
+        ])
         for stream_type in ("audio", "subtitle"):
             source_count = sum(stream.get("codec_type") == stream_type for stream in source_info["streams"])
             output_count = sum(stream.get("codec_type") == stream_type for stream in output_info["streams"])

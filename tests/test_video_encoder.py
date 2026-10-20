@@ -31,6 +31,8 @@ class VideoEncoderTests(unittest.TestCase):
                 commands.append(args)
                 if args[0] == "ffprobe":
                     return probe_json("hevc" if args[-1].endswith(".part.mkv") else "h264", "59.5" if args[-1].endswith(".part.mkv") else "60.0")
+                if args[0] == "ffmpeg" and args[-1] == "-":
+                    return ""
                 if args[0] == "ffmpeg":
                     Path(args[-1]).write_bytes(b"encoded" * 400)
                     return ""
