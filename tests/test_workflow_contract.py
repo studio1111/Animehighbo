@@ -43,6 +43,9 @@ class WorkflowContractTests(unittest.TestCase):
         config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(config.get("torrent_sources", []), [])
 
+    def test_standalone_poster_only_monitor_is_removed(self):
+        self.assertFalse((ROOT / ".github/workflows/subsplease-monitor.yml").exists())
+
     def test_retention_runs_daily_and_keeps_only_latest_thirty_runs(self):
         workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
         self.assertIn("cron: '43 4 * * *'", workflow)
