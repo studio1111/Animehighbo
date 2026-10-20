@@ -20,5 +20,8 @@
   "h265_preset": "slow",
   "burn_persian_subtitles": true,
   "poll_limit_per_feed": 30,
-  "request_timeout_seconds": 30
+  "request_timeout_seconds": 30,
+  "allowed_torrent_hosts": [],
+  "torrent_sources": [],
+  "torrent_timeout_seconds": 18000
 }
