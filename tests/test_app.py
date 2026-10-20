@@ -4,8 +4,59 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import (allowed_media_url, build_episode_caption, episode_details, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, _episode_group, _quality_rank)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
+
+
+
+class TorrentSourceConfigTests(unittest.TestCase):
+    def test_accepts_both_uri_and_url_source_keys(self):
+        magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
+        self.assertEqual(torrent_source_uri({"uri": magnet}), magnet)
+        self.assertEqual(torrent_source_uri({"url": magnet}), magnet)
+
+    def test_rejects_conflicting_uri_and_url_values(self):
+        with self.assertRaisesRegex(ValueError, "conflicting"):
+            torrent_source_uri({
+                "uri": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            })
+
+    def test_only_explicit_true_authorizes_a_torrent_source(self):
+        source = {
+            "title": "Open Sample - 01 (1080p)",
+            "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+            "authorized_for_redistribution": True,
+        }
+        self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorized_for_redistribution"] = "true"
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorized_for_redistribution"] = False
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+
+    def test_torrent_only_configuration_reaches_processing_without_rss_feeds(self):
+        config = {
+            "mode": "files",
+            "feeds": [],
+            "dry_run": True,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+            "allowed_download_hosts": [],
+            "torrent_sources": [{
+                "title": "Open Sample - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                "authorized_for_redistribution": True,
+            }],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.anime_catalog_metadata", return_value={}) as metadata, \
+             patch.dict(os.environ, {"ANIMEHIGHBO_DRY_RUN": "true"}):
+            self.assertEqual(run_app(), 0)
+        metadata.assert_called_once()
 
 
 class FeedParserTests(unittest.TestCase):
