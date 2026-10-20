@@ -2,8 +2,12 @@ name: Retain latest 30 workflow runs
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retention.yml'
   schedule:
-    - cron: '43 4 * * 0'
+    - cron: '43 4 * * *'
 
 permissions:
   actions: write
