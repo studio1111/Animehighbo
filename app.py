@@ -403,7 +403,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
 
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
-    return {"2160p": 0, "1440p": 1, "1080p": 2, "720p": 3, "480p": 4}.get(quality, 5)
+    return {"1080p": 0, "720p": 1, "480p": 2}.get(quality, 3)
 
 
 def _episode_group(title: str) -> tuple[str, str, str]:
@@ -563,7 +563,7 @@ def allowed_media_url(url: str, allowed_hosts: list[str]) -> bool:
 def load_state(path: str) -> dict:
     state_path = Path(path)
     if not state_path.exists():
-        return {"published": {}, "seen": {}}
+        return {"published": {}, "seen": {}, "posters": {}}
     state = json.loads(state_path.read_text(encoding="utf-8"))
     if not isinstance(state, dict):
         raise ValueError("State file must contain a JSON object")
@@ -812,10 +812,6 @@ def run() -> int:
                     if config.get("encode_h265", False):
                         from tools.video_encoder import encode_h265
                         encoded_path = publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
-                        if encoded_path.exists():
-                            encoded_path = encoded_path.with_name(
-                                f"{encoded_path.stem} {identity[:8]}{encoded_path.suffix}"
-                            )
                         generated_paths.append(encoded_path)
                         persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
                         burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
@@ -831,8 +827,6 @@ def run() -> int:
                     else:
                         final_name = processed_filename(entry["title"], quality, publish_path.suffix.lower())
                         renamed_path = publish_path.with_name(final_name)
-                        if renamed_path.exists() and renamed_path != publish_path:
-                            renamed_path = renamed_path.with_name(f"{renamed_path.stem} {identity[:8]}{renamed_path.suffix}")
                         if renamed_path != publish_path:
                             publish_path.replace(renamed_path)
                             generated_paths.append(renamed_path)
