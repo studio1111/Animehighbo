@@ -58,6 +58,21 @@ class TorrentSourceConfigTests(unittest.TestCase):
         source["authorized_for_redistribution"] = False
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
+    def test_empty_file_pipeline_does_not_require_telegram_secrets(self):
+        config = {
+            "mode": "files",
+            "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "allowed_download_hosts": [],
+            "torrent_sources": [],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(run_app(), 0)
+
     def test_media_processing_failure_returns_nonzero_for_actions(self):
         config = {
             "mode": "files",
