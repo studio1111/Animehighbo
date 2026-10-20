@@ -110,6 +110,7 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
         result.append({
             "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
             "episode": item["episode"],
+            "quality": item["quality"],
             "uri": item["uri"],
             "authorized_for_redistribution": True,
             "_episode": item["episode"],
