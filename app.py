@@ -329,80 +329,123 @@ def _safe_caption_text(value: str) -> str:
     return html.escape(value, quote=False)
 
 
+def translate_anime_synopsis(description: str) -> str:
+    """Translate and localize an anime synopsis into fluent, conversational Persian."""
+    source = html.unescape(re.sub(r"<[^>]+>", " ", str(description or "")))
+    source = re.sub(r"\s+", " ", source).strip()
+    if not source:
+        return "خلاصهٔ این انیمه فعلاً در دسترس نیست."
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if api_key:
+        model = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
+        endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        prompt = (
+            "این متن معرفی یک انیمه است. آن را به یک خلاصهٔ فارسی روان، طبیعی و محاوره‌ای "
+            "برای مخاطب ایرانی بازنویسی کن. معنی و نکات اصلی را حفظ کن، چیزی از خودت اضافه نکن، "
+            "اسپویل مهم نده و فقط متن خلاصه را برگردان. حدود ۲ تا ۴ جمله و حداکثر ۵۰۰ نویسه باشد.\n\n"
+            + source[:5000]
+        )
+        try:
+            response = requests.post(
+                endpoint, params={"key": api_key},
+                json={"contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                      "generationConfig": {"temperature": 0.3, "maxOutputTokens": 220}},
+                timeout=(15, 45),
+            )
+            response.raise_for_status()
+            data = response.json()
+            result = "".join(
+                part.get("text", "") for part in data["candidates"][0]["content"]["parts"]
+            ).strip()
+            if result:
+                return re.sub(r"\s+", " ", result)[:500]
+        except (requests.RequestException, KeyError, IndexError, TypeError, ValueError) as exc:
+            LOG.warning("Gemini synopsis localization failed: %s", exc)
+    try:
+        response = requests.get(
+            "https://translate.googleapis.com/translate_a/single",
+            params={"client": "gtx", "sl": "en", "tl": "fa", "dt": "t", "q": source[:4000]},
+            timeout=15, headers={"User-Agent": USER_AGENT},
+        )
+        response.raise_for_status()
+        data = response.json()
+        translated = "".join(
+            part[0] for part in (data[0] if data and data[0] else [])
+            if part and isinstance(part[0], str)
+        ).strip()
+        if translated:
+            return re.sub(r"\s+", " ", translated)[:500]
+    except Exception as exc:
+        LOG.warning("Fallback synopsis translation failed: %s", exc)
+    return "خلاصهٔ این انیمه فعلاً در دسترس نیست."
+
+
 def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build the requested Persian-only metadata caption with a collapsible synopsis."""
+    """Build a compact poster caption with a conversational Persian synopsis."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or episode_details(title)[0]).strip()
     persian_title = translate_title_to_persian(english_title)
-    episode_number = episode or episode_details(title)[1] or "نامشخص"
-
-    # Use the exact release quality found in the feed title. Do not infer it from poster art.
-    quality = _quality_from_title(title)
-    season = _season_label(title, media)
-    episodes_total = media.get("episodes")
-    episodes_text = str(episodes_total) if isinstance(episodes_total, int) and episodes_total > 0 else "نامشخص"
-
-    year = media.get("seasonYear")
-    broadcast_season = _season_fa(media.get("season"))
-    year_season = f"{year} فصل {broadcast_season}" if isinstance(year, int) and broadcast_season != "نامشخص" else "نامشخص"
-
-    genre_fa = {
-        "Action": "اکشن", "Adventure": "ماجراجویی", "Comedy": "کمدی",
-        "Drama": "درام", "Fantasy": "فانتزی", "Romance": "عاشقانه",
-        "Sci-Fi": "علمی‌تخیلی", "Science Fiction": "علمی‌تخیلی",
-        "Slice of Life": "روزمرگی", "Supernatural": "فراطبیعی",
-        "Mystery": "معمایی", "Horror": "ترسناک", "Thriller": "هیجان‌انگیز",
-        "Sports": "ورزشی", "Music": "موسیقی", "Psychological": "روان‌شناختی",
-        "Mecha": "مکا", "Mahou Shoujo": "دختر جادویی", "Hentai": "محتوای بزرگسالانه",
-        "Ecchi": "اکچی", "Historical": "تاریخی", "School": "مدرسه‌ای",
-        "Super Power": "قدرت‌های ویژه", "Award Winning": "برگزیدهٔ جوایز",
-        "Gourmet": "آشپزی", "Workplace": "محیط کار", "Girls Love": "عاشقانهٔ دخترانه",
-        "Boys Love": "عاشقانهٔ پسرانه", "Avant Garde": "آوانگارد",
-    }
-    genres = media.get("genres")
-    genres_text = "، ".join(genre_fa.get(str(item), str(item)) for item in genres[:6]) if isinstance(genres, list) and genres else "نامشخص"
-    if media.get("isAdult") is True:
-        age_rating = "۱۸+"
-    else:
-        age_rating = "رده‌بندی رسمی اعلام نشده"
-
-    synopsis = re.sub(r"\s+", " ", str(media.get("description") or "")).strip()
-    # Telegram photo captions are limited; keep the requested collapsible synopsis short enough.
-    synopsis = re.sub(r"<[^>]+>", "", synopsis)
-    synopsis = html.unescape(synopsis)
-    if not synopsis:
-        synopsis = "خلاصهٔ معتبر در دسترس نیست."
-    if len(synopsis) > 155:
-        synopsis = synopsis[:152].rsplit(" ", 1)[0].rstrip(" ،؛:") + "…"
-
-    lines = [
-        f"🎬 <b>{_safe_caption_text(english_title)}</b> | <b>{_safe_caption_text(persian_title)}</b>",
-        f"📺 قسمت: {_safe_caption_text(str(episode_number))}",
-        f"🎞 کیفیت: {_safe_caption_text(quality)}",
-        f"📚 فصل انیمه: {_safe_caption_text(season)}",
-        f"🔢 تعداد کامل قسمت‌ها: {_safe_caption_text(episodes_text)}",
-        f"📅 سال و فصل پخش: {_safe_caption_text(year_season)}",
-        f"🏷 ژانر: {_safe_caption_text(genres_text)}",
-        f"🔞 ردهٔ سنی: {_safe_caption_text(age_rating)}",
-        f"<blockquote expandable>📝 خلاصه: {_safe_caption_text(synopsis)}</blockquote>",
-        "<b>Animehighbo</b>",
-    ]
+    episode_number = episode or episode_details(title)[1]
+    synopsis = translate_anime_synopsis(str(media.get("description") or ""))
+    lines = [f"🎬 <b>{_safe_caption_text(english_title)}</b> | <b>{_safe_caption_text(persian_title)}</b>"]
+    if episode_number:
+        lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
+    lines.append(f"📝 {_safe_caption_text(synopsis)}")
+    lines.append("@Animehighbot")
     caption = "\n".join(lines)
-    # Telegram's sendPhoto caption limit is 1024 characters. Shrink synopsis only if needed.
-    if len(caption) > 1000:
-        excess = len(caption) - 1000
-        synopsis = synopsis[:max(24, len(synopsis) - excess - 3)].rstrip() + "…"
-        lines[-2] = f"<blockquote expandable>📝 خلاصه: {_safe_caption_text(synopsis)}</blockquote>"
-        caption = "\n".join(lines)
     if len(caption) > 1024:
-        # Very long titles/genre names should not prevent delivery.
-        lines[6] = "🏷 ژانر: نامشخص"
+        synopsis = synopsis[:max(40, 1024 - len(caption) - 3)].rstrip() + "…"
+        lines[-2] = f"📝 {_safe_caption_text(synopsis)}"
         caption = "\n".join(lines)
-    if len(caption) > 1024:
-        raise ValueError("Persian anime caption exceeds Telegram's 1024-character caption limit.")
     return caption
 
+
+def _quality_rank(title: str) -> int:
+    quality = _quality_from_title(title)
+    return {"1080p": 0, "720p": 1, "480p": 2}.get(quality, 3)
+
+
+def _episode_group(title: str) -> tuple[str, str, str]:
+    anime_title, episode = episode_details(title)
+    normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
+    group_id = hashlib.sha256(f"{normalized}|{episode}".encode("utf-8")).hexdigest()
+    return group_id, anime_title, episode
+
+
+def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str:
+    """Return the requested minimal filename: anime title, resolution, channel handle."""
+    anime_title, _ = episode_details(title)
+    clean = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", anime_title)
+    clean = re.sub(r"[^\w .'-]+", " ", clean, flags=re.UNICODE)
+    clean = re.sub(r"\s+", " ", clean).strip(" ._-") or "Anime"
+    quality = quality if quality in {"480p", "720p", "1080p", "1440p", "2160p"} else "quality-unknown"
+    extension = extension if extension.startswith(".") else f".{extension}"
+    return f"{clean} {quality} @Animehighbot{extension}"
+
+
+def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
+                               metadata: dict) -> str:
+    """Send the anime poster and Persian synopsis before any quality files."""
+    cover = metadata.get("coverImage") or {}
+    image_url = cover.get("extraLarge") or cover.get("large") or cover.get("medium") or ""
+    if not image_url:
+        raise RuntimeError("No poster image found in anime metadata; refusing to send files before poster.")
+    image_data, image_type = download_poster(str(image_url))
+    caption = build_episode_caption(title, episode, metadata=metadata)
+    endpoint = telegram_api_endpoint(token, "sendPhoto")
+    response = requests.post(
+        endpoint,
+        data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
+        files={"photo": ("anime-poster.jpg", image_data, image_type)},
+        timeout=(30, 60),
+    )
+    response.raise_for_status()
+    result = response.json()
+    if not isinstance(result, dict) or result.get("ok") is not True:
+        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
+        raise RuntimeError(f"Telegram sendPhoto failed: {detail}")
+    return str(result.get("result", {}).get("message_id", ""))
 
 def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_type: str,
                           title: str, episode: str, page_url: str) -> str:
@@ -520,12 +563,13 @@ def allowed_media_url(url: str, allowed_hosts: list[str]) -> bool:
 def load_state(path: str) -> dict:
     state_path = Path(path)
     if not state_path.exists():
-        return {"published": {}, "seen": {}}
+        return {"published": {}, "seen": {}, "posters": {}}
     state = json.loads(state_path.read_text(encoding="utf-8"))
     if not isinstance(state, dict):
         raise ValueError("State file must contain a JSON object")
     state.setdefault("published", {})
     state.setdefault("seen", {})
+    state.setdefault("posters", {})
     return state
 
 
@@ -682,6 +726,7 @@ def run() -> int:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
     published_count = 0
+    pending = []
     for feed in config["feeds"]:
         feed_url = str(feed.get("url", "")).strip()
         feed_name = str(feed.get("name", "Authorized feed")).strip()
@@ -700,88 +745,127 @@ def run() -> int:
         except Exception as exc:
             LOG.exception("Feed %s failed: %s", feed_name, exc)
             continue
-
-        # Oldest-first keeps backlogs from being starved by a constant stream of new entries.
         for entry in reversed(entries):
-            url = entry["url"]
-            if not allowed_media_url(url, config["allowed_download_hosts"]):
+            if allowed_media_url(entry["url"], config["allowed_download_hosts"]):
+                pending.append({**entry, "feed": feed_name})
+            else:
                 LOG.info("Skipping non-direct or non-allow-listed entry: %s", entry["title"])
-                continue
-            identity = hashlib.sha256(url.encode("utf-8")).hexdigest()
-            if identity in state["published"]:
-                continue
-            if dry_run:
-                LOG.info("[DRY RUN] Would download and publish: %s", entry["title"])
-                continue
-            media_path = None
-            publish_path = None
-            generated_paths = []
-            try:
-                media_path = download_media(url, entry["title"], config)
-                publish_path = media_path
-                if config.get("bilingual_subtitles", False):
-                    from tools.bilingual_subtitles import process as process_bilingual_subtitles
-                    bilingual_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
-                    english_srt = bilingual_path.with_name(bilingual_path.stem + ".en.srt")
-                    persian_srt = bilingual_path.with_name(bilingual_path.stem + ".fa.srt")
-                    generated_paths.extend([bilingual_path, english_srt, persian_srt])
-                    stream_index = config.get("subtitle_stream_index")
-                    process_bilingual_subtitles(media_path, bilingual_path, stream_index)
-                    publish_path = bilingual_path
-                    LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
 
-                if config.get("encode_h265", False):
-                    from tools.video_encoder import encode_h265
-                    encoded_path = publish_path.with_name(publish_path.stem + ".h265.mkv")
-                    generated_paths.append(encoded_path)
-                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
-                    burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
-                    encode_h265(
-                        publish_path,
-                        encoded_path,
-                        crf=int(config.get("h265_crf", 24)),
-                        preset=str(config.get("h265_preset", "slow")),
-                        burn_subtitle=burn_subtitle,
+    groups = {}
+    for entry in pending:
+        group_id, anime_title, episode = _episode_group(entry["title"])
+        identity = hashlib.sha256(entry["url"].encode("utf-8")).hexdigest()
+        if identity in state["published"]:
+            continue
+        group = groups.setdefault(group_id, {
+            "title": anime_title, "episode": episode, "entries": [],
+        })
+        group["entries"].append({**entry, "identity": identity})
+
+    # Each anime/episode group is handled independently: poster first, then 1080p, 720p, 480p.
+    for group_id, group in groups.items():
+        entries = sorted(
+            group["entries"],
+            key=lambda item: (_quality_rank(item["title"]), item["title"].casefold()),
+        )
+        try:
+            poster_identity = group_id
+            if poster_identity not in state["posters"]:
+                metadata = anime_catalog_metadata(group["title"])
+                if dry_run:
+                    LOG.info(
+                        "[DRY RUN] Would send poster + Persian synopsis first, then qualities: %s (%s)",
+                        group["title"], ", ".join(_quality_from_title(item["title"]) for item in entries),
                     )
-                    publish_path = encoded_path
-                    LOG.info("Encoded and validated H.265 output%s.",
-                             " with burned-in Persian subtitles" if burn_subtitle else "")
-
-                if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
-                    raise ValueError("Processed media exceeds the configured media size limit.")
-                file_hash = sha256_file(publish_path)
-                if file_hash in state["seen"]:
-                    LOG.info("Skipping duplicate file hash: %s", entry["title"])
-                    state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
-                    save_state(config["state_file"], state)
                     continue
-                caption = f"🎬 {entry['title']}\n\nAnimehighbo"
-                if config.get("bilingual_subtitles", False):
-                    caption = f"🎬 {entry['title']}\n🇬🇧 English + 🇮🇷 فارسی (دو ترک زیرنویس)\n\nAnimehighbo"
-                message_id = telegram_upload_and_send(token, chat_id, publish_path, caption)
-                state["seen"][file_hash] = identity
-                state["published"][identity] = {
-                    "title": entry["title"],
-                    "feed": feed_name,
-                    "file_sha256": file_hash,
-                    "message_id": message_id,
-                    "published_at": int(time.time()),
-                    "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+                # Fail closed: no video is sent unless its poster has been published first.
+                poster_message_id = telegram_send_anime_poster(
+                    token, chat_id, group["title"], group["episode"], metadata
+                )
+                state["posters"][poster_identity] = {
+                    "title": group["title"], "episode": group["episode"] or None,
+                    "message_id": poster_message_id, "published_at": int(time.time()),
                 }
                 save_state(config["state_file"], state)
-                published_count += 1
-                LOG.info("Published: %s", entry["title"])
-            except Exception as exc:
-                LOG.exception("Failed to process %s: %s", entry["title"], exc)
-            finally:
-                cleanup = set(generated_paths)
-                if media_path:
-                    cleanup.add(media_path)
-                for path in cleanup:
-                    if path.exists():
-                        path.unlink(missing_ok=True)
 
+            for entry in entries:
+                identity = entry["identity"]
+                if identity in state["published"]:
+                    continue
+                media_path = None
+                publish_path = None
+                generated_paths = []
+                try:
+                    media_path = download_media(entry["url"], entry["title"], config)
+                    publish_path = media_path
+                    if config.get("bilingual_subtitles", False):
+                        from tools.bilingual_subtitles import process as process_bilingual_subtitles
+                        bilingual_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
+                        english_srt = bilingual_path.with_name(bilingual_path.stem + ".en.srt")
+                        persian_srt = bilingual_path.with_name(bilingual_path.stem + ".fa.srt")
+                        generated_paths.extend([bilingual_path, english_srt, persian_srt])
+                        process_bilingual_subtitles(media_path, bilingual_path, config.get("subtitle_stream_index"))
+                        publish_path = bilingual_path
+                        LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
 
+                    quality = _quality_from_title(entry["title"])
+                    if config.get("encode_h265", False):
+                        from tools.video_encoder import encode_h265
+                        encoded_path = publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
+                        generated_paths.append(encoded_path)
+                        persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                        burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
+                        encode_h265(
+                            publish_path, encoded_path,
+                            crf=int(config.get("h265_crf", 24)),
+                            preset=str(config.get("h265_preset", "slow")),
+                            burn_subtitle=burn_subtitle,
+                        )
+                        publish_path = encoded_path
+                        LOG.info("Encoded and validated H.265 output%s.",
+                                 " with burned-in Persian subtitles" if burn_subtitle else "")
+                    else:
+                        final_name = processed_filename(entry["title"], quality, publish_path.suffix.lower())
+                        renamed_path = publish_path.with_name(final_name)
+                        if renamed_path != publish_path:
+                            publish_path.replace(renamed_path)
+                            generated_paths.append(renamed_path)
+                            publish_path = renamed_path
+
+                    if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                        raise ValueError("Processed media exceeds the configured media size limit.")
+                    file_hash = sha256_file(publish_path)
+                    if file_hash in state["seen"]:
+                        LOG.info("Skipping duplicate file hash: %s", entry["title"])
+                        state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
+                        save_state(config["state_file"], state)
+                        continue
+                    file_caption = f"{group['title']} {_quality_from_title(entry['title'])} @Animehighbot"
+                    message_id = telegram_upload_and_send(token, chat_id, publish_path, file_caption)
+                    state["seen"][file_hash] = identity
+                    state["published"][identity] = {
+                        "title": group["title"], "quality": quality, "feed": entry["feed"],
+                        "file_sha256": file_hash, "message_id": message_id,
+                        "published_at": int(time.time()),
+                        "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+                    }
+                    save_state(config["state_file"], state)
+                    published_count += 1
+                    LOG.info("Published %s %s as %s", group["title"], quality, publish_path.name)
+                except Exception as exc:
+                    LOG.exception("Failed to process %s: %s", entry["title"], exc)
+                finally:
+                    cleanup = set(generated_paths)
+                    if media_path:
+                        cleanup.add(media_path)
+                    if publish_path:
+                        cleanup.add(publish_path)
+                    for path in cleanup:
+                        if path.exists():
+                            path.unlink(missing_ok=True)
+        except Exception as exc:
+            LOG.exception("Could not publish poster for %s; its video files remain unprocessed: %s",
+                          group["title"], exc)
     LOG.info("Run complete. Published %d item(s).", published_count)
     return 0
 
