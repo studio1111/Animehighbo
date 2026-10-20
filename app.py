@@ -742,8 +742,6 @@ def run() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
 
-    if not dry_run and (not token or not chat_id):
-        raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
     if config.get("mode", "links") == "links":
         if not config["feeds"]:
             LOG.warning("No RSS feeds configured. Nothing to process.")
@@ -759,6 +757,9 @@ def run() -> int:
             "or an explicitly authorized torrent source."
         )
         return 0
+
+    if not dry_run and (not token or not chat_id):
+        raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
 
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
