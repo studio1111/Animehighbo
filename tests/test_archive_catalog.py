@@ -8,7 +8,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
     def test_subsplease_show_slug_is_resolved_under_shows_path(self):
         self.assertEqual(
             _show_page_url({"page": "mairimashita-iruma-kun-s4"}),
-            "https://subsplease.org/shows/mairimashita-iruma-kun-s4",
+            "https://subsplease.org/shows/mairimashita-iruma-kun-s4/",
         )
 
     def test_external_show_page_urls_are_rejected(self):
