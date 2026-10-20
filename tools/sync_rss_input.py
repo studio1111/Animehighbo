@@ -20,6 +20,10 @@ def parse_rss_input(text: str) -> list[dict[str, str]]:
         if not value or value.startswith("#"):
             continue
         parsed = urlparse(value)
+        try:
+            parsed.port  # Force validation of any explicit port.
+        except ValueError as exc:
+            raise ValueError(f"Line {line_number}: invalid port in RSS URL.") from exc
         if (
             parsed.scheme.lower() != "https"
             or not parsed.hostname
