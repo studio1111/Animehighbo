@@ -76,9 +76,9 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
         number = _episode_number(row)
         released = parse_release_date(row.get("release_date") or row.get("releaseDate") or "")
         source = _preferred_download(row)
-        if number is None or released is None or source is None:
+        if number is None or released is None:
             continue
-        quality, magnet = source
+        quality, magnet = source if source else ("", "")
         normalized.append({
             "episode": number,
             "release_date": released,
@@ -102,10 +102,14 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
     if [item["episode"] for item in selected] != expected:
         LOG.warning("Skipping %s because its selected episode sequence has a gap.", show_title)
         return []
+    if any(not item["uri"] or not item["quality"] for item in selected):
+        LOG.warning("Skipping %s because one or more selected episodes lack a 1080p/720p source.", show_title)
+        return []
     result = []
     for item in selected:
         result.append({
             "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
+            "episode": item["episode"],
             "uri": item["uri"],
             "authorized_for_redistribution": True,
             "_episode": item["episode"],
