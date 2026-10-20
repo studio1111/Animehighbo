@@ -71,8 +71,12 @@ def download_authorized_torrent(
         source,
     ]
     process = None
+    log_path = target_dir / f".aria2-{os.getpid()}-{time.time_ns()}.log"
+    log_stream = None
     try:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        # Drain aria2 output to disk while it runs; an unread PIPE can block large torrents.
+        log_stream = log_path.open("wb")
+        process = subprocess.Popen(command, stdout=log_stream, stderr=subprocess.STDOUT)
         started = time.monotonic()
         while process.poll() is None:
             if _tree_size(work_dir) > max_bytes:
@@ -92,7 +96,13 @@ def download_authorized_torrent(
                     process.wait()
                 raise TimeoutError(f"Torrent download timed out after {timeout} seconds.")
             time.sleep(2)
-        output = process.stdout.read()[-4000:] if process.stdout else ""
+        log_stream.flush()
+        output = ""
+        if log_path.exists():
+            with log_path.open("rb") as log_reader:
+                log_size = log_path.stat().st_size
+                log_reader.seek(max(0, log_size - 4000))
+                output = log_reader.read().decode("utf-8", errors="replace")
         if process.returncode != 0:
             raise RuntimeError(f"aria2c failed with exit code {process.returncode}: {output[-1200:]}")
         videos = sorted(
@@ -122,4 +132,7 @@ def download_authorized_torrent(
         if process is not None and process.poll() is None:
             process.kill()
             process.wait()
+        if log_stream is not None:
+            log_stream.close()
+        log_path.unlink(missing_ok=True)
         shutil.rmtree(work_dir, ignore_errors=True)
