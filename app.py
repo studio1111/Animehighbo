@@ -782,6 +782,7 @@ def run() -> int:
             response.raise_for_status()
             entries = parse_feed(response.text, int(config["poll_limit_per_feed"]))
         except Exception as exc:
+            failure_count += 1
             LOG.exception("Feed %s failed: %s", feed_name, exc)
             continue
         for entry in reversed(entries):
