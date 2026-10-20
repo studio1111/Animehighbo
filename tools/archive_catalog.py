@@ -138,11 +138,22 @@ def _show_page_url(raw_release: dict) -> str:
     page = str(raw_release.get("page") or "").strip()
     if not page:
         return ""
-    url = urljoin(BASE_URL + "/", page)
+    candidate = urlparse(page)
+    if candidate.scheme:
+        url = page
+    else:
+        path = candidate.path.strip("/")
+        if path.startswith("shows/"):
+            url = urljoin(BASE_URL + "/", path)
+        else:
+            # The API's `page` field commonly contains only the show slug.
+            url = urljoin(BASE_URL + "/shows/", path)
     parsed = urlparse(url)
     if parsed.scheme != "https" or parsed.hostname != "subsplease.org":
         return ""
-    return url
+    if not parsed.path.startswith("/shows/"):
+        return ""
+    return url.rstrip("/")
 
 
 def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str, list[dict]]:
