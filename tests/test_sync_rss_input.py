@@ -24,7 +24,7 @@ class RSSInputTests(unittest.TestCase):
         )
 
     def test_rejects_non_https_or_malformed_urls(self):
-        for value in ("http://feeds.example.org/rss", "magnet:?xt=urn:btih:abc", "not a url"):
+        for value in ("http://feeds.example.org/rss", "magnet:?xt=urn:btih:abc", "not a url", "https://feeds.example.org:bad/rss"):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 parse_rss_input(value)
 
