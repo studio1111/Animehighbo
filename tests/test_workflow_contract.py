@@ -57,11 +57,27 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("types: [completed]", workflow)
         workflow_run_block = workflow.split("workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
         self.assertIn("workflows:", workflow_run_block)
-        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config"):
+        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config", "Build authorized episode archive catalog"):
             self.assertIn(f"- {name}", workflow_run_block)
         self.assertIn("group: animehighbo-run-retention", workflow)
         self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
 
+
+    def test_publisher_state_persistence_rebases_before_push(self):
+        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        state_step = workflow.split("      - name: Persist duplicate-prevention state", 1)[1]
+        self.assertIn("git fetch origin main", state_step)
+        self.assertIn("git rebase origin/main", state_step)
+        self.assertIn("git push origin HEAD:main", state_step)
+
+    def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
+        workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
+        self.assertTrue(workflow_path.exists())
+        workflow = workflow_path.read_text(encoding="utf-8")
+        self.assertIn("--confirm-redistribution-rights", workflow)
+        self.assertIn("data/archive_manifest.json", workflow)
+        self.assertIn("actions/upload-artifact@v4", workflow)
+        self.assertNotIn("python app.py", workflow)
 
     def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")

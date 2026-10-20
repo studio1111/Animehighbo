@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _quality_rank, _preferred_source)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source)
 from tools.subsplease_monitor import parse_releases
 
 
@@ -40,6 +40,74 @@ class PreferredSourceTests(unittest.TestCase):
             {"title": "Sample - 01"},
         ]
         self.assertIsNone(_preferred_source(entries))
+
+
+class ArchivePosterIdentityTests(unittest.TestCase):
+    def test_archive_mode_uses_fresh_poster_identity_after_channel_cleanup(self):
+        self.assertNotEqual(_poster_identity("series:01", False), _poster_identity("series:01", True))
+        self.assertEqual(_poster_identity("series:01", True), "archive:series:01")
+
+
+class ArchiveManifestTests(unittest.TestCase):
+    def test_manifest_preserves_episode_order_and_requires_explicit_authorization(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "archive.json"
+            path.write_text(json.dumps([
+                {
+                    "title": "Moonlit Saga - 01 (1080p)",
+                    "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "authorized_for_redistribution": True,
+                },
+                {
+                    "title": "Moonlit Saga - 02 (1080p)",
+                    "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "authorized_for_redistribution": True,
+                },
+            ]), encoding="utf-8")
+            entries = load_archive_manifest(str(path))
+        self.assertEqual([item["title"] for item in entries], [
+            "Moonlit Saga - 01 (1080p)", "Moonlit Saga - 02 (1080p)"
+        ])
+        self.assertEqual([item["archive_order"] for item in entries], [0, 1])
+        self.assertTrue(all(item["torrent_source"] for item in entries))
+
+    def test_manifest_marks_direct_video_urls_as_media_sources_not_torrents(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "archive.json"
+            path.write_text(json.dumps([{
+                "title": "Moonlit Saga - 01 (1080p)",
+                "url": "https://media.example.org/moonlit-01.mkv",
+                "authorized_for_redistribution": True,
+            }]), encoding="utf-8")
+            entries = load_archive_manifest(str(path))
+        self.assertFalse(entries[0]["torrent_source"])
+        self.assertEqual(entries[0]["url"], "https://media.example.org/moonlit-01.mkv")
+
+    def test_manifest_rejects_entries_without_explicit_redistribution_rights(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "archive.json"
+            path.write_text(json.dumps([{
+                "title": "Moonlit Saga - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            }]), encoding="utf-8")
+            with self.assertRaisesRegex(PermissionError, "authorized_for_redistribution"):
+                load_archive_manifest(str(path))
+
+    def test_manifest_rejects_batches_missing_episode_numbers_and_duplicate_sources(self):
+        cases = [
+            ([{"title": "[Batch] Moonlit Saga (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "single episode"),
+            ([{"title": "Moonlit Saga Complete", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "no detectable episode"),
+            ([
+                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
+                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
+            ], "Duplicate archive source"),
+        ]
+        for entries, message in cases:
+            with self.subTest(message=message), tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / "archive.json"
+                path.write_text(json.dumps(entries), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, message):
+                    load_archive_manifest(str(path))
 
 
 class TorrentSourceConfigTests(unittest.TestCase):
