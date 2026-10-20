@@ -10,7 +10,7 @@
   "max_file_size_mb": 1800,
   "download_dir": "downloads",
   "state_file": "data/state.json",
-  "dry_run": true,
+  "dry_run": false,
   "bilingual_subtitles": true,
   "subtitle_stream_index": null,
   "encode_h265": true,
