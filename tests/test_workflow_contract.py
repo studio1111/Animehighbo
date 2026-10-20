@@ -7,20 +7,28 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkflowContractTests(unittest.TestCase):
-    def test_publisher_secrets_override_stale_repository_variables(self):
+    def test_publisher_selects_secrets_before_stale_repository_variables(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         self.assertIn(
-            "ANIMEHIGHBO_DRY_RUN: ${{ secrets.ANIMEHIGHBO_DRY_RUN || vars.ANIMEHIGHBO_DRY_RUN || 'true' }}",
+            "ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}",
             workflow,
         )
         self.assertIn(
-            "TELEGRAM_LOCAL_API: ${{ secrets.TELEGRAM_LOCAL_API || vars.TELEGRAM_LOCAL_API }}",
+            "ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}",
             workflow,
         )
+        self.assertIn('if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then', workflow)
+        self.assertIn('export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"', workflow)
         self.assertIn(
-            "ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}",
+            "TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}",
             workflow,
         )
+        self.assertIn('if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then', workflow)
+        self.assertIn(
+            "ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}",
+            workflow,
+        )
+        self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
     def test_media_dependencies_are_gated_by_actual_authorized_media_sources(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
