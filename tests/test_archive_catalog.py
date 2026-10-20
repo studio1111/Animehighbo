@@ -1,0 +1,44 @@
+import unittest
+from datetime import date
+
+from tools.archive_catalog import select_show_episodes
+
+
+class ArchiveCatalogSelectionTests(unittest.TestCase):
+    def test_new_series_since_cutoff_includes_episode_one_through_latest(self):
+        rows = [
+            {"title": "New Saga - 01", "episode": "1", "release_date": "2026-09-05T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
+            {"title": "New Saga - 02", "episode": "2", "release_date": "2026-09-12T10:00:00Z",
+             "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:bbbb"}]},
+            {"title": "New Saga - 03", "episode": "3", "release_date": "2026-09-19T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:cccc"}]},
+        ]
+        selected = select_show_episodes("New Saga", rows, date(2026, 9, 1))
+        self.assertEqual([row["episode"] for row in selected], [1, 2, 3])
+        self.assertEqual([row["quality"] for row in selected], ["1080p", "720p", "1080p"])
+
+    def test_long_running_series_only_includes_releases_on_or_after_cutoff(self):
+        rows = [
+            {"title": "Long Runner - 100", "episode": "100", "release_date": "2026-08-28T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
+            {"title": "Long Runner - 101", "episode": "101", "release_date": "2026-09-04T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:bbbb"}]},
+            {"title": "Long Runner - 102", "episode": "102", "release_date": "2026-09-11T10:00:00Z",
+             "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:cccc"}]},
+        ]
+        selected = select_show_episodes("Long Runner", rows, date(2026, 9, 1))
+        self.assertEqual([row["episode"] for row in selected], [101, 102])
+
+    def test_missing_episode_number_or_missing_1080p_and_720p_source_is_not_queued(self):
+        rows = [
+            {"title": "Gap Show - 01", "episode": "1", "release_date": "2026-09-05T10:00:00Z",
+             "downloads": [{"res": "480", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
+            {"title": "Gap Show - 03", "episode": "3", "release_date": "2026-09-19T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:cccc"}]},
+        ]
+        self.assertEqual(select_show_episodes("Gap Show", rows, date(2026, 9, 1)), [])
+
+
+if __name__ == "__main__":
+    unittest.main()
