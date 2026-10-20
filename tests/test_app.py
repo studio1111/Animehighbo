@@ -4,11 +4,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import (allowed_media_url, build_episode_caption, episode_details, load_config, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, _episode_group, _quality_rank)
+from app import (allowed_media_url, build_episode_caption, episode_details, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
 
 
 class FeedParserTests(unittest.TestCase):
+    def test_new_state_includes_poster_deduplication_map(self):
+        with tempfile.TemporaryDirectory() as temp:
+            state = load_state(str(Path(temp) / "state.json"))
+        self.assertEqual(state, {"published": {}, "seen": {}, "posters": {}})
+
     def test_parses_episode_page_and_poster(self):
         xml = '''<rss><channel><item><title>Moonlit Saga Episode 07</title><link>https://anime.example.org/moonlit/episode-7</link><enclosure url="https://cdn.example.org/poster.jpg" type="image/jpeg"/></item></channel></rss>'''
         self.assertEqual(parse_episode_feed(xml), [{
