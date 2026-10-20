@@ -58,8 +58,11 @@ def build_ffmpeg_command(
     input_path: Path,
     output_path: Path,
     crf: int = 24,
-    preset: str = "slow",
+    preset: str = "medium",
     burn_subtitle: Path | None = None,
+    video_bitrate: str = "1800k",
+    audio_bitrate: str = "128k",
+    target_height: int | None = None,
 ) -> list[str]:
     if not 18 <= crf <= 28:
         raise ValueError("H.265 CRF must be between 18 and 28.")
@@ -67,12 +70,18 @@ def build_ffmpeg_command(
         raise ValueError(f"Unsupported H.265 preset: {preset}")
     if output_path.suffix.lower() != ".mkv":
         raise ValueError("H.265 output must use the .mkv container.")
+    if target_height is not None and target_height not in {480, 720, 1080}:
+        raise ValueError("Target height must be 480, 720, 1080, or None.")
+    if not video_bitrate.endswith("k") or not audio_bitrate.endswith("k"):
+        raise ValueError("Video and audio bitrates must use the 'k' suffix.")
     args = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
         "-i", str(input_path),
         "-map", "0:v:0", "-map", "0:a?", "-map", "0:s?",
         "-map_metadata", "0", "-map_chapters", "0",
     ]
+    if target_height is not None:
+        args.extend(["-vf", f"scale=-2:{target_height}:flags=lanczos"])
     if burn_subtitle is not None:
         if not burn_subtitle.is_file():
             raise FileNotFoundError(f"Persian subtitle file not found: {burn_subtitle}")
@@ -83,8 +92,9 @@ def build_ffmpeg_command(
             f"subtitles=filename='{subtitle_path}':force_style='{PERSIAN_SUBTITLE_STYLE}'",
         ])
     args.extend([
-        "-c:v", "libx265", "-preset", preset, "-crf", str(crf),
-        "-c:a", "copy", "-c:s", "copy", "-max_muxing_queue_size", "2048",
+        "-c:v", "libx265", "-preset", preset, "-b:v", video_bitrate,
+        "-maxrate", video_bitrate, "-bufsize", str(int(video_bitrate[:-1]) * 2) + "k",
+        "-c:a", "aac", "-b:a", audio_bitrate, "-c:s", "copy", "-max_muxing_queue_size", "2048",
         str(output_path),
     ])
     return args
@@ -94,8 +104,11 @@ def encode_h265(
     input_path: Path,
     output_path: Path,
     crf: int = 24,
-    preset: str = "slow",
+    preset: str = "medium",
     burn_subtitle: Path | None = None,
+    video_bitrate: str = "1800k",
+    audio_bitrate: str = "128k",
+    target_height: int | None = None,
 ) -> Path:
     """Encode the first video stream, preserve audio/subtitle streams, then validate the result."""
     input_path = Path(input_path)
@@ -112,7 +125,7 @@ def encode_h265(
     temporary_path = output_path.with_name(f".{output_path.stem}.part.mkv")
     temporary_path.unlink(missing_ok=True)
     try:
-        command = build_ffmpeg_command(input_path, temporary_path, crf, preset, burn_subtitle)
+        command = build_ffmpeg_command(input_path, temporary_path, crf, preset, burn_subtitle, video_bitrate, audio_bitrate, target_height)
         run_command(command)
         if not temporary_path.is_file() or temporary_path.stat().st_size < 1024:
             raise RuntimeError("FFmpeg did not produce a valid-sized MKV output.")
