@@ -963,50 +963,74 @@ def run() -> int:
                         publish_path = bilingual_path
                         LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
 
-                    quality = _quality_from_title(entry["title"])
-                    if config.get("encode_h265", False):
-                        from tools.video_encoder import encode_h265
-                        encoded_path = publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
-                        generated_paths.append(encoded_path)
-                        persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
-                        burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
-                        encode_h265(
-                            publish_path, encoded_path,
-                            crf=int(config.get("h265_crf", 24)),
-                            preset=str(config.get("h265_preset", "slow")),
-                            burn_subtitle=burn_subtitle,
-                        )
-                        publish_path = encoded_path
-                        LOG.info("Encoded and validated H.265 output%s.",
-                                 " with burned-in Persian subtitles" if burn_subtitle else "")
-                    else:
-                        final_name = processed_filename(entry["title"], quality, publish_path.suffix.lower())
-                        renamed_path = publish_path.with_name(final_name)
-                        if renamed_path != publish_path:
-                            publish_path.replace(renamed_path)
-                            generated_paths.append(renamed_path)
-                            publish_path = renamed_path
+                    source_quality = _quality_from_title(entry["title"])
+                    variants = [
+                        ("1080p", 1080, str(config.get("h265_bitrate_1080", "1800k"))),
+                        ("720p", 720, str(config.get("h265_bitrate_720", "1000k"))),
+                        ("480p", 480, str(config.get("h265_bitrate_480", "550k"))),
+                    ]
+                    if not config.get("encode_h265", False):
+                        variants = [(source_quality, None, "")]
+                    from tools.video_encoder import encode_h265
+                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                    burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
+                    completed_qualities = []
+                    for quality, target_height, video_bitrate in variants:
+                        output_identity = f"{identity}:{quality}"
+                        if output_identity in state["published"]:
+                            completed_qualities.append(quality)
+                            continue
+                        variant_source = publish_path
+                        if config.get("encode_h265", False):
+                            encoded_path = publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
+                            generated_paths.append(encoded_path)
+                            encode_h265(
+                                variant_source, encoded_path,
+                                crf=int(config.get("h265_crf", 24)),
+                                preset=str(config.get("h265_preset", "medium")),
+                                burn_subtitle=burn_subtitle,
+                                video_bitrate=video_bitrate,
+                                audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
+                                target_height=target_height,
+                            )
+                            output_path = encoded_path
+                            LOG.info("Encoded and validated %s H.265 output with video bitrate %s and AAC audio %s.",
+                                     quality, video_bitrate, config.get("h265_audio_bitrate", "128k"))
+                        else:
+                            final_name = processed_filename(entry["title"], quality, variant_source.suffix.lower())
+                            output_path = variant_source.with_name(final_name)
+                            if output_path != variant_source:
+                                variant_source.replace(output_path)
+                                generated_paths.append(output_path)
 
-                    if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
-                        raise ValueError("Processed media exceeds the configured media size limit.")
-                    file_hash = sha256_file(publish_path)
-                    if file_hash in state["seen"]:
-                        LOG.info("Skipping duplicate file hash: %s", entry["title"])
-                        state["published"][identity] = {"duplicate_of": state["seen"][file_hash]}
+                        if output_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                            raise ValueError(f"{quality} output exceeds the configured media size limit.")
+                        file_hash = sha256_file(output_path)
+                        if file_hash in state["seen"]:
+                            LOG.info("Skipping duplicate file hash for %s %s.", group["title"], quality)
+                            state["published"][output_identity] = {"duplicate_of": state["seen"][file_hash]}
+                            save_state(config["state_file"], state)
+                            completed_qualities.append(quality)
+                            continue
+                        file_caption = f"{group['title']} {quality} @Animehighbo"
+                        message_id = telegram_upload_and_send(token, chat_id, output_path, file_caption)
+                        state["seen"][file_hash] = output_identity
+                        state["published"][output_identity] = {
+                            "title": group["title"], "quality": quality, "source_quality": source_quality,
+                            "feed": entry["feed"], "file_sha256": file_hash, "message_id": message_id,
+                            "published_at": int(time.time()),
+                            "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+                        }
                         save_state(config["state_file"], state)
-                        continue
-                    file_caption = f"{group['title']} {_quality_from_title(entry['title'])} @Animehighbo"
-                    message_id = telegram_upload_and_send(token, chat_id, publish_path, file_caption)
-                    state["seen"][file_hash] = identity
-                    state["published"][identity] = {
-                        "title": group["title"], "quality": quality, "feed": entry["feed"],
-                        "file_sha256": file_hash, "message_id": message_id,
-                        "published_at": int(time.time()),
-                        "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
-                    }
-                    save_state(config["state_file"], state)
-                    published_count += 1
-                    LOG.info("Published %s %s as %s", group["title"], quality, publish_path.name)
+                        published_count += 1
+                        completed_qualities.append(quality)
+                        LOG.info("Published %s %s as %s", group["title"], quality, output_path.name)
+                    if len(set(completed_qualities)) == len(variants):
+                        state["published"][identity] = {
+                            "title": group["title"], "complete_qualities": completed_qualities,
+                            "source_quality": source_quality, "published_at": int(time.time()),
+                        }
+                        save_state(config["state_file"], state)
                 except Exception as exc:
                     failure_count += 1
                     LOG.exception("Failed to process %s: %s", entry["title"], exc)
