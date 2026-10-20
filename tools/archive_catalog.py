@@ -7,6 +7,7 @@ rights; it never downloads or publishes media itself.
 from __future__ import annotations
 
 import argparse
+from html import unescape
 import json
 import logging
 import re
@@ -156,6 +157,23 @@ def _show_page_url(raw_release: dict) -> str:
     return parsed._replace(path=parsed.path.rstrip("/") + "/").geturl()
 
 
+def _show_title_from_html(document: str, fallback: str = "") -> str:
+    """Prefer the visible show heading over the SEO page title."""
+    heading = re.search(
+        r"<h1\\b[^>]*class=[\"'][^\"']*\\bentry-title\\b[^\"']*[\"'][^>]*>(.*?)</h1>",
+        document, re.I | re.S,
+    )
+    if heading:
+        title = unescape(re.sub(r"<[^>]+>", " ", heading.group(1)))
+        title = re.sub(r"\\s+", " ", title).strip()
+        if title:
+            return title
+    page_title = re.search(r"<title[^>]*>(.*?)</title>", document, re.I | re.S)
+    title = unescape(re.sub(r"<[^>]+>", " ", page_title.group(1))).strip() if page_title else ""
+    title = re.sub(r"\\s*(?:downloads?\\s*)?(?:[-–—|:]\\s*)?SubsPlease.*$", "", title, flags=re.I).strip()
+    return title or fallback
+
+
 def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str, list[dict]]:
     response = session.get(page_url, timeout=(10, 30), allow_redirects=False)
     response.raise_for_status()
@@ -163,9 +181,7 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
     if not match:
         raise ValueError(f"Could not find SubsPlease show ID on {page_url}")
     payload = _request_json(session, {"f": "show", "tz": "Etc/GMT", "sid": match.group(1)})
-    page_title = re.search(r"<title[^>]*>(.*?)</title>", response.text, re.I | re.S)
-    show_title = re.sub(r"\s+", " ", page_title.group(1)).strip() if page_title else ""
-    show_title = re.sub(r"\s*[-|:]\s*SubsPlease.*$", "", show_title, flags=re.I).strip()
+    show_title = _show_title_from_html(response.text)
     raw_episodes = payload.get("episode", {})
     if not isinstance(raw_episodes, dict):
         return show_title, []
