@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import (allowed_media_url, build_episode_caption, episode_details, load_config, parse_episode_feed, parse_feed, safe_filename, telegram_api_endpoint, telegram_method_for_file)
+from app import (allowed_media_url, build_episode_caption, episode_details, load_config, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
 
 
@@ -149,20 +149,16 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             "description": "A young traveler discovers a hidden world beneath the city.",
         }
         from unittest.mock import patch
-        with patch("app.translate_title_to_persian", return_value="حماسه مهتاب"):
+        with patch("app.translate_title_to_persian", return_value="حماسه مهتاب"), patch("app.translate_anime_synopsis", return_value="یه مسافر جوان دنیای پنهانی زیر شهر رو کشف می‌کنه."):
             caption = build_episode_caption(
                 "Moonlit Saga Episode 07 1080p", "07", metadata=metadata
             )
         self.assertIn("Moonlit Saga", caption)
         self.assertIn("حماسه مهتاب", caption)
-        self.assertIn("قسمت: 07", caption)
-        self.assertIn("کیفیت: 1080p", caption)
-        self.assertIn("فصل اول", caption)
-        self.assertIn("تعداد کامل قسمت‌ها: 12", caption)
-        self.assertIn("2026 فصل پاییز", caption)
-        self.assertIn("اکشن، فانتزی", caption)
-        self.assertIn("<blockquote expandable>", caption)
-        self.assertTrue(caption.endswith("<b>Animehighbo</b>"))
+        self.assertIn("قسمت 07", caption)
+        self.assertIn("@Animehighbot", caption)
+        self.assertNotIn("1080p", caption)
+        self.assertNotIn("تعداد کامل قسمت‌ها", caption)
         self.assertLessEqual(len(caption), 1024)
         self.assertNotIn("لینک تماشا", caption)
 
@@ -170,10 +166,8 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         from unittest.mock import patch
         with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"):
             caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
-        self.assertIn("تعداد کامل قسمت‌ها: نامشخص", caption)
-        self.assertIn("سال و فصل پخش: نامشخص", caption)
-        self.assertIn("رده‌بندی رسمی اعلام نشده", caption)
-        self.assertTrue(caption.endswith("<b>Animehighbo</b>"))
+        self.assertIn("خلاصهٔ این انیمه فعلاً در دسترس نیست.", caption)
+        self.assertIn("@Animehighbot", caption)
 
     def test_sequel_season_is_not_mislabeled_as_first_season(self):
         from unittest.mock import patch
@@ -185,7 +179,26 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         }
         with patch("app.translate_title_to_persian", return_value="حمله به تایتان"):
             caption = build_episode_caption("Attack on Titan Episode 01 720p", "01", metadata=metadata)
-        self.assertIn("فصل انیمه: فصل پایانی", caption)
+        self.assertIn("حمله به تایتان", caption)
+        self.assertIn("@Animehighbot", caption)
+
+    def test_processed_filename_has_only_anime_quality_and_channel(self):
+        self.assertEqual(
+            processed_filename("[SubsPlease] PSYREN - 03 (1080p) [ABC123].mkv", "1080p"),
+            "PSYREN 1080p @Animehighbot.mkv",
+        )
+
+    def test_episode_group_matches_different_quality_releases(self):
+        first = _episode_group("[SubsPlease] PSYREN - 03 (1080p) [ABC123].mkv")
+        second = _episode_group("[SubsPlease] PSYREN - 03 (720p) [DEF456].mkv")
+        self.assertEqual(first[0], second[0])
+        self.assertEqual(first[1:], second[1:])
+
+    def test_quality_order_is_1080_then_720_then_480(self):
+        titles = ["Anime - 03 (480p)", "Anime - 03 (1080p)", "Anime - 03 (720p)"]
+        self.assertEqual(sorted(titles, key=_quality_rank), [
+            "Anime - 03 (1080p)", "Anime - 03 (720p)", "Anime - 03 (480p)"
+        ])
 
 class SubsPleaseConnectionParsingTests(unittest.TestCase):
     def test_parses_release_titles_and_quality_without_retaining_magnet_links(self):
