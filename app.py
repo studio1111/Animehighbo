@@ -410,6 +410,20 @@ def _quality_rank(title: str) -> int:
     return {"1080p": 0, "720p": 1, "480p": 2}.get(quality, 3)
 
 
+def _preferred_source(entries: list[dict]) -> dict | None:
+    """Choose one source only: 1080p first, then 720p; never use lower resolutions."""
+    eligible = [
+        entry for entry in entries
+        if _quality_from_title(str(entry.get("title", ""))) in {"1080p", "720p"}
+    ]
+    if not eligible:
+        return None
+    return min(
+        eligible,
+        key=lambda entry: (_quality_rank(str(entry.get("title", ""))), str(entry.get("title", "")).casefold()),
+    )
+
+
 def _episode_group(title: str) -> tuple[str, str, str]:
     anime_title, episode = episode_details(title)
     normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
@@ -895,6 +909,13 @@ def run() -> int:
             group["entries"],
             key=lambda item: (_quality_rank(item["title"]), item["title"].casefold()),
         )
+        selected_source = _preferred_source(entries)
+        if selected_source is None:
+            LOG.warning("No 1080p or 720p release available for %s; refusing lower-quality source.", group["title"])
+            continue
+        # Download one source only. Lower-resolution releases are never downloaded.
+        entries = [selected_source]
+        LOG.info("Selected single %s source for %s.", _quality_from_title(selected_source["title"]), group["title"])
         try:
             poster_identity = group_id
             if poster_identity not in state["posters"]:
