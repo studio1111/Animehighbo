@@ -286,7 +286,8 @@ class TorrentSourceConfigTests(unittest.TestCase):
              patch("app.anime_catalog_metadata", return_value={}) as metadata, \
              patch.dict(os.environ, {"ANIMEHIGHBO_DRY_RUN": "true"}):
             self.assertEqual(run_app(), 0)
-        metadata.assert_called_once()
+        # Dry-run must not fetch metadata or leave a poster-only record before media preparation.
+        metadata.assert_not_called()
 
 
 class FeedParserTests(unittest.TestCase):
