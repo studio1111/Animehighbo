@@ -35,12 +35,10 @@ jobs:
         run: |
           python - <<'PY' >> "$GITHUB_ENV"
           import json
-          from app import has_authorized_torrent_source
+          from app import has_file_media_source
           with open("config.json", encoding="utf-8") as stream:
               config = json.load(stream)
-          file_pipeline = config.get("mode") != "links" and (
-              bool(config.get("feeds")) or has_authorized_torrent_source(config)
-          )
+          file_pipeline = config.get("mode") != "links" and has_file_media_source(config)
           needs_media_tools = file_pipeline and any(
               config.get(name, False)
               for name in ("bilingual_subtitles", "encode_h265", "burn_persian_subtitles")
