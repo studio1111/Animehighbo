@@ -58,6 +58,101 @@ class TorrentSourceConfigTests(unittest.TestCase):
         source["authorized_for_redistribution"] = False
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
+    def test_link_mode_feed_failure_returns_nonzero_for_actions(self):
+        config = {
+            "mode": "links",
+            "feeds": [{"name": "Sample", "url": "https://media.example.org/feed.xml"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        env = {
+            "ANIMEHIGHBO_DRY_RUN": "false",
+            "TELEGRAM_BOT_TOKEN": "test-token",
+            "TELEGRAM_CHAT_ID": "@test-channel",
+        }
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.requests.Session") as session_factory, \
+             patch.dict(os.environ, env, clear=False):
+            session_factory.return_value.get.side_effect = RuntimeError("simulated link feed failure")
+            self.assertEqual(run_app(), 1)
+
+    def test_rss_feed_failure_returns_nonzero_for_actions(self):
+        config = {
+            "mode": "files",
+            "feeds": [{"name": "Authorized sample", "url": "https://media.example.org/feed.xml"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+            "allowed_download_hosts": ["cdn.example.org"],
+            "torrent_sources": [],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        env = {
+            "ANIMEHIGHBO_DRY_RUN": "false",
+            "TELEGRAM_BOT_TOKEN": "test-token",
+            "TELEGRAM_CHAT_ID": "@test-channel",
+        }
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.requests.Session") as session_factory, \
+             patch.dict(os.environ, env, clear=False):
+            session_factory.return_value.get.side_effect = RuntimeError("simulated feed failure")
+            self.assertEqual(run_app(), 1)
+
+    def test_empty_file_pipeline_does_not_require_telegram_secrets(self):
+        config = {
+            "mode": "files",
+            "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "allowed_download_hosts": [],
+            "torrent_sources": [],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(run_app(), 0)
+
+    def test_media_processing_failure_returns_nonzero_for_actions(self):
+        config = {
+            "mode": "files",
+            "feeds": [],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+            "allowed_download_hosts": [],
+            "max_file_size_mb": 1800,
+            "torrent_timeout_seconds": 10,
+            "torrent_sources": [{
+                "title": "Licensed Sample - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                "authorized_for_redistribution": True,
+            }],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        env = {
+            "ANIMEHIGHBO_DRY_RUN": "false",
+            "TELEGRAM_BOT_TOKEN": "test-token",
+            "TELEGRAM_CHAT_ID": "@test-channel",
+        }
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.anime_catalog_metadata", return_value={}), \
+             patch("app.telegram_send_anime_poster", return_value="poster-1"), \
+             patch("tools.torrent_downloader.download_authorized_torrent", side_effect=RuntimeError("simulated download failure")), \
+             patch.dict(os.environ, env, clear=False):
+            self.assertEqual(run_app(), 1)
+
     def test_torrent_only_configuration_reaches_processing_without_rss_feeds(self):
         config = {
             "mode": "files",

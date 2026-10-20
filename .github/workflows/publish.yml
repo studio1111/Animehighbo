@@ -138,8 +138,9 @@ jobs:
             export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
             dry_run_source="repository variable"
           else
-            export ANIMEHIGHBO_DRY_RUN="true"
-            dry_run_source="safe default"
+            # No Actions setting is present: honor the explicit config.json setting.
+            export ANIMEHIGHBO_DRY_RUN="$(python -c 'import json; print(str(json.load(open("config.json", encoding="utf-8")).get("dry_run", True)).lower())')"
+            dry_run_source="config.json"
           fi
           if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
@@ -151,8 +152,12 @@ jobs:
             unset ANIMEHIGHBO_MAX_FILE_SIZE_MB
             size_source="config.json default"
           fi
+          case "${ANIMEHIGHBO_DRY_RUN,,}" in
+            false|0|no|off) dry_run_state="disabled" ;;
+            *) dry_run_state="enabled" ;;
+          esac
+          echo "Publisher dry-run state: $dry_run_state"
           echo "Publisher dry-run setting source: $dry_run_source"
-          echo "Publisher dry-run effective value: $ANIMEHIGHBO_DRY_RUN"
           echo "Publisher maximum file-size source: $size_source"
           python app.py
       - name: Persist duplicate-prevention state
