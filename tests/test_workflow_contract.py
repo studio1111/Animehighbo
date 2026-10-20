@@ -70,6 +70,15 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("git rebase origin/main", state_step)
         self.assertIn("git push origin HEAD:main", state_step)
 
+    def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
+        source = (ROOT / "app.py").read_text(encoding="utf-8")
+        group_flow = source.split("# Each anime/episode group is handled independently", 1)[1]
+        download = group_flow.index("download_authorized_torrent(")
+        subtitle = group_flow.index("process_bilingual_subtitles(")
+        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        self.assertLess(download, subtitle)
+        self.assertLess(subtitle, poster)
+
     def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
         workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
         self.assertTrue(workflow_path.exists())
