@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from tools.archive_catalog import _show_page_url, select_show_episodes
+from tools.archive_catalog import _show_page_url, _show_title_from_html, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
@@ -13,6 +13,10 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
 
     def test_external_show_page_urls_are_rejected(self):
         self.assertEqual(_show_page_url({"page": "https://evil.example/show"}), "")
+
+    def test_show_title_uses_clean_entry_heading_not_page_suffix(self):
+        page = '<title>Example S4 downloads – SubsPlease</title><h1 class="entry-title">Example S4</h1>'
+        self.assertEqual(_show_title_from_html(page, "fallback"), "Example S4")
 
     def test_new_series_since_cutoff_includes_episode_one_through_latest(self):
         rows = [
