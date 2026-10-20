@@ -3,6 +3,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock, patch
 
 from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
@@ -10,6 +11,17 @@ from tools.subsplease_monitor import parse_releases
 
 
 class TorrentSourceConfigTests(unittest.TestCase):
+    def test_telegram_upload_uses_long_timeout_for_large_files(self):
+        with tempfile.TemporaryDirectory() as temp:
+            media = Path(temp) / "sample.mkv"
+            media.write_bytes(b"sample media")
+            response = Mock()
+            response.json.return_value = {"ok": True, "result": {"message_id": 77}}
+            with patch("app.requests.post", return_value=response) as post:
+                message_id = telegram_upload_and_send("test-token", "@test-channel", media, "caption")
+        self.assertEqual(message_id, "77")
+        self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
+
     def test_accepts_both_uri_and_url_source_keys(self):
         magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
         self.assertEqual(torrent_source_uri({"uri": magnet}), magnet)
