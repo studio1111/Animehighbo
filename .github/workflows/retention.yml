@@ -9,6 +9,13 @@ on:
       - '.github/workflows/retention.yml'
   schedule:
     - cron: '43 4 * * *'
+  workflow_run:
+    workflows:
+      - CI
+      - Animehighbo publisher
+      - One-time licensed Morevna Telegram test
+      - Sync RSS input to config
+    types: [completed]
 
 permissions:
   actions: write
@@ -16,6 +23,7 @@ permissions:
 
 jobs:
   cleanup:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.name != 'Retain latest 30 workflow runs'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
