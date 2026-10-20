@@ -153,7 +153,7 @@ def _show_page_url(raw_release: dict) -> str:
         return ""
     if not parsed.path.startswith("/shows/"):
         return ""
-    return url.rstrip("/")
+    return parsed._replace(path=parsed.path.rstrip("/") + "/").geturl()
 
 
 def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str, list[dict]]:
