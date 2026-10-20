@@ -751,6 +751,24 @@ def run() -> int:
             else:
                 LOG.info("Skipping non-direct or non-allow-listed entry: %s", entry["title"])
 
+    # Torrent sources are opt-in and must explicitly attest redistribution permission.
+    for source in config.get("torrent_sources", []):
+        if not isinstance(source, dict) or source.get("authorized_for_redistribution") is not True:
+            LOG.warning("Skipping torrent source without explicit redistribution authorization.")
+            continue
+        title = str(source.get("title", "")).strip()
+        uri = str(source.get("uri", "")).strip()
+        if not title or not uri:
+            LOG.warning("Skipping torrent source missing title or URI.")
+            continue
+        identity = hashlib.sha256(("torrent:" + uri).encode("utf-8")).hexdigest()
+        if identity not in state["published"]:
+            pending.append({
+                "title": title, "url": uri, "feed": "authorized torrent",
+                "identity": identity, "torrent_source": True,
+                "authorized_for_redistribution": True,
+            })
+
     groups = {}
     for entry in pending:
         group_id, anime_title, episode = _episode_group(entry["title"])
@@ -796,7 +814,14 @@ def run() -> int:
                 publish_path = None
                 generated_paths = []
                 try:
-                    media_path = download_media(entry["url"], entry["title"], config)
+                    if entry.get("torrent_source"):
+                        from tools.torrent_downloader import download_authorized_torrent
+                        media_path = download_authorized_torrent(
+                            entry["url"], entry["title"], config,
+                            authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
+                        )
+                    else:
+                        media_path = download_media(entry["url"], entry["title"], config)
                     publish_path = media_path
                     if config.get("bilingual_subtitles", False):
                         from tools.bilingual_subtitles import process as process_bilingual_subtitles
