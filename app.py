@@ -919,7 +919,9 @@ def run() -> int:
             LOG.warning("Skipping torrent source missing title or URI/URL.")
             continue
         identity = hashlib.sha256(("torrent:" + uri).encode("utf-8")).hexdigest()
-        if identity not in state["published"]:
+        if identity not in state["published"] or not {"1080p", "720p", "480p"}.issubset(
+            set(state["published"][identity].get("complete_qualities", []))
+        ):
             pending.append({
                 "title": title, "url": uri, "feed": "authorized torrent",
                 "identity": identity, "torrent_source": True,
@@ -930,7 +932,8 @@ def run() -> int:
     for entry in pending:
         group_id, anime_title, episode = _episode_group(entry["title"])
         identity = entry.get("identity") or hashlib.sha256(entry["url"].encode("utf-8")).hexdigest()
-        if identity in state["published"]:
+        existing_record = state["published"].get(identity, {})
+        if {"1080p", "720p", "480p"}.issubset(set(existing_record.get("complete_qualities", []))):
             continue
         group = groups.setdefault(group_id, {
             "title": anime_title, "episode": episode, "entries": [],
@@ -982,7 +985,8 @@ def run() -> int:
 
             for entry in entries:
                 identity = entry["identity"]
-                if identity in state["published"]:
+                existing_record = state["published"].get(identity, {})
+                if {"1080p", "720p", "480p"}.issubset(set(existing_record.get("complete_qualities", []))):
                     continue
                 media_path = None
                 publish_path = None
