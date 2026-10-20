@@ -107,6 +107,35 @@ class FeedParserTests(unittest.TestCase):
                 os.environ["ANIMEHIGHBO_MAX_FILE_SIZE_MB"] = previous
 
 
+    def test_encoder_defaults_preserve_existing_configs(self):
+        with tempfile.TemporaryDirectory() as temp:
+            config_path = Path(temp) / "config.json"
+            config_path.write_text(json.dumps({
+                "feeds": [],
+                "allowed_download_hosts": [],
+            }), encoding="utf-8")
+            config = load_config(str(config_path))
+        self.assertFalse(config["encode_h265"])
+        self.assertEqual(config["h265_crf"], 24)
+        self.assertEqual(config["h265_preset"], "slow")
+        self.assertFalse(config["burn_persian_subtitles"])
+
+    def test_burn_in_requires_bilingual_subtitles_and_h265(self):
+        for settings in (
+            {"burn_persian_subtitles": True},
+            {"bilingual_subtitles": True, "burn_persian_subtitles": True},
+        ):
+            with self.subTest(settings=settings), tempfile.TemporaryDirectory() as temp:
+                config_path = Path(temp) / "config.json"
+                config_path.write_text(json.dumps({
+                    "feeds": [],
+                    "allowed_download_hosts": [],
+                    **settings,
+                }), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "requires"):
+                    load_config(str(config_path))
+
+
 class PersianAnimeCaptionTests(unittest.TestCase):
     def test_caption_contains_requested_fields_and_collapsible_synopsis(self):
         metadata = {
