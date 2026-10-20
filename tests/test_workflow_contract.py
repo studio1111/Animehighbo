@@ -71,5 +71,14 @@ class WorkflowContractTests(unittest.TestCase):
         )
 
 
+    def test_one_time_delivery_is_manual_only_and_receives_gemini_fallback_keys(self):
+        workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
+        trigger_block = workflow.split("permissions:", 1)[0]
+        self.assertIn("workflow_dispatch:", trigger_block)
+        self.assertNotIn("push:", trigger_block)
+        for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
+
+
 if __name__ == "__main__":
     unittest.main()
