@@ -1093,6 +1093,8 @@ def run() -> int:
                             path.unlink(missing_ok=True)
                 if group_failed:
                     break
+            if group_failed:
+                break
         except Exception as exc:
             failure_count += 1
             LOG.exception("Could not complete anime group %s; stopping before the next anime: %s",
