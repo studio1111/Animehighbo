@@ -65,6 +65,18 @@ class ArchiveManifestTests(unittest.TestCase):
         self.assertEqual([item["archive_order"] for item in entries], [0, 1])
         self.assertTrue(all(item["torrent_source"] for item in entries))
 
+    def test_manifest_marks_direct_video_urls_as_media_sources_not_torrents(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "archive.json"
+            path.write_text(json.dumps([{
+                "title": "Moonlit Saga - 01 (1080p)",
+                "url": "https://media.example.org/moonlit-01.mkv",
+                "authorized_for_redistribution": True,
+            }]), encoding="utf-8")
+            entries = load_archive_manifest(str(path))
+        self.assertFalse(entries[0]["torrent_source"])
+        self.assertEqual(entries[0]["url"], "https://media.example.org/moonlit-01.mkv")
+
     def test_manifest_rejects_entries_without_explicit_redistribution_rights(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "archive.json"
