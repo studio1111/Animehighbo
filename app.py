@@ -542,6 +542,28 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
     return published_count
 
 
+def torrent_source_uri(source: dict) -> str:
+    """Read the URI field used by older configs or the URL alias used by newer ones."""
+    uri = str(source.get("uri") or "").strip()
+    url = str(source.get("url") or "").strip()
+    if uri and url and uri != url:
+        raise ValueError("Torrent source has conflicting 'uri' and 'url' values.")
+    return uri or url
+
+
+def has_authorized_torrent_source(config: dict) -> bool:
+    """Return whether the configuration contains an explicitly authorized source."""
+    for source in config.get("torrent_sources", []):
+        if not isinstance(source, dict) or source.get("authorized_for_redistribution") is not True:
+            continue
+        try:
+            if torrent_source_uri(source):
+                return True
+        except ValueError:
+            continue
+    return False
+
+
 def allowed_media_url(url: str, allowed_hosts: list[str]) -> bool:
     try:
         parsed = urlparse(url)
@@ -686,7 +708,8 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
             endpoint,
             data=payload,
             files={media_field: (path.name, media, "application/octet-stream")},
-            timeout=(30, 180),
+            # Large MKV uploads to a local Bot API server can legitimately take several minutes.
+            timeout=(30, 1800),
         )
     response.raise_for_status()
     result = response.json()
@@ -713,8 +736,8 @@ def run() -> int:
 
     if not dry_run and (not token or not chat_id):
         raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
-    if not config["feeds"]:
-        LOG.warning("No feeds configured. Nothing to process.")
+    if not config["feeds"] and not has_authorized_torrent_source(config):
+        LOG.warning("No RSS feeds or explicitly authorized torrent sources configured. Nothing to process.")
         return 0
 
     if config.get("mode", "links") == "links":
@@ -757,9 +780,13 @@ def run() -> int:
             LOG.warning("Skipping torrent source without explicit redistribution authorization.")
             continue
         title = str(source.get("title", "")).strip()
-        uri = str(source.get("uri", "")).strip()
+        try:
+            uri = torrent_source_uri(source)
+        except ValueError as exc:
+            LOG.error("Skipping invalid torrent source %s: %s", title or "(untitled)", exc)
+            continue
         if not title or not uri:
-            LOG.warning("Skipping torrent source missing title or URI.")
+            LOG.warning("Skipping torrent source missing title or URI/URL.")
             continue
         identity = hashlib.sha256(("torrent:" + uri).encode("utf-8")).hexdigest()
         if identity not in state["published"]:
