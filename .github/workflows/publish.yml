@@ -7,9 +7,7 @@ on:
     paths:
       - 'app.py'
       - 'config.json'
-      - '.github/workflows/publish.yml'
       - 'tools/torrent_downloader.py'
-      - 'tools/bilingual_subtitles.py'
       - 'tools/video_encoder.py'
   schedule:
     - cron: '*/30 * * * *'
