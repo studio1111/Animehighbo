@@ -564,6 +564,14 @@ def has_authorized_torrent_source(config: dict) -> bool:
     return False
 
 
+def has_file_media_source(config: dict) -> bool:
+    """Require an allow-listed direct-media feed or an explicitly authorized torrent."""
+    return bool(
+        (config.get("feeds") and config.get("allowed_download_hosts"))
+        or has_authorized_torrent_source(config)
+    )
+
+
 def allowed_media_url(url: str, allowed_hosts: list[str]) -> bool:
     try:
         parsed = urlparse(url)
@@ -736,14 +744,20 @@ def run() -> int:
 
     if not dry_run and (not token or not chat_id):
         raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
-    if not config["feeds"] and not has_authorized_torrent_source(config):
-        LOG.warning("No RSS feeds or explicitly authorized torrent sources configured. Nothing to process.")
-        return 0
-
     if config.get("mode", "links") == "links":
+        if not config["feeds"]:
+            LOG.warning("No RSS feeds configured. Nothing to process.")
+            return 0
         if not dry_run and (not token or not chat_id):
             raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
         run_link_mode(config, state, dry_run, token, chat_id)
+        return 0
+
+    if not has_file_media_source(config):
+        LOG.warning(
+            "No authorized file source configured. Add a feed with an exact allowed_download_hosts entry "
+            "or an explicitly authorized torrent source."
+        )
         return 0
 
     session = requests.Session()
