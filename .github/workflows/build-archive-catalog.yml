@@ -15,6 +15,7 @@ on:
         type: string
   push:
     branches:
+      - main
       - feature/episode-archive-backfill
     paths:
       - "tools/archive_catalog.py"
