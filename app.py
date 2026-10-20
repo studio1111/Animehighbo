@@ -460,6 +460,11 @@ def _preferred_source(entries: list[dict]) -> dict | None:
     )
 
 
+def _episode_record_complete(record: dict) -> bool:
+    """An episode is complete only after all three requested video qualities are published."""
+    return {"1080p", "720p", "480p"}.issubset(set(record.get("complete_qualities", [])))
+
+
 def _episode_group(title: str) -> tuple[str, str, str]:
     anime_title, episode = episode_details(title)
     normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
@@ -919,9 +924,7 @@ def run() -> int:
             LOG.warning("Skipping torrent source missing title or URI/URL.")
             continue
         identity = hashlib.sha256(("torrent:" + uri).encode("utf-8")).hexdigest()
-        if identity not in state["published"] or not {"1080p", "720p", "480p"}.issubset(
-            set(state["published"][identity].get("complete_qualities", []))
-        ):
+        if identity not in state["published"] or not _episode_record_complete(state["published"][identity]):
             pending.append({
                 "title": title, "url": uri, "feed": "authorized torrent",
                 "identity": identity, "torrent_source": True,
@@ -933,7 +936,7 @@ def run() -> int:
         group_id, anime_title, episode = _episode_group(entry["title"])
         identity = entry.get("identity") or hashlib.sha256(entry["url"].encode("utf-8")).hexdigest()
         existing_record = state["published"].get(identity, {})
-        if {"1080p", "720p", "480p"}.issubset(set(existing_record.get("complete_qualities", []))):
+        if _episode_record_complete(existing_record):
             continue
         group = groups.setdefault(group_id, {
             "title": anime_title, "episode": episode, "entries": [],
