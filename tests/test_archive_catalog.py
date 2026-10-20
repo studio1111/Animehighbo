@@ -1,10 +1,14 @@
 import unittest
 from datetime import date
 
-from tools.archive_catalog import _show_page_url, _show_title_from_html, select_show_episodes
+from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
+    def test_required_long_running_shows_are_always_checked(self):
+        self.assertIn("one-piece", REQUIRED_SHOW_SLUGS)
+        self.assertIn("detective-conan", REQUIRED_SHOW_SLUGS)
+
     def test_subsplease_show_slug_is_resolved_under_shows_path(self):
         self.assertEqual(
             _show_page_url({"page": "mairimashita-iruma-kun-s4"}),
