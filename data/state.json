@@ -1,4 +1,24 @@
 {
-  "published": {},
-  "seen": {}
+  "published": {
+    "0cf3718e4c96674f2be790b638f8af71ed31bd2b9b1235a7e0d932348d03deb9": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "quality": "720p",
+      "feed": "SubsPlease RSS 720p",
+      "file_sha256": "50d94154b6a4284e9a13772d8b8af0973c0082d365965e726ce046a505337b5d",
+      "message_id": "18",
+      "published_at": 1792504773,
+      "bilingual_subtitles": true
+    }
+  },
+  "seen": {
+    "50d94154b6a4284e9a13772d8b8af0973c0082d365965e726ce046a505337b5d": "0cf3718e4c96674f2be790b638f8af71ed31bd2b9b1235a7e0d932348d03deb9"
+  },
+  "posters": {
+    "84afa2c54f68e6ff67c9e3e606b49dc70d18dd009c0b3a43cdf14711d3ddac45": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "49",
+      "message_id": "17",
+      "published_at": 1792499958
+    }
+  }
 }
