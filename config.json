@@ -34,8 +34,8 @@
     "subsplease.org"
   ],
   "max_episode_groups_per_run": 1,
-  "h265_bitrate_1080": "1800k",
-  "h265_bitrate_720": "1000k",
-  "h265_bitrate_480": "550k",
+  "h265_bitrate_1080": "1650k",
+  "h265_bitrate_720": "900k",
+  "h265_bitrate_480": "500k",
   "h265_audio_bitrate": "128k"
 }
