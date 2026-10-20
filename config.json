@@ -2,8 +2,16 @@
   "mode": "files",
   "feeds": [
     {
-      "name": "RSS 1: subsplease.org",
+      "name": "SubsPlease RSS 1080p",
       "url": "https://subsplease.org/rss/?r=1080"
+    },
+    {
+      "name": "SubsPlease RSS 720p",
+      "url": "https://subsplease.org/rss/?r=720"
+    },
+    {
+      "name": "SubsPlease RSS 480p (currently empty)",
+      "url": "https://subsplease.org/rss/?r=480"
     }
   ],
   "allowed_download_hosts": [],
@@ -21,5 +29,9 @@
   "poll_limit_per_feed": 30,
   "request_timeout_seconds": 30,
   "torrent_timeout_seconds": 18000,
-  "torrent_sources": []
+  "torrent_sources": [],
+  "torrent_feed_hosts": [
+    "subsplease.org"
+  ],
+  "max_episode_groups_per_run": 1
 }

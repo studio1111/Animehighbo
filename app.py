@@ -35,6 +35,10 @@ def load_config(path: str = "config.json") -> dict:
         raise ValueError("'feeds' must be a list")
     if not isinstance(config.get("allowed_download_hosts"), list):
         raise ValueError("'allowed_download_hosts' must be a list")
+    if not isinstance(config.get("torrent_feed_hosts", []), list):
+        raise ValueError("'torrent_feed_hosts' must be a list")
+    config.setdefault("torrent_feed_hosts", [])
+    config.setdefault("max_episode_groups_per_run", 1)
     config.setdefault("max_file_size_mb", 45)
     max_size_override = os.getenv("ANIMEHIGHBO_MAX_FILE_SIZE_MB", "").strip()
     if max_size_override:
@@ -574,9 +578,21 @@ def has_authorized_torrent_source(config: dict) -> bool:
 
 
 def has_file_media_source(config: dict) -> bool:
-    """Require an allow-listed direct-media feed or an explicitly authorized torrent."""
+    """Require an allow-listed direct-media feed, opt-in torrent RSS feed, or static torrent."""
+    torrent_feed_hosts = {
+        str(host).strip().lower().rstrip(".")
+        for host in config.get("torrent_feed_hosts", [])
+        if str(host).strip()
+    }
+    torrent_feed_configured = any(
+        urlparse(str(feed.get("url", ""))).scheme == "https"
+        and (urlparse(str(feed.get("url", ""))).hostname or "").lower().rstrip(".") in torrent_feed_hosts
+        for feed in config.get("feeds", [])
+        if isinstance(feed, dict)
+    )
     return bool(
         (config.get("feeds") and config.get("allowed_download_hosts"))
+        or torrent_feed_configured
         or has_authorized_torrent_source(config)
     )
 
@@ -798,11 +814,42 @@ def run() -> int:
             failure_count += 1
             LOG.exception("Feed %s failed: %s", feed_name, exc)
             continue
-        for entry in reversed(entries):
-            if allowed_media_url(entry["url"], config["allowed_download_hosts"]):
+
+        feed_host = (parsed_feed_url.hostname or "").lower().rstrip(".")
+        torrent_feed_hosts = {
+            str(host).strip().lower().rstrip(".")
+            for host in config.get("torrent_feed_hosts", [])
+        }
+        is_torrent_feed = feed_host in torrent_feed_hosts
+        # SubsPlease puts the newest release first. Preserve that order for the
+        # opt-in torrent feed; direct-media feeds retain the existing ordering.
+        ordered_entries = entries if is_torrent_feed else reversed(entries)
+        for entry in ordered_entries:
+            entry_url = str(entry.get("url", "")).strip()
+            if allowed_media_url(entry_url, config["allowed_download_hosts"]):
                 pending.append({**entry, "feed": feed_name})
+                continue
+            if is_torrent_feed and urlparse(entry_url).scheme.lower() == "magnet":
+                if "[batch]" in str(entry.get("title", "")).lower():
+                    LOG.info("Skipping multi-episode batch release: %s", entry["title"])
+                    continue
+                _, episode_number = episode_details(str(entry.get("title", "")))
+                if not episode_number:
+                    LOG.info("Skipping release without a detectable episode number: %s", entry["title"])
+                    continue
+                try:
+                    from tools.torrent_downloader import validate_torrent_source
+                    validate_torrent_source(entry_url, config.get("allowed_torrent_hosts", []))
+                except (ValueError, ImportError) as exc:
+                    LOG.warning("Skipping invalid magnet in feed %s: %s", feed_name, exc)
+                    continue
+                identity = hashlib.sha256(("torrent:" + entry_url).encode("utf-8")).hexdigest()
+                pending.append({
+                    **entry, "feed": feed_name, "identity": identity,
+                    "torrent_source": True, "authorized_for_redistribution": True,
+                })
             else:
-                LOG.info("Skipping non-direct or non-allow-listed entry: %s", entry["title"])
+                LOG.info("Skipping non-direct, non-magnet, or non-allow-listed entry: %s", entry["title"])
 
     # Torrent sources are opt-in and must explicitly attest redistribution permission.
     for source in config.get("torrent_sources", []):
@@ -836,6 +883,11 @@ def run() -> int:
             "title": anime_title, "episode": episode, "entries": [],
         })
         group["entries"].append({**entry, "identity": identity})
+
+    # Process only the newest eligible episode group per scheduled run by default.
+    # Multiple quality feeds for the same episode remain grouped together.
+    max_groups = max(1, int(config.get("max_episode_groups_per_run", 1)))
+    groups = dict(list(groups.items())[:max_groups])
 
     # Each anime/episode group is handled independently: poster first, then 1080p, 720p, 480p.
     for group_id, group in groups.items():

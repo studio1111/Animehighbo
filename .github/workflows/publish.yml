@@ -52,7 +52,7 @@ jobs:
           PY
       - name: Install aria2 for explicitly authorized torrent sources
         run: |
-          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); sys.exit(0 if any(isinstance(x,dict) and x.get("authorized_for_redistribution") is True for x in c.get("torrent_sources", [])) else 1)'; then
+          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); enabled=bool(c.get("torrent_feed_hosts")) or any(isinstance(x,dict) and x.get("authorized_for_redistribution") is True for x in c.get("torrent_sources", [])); sys.exit(0 if enabled else 1)'; then
             sudo apt-get update
             sudo apt-get install -y aria2
           fi
