@@ -38,6 +38,6 @@
   "h265_bitrate_720": "900k",
   "h265_bitrate_480": "500k",
   "h265_audio_bitrate": "128k",
-  "archive_mode": false,
+  "archive_mode": true,
   "archive_manifest": "data/archive_manifest.json"
 }
