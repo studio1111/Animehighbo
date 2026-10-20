@@ -5,12 +5,20 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank, _preferred_source)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _quality_rank, _preferred_source)
 from tools.subsplease_monitor import parse_releases
 
 
 
 class PreferredSourceTests(unittest.TestCase):
+    def test_episode_is_complete_only_after_all_three_quality_files(self):
+        self.assertFalse(_episode_record_complete({}))
+        self.assertFalse(_episode_record_complete({"complete_qualities": ["720p"]}))
+        self.assertFalse(_episode_record_complete({"complete_qualities": ["1080p", "720p"]}))
+        self.assertTrue(_episode_record_complete({
+            "complete_qualities": ["1080p", "720p", "480p"],
+        }))
+
     def test_prefers_1080p_even_when_lower_quality_entries_come_first(self):
         entries = [
             {"title": "Sample - 01 [480p]"},
