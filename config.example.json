@@ -23,5 +23,8 @@
   "request_timeout_seconds": 30,
   "allowed_torrent_hosts": [],
   "torrent_sources": [],
-  "torrent_timeout_seconds": 18000
+  "torrent_timeout_seconds": 18000,
+  "h265_bitrate_1080": "1650k",
+  "h265_bitrate_720": "900k",
+  "h265_bitrate_480": "500k"
 }
