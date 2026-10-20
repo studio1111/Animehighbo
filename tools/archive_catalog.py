@@ -22,6 +22,9 @@ import requests
 LOG = logging.getLogger("animehighbo.archive_catalog")
 BASE_URL = "https://subsplease.org"
 USER_AGENT = "AnimehighboArchiveCatalog/1.0 (+authorized-media-only)"
+# These ongoing series are checked explicitly even if the latest-feed pagination
+# window does not surface their releases reliably.
+REQUIRED_SHOW_SLUGS = ("one-piece", "detective-conan")
 
 
 def parse_release_date(value: str) -> date | None:
@@ -222,6 +225,10 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
             if valid_dates and max(valid_dates) < cutoff:
                 break
             time.sleep(0.2)
+        for slug in REQUIRED_SHOW_SLUGS:
+            page_url = _show_page_url({"page": slug})
+            if page_url:
+                show_pages.setdefault(page_url, {"show": slug})
         manifest = []
         series = []
         for page_url, sample in show_pages.items():
