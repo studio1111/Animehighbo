@@ -1,6 +1,11 @@
 {
   "mode": "files",
-  "feeds": [],
+  "feeds": [
+    {
+      "name": "RSS 1: subsplease.org",
+      "url": "https://subsplease.org/rss/?r=1080"
+    }
+  ],
   "allowed_download_hosts": [],
   "max_file_size_mb": 1800,
   "download_dir": "downloads",
