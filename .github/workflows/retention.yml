@@ -15,6 +15,7 @@ on:
       - Animehighbo publisher
       - One-time licensed Morevna Telegram test
       - Sync RSS input to config
+      - Build authorized episode archive catalog
     types: [completed]
 
 permissions:
