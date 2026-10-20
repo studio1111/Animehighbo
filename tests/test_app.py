@@ -3,9 +3,84 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, _episode_group, _quality_rank)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
+
+
+
+class TorrentSourceConfigTests(unittest.TestCase):
+    def test_telegram_upload_uses_long_timeout_for_large_files(self):
+        with tempfile.TemporaryDirectory() as temp:
+            media = Path(temp) / "sample.mkv"
+            media.write_bytes(b"sample media")
+            response = Mock()
+            response.json.return_value = {"ok": True, "result": {"message_id": 77}}
+            with patch("app.requests.post", return_value=response) as post:
+                message_id = telegram_upload_and_send("test-token", "@test-channel", media, "caption")
+        self.assertEqual(message_id, "77")
+        self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
+
+    def test_accepts_both_uri_and_url_source_keys(self):
+        magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
+        self.assertEqual(torrent_source_uri({"uri": magnet}), magnet)
+        self.assertEqual(torrent_source_uri({"url": magnet}), magnet)
+
+    def test_rejects_conflicting_uri_and_url_values(self):
+        with self.assertRaisesRegex(ValueError, "conflicting"):
+            torrent_source_uri({
+                "uri": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            })
+
+    def test_file_pipeline_requires_direct_media_allowlist_or_authorized_torrent(self):
+        self.assertFalse(has_file_media_source({
+            "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
+            "allowed_download_hosts": [],
+            "torrent_sources": [],
+        }))
+        self.assertTrue(has_file_media_source({
+            "feeds": [{"url": "https://media.example.org/feed.xml"}],
+            "allowed_download_hosts": ["media.example.org"],
+            "torrent_sources": [],
+        }))
+
+    def test_only_explicit_true_authorizes_a_torrent_source(self):
+        source = {
+            "title": "Open Sample - 01 (1080p)",
+            "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+            "authorized_for_redistribution": True,
+        }
+        self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorized_for_redistribution"] = "true"
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorized_for_redistribution"] = False
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+
+    def test_torrent_only_configuration_reaches_processing_without_rss_feeds(self):
+        config = {
+            "mode": "files",
+            "feeds": [],
+            "dry_run": True,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+            "allowed_download_hosts": [],
+            "torrent_sources": [{
+                "title": "Open Sample - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                "authorized_for_redistribution": True,
+            }],
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        with patch("app.load_config", return_value=config), \
+             patch("app.load_state", return_value=state), \
+             patch("app.save_state"), \
+             patch("app.anime_catalog_metadata", return_value={}) as metadata, \
+             patch.dict(os.environ, {"ANIMEHIGHBO_DRY_RUN": "true"}):
+            self.assertEqual(run_app(), 0)
+        metadata.assert_called_once()
 
 
 class FeedParserTests(unittest.TestCase):
