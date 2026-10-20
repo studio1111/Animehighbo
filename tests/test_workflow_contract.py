@@ -19,6 +19,9 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then', workflow)
         self.assertIn('export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"', workflow)
+        self.assertIn('dry_run_source="config.json"', workflow)
+        self.assertIn('get("dry_run", True)', workflow)
+        self.assertIn('dry_run_state="disabled"', workflow)
         self.assertIn(
             "TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}",
             workflow,
