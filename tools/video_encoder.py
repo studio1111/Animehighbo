@@ -92,7 +92,9 @@ def build_ffmpeg_command(
     if filters:
         args.extend(["-vf", ",".join(filters)])
     args.extend([
-        "-c:v", "libx265", "-preset", preset, "-b:v", video_bitrate,
+        "-c:v", "libx265", "-preset", preset, "-crf", str(crf),
+        # CRF controls perceptual quality; VBV caps peak bitrate without forcing
+        # a constant average bitrate that can waste space on simple anime scenes.
         "-maxrate", video_bitrate, "-bufsize", str(int(video_bitrate[:-1]) * 2) + "k",
         "-c:a", "aac", "-b:a", audio_bitrate, "-c:s", "copy", "-max_muxing_queue_size", "2048",
         str(output_path),
