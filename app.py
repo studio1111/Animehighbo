@@ -864,6 +864,11 @@ def load_archive_manifest(path: str) -> list[dict]:
     return result
 
 
+def _poster_identity(group_id: str, archive_mode: bool = False) -> str:
+    """Use fresh poster state for a channel archive rebuild after old posts are deleted."""
+    return f"archive:{group_id}" if archive_mode else group_id
+
+
 def run() -> int:
     logging.basicConfig(
         level=logging.INFO,
@@ -1025,7 +1030,7 @@ def run() -> int:
         LOG.info("Selected single %s source for %s.", _quality_from_title(selected_source["title"]), group["title"])
         group_failed = False
         try:
-            poster_identity = group_id
+            poster_identity = _poster_identity(group_id, archive_mode)
             if poster_identity not in state["posters"]:
                 metadata = anime_catalog_metadata(group["title"])
                 if dry_run:
