@@ -49,6 +49,19 @@ class VideoEncoderTests(unittest.TestCase):
             self.assertIn("PrimaryColour=&H0000FFFF", " ".join(ffmpeg))
             self.assertIn("Outline=0.5", " ".join(ffmpeg))
 
+    def test_uses_crf_quality_with_vbv_cap_instead_of_constant_bitrate(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            command = build_ffmpeg_command(
+                root / "source.mkv", root / "output.mkv",
+                crf=24, video_bitrate="1650k", audio_bitrate="128k",
+            )
+        crf_index = command.index("-crf")
+        self.assertEqual(command[crf_index + 1], "24")
+        self.assertNotIn("-b:v", command)
+        self.assertEqual(command[command.index("-maxrate") + 1], "1650k")
+        self.assertEqual(command[command.index("-bufsize") + 1], "3300k")
+
     def test_uses_controlled_video_and_audio_bitrates_and_resizes(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
