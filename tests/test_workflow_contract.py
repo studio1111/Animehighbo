@@ -63,6 +63,13 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
 
 
+    def test_publisher_state_persistence_rebases_before_push(self):
+        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        state_step = workflow.split("      - name: Persist duplicate-prevention state", 1)[1]
+        self.assertIn("git fetch origin main", state_step)
+        self.assertIn("git rebase origin/main", state_step)
+        self.assertIn("git push origin HEAD:main", state_step)
+
     def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
         workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
         self.assertTrue(workflow_path.exists())
