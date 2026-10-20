@@ -1,0 +1,87 @@
+name: Build authorized episode archive catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "Earliest release date (YYYY-MM-DD)"
+        required: true
+        default: "2026-09-01"
+        type: string
+      max_pages:
+        description: "Maximum SubsPlease release pages to inspect"
+        required: true
+        default: "100"
+        type: string
+  push:
+    branches:
+      - feature/episode-archive-backfill
+    paths:
+      - "tools/archive_catalog.py"
+      - "tests/test_archive_catalog.py"
+      - ".github/workflows/build-archive-catalog.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archive-catalog-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - name: Generate archive manifest
+        env:
+          ARCHIVE_SINCE: ${{ inputs.since || '2026-09-01' }}
+          ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
+        run: |
+          python tools/archive_catalog.py \
+            --since "$ARCHIVE_SINCE" \
+            --max-pages "$ARCHIVE_MAX_PAGES" \
+            --output data/archive_manifest.json \
+            --confirm-redistribution-rights
+      - name: Validate manifest and run tests
+        run: |
+          python -m unittest discover -s tests -v
+          python -m compileall -q app.py tools tests
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
+          if not isinstance(rows, list) or not rows:
+              raise SystemExit("Archive manifest is empty or invalid.")
+          if any(row.get("authorized_for_redistribution") is not True for row in rows):
+              raise SystemExit("Manifest contains an entry without explicit redistribution authorization.")
+          print(f"Validated {len(rows)} ordered archive entries.")
+          PY
+      - name: Commit generated manifest to this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- data/archive_manifest.json; then
+            echo "Manifest is unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/archive_manifest.json
+          git commit -m "data: refresh authorized episode archive manifest"
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Upload manifest for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: animehighbo-archive-manifest
+          path: data/archive_manifest.json
+          if-no-files-found: error
+          retention-days: 7
