@@ -1031,27 +1031,12 @@ def run() -> int:
         group_failed = False
         try:
             poster_identity = _poster_identity(group_id, archive_mode)
-            if poster_identity not in state["posters"]:
-                metadata = anime_catalog_metadata(group["title"])
-                if dry_run:
-                    LOG.info(
-                        "[DRY RUN] Would send poster + Persian synopsis first, then qualities: %s (%s)",
-                        group["title"], ", ".join(_quality_from_title(item["title"]) for item in entries),
-                    )
-                    continue
-                # Fail closed: no video is sent unless its poster has been published first.
-                poster_message_id = telegram_send_anime_poster(
-                    token, chat_id, group["title"], group["episode"], metadata
+            if poster_identity not in state["posters"] and dry_run:
+                LOG.info(
+                    "[DRY RUN] Would prepare the source and bilingual subtitles, then send poster + qualities: %s (%s)",
+                    group["title"], ", ".join(_quality_from_title(item["title"]) for item in entries),
                 )
-                state["posters"][poster_identity] = {
-                    "title": group["title"], "episode": group["episode"] or None,
-                    "message_id": poster_message_id, "published_at": int(time.time()),
-                }
-                save_state(config["state_file"], state)
-
-            poster_message_id = state["posters"][poster_identity].get("message_id")
-            if not poster_message_id:
-                raise RuntimeError("Poster state has no Telegram message ID; refusing to send ungrouped files.")
+                continue
 
             for entry in entries:
                 identity = entry["identity"]
@@ -1080,6 +1065,24 @@ def run() -> int:
                         process_bilingual_subtitles(media_path, bilingual_path, config.get("subtitle_stream_index"))
                         publish_path = bilingual_path
                         LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
+
+                    # Do not publish a poster-only entry when the source cannot be downloaded
+                    # or the bilingual subtitle pipeline fails. The first media preparation
+                    # must succeed before the poster is sent.
+                    if poster_identity not in state["posters"]:
+                        metadata = anime_catalog_metadata(group["title"])
+                        poster_message_id = telegram_send_anime_poster(
+                            token, chat_id, group["title"], group["episode"], metadata
+                        )
+                        state["posters"][poster_identity] = {
+                            "title": group["title"], "episode": group["episode"] or None,
+                            "message_id": poster_message_id, "published_at": int(time.time()),
+                        }
+                        save_state(config["state_file"], state)
+
+                    poster_message_id = state["posters"][poster_identity].get("message_id")
+                    if not poster_message_id:
+                        raise RuntimeError("Poster state has no Telegram message ID; refusing to send ungrouped files.")
 
                     source_quality = _quality_from_title(entry["title"])
                     variants = [
