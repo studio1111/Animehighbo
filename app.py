@@ -51,6 +51,14 @@ def load_config(path: str = "config.json") -> dict:
     config.setdefault("mode", "links")
     config.setdefault("bilingual_subtitles", False)
     config.setdefault("subtitle_stream_index", None)
+    config.setdefault("encode_h265", False)
+    config.setdefault("h265_crf", 24)
+    config.setdefault("h265_preset", "slow")
+    config.setdefault("burn_persian_subtitles", False)
+    if config["burn_persian_subtitles"] and not config["bilingual_subtitles"]:
+        raise ValueError("'burn_persian_subtitles' requires 'bilingual_subtitles' to be enabled.")
+    if config["burn_persian_subtitles"] and not config["encode_h265"]:
+        raise ValueError("'burn_persian_subtitles' requires 'encode_h265' to be enabled.")
     config.setdefault("poll_limit_per_feed", 30)
     config.setdefault("request_timeout_seconds", 30)
     return config
@@ -713,15 +721,34 @@ def run() -> int:
                 publish_path = media_path
                 if config.get("bilingual_subtitles", False):
                     from tools.bilingual_subtitles import process as process_bilingual_subtitles
-                    publish_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
-                    english_srt = publish_path.with_name(publish_path.stem + ".en.srt")
-                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
-                    generated_paths.extend([publish_path, english_srt, persian_srt])
+                    bilingual_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
+                    english_srt = bilingual_path.with_name(bilingual_path.stem + ".en.srt")
+                    persian_srt = bilingual_path.with_name(bilingual_path.stem + ".fa.srt")
+                    generated_paths.extend([bilingual_path, english_srt, persian_srt])
                     stream_index = config.get("subtitle_stream_index")
-                    process_bilingual_subtitles(media_path, publish_path, stream_index)
-                    if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
-                        raise ValueError("Bilingual MKV exceeds the configured media size limit.")
+                    process_bilingual_subtitles(media_path, bilingual_path, stream_index)
+                    publish_path = bilingual_path
                     LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
+
+                if config.get("encode_h265", False):
+                    from tools.video_encoder import encode_h265
+                    encoded_path = publish_path.with_name(publish_path.stem + ".h265.mkv")
+                    generated_paths.append(encoded_path)
+                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                    burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
+                    encode_h265(
+                        publish_path,
+                        encoded_path,
+                        crf=int(config.get("h265_crf", 24)),
+                        preset=str(config.get("h265_preset", "slow")),
+                        burn_subtitle=burn_subtitle,
+                    )
+                    publish_path = encoded_path
+                    LOG.info("Encoded and validated H.265 output%s.",
+                             " with burned-in Persian subtitles" if burn_subtitle else "")
+
+                if publish_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                    raise ValueError("Processed media exceeds the configured media size limit.")
                 file_hash = sha256_file(publish_path)
                 if file_hash in state["seen"]:
                     LOG.info("Skipping duplicate file hash: %s", entry["title"])

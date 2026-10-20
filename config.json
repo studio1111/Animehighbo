@@ -1,13 +1,17 @@
 {
-  "mode": "links",
+  "mode": "files",
   "feeds": [],
   "allowed_download_hosts": [],
   "max_file_size_mb": 45,
   "download_dir": "downloads",
   "state_file": "data/state.json",
   "dry_run": true,
-  "bilingual_subtitles": false,
+  "bilingual_subtitles": true,
   "subtitle_stream_index": null,
+  "encode_h265": true,
+  "h265_crf": 24,
+  "h265_preset": "slow",
+  "burn_persian_subtitles": true,
   "poll_limit_per_feed": 30,
   "request_timeout_seconds": 30
 }
