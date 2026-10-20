@@ -45,6 +45,13 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "allowed_download_hosts": ["media.example.org"],
             "torrent_sources": [],
         }))
+        self.assertTrue(has_file_media_source({
+            "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
+            "allowed_download_hosts": [],
+            "allowed_torrent_hosts": [],
+            "torrent_feed_hosts": ["subsplease.org"],
+            "torrent_sources": [],
+        }))
 
     def test_only_explicit_true_authorizes_a_torrent_source(self):
         source = {
@@ -200,6 +207,13 @@ class FeedParserTests(unittest.TestCase):
     def test_parses_rss_enclosure(self):
         xml = '''<?xml version="1.0"?><rss><channel><item><title>Episode 01</title><enclosure url="https://media.example.org/ep01.mkv" type="video/x-matroska"/><link>https://example.org/post</link></item></channel></rss>'''
         self.assertEqual(parse_feed(xml), [{"title": "Episode 01", "url": "https://media.example.org/ep01.mkv"}])
+
+    def test_parses_subsplease_rss_magnet_enclosure_as_source_url(self):
+        xml = '''<rss><channel><item><title>[SubsPlease] Test Anime - 03 (1080p) [ABC123].mkv</title><link>magnet:?xt=urn:btih:0123456789012345678901234567890123456789&amp;dn=Test</link><guid isPermaLink="false">ABC123</guid></item></channel></rss>'''
+        entries = parse_feed(xml)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["title"], "[SubsPlease] Test Anime - 03 (1080p) [ABC123].mkv")
+        self.assertTrue(entries[0]["url"].startswith("magnet:?xt=urn:btih:"))
 
     def test_parses_atom_enclosure(self):
         xml = '''<feed xmlns="http://www.w3.org/2005/Atom"><entry><title>Episode 02</title><link href="https://example.org/post"/><link rel="enclosure" href="https://media.example.org/ep02.mp4"/></entry></feed>'''
