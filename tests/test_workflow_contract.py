@@ -56,7 +56,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("workflow_run:", workflow)
         self.assertIn("types: [completed]", workflow)
         workflow_run_block = workflow.split("workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
-        self.assertNotIn("workflows:", workflow_run_block)
+        self.assertIn("workflows:", workflow_run_block)
+        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config"):
+            self.assertIn(f"- {name}", workflow_run_block)
         self.assertIn("group: animehighbo-run-retention", workflow)
         self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
 
