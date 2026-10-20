@@ -827,6 +827,18 @@ def load_archive_manifest(path: str) -> list[dict]:
         uri = torrent_source_uri(item)
         if not title or not uri:
             raise ValueError(f"Archive entry {index + 1} requires title and url/uri.")
+        parsed_uri = urlparse(uri)
+        uri_path = unquote(parsed_uri.path).lower()
+        is_torrent_source = (
+            parsed_uri.scheme.lower() == "magnet"
+            or (parsed_uri.scheme.lower() == "https" and uri_path.endswith(".torrent"))
+        )
+        if parsed_uri.scheme.lower() not in {"https", "magnet"}:
+            raise ValueError(f"Archive entry {index + 1} must use HTTPS or a Magnet URI.")
+        if parsed_uri.scheme.lower() == "https" and not is_torrent_source and Path(uri_path).suffix.lower() not in VIDEO_EXTENSIONS:
+            raise ValueError(
+                f"Archive entry {index + 1} HTTPS media URL must end in a supported video extension or .torrent."
+            )
         if item.get("authorized_for_redistribution") is not True:
             raise PermissionError(
                 f"Archive entry {index + 1} must explicitly set authorized_for_redistribution=true."
@@ -845,7 +857,7 @@ def load_archive_manifest(path: str) -> list[dict]:
             "url": uri,
             "feed": "episode archive manifest",
             "identity": identity,
-            "torrent_source": True,
+            "torrent_source": is_torrent_source,
             "authorized_for_redistribution": True,
             "archive_order": index,
         })
