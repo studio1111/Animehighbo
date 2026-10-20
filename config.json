@@ -3,7 +3,7 @@
   "feeds": [
     {
       "name": "RSS 1: subsplease.org",
-      "uri": "https://subsplease.org/rss/?r=1080"
+      "url": "https://subsplease.org/rss/?r=1080"
     }
   ],
   "allowed_download_hosts": [],
@@ -24,7 +24,7 @@
   "torrent_sources": [
     {
       "title": "[SubsPlease] PSYREN - 03 (1080p) [6DC795E8].mkv",
-      "uri": "magnet:?xt=urn:btih:OYICJHTON5KICNQS3CTV5A42RXYPLHFE&dn=%5BSubsPlease%5D%20PSYREN%20-%2003%20%281080p%29%20%5B6DC795E8%5D.mkv&xl=1443896586&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=http%3A%2F%2Ftracker.mywaifu.best%3A6969%2Fannounce&tr=https%3A%2F%2Ftracker.zhuqiy.com%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker.tryhackx.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fretracker.hotplug.ru%3A2710%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.com%3A6969%2Fannounce&tr=http%3A%2F%2Ftracker.beeimg.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ft.overflow.biz%3A6969%2Fannounce&tr=wss%3A%2F%2Ftracker.openwebtorrent.com",
+      "url": "magnet:?xt=urn:btih:OYICJHTON5KICNQS3CTV5A42RXYPLHFE&dn=%5BSubsPlease%5D%20PSYREN%20-%2003%20%281080p%29%20%5B6DC795E8%5D.mkv&xl=1443896586&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=http%3A%2F%2Ftracker.mywaifu.best%3A6969%2Fannounce&tr=https%3A%2F%2Ftracker.zhuqiy.com%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker.tryhackx.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fretracker.hotplug.ru%3A2710%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.com%3A6969%2Fannounce&tr=http%3A%2F%2Ftracker.beeimg.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ft.overflow.biz%3A6969%2Fannounce&tr=wss%3A%2F%2Ftracker.openwebtorrent.com",
       "authorized_for_redistribution": true
     }
   ]
