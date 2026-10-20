@@ -129,6 +129,8 @@ def encode_if_needed(source, english, persian, output, width, height):
             "-i", str(source), "-i", str(english), "-i", str(persian),
             "-map", "0:v:0", "-map", "0:a?", "-map", "1:0", "-map", "2:0",
             "-vf",
+            f"subtitles=filename='{persian.as_posix()}':force_style='FontName=Arial,FontSize=24,"
+            f"PrimaryColour=&H0000FFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=0.5,Shadow=0',"
             f"scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,"
             f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2",
             "-c:v", "libx265", "-preset", PRESET, "-crf", CRF,
