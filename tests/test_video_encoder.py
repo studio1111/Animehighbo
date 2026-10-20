@@ -49,6 +49,26 @@ class VideoEncoderTests(unittest.TestCase):
             self.assertIn("PrimaryColour=&H0000FFFF", " ".join(ffmpeg))
             self.assertIn("Outline=0.5", " ".join(ffmpeg))
 
+    def test_uses_controlled_video_and_audio_bitrates_and_resizes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source.mkv"
+            source.write_bytes(b"x" * 1200)
+            command = build_ffmpeg_command(
+                source, root / "output.mkv",
+                video_bitrate="1800k", audio_bitrate="128k", target_height=1080,
+            )
+        self.assertIn("1800k", command)
+        self.assertIn("128k", command)
+        self.assertIn("aac", command)
+        self.assertIn("scale=-2:1080:flags=lanczos", command)
+
+    def test_rejects_unsupported_output_height(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            with self.assertRaisesRegex(ValueError, "Target height"):
+                build_ffmpeg_command(root / "source.mkv", root / "output.mkv", target_height=360)
+
     def test_rejects_invalid_crf_and_preset(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

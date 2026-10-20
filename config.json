@@ -24,14 +24,18 @@
   "subtitle_stream_index": null,
   "encode_h265": true,
   "h265_crf": 24,
-  "h265_preset": "slow",
+  "h265_preset": "medium",
   "burn_persian_subtitles": true,
   "poll_limit_per_feed": 30,
   "request_timeout_seconds": 30,
-  "torrent_timeout_seconds": 18000,
+  "torrent_timeout_seconds": 7200,
   "torrent_sources": [],
   "torrent_feed_hosts": [
     "subsplease.org"
   ],
-  "max_episode_groups_per_run": 1
+  "max_episode_groups_per_run": 1,
+  "h265_bitrate_1080": "1650k",
+  "h265_bitrate_720": "900k",
+  "h265_bitrate_480": "500k",
+  "h265_audio_bitrate": "128k"
 }

@@ -5,9 +5,33 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank, _preferred_source)
 from tools.subsplease_monitor import parse_releases
 
+
+
+class PreferredSourceTests(unittest.TestCase):
+    def test_prefers_1080p_even_when_lower_quality_entries_come_first(self):
+        entries = [
+            {"title": "Sample - 01 [480p]"},
+            {"title": "Sample - 01 [720p]"},
+            {"title": "Sample - 01 [1080p]"},
+        ]
+        self.assertEqual(_preferred_source(entries)["title"], "Sample - 01 [1080p]")
+
+    def test_falls_back_to_720p_when_1080p_is_missing(self):
+        entries = [
+            {"title": "Sample - 01 [480p]"},
+            {"title": "Sample - 01 [720p]"},
+        ]
+        self.assertEqual(_preferred_source(entries)["title"], "Sample - 01 [720p]")
+
+    def test_never_selects_480p_or_unknown_quality(self):
+        entries = [
+            {"title": "Sample - 01 [480p]"},
+            {"title": "Sample - 01"},
+        ]
+        self.assertIsNone(_preferred_source(entries))
 
 
 class TorrentSourceConfigTests(unittest.TestCase):
