@@ -160,17 +160,17 @@ def _show_page_url(raw_release: dict) -> str:
 def _show_title_from_html(document: str, fallback: str = "") -> str:
     """Prefer the visible show heading over the SEO page title."""
     heading = re.search(
-        r"<h1\\b[^>]*class=[\"'][^\"']*\\bentry-title\\b[^\"']*[\"'][^>]*>(.*?)</h1>",
+        r"<h1\b[^>]*class=[\"'][^\"']*\bentry-title\b[^\"']*[\"'][^>]*>(.*?)</h1>",
         document, re.I | re.S,
     )
     if heading:
         title = unescape(re.sub(r"<[^>]+>", " ", heading.group(1)))
-        title = re.sub(r"\\s+", " ", title).strip()
+        title = re.sub(r"\s+", " ", title).strip()
         if title:
             return title
     page_title = re.search(r"<title[^>]*>(.*?)</title>", document, re.I | re.S)
     title = unescape(re.sub(r"<[^>]+>", " ", page_title.group(1))).strip() if page_title else ""
-    title = re.sub(r"\\s*(?:downloads?\\s*)?(?:[-–—|:]\\s*)?SubsPlease.*$", "", title, flags=re.I).strip()
+    title = re.sub(r"\s*(?:downloads?\s*)?(?:[-–—|:]\s*)?SubsPlease.*$", "", title, flags=re.I).strip()
     return title or fallback
 
 
