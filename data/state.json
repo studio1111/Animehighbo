@@ -48,13 +48,56 @@
       ],
       "source_quality": "1080p",
       "published_at": 1792515730
+    },
+    "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:1080p": {
+      "title": "Kimi ga Shinu made Koi wo Shitai",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b12ffb23f0a48276454988ef5ca446d80deca69323067a8887a37519d0a5d6b4",
+      "message_id": "32",
+      "published_at": 1792524235,
+      "bilingual_subtitles": true
+    },
+    "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:720p": {
+      "title": "Kimi ga Shinu made Koi wo Shitai",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "84af3b2420425f784e8d20369c3adc3419c0cb52ea014dffa0d1d1d4cc27ea27",
+      "message_id": "33",
+      "published_at": 1792525287,
+      "bilingual_subtitles": true
+    },
+    "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:480p": {
+      "title": "Kimi ga Shinu made Koi wo Shitai",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "cbcd2fd6389085197b304f9bf460e77415d092dc21263a720a552b3cab9c8907",
+      "message_id": "34",
+      "published_at": 1792525860,
+      "bilingual_subtitles": true
+    },
+    "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368": {
+      "title": "Kimi ga Shinu made Koi wo Shitai",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792525860
     }
   },
   "seen": {
     "50d94154b6a4284e9a13772d8b8af0973c0082d365965e726ce046a505337b5d": "0cf3718e4c96674f2be790b638f8af71ed31bd2b9b1235a7e0d932348d03deb9",
     "f2bfffe7c7dd98316dc9d6e86257678815c96331aa5336b9a684c5bbaaa9fc4f": "a1dac35ea704b054a93b597e4441ff193959ba78be1575e3f170cad66b2706a9:1080p",
     "6223544f29738bef5841c34b9c444ced8e0b0d631eedb57dfe9947ad7fc248c2": "a1dac35ea704b054a93b597e4441ff193959ba78be1575e3f170cad66b2706a9:720p",
-    "3bdae74e41593e3fe0ffa79b08f50ec55331f4a1cf6dfa0e320de2fed87a2146": "a1dac35ea704b054a93b597e4441ff193959ba78be1575e3f170cad66b2706a9:480p"
+    "3bdae74e41593e3fe0ffa79b08f50ec55331f4a1cf6dfa0e320de2fed87a2146": "a1dac35ea704b054a93b597e4441ff193959ba78be1575e3f170cad66b2706a9:480p",
+    "b12ffb23f0a48276454988ef5ca446d80deca69323067a8887a37519d0a5d6b4": "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:1080p",
+    "84af3b2420425f784e8d20369c3adc3419c0cb52ea014dffa0d1d1d4cc27ea27": "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:720p",
+    "cbcd2fd6389085197b304f9bf460e77415d092dc21263a720a552b3cab9c8907": "537feb0dac99a2db5dcfde8216ea928000096017d77bcac95e3f0b8a65c7b368:480p"
   },
   "posters": {
     "84afa2c54f68e6ff67c9e3e606b49dc70d18dd009c0b3a43cdf14711d3ddac45": {
@@ -68,6 +111,12 @@
       "episode": "03",
       "message_id": "27",
       "published_at": 1792510661
+    },
+    "archive:0a6f87482e207324a6ffe54f5924960ee7e087ecf01eee9823e01a634b9be1bf": {
+      "title": "Kimi ga Shinu made Koi wo Shitai",
+      "episode": "09",
+      "message_id": "31",
+      "published_at": 1792521402
     }
   }
 }
