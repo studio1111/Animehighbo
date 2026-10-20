@@ -22,6 +22,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Install aria2 for explicitly authorized torrent sources
+        run: |
+          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); sys.exit(0 if any(isinstance(x,dict) and x.get("authorized_for_redistribution") is True for x in c.get("torrent_sources", [])) else 1)'; then
+            sudo apt-get update
+            sudo apt-get install -y aria2
+          fi
       - name: Install optional media processing tools
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
