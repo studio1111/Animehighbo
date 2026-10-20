@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
+from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _quality_rank)
 from tools.subsplease_monitor import parse_releases
 
 
@@ -33,6 +33,18 @@ class TorrentSourceConfigTests(unittest.TestCase):
                 "uri": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             })
+
+    def test_file_pipeline_requires_direct_media_allowlist_or_authorized_torrent(self):
+        self.assertFalse(has_file_media_source({
+            "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
+            "allowed_download_hosts": [],
+            "torrent_sources": [],
+        }))
+        self.assertTrue(has_file_media_source({
+            "feeds": [{"url": "https://media.example.org/feed.xml"}],
+            "allowed_download_hosts": ["media.example.org"],
+            "torrent_sources": [],
+        }))
 
     def test_only_explicit_true_authorizes_a_torrent_source(self):
         source = {
