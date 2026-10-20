@@ -483,11 +483,13 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
     published_count = 0
+    failure_count = 0
     for feed in config["feeds"]:
         feed_url = str(feed.get("url", "")).strip()
         feed_name = str(feed.get("name", "Anime feed")).strip()
         parsed = urlparse(feed_url)
         if parsed.scheme != "https" or not parsed.hostname:
+            failure_count += 1
             LOG.error("Skipping feed with invalid HTTPS URL: %s", feed_name)
             continue
         try:
@@ -495,6 +497,7 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
             response.raise_for_status()
             entries = parse_episode_feed(response.text, int(config["poll_limit_per_feed"]))
         except Exception as exc:
+            failure_count += 1
             LOG.exception("Episode feed %s failed: %s", feed_name, exc)
             continue
 
@@ -537,7 +540,13 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                 published_count += 1
                 LOG.info("Published episode link: %s | episode=%s", anime_title, episode or "unknown")
             except Exception as exc:
+                failure_count += 1
                 LOG.exception("Failed to publish episode link %s: %s", entry["title"], exc)
+    if failure_count:
+        raise RuntimeError(
+            f"Link-mode run had {failure_count} feed/post failure(s); "
+            f"published {published_count} episode link(s)."
+        )
     LOG.info("Link-mode run complete. Published %d episode link(s).", published_count)
     return published_count
 
@@ -748,7 +757,11 @@ def run() -> int:
             return 0
         if not dry_run and (not token or not chat_id):
             raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
-        run_link_mode(config, state, dry_run, token, chat_id)
+        try:
+            run_link_mode(config, state, dry_run, token, chat_id)
+        except RuntimeError as exc:
+            LOG.error("Link-mode publisher failed: %s", exc)
+            return 1
         return 0
 
     if not has_file_media_source(config):
