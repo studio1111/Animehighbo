@@ -49,7 +49,9 @@ class WorkflowContractTests(unittest.TestCase):
     def test_retention_runs_daily_and_keeps_only_latest_thirty_runs(self):
         workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
         self.assertIn("cron: '43 4 * * *'", workflow)
-        self.assertIn("runs.slice(30)", workflow)
+        self.assertIn("completed.slice(30)", workflow)
+        self.assertIn('filter(run => run.status === "completed")', workflow)
+        self.assertIn("Active runs are never deleted.", workflow)
         self.assertIn("actions: write", workflow)
         self.assertIn("workflow_run:", workflow)
         self.assertIn("types: [completed]", workflow)
