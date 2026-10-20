@@ -1,4 +1,5 @@
 name: Retain latest 30 workflow runs
+# Apply the repository-wide 30-run cap immediately after changes, then daily.
 
 on:
   workflow_dispatch:
