@@ -198,16 +198,16 @@ jobs:
                   if key not in current_section:
                       current_section[key] = value
                   continue
-              if section == "published" and isinstance(value, dict):
-                  existing = current_section[key]
-                  required = {"1080p", "720p", "480p"}
-                  local_complete = required.issubset(set(value.get("complete_qualities", [])))
-                  existing_complete = (
-                      isinstance(existing, dict)
-                      and required.issubset(set(existing.get("complete_qualities", [])))
-                  )
-                  if local_complete and not existing_complete:
-                      current_section[key] = value
+                  if section == "published" and isinstance(value, dict):
+                      existing = current_section[key]
+                      required = {"1080p", "720p", "480p"}
+                      local_complete = required.issubset(set(value.get("complete_qualities", [])))
+                      existing_complete = (
+                          isinstance(existing, dict)
+                          and required.issubset(set(existing.get("complete_qualities", [])))
+                      )
+                      if local_complete and not existing_complete:
+                          current_section[key] = value
           state_path.parent.mkdir(parents=True, exist_ok=True)
           state_path.write_text(
               json.dumps(current, ensure_ascii=False, indent=2) + "\n",
