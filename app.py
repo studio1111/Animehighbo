@@ -1157,6 +1157,136 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                   episode_failures, published_count)
     return 0
 
+def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: str, chat_id: str) -> int:
+    """Publish valid episode bundles independently while preserving per-series order."""
+    root = Path(os.getenv("ANIMEHIGHBO_PREPARED_DIR", "prepared-artifacts"))
+    expected_day = os.getenv("ANIMEHIGHBO_RELEASE_DATE", "").strip()
+    manifest_paths = sorted(root.glob("episode-*/manifest.json"))
+    if not manifest_paths:
+        raise RuntimeError(f"No prepared episode manifests found under {root}.")
+
+    state.setdefault("published", {})
+    state.setdefault("seen", {})
+    state.setdefault("posters", {})
+    try:
+        catalog = load_archive_manifest(str(config.get("archive_manifest", "data/archive_manifest.json")))
+    except (OSError, ValueError, PermissionError) as exc:
+        LOG.warning("Could not load episode-order catalog; only ordering evidence in prepared bundles is available: %s", exc)
+        catalog = []
+
+    episodes = []
+    invalid_bundles = []
+    for manifest_path in manifest_paths:
+        try:
+            episode = _validate_prepared_episode(manifest_path, config, state, expected_day)
+            if episode is not None:
+                episodes.append(episode)
+        except Exception as exc:
+            invalid_bundles.append((manifest_path, str(exc)))
+            LOG.error("Holding invalid episode bundle %s: %s", manifest_path.parent.name, exc)
+
+    if not episodes:
+        if invalid_bundles:
+            raise RuntimeError(
+                "No valid prepared episode bundles are publishable. First bundle error: "
+                + invalid_bundles[0][1]
+            )
+        LOG.info("No unpublished prepared episodes remain.")
+        return 0
+
+    episodes.sort(key=lambda item: (
+        str(item.get("series_title") or item.get("title") or "").casefold(),
+        _series_episode_parts(str(item.get("series_title") or item.get("title") or ""), item.get("episode"))[1] or 0,
+        item["release_date"],
+        str(item.get("identity") or ""),
+    ))
+
+    if dry_run:
+        LOG.info("[DRY RUN] Validated %d prepared episodes; no Telegram posts sent.", len(episodes))
+        return 0
+
+    published_count = 0
+    episode_failures = 0
+    for episode in episodes:
+        identity = str(episode["identity"])
+        title = str(episode.get("title") or "")
+        episode_number = str(episode.get("episode") or "")
+        poster_identity = str(episode.get("poster_identity") or "")
+        group_id = str(episode.get("group_id") or "")
+        if not poster_identity or not group_id:
+            episode_failures += 1
+            LOG.error("Holding prepared episode with missing poster identity: %s", title)
+            continue
+        if not _episode_predecessors_complete(episode, state, catalog):
+            LOG.info("Holding %s episode %s until known prior episodes are fully published.", title, episode_number)
+            continue
+
+        try:
+            if not state["posters"].get(poster_identity, {}).get("message_id"):
+                metadata = anime_catalog_metadata(title)
+                poster_message_id = telegram_send_anime_poster(
+                    token, chat_id, title, episode_number, metadata
+                )
+                state["posters"][poster_identity] = {
+                    "title": title,
+                    "episode": episode_number or None,
+                    "message_id": poster_message_id,
+                    "published_at": int(time.time()),
+                    "release_date": episode["release_date"],
+                }
+                save_state(config["state_file"], state)
+
+            poster_message_id = state["posters"][poster_identity].get("message_id")
+            if not poster_message_id:
+                raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
+
+            for quality in ("1080p", "720p", "480p"):
+                output_identity = f"{identity}:{quality}"
+                if output_identity in state["published"]:
+                    continue
+                output = episode["files"][quality]
+                file_hash = output["sha256"]
+                duplicate_of = state["seen"].get(file_hash)
+                if duplicate_of and duplicate_of != output_identity:
+                    raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
+                message_id = telegram_upload_and_send(
+                    token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
+                    reply_to_message_id=poster_message_id,
+                )
+                state["seen"][file_hash] = output_identity
+                state["published"][output_identity] = {
+                    "title": title,
+                    "quality": quality,
+                    "source_quality": episode.get("source_quality", "1080p"),
+                    "feed": episode.get("feed", "episode archive manifest"),
+                    "file_sha256": file_hash,
+                    "message_id": message_id,
+                    "published_at": int(time.time()),
+                    "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+                }
+                save_state(config["state_file"], state)
+                published_count += 1
+
+            state["published"][identity] = {
+                "title": title,
+                "complete_qualities": ["1080p", "720p", "480p"],
+                "source_quality": episode.get("source_quality", "1080p"),
+                "published_at": int(time.time()),
+                "release_date": episode["release_date"],
+            }
+            save_state(config["state_file"], state)
+            LOG.info("Completed episode %s (%s); published %d quality file(s).",
+                     title, episode_number, published_count)
+        except Exception as exc:
+            episode_failures += 1
+            LOG.exception("Failed to publish %s episode %s; unrelated episodes will continue: %s",
+                          title, episode_number, exc)
+
+    if episode_failures:
+        LOG.error("Publisher finished with %d episode-local failure(s); %d video file(s) were sent.",
+                  episode_failures, published_count)
+    return published_count
+
 
 def run() -> int:
     logging.basicConfig(
