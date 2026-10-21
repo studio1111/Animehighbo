@@ -11,6 +11,7 @@ from tools.bilingual_subtitles import (
     choose_english_stream,
     parse_srt,
     render_srt,
+    render_ass,
     translate_cues,
 )
 
@@ -32,6 +33,17 @@ Hello there.
         rendered = render_srt(cues)
         self.assertIn("00:00:03,000 --> 00:00:04,000", rendered)
         self.assertIn("<i>Run!</i>", rendered)
+
+
+    def test_persian_ass_track_is_soft_subtitle_with_yellow_text_and_thin_black_outline(self):
+        cues = [Cue(1, "00:00:01,000 --> 00:00:02,500", "سلام دنیا")]
+        rendered = render_ass(cues)
+        self.assertIn("[V4+ Styles]", rendered)
+        self.assertIn("PrimaryColour,&H0000FFFF", rendered)
+        self.assertIn("OutlineColour,&H00000000", rendered)
+        self.assertIn("Persian,Noto Sans Arabic", rendered)
+        self.assertIn("Dialogue: 0,0:00:01.00,0:00:02.50,Persian", rendered)
+        self.assertIn("سلام دنیا", rendered)
 
     def test_parser_ignores_invalid_blocks_and_rejects_empty_file(self):
         self.assertEqual(len(parse_srt("header\n\n1\n00:00:01,000 --> 00:00:02,000\nHi")), 1)
