@@ -1,7 +1,7 @@
 import hashlib
 import unittest
 
-from tools.episode_queue import select_next_episode_tier
+from tools.episode_queue import select_next_upload_date
 
 
 def row(title, episode, day, uri=None):
@@ -14,70 +14,70 @@ def row(title, episode, day, uri=None):
     }
 
 
-class EpisodeQueueTests(unittest.TestCase):
-    def test_selects_every_episode_one_across_dates_before_any_episode_two(self):
+class UploadDateQueueTests(unittest.TestCase):
+    def test_oldest_site_upload_date_wins_regardless_of_episode_number(self):
         manifest = [
-            row("Series A - 02", 2, "2026-10-12"),
-            row("Series B - 01", 1, "2026-10-05"),
-            row("Series A - 01", 1, "2026-10-05"),
-            row("Series C - 01", 1, "2026-10-06"),
-            row("Series B - 02", 2, "2026-10-12"),
+            row("Delayed show - 01", 1, "2026-10-12"),
+            row("Older show - 08", 8, "2026-10-05"),
+            row("New show - 01", 1, "2026-10-10"),
+            row("Older show - 09", 9, "2026-10-05"),
         ]
 
-        tier, selected = select_next_episode_tier(manifest, {"published": {}})
+        upload_date, selected = select_next_upload_date(manifest, {"published": {}})
 
-        self.assertEqual(tier, 1)
+        self.assertEqual(upload_date, "2026-10-05")
         self.assertEqual(
             [item["title"] for item in selected],
-            ["Series A - 01", "Series B - 01", "Series C - 01"],
+            ["Older show - 08", "Older show - 09"],
         )
-        self.assertTrue(all(item["episode"] == 1 for item in selected))
 
-    def test_skips_completed_episode_ones_but_does_not_advance_to_episode_two_while_any_episode_one_remains(self):
-        finished = row("Series A - 01", 1, "2026-10-05")
+    def test_all_items_from_oldest_upload_date_are_selected_even_when_episode_numbers_differ(self):
+        manifest = [
+            row("Series Z - 02", 2, "2026-10-05"),
+            row("Series A - 07", 7, "2026-10-05"),
+            row("Series B - 01", 1, "2026-10-06"),
+        ]
+
+        upload_date, selected = select_next_upload_date(manifest, {"published": {}})
+
+        self.assertEqual(upload_date, "2026-10-05")
+        self.assertEqual([item["title"] for item in selected], ["Series A - 07", "Series Z - 02"])
+
+    def test_completed_oldest_entries_are_skipped_and_next_upload_date_is_selected(self):
+        finished = row("Oldest show - 05", 5, "2026-10-05")
         finished_id = hashlib.sha256(("archive:" + finished["uri"]).encode()).hexdigest()
         manifest = [
             finished,
-            row("Series B - 01", 1, "2026-10-05"),
-            row("Series C - 01", 1, "2026-10-06"),
+            row("Next date show - 01", 1, "2026-10-06"),
+            row("Same next date show - 12", 12, "2026-10-06"),
         ]
-        state = {"published": {finished_id: {"complete_qualities": ["1080p", "720p", "480p"]}}}
+        state = {"published": {
+            finished_id: {"complete_qualities": ["1080p", "720p", "480p"]}
+        }}
 
-        tier, selected = select_next_episode_tier(manifest, state)
+        upload_date, selected = select_next_upload_date(manifest, state)
 
-        self.assertEqual(tier, 1)
-        self.assertEqual([item["title"] for item in selected], ["Series B - 01", "Series C - 01"])
+        self.assertEqual(upload_date, "2026-10-06")
+        self.assertEqual(
+            [item["title"] for item in selected],
+            ["Next date show - 01", "Same next date show - 12"],
+        )
 
     def test_returns_empty_when_every_episode_is_complete(self):
-        item = row("Series A - 01", 1, "2026-10-05")
+        item = row("Series - 01", 1, "2026-10-05")
         identity = hashlib.sha256(("archive:" + item["uri"]).encode()).hexdigest()
 
-        tier, selected = select_next_episode_tier(
+        upload_date, selected = select_next_upload_date(
             [item],
             {"published": {identity: {"complete_qualities": ["1080p", "720p", "480p"]}}},
         )
 
-        self.assertEqual(tier, None)
+        self.assertIsNone(upload_date)
         self.assertEqual(selected, [])
 
-    def test_episode_two_waits_until_all_episode_ones_are_complete(self):
-        episode_one = row("Series A - 01", 1, "2026-10-10")
-        episode_two = row("Series A - 02", 2, "2026-10-17")
-        episode_one_b = row("Series B - 01", 1, "2026-10-18")
-        state = {"published": {
-            hashlib.sha256(("archive:" + episode_one["uri"]).encode()).hexdigest(): {
-                "complete_qualities": ["1080p", "720p", "480p"]
-            }
-        }}
-
-        tier, selected = select_next_episode_tier([episode_one, episode_two, episode_one_b], state)
-
-        self.assertEqual(tier, 1)
-        self.assertEqual([item["title"] for item in selected], ["Series B - 01"])
-
-    def test_fails_closed_when_manifest_contains_pre_cutoff_episodes(self):
+    def test_fails_closed_when_manifest_contains_pre_cutoff_uploads(self):
         with self.assertRaisesRegex(ValueError, "predates configured archive cutoff"):
-            select_next_episode_tier(
+            select_next_upload_date(
                 [row("Old Series - 01", 1, "2023-10-07")],
                 {"published": {}},
                 cutoff_date="2026-09-01",
@@ -85,7 +85,10 @@ class EpisodeQueueTests(unittest.TestCase):
 
     def test_fails_closed_when_upload_date_is_missing(self):
         with self.assertRaisesRegex(ValueError, "release_date"):
-            select_next_episode_tier([{"title": "Series - 01", "uri": "magnet:?xt=urn:btih:abc"}], {})
+            select_next_upload_date(
+                [{"title": "Series", "uri": "magnet:?xt=urn:btih:abc"}],
+                {},
+            )
 
 
 if __name__ == "__main__":
