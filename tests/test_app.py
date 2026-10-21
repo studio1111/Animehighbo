@@ -528,7 +528,9 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             "episodes": 16,
             "isAdult": False,
         }
-        with patch("app.translate_title_to_persian", return_value="حمله به تایتان"):
+        with patch("app.translate_title_to_persian", return_value="حمله به تایتان"), patch(
+            "app.anime_japanese_title", return_value="Shingeki no Kyojin"
+        ):
             caption = build_episode_caption("Attack on Titan Episode 01 720p", "01", metadata=metadata)
         self.assertIn("حمله به تایتان", caption)
         self.assertIn("@Animehighbo", caption)
