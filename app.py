@@ -1020,73 +1020,86 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
         return 0
 
     published_count = 0
+    publication_failure_count = 0
     for episode in episodes:
-        identity = episode["identity"]
-        title = str(episode.get("title") or "")
-        episode_number = str(episode.get("episode") or "")
-        poster_identity = str(episode.get("poster_identity") or "")
-        group_id = str(episode.get("group_id") or "")
-        if not poster_identity or not group_id:
-            raise ValueError(f"Prepared episode is missing poster identity: {title}")
+        try:
+            identity = episode["identity"]
+            title = str(episode.get("title") or "")
+            episode_number = str(episode.get("episode") or "")
+            poster_identity = str(episode.get("poster_identity") or "")
+            group_id = str(episode.get("group_id") or "")
+            if not poster_identity or not group_id:
+                raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
-        if not state["posters"].get(poster_identity, {}).get("message_id"):
-            metadata = anime_catalog_metadata(title)
-            poster_message_id = telegram_send_anime_poster(
-                token, chat_id, title, episode_number, metadata
-            )
-            state["posters"][poster_identity] = {
+            if not state["posters"].get(poster_identity, {}).get("message_id"):
+                metadata = anime_catalog_metadata(title)
+                poster_message_id = telegram_send_anime_poster(
+                    token, chat_id, title, episode_number, metadata
+                )
+                state["posters"][poster_identity] = {
+                    "title": title,
+                    "episode": episode_number or None,
+                    "message_id": poster_message_id,
+                    "published_at": int(time.time()),
+                    "release_date": episode["release_date"],
+                }
+                save_state(config["state_file"], state)
+
+            poster_message_id = state["posters"][poster_identity].get("message_id")
+            if not poster_message_id:
+                raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
+
+            for quality in ("1080p", "720p", "480p"):
+                output_identity = f"{identity}:{quality}"
+                if output_identity in state["published"]:
+                    continue
+                output = episode["files"].get(quality)
+                if output is None:
+                    raise RuntimeError(f"Missing prepared {quality} output for {title}.")
+                file_hash = output["sha256"]
+                duplicate_of = state["seen"].get(file_hash)
+                if duplicate_of and duplicate_of != output_identity:
+                    raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
+                message_id = telegram_upload_and_send(
+                    token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
+                    reply_to_message_id=poster_message_id,
+                )
+                state["seen"][file_hash] = output_identity
+                state["published"][output_identity] = {
+                    "title": title,
+                    "quality": quality,
+                    "source_quality": episode.get("source_quality", "1080p"),
+                    "feed": episode.get("feed", "episode archive manifest"),
+                    "file_sha256": file_hash,
+                    "message_id": message_id,
+                    "published_at": int(time.time()),
+                    "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+                }
+                save_state(config["state_file"], state)
+                published_count += 1
+                LOG.info("Published %s %s as a reply to poster %s", title, quality, poster_message_id)
+
+            state["published"][identity] = {
                 "title": title,
-                "episode": episode_number or None,
-                "message_id": poster_message_id,
+                "complete_qualities": ["1080p", "720p", "480p"],
+                "source_quality": episode.get("source_quality", "1080p"),
                 "published_at": int(time.time()),
                 "release_date": episode["release_date"],
             }
             save_state(config["state_file"], state)
-
-        poster_message_id = state["posters"][poster_identity].get("message_id")
-        if not poster_message_id:
-            raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
-
-        for quality in ("1080p", "720p", "480p"):
-            output_identity = f"{identity}:{quality}"
-            if output_identity in state["published"]:
-                continue
-            output = episode["files"].get(quality)
-            if output is None:
-                raise RuntimeError(f"Missing prepared {quality} output for {title}.")
-            file_hash = output["sha256"]
-            duplicate_of = state["seen"].get(file_hash)
-            if duplicate_of and duplicate_of != output_identity:
-                raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
-            message_id = telegram_upload_and_send(
-                token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
-                reply_to_message_id=poster_message_id,
-            )
-            state["seen"][file_hash] = output_identity
-            state["published"][output_identity] = {
-                "title": title,
-                "quality": quality,
-                "source_quality": episode.get("source_quality", "1080p"),
-                "feed": episode.get("feed", "episode archive manifest"),
-                "file_sha256": file_hash,
-                "message_id": message_id,
-                "published_at": int(time.time()),
-                "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
-            }
-            save_state(config["state_file"], state)
-            published_count += 1
-            LOG.info("Published %s %s as a reply to poster %s", title, quality, poster_message_id)
-
-        state["published"][identity] = {
-            "title": title,
-            "complete_qualities": ["1080p", "720p", "480p"],
-            "source_quality": episode.get("source_quality", "1080p"),
-            "published_at": int(time.time()),
-            "release_date": episode["release_date"],
-        }
-        save_state(config["state_file"], state)
-        LOG.info("Completed episode %s (episode tier %s, source upload date %s).",
-                 title, episode.get("episode"), episode["release_date"])
+            LOG.info("Completed episode %s (episode tier %s, source upload date %s).",
+                     title, episode.get("episode"), episode["release_date"])
+        except OSError:
+            # State-file I/O failures are global safety failures; stop rather than
+            # continue with unpersisted duplicate-prevention state.
+            raise
+        except Exception as exc:
+            publication_failure_count += 1
+            LOG.exception("Publishing episode %s failed; continuing with unrelated episodes: %s",
+                          episode.get("title", episode.get("identity", "unknown")), exc)
+    if publication_failure_count:
+        LOG.error("%d prepared episode(s) failed during Telegram publishing and remain eligible for retry.",
+                  publication_failure_count)
     return published_count
 
 def run() -> int:
