@@ -312,7 +312,9 @@ class GeminiSubtitleTranslator:
         if not cues:
             return []
         translated: list[Cue] = []
-        batch_size = 500
+        # Keep each structured response small enough to avoid Gemini truncating JSON.
+        # Real episode subtitle tracks commonly contain hundreds or thousands of cues.
+        batch_size = 40
         for offset in range(0, len(cues), batch_size):
             batch = cues[offset:offset + batch_size]
             context = f"translation cues {batch[0].index}-{batch[-1].index}"
