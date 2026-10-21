@@ -101,6 +101,20 @@ class UploadDateQueueTests(unittest.TestCase):
             ["Series B - 01", "Series A - 01"],
         )
 
+    def test_target_series_filter_only_queues_that_series_next_episode(self):
+        manifest = [
+            row("Series A - 01", 1, "2026-10-10"),
+            row("Series A - 02", 2, "2026-10-11"),
+            row("Series B - 01", 1, "2026-10-12"),
+        ]
+
+        upload_date, selected = select_next_upload_date(
+            manifest, {"published": {}}, target_series="series a::season-1"
+        )
+
+        self.assertEqual(upload_date, "2026-10-10")
+        self.assertEqual([item["title"] for item in selected], ["Series A - 01"])
+
     def test_episode_two_is_released_after_episode_one_is_complete(self):
         first = row("Series A - 01", 1, "2026-10-10")
         second = row("Series A - 02", 2, "2026-10-11")
