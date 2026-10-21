@@ -422,7 +422,12 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
             details.append("استودیو: " + "، ".join(names))
     if media.get("isAdult") is True:
         details.append("رده‌بندی: بزرگسال")
-    lines = [f"🎬 <b>{_safe_caption_text(english_title)}</b> | <b>{_safe_caption_text(persian_title)}</b>"]
+    japanese_title = str(titles.get("native") or "").strip() or "日本語タイトル未登録"
+    lines = [
+        f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
+        f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title)}",
+        f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title)}",
+    ]
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
     lines.extend(f"ℹ️ {_safe_caption_text(item)}" for item in details)
