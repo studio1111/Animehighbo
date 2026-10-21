@@ -188,33 +188,45 @@ class GeminiSubtitleTranslator:
         self._last_request_at = now
 
     def _generate_json(self, body: dict, context: str) -> dict:
-        """Retry transient errors with the same key; never rotate or log credentials."""
+        """Retry transient errors and fall back on 503 using the same API key."""
         errors = []
-        for attempt in range(5):
-            try:
-                self._wait_for_request_slot()
-                response = requests.post(
-                    self.endpoint,
-                    params={"key": self.api_key},
-                    json=body,
-                    timeout=(20, 120),
-                )
-            except requests.RequestException:
-                errors.append("network error")
-                if attempt < 2:
-                    time.sleep(2 ** attempt)
-                    continue
-                break
+        primary_model = self.model
+        fallback_model = "gemini-2.5-flash-lite" if primary_model != "gemini-2.5-flash-lite" else None
+        models = [primary_model] + ([fallback_model] if fallback_model else [])
+        last_response = None
 
-            if response.status_code == 429 or response.status_code in {500, 502, 503, 504}:
-                errors.append(f"HTTP {response.status_code}")
-                provider_delay = self._retry_delay_from_body(response) if response.status_code == 429 else None
-                if provider_delay is not None and provider_delay > 300:
-                    errors.append(f"provider cooldown {provider_delay:.0f}s; stopping retries")
+        for model_index, model in enumerate(models):
+            self.endpoint = (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                f"{model}:generateContent"
+            )
+            switch_after_503 = False
+
+            for attempt in range(5):
+                try:
+                    self._wait_for_request_slot()
+                    response = requests.post(
+                        self.endpoint,
+                        params={"key": self.api_key},
+                        json=body,
+                        timeout=(20, 120),
+                    )
+                    last_response = response
+                except requests.RequestException:
+                    errors.append(f"{model}: network error")
+                    if attempt < 2:
+                        time.sleep(2 ** attempt)
+                        continue
                     break
-                max_attempts = 3 if response.status_code == 429 else 5
-                if attempt + 1 < max_attempts:
-                    if response.status_code == 429:
+
+                status = response.status_code
+                if status == 429:
+                    errors.append(f"{model}: HTTP 429")
+                    provider_delay = self._retry_delay_from_body(response)
+                    if provider_delay is not None and provider_delay > 300:
+                        errors.append(f"provider cooldown {provider_delay:.0f}s; stopping retries")
+                        break
+                    if attempt < 2:
                         retry_after = response.headers.get("Retry-After", "")
                         try:
                             delay = min(60.0, max(0.0, float(retry_after)))
@@ -228,35 +240,53 @@ class GeminiSubtitleTranslator:
                                     max(0.0, (retry_time - datetime.now(timezone.utc)).total_seconds()),
                                 )
                             except (TypeError, ValueError, OverflowError):
-                                if provider_delay is not None:
-                                    delay = min(60.0, provider_delay)
-                                else:
-                                    delay = min(30.0, 2.0 ** (attempt + 1))
-                    else:
-                        delay = min(30.0, 2.0 ** attempt)
-                    time.sleep(delay)
-                    continue
-                break
+                                delay = min(60.0, provider_delay) if provider_delay is not None else min(30.0, 2.0 ** (attempt + 1))
+                        time.sleep(delay)
+                        continue
+                    break
 
-            try:
-                response.raise_for_status()
-            except requests.RequestException as exc:
-                raise RuntimeError(
-                    f"Gemini request failed during {context} (HTTP {response.status_code})."
-                ) from exc
+                if status in {500, 502, 503, 504}:
+                    errors.append(f"{model}: HTTP {status}")
+                    if attempt < 4:
+                        time.sleep(min(30.0, 2.0 ** attempt))
+                        continue
+                    if status == 503 and model_index == 0 and fallback_model:
+                        errors.append(f"{model}: service unavailable; switching to {fallback_model}")
+                        switch_after_503 = True
+                    break
 
-            try:
-                data = response.json()
-                parts = data["candidates"][0]["content"]["parts"]
-                raw_text = "".join(part.get("text", "") for part in parts)
-                decoded = json.loads(raw_text)
-                if not isinstance(decoded, dict):
-                    raise ValueError("Expected a JSON object.")
-            except (ValueError, KeyError, TypeError, IndexError) as exc:
-                raise RuntimeError(f"Gemini returned invalid JSON during {context}.") from exc
-            return decoded
+                try:
+                    response.raise_for_status()
+                except requests.RequestException as exc:
+                    raise RuntimeError(
+                        f"Gemini request failed during {context} (HTTP {status})."
+                    ) from exc
 
-        detail = self._safe_api_error(response) if "response" in locals() and response.status_code == 429 else ""
+                try:
+                    data = response.json()
+                    parts = data["candidates"][0]["content"]["parts"]
+                    raw_text = "".join(part.get("text", "") for part in parts)
+                    decoded = json.loads(raw_text)
+                    if not isinstance(decoded, dict):
+                        raise ValueError("Expected a JSON object.")
+                except (ValueError, KeyError, TypeError, IndexError) as exc:
+                    raise RuntimeError(f"Gemini returned invalid JSON during {context}.") from exc
+
+                if model != primary_model:
+                    self.model = model
+                return decoded
+
+            if switch_after_503:
+                continue
+            # A quota response, network failure, or non-503 provider error should not
+            # silently change models; stop and report the actual failure.
+            break
+
+        detail = (
+            self._safe_api_error(last_response)
+            if last_response is not None and last_response.status_code == 429
+            else ""
+        )
         suffix = f" ({detail})" if detail else ""
         raise RuntimeError(
             f"Gemini failed during {context} after bounded retries ({', '.join(errors) or 'no response'}). "
