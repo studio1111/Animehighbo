@@ -49,9 +49,14 @@ def series_identity(entry: dict) -> str | None:
         if season_match:
             season = int(season_match.group(1))
         else:
-            # Season one is accepted only when the manifest explicitly provides a clean
-            # series title and episode number, rather than trying to parse a vague title.
-            if not str(entry.get("series_title") or "").strip():
+            # A season-one default is allowed only for a title with an explicit
+            # conventional "Series - NN" episode suffix, or explicit series metadata.
+            explicit_episode_suffix = re.search(
+                r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))",
+                raw_title,
+                re.I,
+            )
+            if not str(entry.get("series_title") or "").strip() and not explicit_episode_suffix:
                 return None
             season = 1
     try:
@@ -133,10 +138,13 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
 def select_next_upload_date(
     manifest: list[dict], state: dict, cutoff_date: str | None = None
 ) -> tuple[str | None, list[dict]]:
+    """Select the oldest eligible upload date while respecting per-series episode order."""
     if not isinstance(manifest, list) or not manifest:
         return None, []
     cutoff = date.fromisoformat(cutoff_date) if cutoff_date else None
     published = state.get("published", {}) if isinstance(state, dict) else {}
+    if not isinstance(published, dict):
+        published = {}
     normalized = []
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
@@ -157,20 +165,76 @@ def select_next_upload_date(
                 f"Archive entry {index + 1} predates configured archive cutoff {cutoff.isoformat()}: {title}"
             )
         identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
-        record = published.get(identity, {}) if isinstance(published, dict) else {}
+        record = published.get(identity, {})
         if _is_complete(record):
             continue
+
+        series_title = str(row.get("series_title") or "").strip()
+        season = row.get("season")
+        if not series_title:
+            raw = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title)
+            raw = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", raw)
+            raw = re.sub(r"\s*\[[^\]]*\]\s*$", "", raw).strip()
+            match = re.match(
+                r"^(.*?)\s+-\s+(\d{1,4}(?:\.\d+)?)(?=\s*(?:\(|\[|$))",
+                raw,
+                re.I,
+            )
+            if match:
+                series_title = match.group(1).strip(" -–—")
+            else:
+                season_match = re.search(r"(?i)^(.*?)\s+S(\d{1,2})\s*E\d{1,4}\b", raw)
+                if season_match:
+                    series_title = season_match.group(1).strip(" -–—")
+                    season = int(season_match.group(2))
+        if season in (None, ""):
+            season = 1 if series_title else None
+        try:
+            season_number = int(season) if season is not None else 0
+        except (TypeError, ValueError):
+            season_number = 0
+        if not series_title or season_number < 1:
+            # Ambiguous identity is held rather than guessed.
+            continue
+
         normalized.append({
             "identity": identity,
             "title": title,
             "url": uri,
             "release_date": day,
             "episode": episode_number,
+            "series_title": series_title,
+            "season": season_number,
         })
+
     if not normalized:
         return None, []
-    oldest_upload_date = min(row["release_date"] for row in normalized)
-    selected = [row for row in normalized if row["release_date"] == oldest_upload_date]
+    counts: dict[tuple[str, int, int], int] = {}
+    for row in normalized:
+        key = (row["series_title"].casefold(), row["season"], row["episode"])
+        counts[key] = counts.get(key, 0) + 1
+
+    eligible = []
+    for row in normalized:
+        series_key = (row["series_title"].casefold(), row["season"])
+        episode_key = (*series_key, row["episode"])
+        if counts[episode_key] != 1:
+            continue
+        blocked = False
+        for earlier in normalized:
+            earlier_series = (earlier["series_title"].casefold(), earlier["season"])
+            if earlier_series != series_key or earlier["episode"] >= row["episode"]:
+                continue
+            if not _is_complete(published.get(earlier["identity"], {})):
+                blocked = True
+                break
+        if not blocked:
+            eligible.append(row)
+
+    if not eligible:
+        return None, []
+    oldest_upload_date = min(row["release_date"] for row in eligible)
+    selected = [row for row in eligible if row["release_date"] == oldest_upload_date]
     selected.sort(key=lambda row: (row["title"].casefold(), row["identity"]))
     return oldest_upload_date, selected
 
