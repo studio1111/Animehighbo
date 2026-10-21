@@ -1,0 +1,39 @@
+name: Stop dispatcher with exhausted Gemini model
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cancel-stale-run.yml'
+permissions:
+  actions: write
+  contents: read
+jobs:
+  stop-old-model-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Cancel only the verified run pinned to the exhausted model
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runId = 39596807217;
+            const expectedSha = "e080f34a7b51941a4efc862f70dee7b8dc9f245d";
+            const result = await github.rest.actions.getWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId
+            });
+            const run = result.data;
+            core.info(`Verified run ${run.id}: ${run.name}, status=${run.status}, SHA=${run.head_sha}`);
+            if (run.name !== "Animehighbo episode dispatcher" || run.head_sha !== expectedSha) {
+              core.setFailed("Target identity mismatch; refusing to cancel.");
+            } else if (["queued", "in_progress", "pending", "waiting"].includes(run.status)) {
+              await github.rest.actions.cancelWorkflowRun({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: runId
+              });
+              core.info("Cancellation requested for run pinned to exhausted Gemini model.");
+            } else {
+              core.info("Run already terminal; no cancellation needed.");
+            }
