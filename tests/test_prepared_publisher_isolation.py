@@ -119,6 +119,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             with patch.dict(os.environ, {
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
+                "ANIMEHIGHBO_PUBLISH_EVENTS_FILE": str(root / "publish-events.json"),
             }), patch.object(app, "telegram_send_anime_poster", return_value="poster-message") as poster, patch.object(
                 app, "telegram_upload_and_send", side_effect=["1080-message", "720-message", "480-message"]
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
