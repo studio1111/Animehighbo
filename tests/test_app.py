@@ -5,9 +5,50 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source)
+from app import (allowed_media_url, anime_japanese_title, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source)
 from tools.subsplease_monitor import parse_releases
 
+
+
+
+class JapaneseRomajiTitleTests(unittest.TestCase):
+    def test_prefers_anilist_romaji_over_japanese_script(self):
+        self.assertEqual(
+            anime_japanese_title("Demon Slayer", {
+                "title": {
+                    "english": "Demon Slayer",
+                    "romaji": "Kimetsu no Yaiba",
+                    "native": "鬼滅の刃",
+                }
+            }),
+            "Kimetsu no Yaiba",
+        )
+
+    @patch("app.requests.get")
+    def test_jikan_fallback_returns_latin_romaji_title(self, get):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {
+            "data": [{
+                "title_english": "Demon Slayer",
+                "title": "Kimetsu no Yaiba",
+                "titles": [{"title": "鬼滅の刃"}],
+            }]
+        }
+        get.return_value = response
+        self.assertEqual(anime_japanese_title("Demon Slayer", {"title": {"english": "Demon Slayer"}}),
+                         "Kimetsu no Yaiba")
+
+    def test_japanese_title_caption_labels_romaji_explicitly(self):
+        caption = build_episode_caption(
+            "Demon Slayer - 01 (1080p)",
+            {"title": {"english": "Demon Slayer", "romaji": "Kimetsu no Yaiba", "native": "鬼滅の刃"}},
+            "پوستر آزمایشی",
+        )
+        self.assertIn("English:", caption)
+        self.assertIn("فارسی:", caption)
+        self.assertIn("日本語 (Romaji):", caption)
+        self.assertIn("Kimetsu no Yaiba", caption)
 
 
 class PreferredSourceTests(unittest.TestCase):
