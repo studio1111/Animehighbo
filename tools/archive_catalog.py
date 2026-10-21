@@ -119,6 +119,7 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
             "quality": item["quality"],
             "uri": item["uri"],
             "authorized_for_redistribution": True,
+            "release_date": item["release_date"].isoformat(),
             "_episode": item["episode"],
             "_release_date": item["release_date"].isoformat(),
             "_quality": item["quality"],
@@ -250,6 +251,12 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
                 row.pop("_release_date", None)
                 row.pop("_quality", None)
                 manifest.append(row)
+        # The processing queue is global by source upload/release date, not grouped by show.
+        manifest.sort(key=lambda row: (
+            row.get("release_date", "9999-12-31"),
+            str(row.get("title", "")).casefold(),
+            int(row.get("episode", 0) or 0),
+        ))
         # Duplicate magnet URIs can arise from alternate episode labels; fail closed.
         seen = set()
         for row in manifest:

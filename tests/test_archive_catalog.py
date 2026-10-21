@@ -34,6 +34,10 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         selected = select_show_episodes("New Saga", rows, date(2026, 9, 1))
         self.assertEqual([row["episode"] for row in selected], [1, 2, 3])
         self.assertEqual([row["quality"] for row in selected], ["1080p", "720p", "1080p"])
+        self.assertEqual(
+            [row["release_date"] for row in selected],
+            ["2026-09-05", "2026-09-12", "2026-09-19"],
+        )
 
     def test_old_series_without_episode_one_is_excluded_from_fresh_archive(self):
         rows = [

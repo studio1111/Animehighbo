@@ -89,6 +89,106 @@ class ArchivePosterIdentityTests(unittest.TestCase):
         self.assertEqual(_poster_identity("series:01", True), "archive:series:01")
 
 
+class PreparedEpisodePublisherTests(unittest.TestCase):
+    def _write_episode_artifact(self, root, identity, title, day, qualities=("1080p", "720p", "480p")):
+        import hashlib
+        import json
+        from pathlib import Path
+
+        folder = Path(root) / f"episode-{identity}"
+        folder.mkdir(parents=True, exist_ok=True)
+        files = []
+        for quality in qualities:
+            filename = f"{title.replace(' ', '_')}_{quality}.mkv"
+            path = folder / filename
+            path.write_bytes((f"{title}-{quality}-test-data".encode("utf-8") * 200))
+            files.append({
+                "quality": quality,
+                "filename": filename,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "output_identity": f"{identity}:{quality}",
+            })
+        (folder / "manifest.json").write_text(json.dumps({
+            "identity": identity,
+            "group_id": f"group-{identity}",
+            "poster_identity": f"archive:group-{identity}",
+            "title": title,
+            "episode": "01",
+            "release_date": day,
+            "source_quality": "1080p",
+            "files": files,
+        }), encoding="utf-8")
+
+    def test_publishes_oldest_day_in_title_order_with_three_replies_per_poster(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            self._write_episode_artifact(root, "episode-b", "Series B", "2026-10-05")
+            self._write_episode_artifact(root, "episode-a", "Series A", "2026-10-05")
+            state_path = Path(temp) / "state.json"
+            state = {"published": {}, "seen": {}, "posters": {}}
+            events = []
+
+            def send_poster(_token, _chat, title, _episode, _metadata):
+                events.append(("poster", title))
+                return "poster-" + title
+
+            def send_file(_token, _chat, path, caption, reply_to_message_id=None):
+                events.append(("file", caption, reply_to_message_id))
+                return str(len(events))
+
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
+            }), patch.object(app, "anime_catalog_metadata", return_value={}), \
+                 patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
+                 patch.object(app, "telegram_upload_and_send", side_effect=send_file):
+                count = app.publish_prepared_episodes(
+                    {"state_file": str(state_path), "max_file_size_mb": 1800,
+                     "bilingual_subtitles": True},
+                    state, False, "token", "@channel",
+                )
+
+        self.assertEqual(count, 6)
+        self.assertEqual(events[0], ("poster", "Series A"))
+        self.assertEqual(events[4], ("poster", "Series B"))
+        self.assertTrue(all(event[2] == "poster-Series A" for event in events[1:4]))
+        self.assertTrue(all(event[2] == "poster-Series B" for event in events[5:8]))
+        self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
+                         ["1080p", "720p", "480p"])
+        self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
+                         ["1080p", "720p", "480p"])
+
+    def test_missing_quality_prevents_any_poster_from_being_sent(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            self._write_episode_artifact(root, "episode-a", "Series A", "2026-10-05",
+                                         qualities=("1080p", "720p"))
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
+            }), patch.object(app, "telegram_send_anime_poster") as poster:
+                with self.assertRaisesRegex(RuntimeError, "missing 480p"):
+                    app.publish_prepared_episodes(
+                        {"state_file": str(Path(temp) / "state.json"),
+                         "max_file_size_mb": 1800, "bilingual_subtitles": True},
+                        {"published": {}, "seen": {}, "posters": {}},
+                        False, "token", "@channel",
+                    )
+                poster.assert_not_called()
+
+
 class ArchiveManifestTests(unittest.TestCase):
     def test_manifest_preserves_episode_order_and_requires_explicit_authorization(self):
         with tempfile.TemporaryDirectory() as temp:

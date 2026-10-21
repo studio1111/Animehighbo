@@ -7,6 +7,8 @@ on:
     paths:
       - 'app.py'
       - 'config.json'
+      - 'data/archive_manifest.json'
+      - 'tools/episode_queue.py'
       - 'tools/torrent_downloader.py'
       - 'tools/video_encoder.py'
       - '.github/workflows/publish.yml'
@@ -21,7 +23,93 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  queue:
+    name: Select oldest upload-day group
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      has_work: ${{ steps.plan.outputs.has_work }}
+      release_date: ${{ steps.plan.outputs.release_date }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Plan one complete source-upload day
+        id: plan
+        run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
+      - name: Report planned batch
+        env:
+          HAS_WORK: ${{ steps.plan.outputs.has_work }}
+          RELEASE_DATE: ${{ steps.plan.outputs.release_date }}
+          MATRIX: ${{ steps.plan.outputs.matrix }}
+        run: |
+          echo "Work available: $HAS_WORK"
+          echo "Oldest source upload date: $RELEASE_DATE"
+          python - <<'PY'
+          import json, os
+          matrix = json.loads(os.environ["MATRIX"])
+          print(f"Independent episode workers selected: {len(matrix.get('include', []))}")
+          PY
+
+  prepare:
+    name: Prepare ${{ matrix.title }}
+    needs: queue
+    if: needs.queue.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix: ${{ fromJson(needs.queue.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Install media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y aria2 ffmpeg fonts-noto-core
+      - name: Install offline subtitle fallback when Gemini keys are unavailable
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && [ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && [ -z "$GEMINI_API_KEY_4" ]; then
+            pip install -r requirements-subtitles.txt
+          fi
+      - name: Prepare one episode and all three validated qualities
+        env:
+          ANIMEHIGHBO_EPISODE_ID: ${{ matrix.identity }}
+          ANIMEHIGHBO_PREPARE_ONLY: 'true'
+          ANIMEHIGHBO_DRY_RUN: 'false'
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
+        run: python app.py
+      - name: Upload this episode's prepared files
+        uses: actions/upload-artifact@v4
+        with:
+          name: episode-${{ matrix.identity }}
+          path: prepared/${{ matrix.identity }}
+          if-no-files-found: error
+          retention-days: 1
+
   publish:
+    name: Publish the completed upload-day group in order
+    needs: [queue, prepare]
+    if: needs.queue.outputs.has_work == 'true' && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -30,46 +118,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Detect configured media sources
-        run: |
-          python - <<'PY' >> "$GITHUB_ENV"
-          import json
-          from app import has_file_media_source
-          with open("config.json", encoding="utf-8") as stream:
-              config = json.load(stream)
-          file_pipeline = config.get("mode") != "links" and has_file_media_source(config)
-          needs_media_tools = file_pipeline and any(
-              config.get(name, False)
-              for name in ("bilingual_subtitles", "encode_h265", "burn_persian_subtitles")
-          )
-          needs_subtitle_fallback = (
-              file_pipeline and bool(config.get("bilingual_subtitles", False))
-          )
-          print(f"ANIMEHIGHBO_FILE_PIPELINE={str(file_pipeline).lower()}")
-          print(f"ANIMEHIGHBO_NEEDS_MEDIA_TOOLS={str(needs_media_tools).lower()}")
-          print(f"ANIMEHIGHBO_NEEDS_SUBTITLE_FALLBACK={str(needs_subtitle_fallback).lower()}")
-          PY
-      - name: Install aria2 for explicitly authorized torrent sources
-        run: |
-          if python -c 'import json,sys; c=json.load(open("config.json", encoding="utf-8")); enabled=bool(c.get("torrent_feed_hosts")) or any(isinstance(x,dict) and x.get("authorized_for_redistribution") is True for x in c.get("torrent_sources", [])); sys.exit(0 if enabled else 1)'; then
-            sudo apt-get update
-            sudo apt-get install -y aria2
-          fi
-      - name: Install optional media processing tools
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
-        run: |
-          if [ "$ANIMEHIGHBO_NEEDS_MEDIA_TOOLS" = "true" ]; then
-            sudo apt-get update
-            sudo apt-get install -y ffmpeg fonts-noto-core
-          fi
-          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && [ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && [ -z "$GEMINI_API_KEY_4" ] && [ "$ANIMEHIGHBO_NEEDS_SUBTITLE_FALLBACK" = "true" ]; then
-            pip install -r requirements-subtitles.txt
-          fi
+      - name: Download all prepared episode artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: episode-*
+          path: prepared-artifacts
+          merge-multiple: false
       - name: Configure Telegram API endpoint
         env:
           TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
@@ -81,22 +135,15 @@ jobs:
         run: |
           if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then
             TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_SECRET"
-            local_api_source="repository secret"
           elif [ -n "$TELEGRAM_LOCAL_API_VAR" ]; then
             TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_VAR"
-            local_api_source="repository variable"
           else
             TELEGRAM_LOCAL_API="false"
-            local_api_source="default"
           fi
-          echo "Local Bot API setting source: $local_api_source"
-          needs_file_api=false
-          if [ "$ANIMEHIGHBO_FILE_PIPELINE" = "true" ]; then
-            needs_file_api=true
-          fi
+          needs_file_api=true
           if [ "${TELEGRAM_LOCAL_API,,}" = "true" ] && [ "$needs_file_api" = "true" ]; then
             if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
-              echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID and TELEGRAM_API_HASH secrets plus TELEGRAM_BOT_TOKEN."
+              echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID, TELEGRAM_API_HASH, and TELEGRAM_BOT_TOKEN secrets."
               exit 1
             fi
             docker run --pull always --detach --name animehighbo-local-bot-api \
@@ -107,8 +154,7 @@ jobs:
               aiogram/telegram-bot-api:latest
             ready=false
             for attempt in $(seq 1 60); do
-              if curl --silent --show-error --fail \
-                "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+              if curl --silent --show-error --fail "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
                 ready=true
                 break
               fi
@@ -123,20 +169,17 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Run publisher
+      - name: Publish posters and replies in source upload-date order
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
+          ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
+          ANIMEHIGHBO_RELEASE_DATE: ${{ needs.queue.outputs.release_date }}
           ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then
             export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"
@@ -145,19 +188,8 @@ jobs:
             export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
             dry_run_source="repository variable"
           else
-            # No Actions setting is present: honor the explicit config.json setting.
             export ANIMEHIGHBO_DRY_RUN="$(python -c 'import json; print(str(json.load(open("config.json", encoding="utf-8")).get("dry_run", True)).lower())')"
             dry_run_source="config.json"
-          fi
-          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
-            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
-            size_source="repository secret"
-          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
-            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
-            size_source="repository variable"
-          else
-            unset ANIMEHIGHBO_MAX_FILE_SIZE_MB
-            size_source="config.json default"
           fi
           case "${ANIMEHIGHBO_DRY_RUN,,}" in
             false|0|no|off) dry_run_state="disabled" ;;
@@ -165,7 +197,15 @@ jobs:
           esac
           echo "Publisher dry-run state: $dry_run_state"
           echo "Publisher dry-run setting source: $dry_run_source"
-          echo "Publisher maximum file-size source: $size_source"
+          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
+          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
+          else
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
+          fi
+          echo "Publishing source upload day: $ANIMEHIGHBO_RELEASE_DATE"
+          echo "Prepared episode artifacts: $(find prepared-artifacts -name manifest.json | wc -l)"
           python app.py
       - name: Persist duplicate-prevention state
         if: always()
