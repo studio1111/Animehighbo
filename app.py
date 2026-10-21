@@ -1128,10 +1128,78 @@ def run() -> int:
                         publish_path = bilingual_path
                         LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
 
-                    # Do not publish a poster-only entry when the source cannot be downloaded
-                    # or the bilingual subtitle pipeline fails. The first media preparation
-                    # must succeed before the poster is sent.
+                    # Prepare and validate every required quality before sending a new poster.
+                    # This prevents a poster from appearing when any encode is invalid or oversized.
+                    source_quality = _quality_from_title(entry["title"])
+                    variants = [
+                        ("1080p", 1080, str(config.get("h265_bitrate_1080", "1800k"))),
+                        ("720p", 720, str(config.get("h265_bitrate_720", "1000k"))),
+                        ("480p", 480, str(config.get("h265_bitrate_480", "550k"))),
+                    ]
+                    if not config.get("encode_h265", False):
+                        variants = [(source_quality, None, "")]
+                    from tools.video_encoder import encode_h265
+                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
+                    burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
+                    completed_qualities = []
+                    prepared_outputs = {}
+
+                    for quality, target_height, video_bitrate in variants:
+                        output_identity = f"{identity}:{quality}"
+                        if output_identity in state["published"]:
+                            previous = state["published"][output_identity]
+                            if previous.get("duplicate_of"):
+                                raise ValueError(
+                                    f"{quality} was previously marked as a duplicate; refusing to count it as a delivered file."
+                                )
+                            completed_qualities.append(quality)
+                            continue
+
+                        variant_source = publish_path
+                        if config.get("encode_h265", False):
+                            encoded_path = publish_path.with_name(
+                                processed_filename(entry["title"], quality, ".mkv")
+                            )
+                            generated_paths.append(encoded_path)
+                            encode_h265(
+                                variant_source, encoded_path,
+                                crf=int(config.get("h265_crf", 24)),
+                                preset=str(config.get("h265_preset", "medium")),
+                                burn_subtitle=burn_subtitle,
+                                video_bitrate=video_bitrate,
+                                audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
+                                target_height=target_height,
+                            )
+                            output_path = encoded_path
+                            LOG.info(
+                                "Encoded and validated %s H.265 output with video bitrate %s and AAC audio %s.",
+                                quality, video_bitrate, config.get("h265_audio_bitrate", "128k"),
+                            )
+                        else:
+                            final_name = processed_filename(
+                                entry["title"], quality, variant_source.suffix.lower()
+                            )
+                            output_path = variant_source.with_name(final_name)
+                            if output_path != variant_source:
+                                variant_source.replace(output_path)
+                                generated_paths.append(output_path)
+
+                        if output_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                            raise ValueError(f"{quality} output exceeds the configured media size limit.")
+                        file_hash = sha256_file(output_path)
+                        duplicate_of = state["seen"].get(file_hash)
+                        if duplicate_of and duplicate_of != output_identity:
+                            raise ValueError(
+                                f"{quality} output duplicates {duplicate_of}; refusing to publish a poster or mark the quality complete."
+                            )
+                        prepared_outputs[quality] = (output_path, file_hash, output_identity)
+
+                    # A new poster must have all required, validated output files ready.
                     if poster_identity not in state["posters"]:
+                        if completed_qualities or len(prepared_outputs) != len(variants):
+                            raise RuntimeError(
+                                "Refusing to publish a new poster until all three quality files are prepared."
+                            )
                         metadata = anime_catalog_metadata(group["title"])
                         poster_message_id = telegram_send_anime_poster(
                             token, chat_id, group["title"], group["episode"], metadata
@@ -1146,55 +1214,13 @@ def run() -> int:
                     if not poster_message_id:
                         raise RuntimeError("Poster state has no Telegram message ID; refusing to send ungrouped files.")
 
-                    source_quality = _quality_from_title(entry["title"])
-                    variants = [
-                        ("1080p", 1080, str(config.get("h265_bitrate_1080", "1800k"))),
-                        ("720p", 720, str(config.get("h265_bitrate_720", "1000k"))),
-                        ("480p", 480, str(config.get("h265_bitrate_480", "550k"))),
-                    ]
-                    if not config.get("encode_h265", False):
-                        variants = [(source_quality, None, "")]
-                    from tools.video_encoder import encode_h265
-                    persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
-                    burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
-                    completed_qualities = []
-                    for quality, target_height, video_bitrate in variants:
+                    for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
                         if output_identity in state["published"]:
-                            completed_qualities.append(quality)
+                            if quality not in completed_qualities:
+                                completed_qualities.append(quality)
                             continue
-                        variant_source = publish_path
-                        if config.get("encode_h265", False):
-                            encoded_path = publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
-                            generated_paths.append(encoded_path)
-                            encode_h265(
-                                variant_source, encoded_path,
-                                crf=int(config.get("h265_crf", 24)),
-                                preset=str(config.get("h265_preset", "medium")),
-                                burn_subtitle=burn_subtitle,
-                                video_bitrate=video_bitrate,
-                                audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
-                                target_height=target_height,
-                            )
-                            output_path = encoded_path
-                            LOG.info("Encoded and validated %s H.265 output with video bitrate %s and AAC audio %s.",
-                                     quality, video_bitrate, config.get("h265_audio_bitrate", "128k"))
-                        else:
-                            final_name = processed_filename(entry["title"], quality, variant_source.suffix.lower())
-                            output_path = variant_source.with_name(final_name)
-                            if output_path != variant_source:
-                                variant_source.replace(output_path)
-                                generated_paths.append(output_path)
-
-                        if output_path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
-                            raise ValueError(f"{quality} output exceeds the configured media size limit.")
-                        file_hash = sha256_file(output_path)
-                        if file_hash in state["seen"]:
-                            LOG.info("Skipping duplicate file hash for %s %s.", group["title"], quality)
-                            state["published"][output_identity] = {"duplicate_of": state["seen"][file_hash]}
-                            save_state(config["state_file"], state)
-                            completed_qualities.append(quality)
-                            continue
+                        output_path, file_hash, _ = prepared_outputs[quality]
                         file_caption = f"{group['title']} {quality} @Animehighbo"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
