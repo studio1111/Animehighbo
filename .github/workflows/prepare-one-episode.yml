@@ -198,7 +198,7 @@ jobs:
                       current_section.setdefault(key, value)
               state_path.parent.mkdir(parents=True, exist_ok=True)
               state_path.write_text(
-                  json.dumps(current, ensure_ascii=False, indent=2) + "\\n",
+                  json.dumps(current, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8",
               )
               PY
