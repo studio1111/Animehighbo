@@ -85,6 +85,16 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("group: animehighbo-run-retention", workflow)
         self.assertIn("- Animehighbo episode preparation", workflow)
 
+    def test_manual_delivery_workflow_uses_one_gemini_key_without_offline_fallback(self):
+        workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
+        trigger = workflow.split("permissions:", 1)[0]
+        self.assertIn("workflow_dispatch:", trigger)
+        self.assertNotIn("push:", trigger)
+        self.assertIn("GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}", workflow)
+        for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertNotIn(name, workflow)
+        self.assertNotIn("requirements-subtitles.txt", workflow)
+
     def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
         group_flow = source.split("# Each anime/episode group is handled independently", 1)[1]
