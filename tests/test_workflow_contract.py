@@ -22,6 +22,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/upload-artifact@v4", prepare)
         self.assertIn("createDispatchEvent", prepare)
         self.assertIn("animehighbo-episode-prepared", prepare)
+        self.assertIn("animehighbo-episode-published", prepare)
+        self.assertIn("ANIMEHIGHBO_TARGET_SERIES", prepare)
+        self.assertIn("group: animehighbo-preparation-${{ github.event.client_payload.series_key || 'initial' }}", prepare)
         self.assertIn("client_payload", prepare)
 
     def test_publisher_is_a_separate_workflow_and_runs_after_failed_prepare_workers(self):
@@ -39,6 +42,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("context.payload.client_payload.identity", workflow)
         self.assertIn("const selected = identity", workflow)
         self.assertIn("available.filter(item => item.name ===", workflow)
+        self.assertIn("ANIMEHIGHBO_PUBLISH_EVENTS_FILE: publish-events.json", workflow)
+        self.assertIn("animehighbo-episode-published", workflow)
+        self.assertIn("steps.persist.outputs.persisted == 'true'", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertNotIn("needs.prepare.result == 'success'", workflow)
         self.assertIn("group: animehighbo-publisher", workflow)
