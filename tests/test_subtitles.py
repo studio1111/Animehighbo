@@ -92,9 +92,9 @@ Hello there.
 
 
 class GeminiKeyRotationTests(unittest.TestCase):
-    def test_translation_rotates_to_next_key_after_quota_response(self):
-        limited = Mock(status_code=429)
-        limited.raise_for_status.side_effect = requests.HTTPError("quota")
+    def test_translation_rotates_to_next_key_after_key_authorization_failure(self):
+        limited = Mock(status_code=403)
+        limited.raise_for_status.side_effect = requests.HTTPError("key authorization")
         success = Mock(status_code=200)
         success.json.return_value = {
             "candidates": [{"content": {"parts": [{
@@ -111,6 +111,26 @@ class GeminiKeyRotationTests(unittest.TestCase):
         self.assertEqual(post.call_count, 2)
         self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
         self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "backup")
+
+    def test_rate_limit_retries_same_key_before_rotating(self):
+        limited = Mock(status_code=429, headers={"Retry-After": "2"})
+        success = Mock(status_code=200)
+        success.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator(["primary", "backup"])
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep") as sleep:
+            result = translator.translate_batch([cue])
+
+        self.assertEqual(result[0].text, "سلام")
+        self.assertEqual(post.call_count, 2)
+        self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
+        self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "primary")
+        sleep.assert_called_once_with(2.0)
 
     def test_environment_loader_collects_all_configured_gemini_keys(self):
         env = {
