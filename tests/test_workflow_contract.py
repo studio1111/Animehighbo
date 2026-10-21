@@ -139,7 +139,6 @@ class WorkflowContractTests(unittest.TestCase):
         for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
             self.assertNotIn(f"{name}:", workflow)
         self.assertNotIn("requirements-subtitles.txt", workflow)
-            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
 
 
 if __name__ == "__main__":
