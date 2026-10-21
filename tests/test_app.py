@@ -164,6 +164,50 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
 
+    def test_invalid_episode_bundle_does_not_block_valid_other_series(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            self._write_episode_artifact(root, "episode-bad", "Series A", "2026-10-05",
+                                         qualities=("1080p", "720p"))
+            self._write_episode_artifact(root, "episode-good", "Series B", "2026-10-05")
+            catalog_path = Path(temp) / "archive.json"
+            catalog_path.write_text("[]", encoding="utf-8")
+            state_path = Path(temp) / "state.json"
+            state = {"published": {}, "seen": {}, "posters": {}}
+            posters = []
+            sent_files = []
+
+            def send_poster(_token, _chat, title, _episode, _metadata):
+                posters.append(title)
+                return "poster-" + title
+
+            def send_file(_token, _chat, path, caption, reply_to_message_id=None):
+                sent_files.append((caption, reply_to_message_id))
+                return str(len(sent_files))
+
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "",
+            }), patch.object(app, "anime_catalog_metadata", return_value={}), \
+                 patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
+                 patch.object(app, "telegram_upload_and_send", side_effect=send_file):
+                with self.assertRaisesRegex(RuntimeError, "held/failed episode bundle"):
+                    app.publish_prepared_episodes(
+                        {"state_file": str(state_path), "archive_manifest": str(catalog_path),
+                         "max_file_size_mb": 1800, "bilingual_subtitles": True},
+                        state, False, "token", "@channel",
+                    )
+
+        self.assertEqual(posters, ["Series B"])
+        self.assertEqual(len(sent_files), 3)
+        self.assertTrue(_episode_record_complete(state["published"]["episode-good"]))
+
     def test_missing_quality_prevents_any_poster_from_being_sent(self):
         import os
         import tempfile
