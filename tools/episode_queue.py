@@ -7,7 +7,7 @@ import json
 import os
 import re
 from pathlib import Path
-from datetime import date
+from datetime import date, datetime, timezone
 
 
 def _day(value: object) -> str:
@@ -254,11 +254,33 @@ def select_next_upload_date(
     return oldest_upload_date, eligible
 
 
+def active_quota_cooldown(path: str | Path, now: datetime | None = None) -> str | None:
+    """Return a future Gemini quota reset timestamp, if one is recorded."""
+    cooldown_path = Path(path)
+    if not cooldown_path.exists():
+        return None
+    try:
+        payload = json.loads(cooldown_path.read_text(encoding="utf-8"))
+        raw = str(payload.get("cooldown_until") or "").strip()
+        if not raw:
+            return None
+        until = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if until.tzinfo is None:
+            until = until.replace(tzinfo=timezone.utc)
+        current = now or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        return until.astimezone(timezone.utc).isoformat().replace("+00:00", "Z") if until > current else None
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", default="data/archive_manifest.json")
     parser.add_argument("--state", default="data/state.json")
     parser.add_argument("--github-output", default="")
+    parser.add_argument("--quota-cooldown", default="data/gemini_quota_cooldown.json")
     args = parser.parse_args()
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     config_path = Path("config.json")
@@ -267,9 +289,14 @@ def main() -> int:
     state_path = Path(args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
     target_series = os.environ.get("ANIMEHIGHBO_TARGET_SERIES", "").strip()
-    upload_date, entries = select_next_upload_date(
-        manifest, state, cutoff_date=cutoff, target_series=target_series or None
-    )
+    cooldown_until = active_quota_cooldown(args.quota_cooldown)
+    if cooldown_until:
+        upload_date, entries = None, []
+        print(f"Gemini free-tier quota cooldown active until {cooldown_until}; skipping episode dispatch to avoid wasting retries.")
+    else:
+        upload_date, entries = select_next_upload_date(
+            manifest, state, cutoff_date=cutoff, target_series=target_series or None
+        )
     # Launch no more than five independent episode workers per dispatcher run.
     # Episode order remains gated per series by select_next_upload_date.
     entries = entries[:5]
@@ -281,12 +308,14 @@ def main() -> int:
             output.write(f"has_work={has_work}\n")
             output.write(f"release_date={upload_date if upload_date is not None else ''}\n")
             output.write(f"batch_key={batch_key}\n")
+            output.write(f"quota_cooldown_until={cooldown_until or chr(39) + chr(39)}\n")
             output.write("matrix=" + json.dumps(matrix, ensure_ascii=False, separators=(",", ":")) + "\n")
     else:
         print(json.dumps({
             "has_work": has_work,
             "release_date": upload_date,
             "batch_key": batch_key,
+            "quota_cooldown_until": cooldown_until,
             "matrix": matrix,
         }, ensure_ascii=False, separators=(",", ":")))
     return 0
