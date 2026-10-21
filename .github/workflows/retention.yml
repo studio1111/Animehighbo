@@ -13,6 +13,7 @@ on:
     workflows:
       - CI
       - Animehighbo publisher
+      - Animehighbo episode preparation
       - One-time licensed Morevna Telegram test
       - Sync RSS input to config
       - Build authorized episode archive catalog
