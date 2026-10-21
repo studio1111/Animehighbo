@@ -43,6 +43,12 @@ class WorkflowContractTests(unittest.TestCase):
         config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(config.get("torrent_sources", []), [])
 
+    def test_current_publish_config_keeps_bilingual_subtitles_soft(self):
+        config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+        self.assertTrue(config.get("bilingual_subtitles"))
+        self.assertTrue(config.get("encode_h265"))
+        self.assertFalse(config.get("burn_persian_subtitles"))
+
     def test_standalone_poster_only_monitor_is_removed(self):
         self.assertFalse((ROOT / ".github/workflows/subsplease-monitor.yml").exists())
 
