@@ -91,6 +91,12 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertLess(encode, poster)
         self.assertLess(poster, upload)
 
+    def test_one_anime_failure_does_not_break_processing_of_other_groups(self):
+        source = (ROOT / "app.py").read_text(encoding="utf-8")
+        self.assertNotIn("stopping before the next anime", source)
+        self.assertIn("if group_failed:\n                continue", source)
+        self.assertIn("Could not complete anime group", source)
+
     def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
         workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
         self.assertTrue(workflow_path.exists())
