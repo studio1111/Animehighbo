@@ -25,6 +25,24 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("requirements-subtitles.txt", worker)
         self.assertNotIn("Install offline subtitle fallback", worker)
 
+    def test_global_publisher_lock_keeps_each_poster_and_three_files_contiguous(self):
+        workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        acquire = workflow.index("Acquire global Telegram publisher lock")
+        refresh = workflow.index("Refresh publication state after acquiring the global lock")
+        publish = workflow.index("Publish the episode poster and three reply videos")
+        persist = workflow.index("Persist duplicate-prevention state without overwriting parallel workers")
+        release = workflow.index("Release global Telegram publisher lock")
+        self.assertLess(acquire, refresh)
+        self.assertLess(refresh, publish)
+        self.assertLess(publish, persist)
+        self.assertLess(persist, release)
+        self.assertIn("data/publisher.lock", workflow)
+        self.assertIn("python tools/publisher_lock.py acquire", workflow)
+        self.assertIn("python tools/publisher_lock.py release", workflow)
+        release_step = workflow.split("Release global Telegram publisher lock", 1)[1]
+        self.assertIn("if: success()", release_step)
+        self.assertIn("git reset --hard origin/main", workflow)
+
     def test_each_episode_publishes_independently_and_serializes_state_writes(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("actions/upload-artifact@v4", workflow)
