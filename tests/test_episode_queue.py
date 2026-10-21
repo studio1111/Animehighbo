@@ -1,7 +1,10 @@
 import hashlib
+import json
+import tempfile
 import unittest
+from datetime import datetime, timezone
 
-from tools.episode_queue import select_next_upload_date
+from tools.episode_queue import active_quota_cooldown, select_next_upload_date
 
 
 def row(title, episode, day, uri=None):
@@ -12,6 +15,24 @@ def row(title, episode, day, uri=None):
         "uri": uri or f"magnet:?xt=urn:btih:{title.replace(' ', '')}{episode}",
         "authorized_for_redistribution": True,
     }
+
+
+class QuotaCooldownTests(unittest.TestCase):
+    def test_future_cooldown_blocks_dispatch_until_reset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = f"{directory}/cooldown.json"
+            with open(path, "w", encoding="utf-8") as stream:
+                json.dump({"cooldown_until": "2026-10-22T07:00:00Z"}, stream)
+            now = datetime(2026, 10, 21, 13, 10, tzinfo=timezone.utc)
+            self.assertEqual(active_quota_cooldown(path, now), "2026-10-22T07:00:00Z")
+
+    def test_expired_cooldown_allows_dispatch_again(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = f"{directory}/cooldown.json"
+            with open(path, "w", encoding="utf-8") as stream:
+                json.dump({"cooldown_until": "2026-10-22T07:00:00Z"}, stream)
+            now = datetime(2026, 10, 22, 7, 1, tzinfo=timezone.utc)
+            self.assertIsNone(active_quota_cooldown(path, now))
 
 
 class UploadDateQueueTests(unittest.TestCase):
