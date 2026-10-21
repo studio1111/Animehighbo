@@ -60,6 +60,14 @@ class EpisodeQueueTests(unittest.TestCase):
         self.assertEqual(day, "")
         self.assertEqual(selected, [])
 
+    def test_fails_closed_when_manifest_contains_pre_cutoff_episodes(self):
+        with self.assertRaisesRegex(ValueError, "predates configured archive cutoff"):
+            select_oldest_upload_day(
+                [row("Old Series - 01", 1, "2023-10-07")],
+                {"published": {}},
+                cutoff_date="2026-09-01",
+            )
+
     def test_fails_closed_when_upload_date_is_missing(self):
         with self.assertRaisesRegex(ValueError, "release_date"):
             select_oldest_upload_day([{"title": "Series - 01", "uri": "magnet:?xt=urn:btih:abc"}], {})
