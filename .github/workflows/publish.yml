@@ -9,6 +9,7 @@ on:
       - 'config.json'
       - 'tools/torrent_downloader.py'
       - 'tools/video_encoder.py'
+      - '.github/workflows/publish.yml'
   schedule:
     - cron: '*/30 * * * *'
 
@@ -17,10 +18,11 @@ permissions:
 
 concurrency:
   group: animehighbo-publisher
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   publish:
+    if: false # TEMPORARY SAFETY PAUSE: re-enable only after reset and validation
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
