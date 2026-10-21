@@ -190,7 +190,7 @@ class GeminiSubtitleTranslator:
     def _generate_json(self, body: dict, context: str) -> dict:
         """Retry transient errors with the same key; never rotate or log credentials."""
         errors = []
-        for attempt in range(3):
+        for attempt in range(5):
             try:
                 self._wait_for_request_slot()
                 response = requests.post(
@@ -212,7 +212,8 @@ class GeminiSubtitleTranslator:
                 if provider_delay is not None and provider_delay > 300:
                     errors.append(f"provider cooldown {provider_delay:.0f}s; stopping retries")
                     break
-                if attempt < 2:
+                max_attempts = 3 if response.status_code == 429 else 5
+                if attempt + 1 < max_attempts:
                     if response.status_code == 429:
                         retry_after = response.headers.get("Retry-After", "")
                         try:
