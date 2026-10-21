@@ -223,7 +223,11 @@ class GeminiSubtitleTranslator:
                                     max(0.0, (retry_time - datetime.now(timezone.utc)).total_seconds()),
                                 )
                             except (TypeError, ValueError, OverflowError):
-                                delay = min(30.0, 2.0 ** (attempt + 1))
+                                provider_delay = self._retry_delay_from_body(response)
+                                if provider_delay is not None:
+                                    delay = min(60.0, provider_delay)
+                                else:
+                                    delay = min(30.0, 2.0 ** (attempt + 1))
                     else:
                         delay = min(30.0, 2.0 ** attempt)
                     time.sleep(delay)
@@ -254,6 +258,30 @@ class GeminiSubtitleTranslator:
             f"Gemini failed during {context} after bounded retries ({', '.join(errors) or 'no response'}). "
             f"The subtitle batch remains incomplete and must not be published.{suffix}"
         )
+
+    @staticmethod
+    def _retry_delay_from_body(response) -> float | None:
+        """Read Google RPC RetryInfo without assuming a Retry-After HTTP header exists."""
+        try:
+            payload = response.json()
+        except (ValueError, TypeError, AttributeError):
+            return None
+        error = payload.get("error", {}) if isinstance(payload, dict) else {}
+        details = error.get("details", []) if isinstance(error, dict) else []
+        if not isinstance(details, list):
+            return None
+        for detail in details:
+            if not isinstance(detail, dict):
+                continue
+            value = detail.get("retryDelay")
+            if value is None:
+                continue
+            if isinstance(value, (int, float)):
+                return max(0.0, float(value))
+            match = re.fullmatch(r"\\s*(\\d+(?:\\.\\d+)?)s\\s*", str(value))
+            if match:
+                return max(0.0, float(match.group(1)))
+        return None
 
     @staticmethod
     def _safe_api_error(response) -> str:
