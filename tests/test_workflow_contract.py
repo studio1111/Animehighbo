@@ -33,10 +33,11 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
-    def test_upload_date_matrix_prepares_in_parallel_and_publishes_after_all_workers(self):
+    def test_upload_date_matrix_serializes_preparation_to_protect_shared_gemini_quota(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         self.assertIn("Select oldest incomplete source upload date", workflow)
-        self.assertIn("max-parallel: 5", workflow)
+        self.assertIn("tools/bilingual_subtitles.py", workflow)
+        self.assertIn("max-parallel: 1", workflow)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
