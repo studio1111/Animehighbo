@@ -111,6 +111,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         (folder / "manifest.json").write_text(json.dumps({
             "schema_version": 1,
             "identity": identity,
+            "series_key": f"{title.casefold()}::season-1",
             "group_id": f"group-{identity}",
             "poster_identity": f"archive:group-{identity}",
             "title": title,
