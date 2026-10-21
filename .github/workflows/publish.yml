@@ -1,6 +1,8 @@
 name: Animehighbo publisher
 
 on:
+  repository_dispatch:
+    types: [animehighbo-episode-prepared]
   workflow_run:
     workflows:
       - Animehighbo episode preparation
@@ -13,7 +15,7 @@ permissions:
 jobs:
   publish:
     name: Publish every complete prepared episode independently
-    if: ${{ github.event.workflow_run.conclusion != 'cancelled' }}
+    if: ${{ github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     concurrency:
@@ -32,7 +34,9 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const runId = context.payload.workflow_run.id;
+            const runId = context.eventName === 'repository_dispatch'
+              ? Number(context.payload.client_payload.run_id)
+              : context.payload.workflow_run.id;
             const result = await github.rest.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -40,6 +44,11 @@ jobs:
               per_page: 100
             });
             const available = result.data.artifacts.filter(item => !item.expired);
+            const identity = context.eventName === 'repository_dispatch'
+              ? String(context.payload.client_payload.identity || '')
+              : '';
+            core.setOutput('run_id', String(runId));
+            core.setOutput('pattern', identity ? `episode-${identity}` : 'episode-*');
             core.setOutput('available', String(available.length > 0));
             core.info(`Prepared artifacts available: ${available.length}`);
       - name: Download artifacts from the exact preparation run
@@ -49,8 +58,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          pattern: episode-*
+          run-id: ${{ steps.artifacts.outputs.run_id }}
+          pattern: ${{ steps.artifacts.outputs.pattern }}
           path: prepared-artifacts
           merge-multiple: false
       - name: Configure Telegram API endpoint
