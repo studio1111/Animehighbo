@@ -29,13 +29,13 @@ jobs:
               core.setFailed("Run identity mismatch; refusing cancellation.");
               return;
             }
-            if (run.status === "in_progress" && Date.now() - Date.parse(run.created_at) > 2 * 60 * 60 * 1000) {
+            if (["queued", "in_progress", "pending", "waiting"].includes(run.status)) {
               await github.rest.actions.cancelWorkflowRun({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 run_id: runId
               });
-              core.info("Cancellation requested because the dispatcher exceeded two hours and blocked newer revisions.");
+              core.info("Cancellation requested for the verified dispatcher pinned to the exhausted Gemini model, freeing the dispatcher concurrency lock.");
             } else {
-              core.info("Run is not stale by policy; no cancellation performed.");
+              core.info("Run is already terminal; no cancellation needed.");
             }
