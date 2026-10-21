@@ -47,10 +47,13 @@ jobs:
             const identity = context.eventName === 'repository_dispatch'
               ? String(context.payload.client_payload.identity || '')
               : '';
+            const selected = identity
+              ? available.filter(item => item.name === `episode-${identity}`)
+              : available;
             core.setOutput('run_id', String(runId));
             core.setOutput('pattern', identity ? `episode-${identity}` : 'episode-*');
-            core.setOutput('available', String(available.length > 0));
-            core.info(`Prepared artifacts available: ${available.length}`);
+            core.setOutput('available', String(selected.length > 0));
+            core.info(`Prepared artifacts selected: ${selected.length}`);
       - name: Download artifacts from the exact preparation run
         id: download
         if: steps.artifacts.outputs.available == 'true'
