@@ -147,6 +147,30 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertEqual(result[0].text, "سلام")
         self.assertEqual(post.call_count, 5)
 
+    def test_falls_back_to_supported_flash_lite_after_repeated_503(self):
+        unavailable = Mock(status_code=503, headers={})
+        success = Mock(status_code=200)
+        success.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[
+            unavailable, unavailable, unavailable, unavailable, unavailable, success
+        ]) as post, patch("tools.bilingual_subtitles.time.sleep"):
+            result = translator.translate_batch([cue])
+
+        self.assertEqual(result[0].text, "سلام")
+        self.assertEqual(post.call_count, 6)
+        self.assertIn("/gemini-3.1-flash-lite:generateContent", post.call_args_list[0].args[0])
+        self.assertIn("/gemini-2.5-flash-lite:generateContent", post.call_args_list[-1].args[0])
+        self.assertEqual(translator.model, "gemini-2.5-flash-lite")
+        self.assertTrue(all(call.kwargs["params"]["key"] == "primary" for call in post.call_args_list))
+
     def test_long_google_retry_info_stops_without_wasting_more_requests(self):
         limited = Mock(status_code=429, headers={})
         limited.json.return_value = {
