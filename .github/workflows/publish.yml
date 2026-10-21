@@ -24,12 +24,12 @@ concurrency:
 
 jobs:
   queue:
-    name: Select lowest incomplete episode tier
+    name: Select oldest incomplete source upload date
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
       has_work: ${{ steps.plan.outputs.has_work }}
-      episode_tier: ${{ steps.plan.outputs.episode_tier }}
+      release_date: ${{ steps.plan.outputs.release_date }}
       batch_key: ${{ steps.plan.outputs.batch_key }}
       matrix: ${{ steps.plan.outputs.matrix }}
       source_ref: ${{ steps.revision.outputs.source_ref }}
@@ -52,11 +52,11 @@ jobs:
       - name: Report planned batch
         env:
           HAS_WORK: ${{ steps.plan.outputs.has_work }}
-          EPISODE_TIER: ${{ steps.plan.outputs.episode_tier }}
+          RELEASE_DATE: ${{ steps.plan.outputs.release_date }}
           MATRIX: ${{ steps.plan.outputs.matrix }}
         run: |
           echo "Work available: $HAS_WORK"
-          echo "Lowest incomplete episode tier: $EPISODE_TIER"
+          echo "Oldest incomplete source upload date: $RELEASE_DATE"
           python - <<'PY'
           import json, os
           matrix = json.loads(os.environ["MATRIX"])
@@ -118,7 +118,7 @@ jobs:
           retention-days: 1
 
   publish:
-    name: Publish the completed episode tier in order
+    name: Publish the completed upload-date batch in order
     needs: [queue, prepare]
     if: needs.queue.outputs.has_work == 'true' && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
@@ -182,11 +182,11 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Publish posters and replies for this episode tier in release-date order
+      - name: Publish posters and replies for this upload-date batch
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
           ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
-          ANIMEHIGHBO_EPISODE_TIER: ${{ needs.queue.outputs.episode_tier }}
+          ANIMEHIGHBO_RELEASE_DATE: ${{ needs.queue.outputs.release_date }}
           ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
@@ -217,7 +217,7 @@ jobs:
           else
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
           fi
-          echo "Publishing episode tier: $ANIMEHIGHBO_EPISODE_TIER"
+          echo "Publishing source upload date: $ANIMEHIGHBO_RELEASE_DATE"
           echo "Prepared episode artifacts: $(find prepared-artifacts -name manifest.json | wc -l)"
           python app.py
       - name: Persist duplicate-prevention state
