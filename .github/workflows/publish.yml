@@ -24,12 +24,13 @@ concurrency:
 
 jobs:
   queue:
-    name: Select oldest upload-day group
+    name: Select lowest incomplete episode tier
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
       has_work: ${{ steps.plan.outputs.has_work }}
-      release_date: ${{ steps.plan.outputs.release_date }}
+      episode_tier: ${{ steps.plan.outputs.episode_tier }}
+      batch_key: ${{ steps.plan.outputs.batch_key }}
       matrix: ${{ steps.plan.outputs.matrix }}
       source_ref: ${{ steps.revision.outputs.source_ref }}
     steps:
@@ -51,11 +52,11 @@ jobs:
       - name: Report planned batch
         env:
           HAS_WORK: ${{ steps.plan.outputs.has_work }}
-          RELEASE_DATE: ${{ steps.plan.outputs.release_date }}
+          EPISODE_TIER: ${{ steps.plan.outputs.episode_tier }}
           MATRIX: ${{ steps.plan.outputs.matrix }}
         run: |
           echo "Work available: $HAS_WORK"
-          echo "Oldest source upload date: $RELEASE_DATE"
+          echo "Lowest incomplete episode tier: $EPISODE_TIER"
           python - <<'PY'
           import json, os
           matrix = json.loads(os.environ["MATRIX"])
@@ -117,7 +118,7 @@ jobs:
           retention-days: 1
 
   publish:
-    name: Publish the completed upload-day group in order
+    name: Publish the completed episode tier in order
     needs: [queue, prepare]
     if: needs.queue.outputs.has_work == 'true' && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
@@ -185,7 +186,7 @@ jobs:
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
           ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
-          ANIMEHIGHBO_RELEASE_DATE: ${{ needs.queue.outputs.release_date }}
+          ANIMEHIGHBO_EPISODE_TIER: ${{ needs.queue.outputs.episode_tier }}
           ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
@@ -216,7 +217,7 @@ jobs:
           else
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
           fi
-          echo "Publishing source upload day: $ANIMEHIGHBO_RELEASE_DATE"
+          echo "Publishing episode tier: $ANIMEHIGHBO_EPISODE_TIER"
           echo "Prepared episode artifacts: $(find prepared-artifacts -name manifest.json | wc -l)"
           python app.py
       - name: Persist duplicate-prevention state
