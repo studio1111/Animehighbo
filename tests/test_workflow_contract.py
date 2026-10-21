@@ -33,16 +33,16 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
-    def test_episode_tier_matrix_prepares_in_parallel_and_publishes_after_all_workers(self):
+    def test_upload_date_matrix_prepares_in_parallel_and_publishes_after_all_workers(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        self.assertIn("Select lowest incomplete episode tier", workflow)
+        self.assertIn("Select oldest incomplete source upload date", workflow)
         self.assertIn("max-parallel: 5", workflow)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
         self.assertIn("needs.prepare.result == 'success'", workflow)
-        self.assertIn("ANIMEHIGHBO_EPISODE_TIER", workflow)
+        self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
     def test_unverified_torrent_is_not_enabled_in_default_config(self):
         config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(config.get("torrent_sources", []), [])
