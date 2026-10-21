@@ -442,7 +442,7 @@ def translate_anime_synopsis(description: str) -> str:
 
 
 def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build a detailed poster caption; keep the synopsis collapsed behind Telegram's spoiler UI."""
+    """Build a detailed poster caption with Telegram's expandable blockquote for the synopsis."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
@@ -488,13 +488,13 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
     lines.extend(f"ℹ️ {_safe_caption_text(item)}" for item in details)
-    lines.append(f"<tg-spoiler>📝 {_safe_caption_text(synopsis)}</tg-spoiler>")
+    lines.append(f"<blockquote expandable>📝 {_safe_caption_text(synopsis)}</blockquote>")
     lines.append("@Animehighbo")
     caption = "\n".join(lines)
     if len(caption) > 1024:
         overflow = len(caption) - 1024
         synopsis = synopsis[:max(0, len(synopsis) - overflow - 1)].rstrip()
-        lines[-2] = f"<tg-spoiler>📝 {_safe_caption_text(synopsis)}…</tg-spoiler>"
+        lines[-2] = f"<blockquote expandable>📝 {_safe_caption_text(synopsis)}…</blockquote>"
         caption = "\n".join(lines)
     if len(caption) > 1024:
         lines = lines[:2] + [line for line in lines[2:-2] if len(line) < 120][:5] + lines[-2:]
