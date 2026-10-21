@@ -1,4 +1,4 @@
-name: Animehighbo date-grouped parallel publisher
+name: Animehighbo publisher
 
 on:
   workflow_dispatch:
@@ -183,11 +183,20 @@ jobs:
         run: |
           if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then
             export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"
+            dry_run_source="repository secret"
           elif [ -n "$ANIMEHIGHBO_DRY_RUN_VAR" ]; then
             export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
+            dry_run_source="repository variable"
           else
             export ANIMEHIGHBO_DRY_RUN="$(python -c 'import json; print(str(json.load(open("config.json", encoding="utf-8")).get("dry_run", True)).lower())')"
+            dry_run_source="config.json"
           fi
+          case "${ANIMEHIGHBO_DRY_RUN,,}" in
+            false|0|no|off) dry_run_state="disabled" ;;
+            *) dry_run_state="enabled" ;;
+          esac
+          echo "Publisher dry-run state: $dry_run_state"
+          echo "Publisher dry-run setting source: $dry_run_source"
           if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
           elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
