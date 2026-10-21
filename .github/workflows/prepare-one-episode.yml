@@ -242,7 +242,7 @@ jobs:
             echo "No publication state changes to persist."
           fi
       - name: Release global Telegram publisher lock
-        if: success()
+        if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
