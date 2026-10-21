@@ -37,6 +37,37 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
         }
         (bundle / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
 
+    def test_telegram_failure_for_one_episode_does_not_block_another(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._write_bundle(root, "bad")
+            self._write_bundle(root, "good")
+            state_path = root / "state.json"
+            config = {
+                "max_file_size_mb": 10,
+                "state_file": str(state_path),
+                "bilingual_subtitles": True,
+            }
+            state = {"published": {}, "posters": {}, "seen": {}}
+
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "",
+            }), patch.object(
+                app, "telegram_send_anime_poster",
+                side_effect=[RuntimeError("temporary Telegram error"), "poster-message"],
+            ) as poster, patch.object(
+                app, "telegram_upload_and_send",
+                side_effect=["1080-message", "720-message", "480-message"],
+            ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
+                result = app.publish_prepared_episodes(config, state, False, "token", "chat")
+
+            self.assertEqual(result, 3)
+            self.assertEqual(poster.call_count, 2)
+            self.assertEqual(upload.call_count, 3)
+            self.assertIn("good", state["published"])
+            self.assertNotIn("bad", state["published"])
+
     def test_invalid_bundle_does_not_block_a_different_valid_episode(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
