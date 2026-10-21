@@ -12,8 +12,7 @@ on:
   workflow_run:
     workflows:
       - CI
-      - Animehighbo publisher
-      - Animehighbo episode preparation
+      - Animehighbo episode dispatcher
       - One-time licensed Morevna Telegram test
       - Sync RSS input to config
       - Build authorized episode archive catalog
