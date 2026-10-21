@@ -170,7 +170,7 @@ class GeminiSubtitleTranslator:
             raise ValueError("GEMINI_API_KEY is required.")
         self.api_key = api_key.strip()
         self.api_keys = [self.api_key]
-        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")).strip()
+        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")).strip()
         self.endpoint = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"{self.model}:generateContent"
