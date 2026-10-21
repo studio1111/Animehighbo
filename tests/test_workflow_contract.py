@@ -22,6 +22,7 @@ class WorkflowContractTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         trigger = workflow.split("permissions:", 1)[0]
         self.assertIn("workflow_run:", trigger)
+        self.assertNotIn("workflow_dispatch:", trigger)
         self.assertIn("Animehighbo episode preparation", trigger)
         self.assertIn("types: [completed]", trigger)
         self.assertIn("github.event.workflow_run.conclusion != 'cancelled'", workflow)
@@ -70,6 +71,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("workflow_run:", workflow)
         self.assertIn("types: [completed]", workflow)
         self.assertIn("group: animehighbo-run-retention", workflow)
+        self.assertIn("- Animehighbo episode preparation", workflow)
 
     def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
