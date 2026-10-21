@@ -35,7 +35,7 @@ class WorkflowContractTests(unittest.TestCase):
 
     def test_episode_matrix_is_parallel_and_publisher_survives_peer_failure(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        self.assertIn("Select oldest incomplete source upload date", workflow)
+        self.assertIn("Select independently eligible episodes", workflow)
         self.assertIn("tools/bilingual_subtitles.py", workflow)
         self.assertIn("max-parallel: 5", workflow)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
