@@ -37,6 +37,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("context.payload.workflow_run.id", workflow)
         self.assertIn("context.payload.client_payload.run_id", workflow)
         self.assertIn("context.payload.client_payload.identity", workflow)
+        self.assertIn("const selected = identity ? available.filter", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertNotIn("needs.prepare.result == 'success'", workflow)
         self.assertIn("group: animehighbo-publisher", workflow)
