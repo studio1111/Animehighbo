@@ -89,7 +89,8 @@ def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
     published = state.get("published", {}) if isinstance(state, dict) else {}
     record = published.get(identity, {}) if isinstance(published, dict) else {}
     required = {"1080p", "720p", "480p"}
-    return isinstance(record, dict) and required.issubset(set(record.get("complete_qualities", [])))
+    qualities = record.get("complete_qualities", []) if isinstance(record, dict) else []
+    return isinstance(qualities, list) and required.issubset(set(qualities))
 
 
 def acquire_lock(
