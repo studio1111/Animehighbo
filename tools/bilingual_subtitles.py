@@ -191,7 +191,7 @@ class GeminiSubtitleTranslator:
         """Retry transient errors and fall back on 503 using the same API key."""
         errors = []
         primary_model = self.model
-        fallback_model = "gemini-2.5-flash-lite" if primary_model != "gemini-2.5-flash-lite" else None
+        fallback_model = "gemini-3.5-flash-lite" if primary_model != "gemini-3.5-flash-lite" else None
         models = [primary_model] + ([fallback_model] if fallback_model else [])
         last_response = None
 
