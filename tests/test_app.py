@@ -487,7 +487,9 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             "description": "A young traveler discovers a hidden world beneath the city.",
         }
         from unittest.mock import patch
-        with patch("app.translate_title_to_persian", return_value="حماسه مهتاب"), patch("app.translate_anime_synopsis", return_value="یه مسافر جوان دنیای پنهانی زیر شهر رو کشف می‌کنه."):
+        with patch("app.translate_title_to_persian", return_value="حماسه مهتاب"), patch(
+            "app.translate_anime_synopsis", return_value="یه مسافر جوان دنیای پنهانی زیر شهر رو کشف می‌کنه."
+        ), patch("app.anime_japanese_title", return_value="Moonlit Saga"):
             caption = build_episode_caption(
                 "Moonlit Saga Episode 07 1080p", "07", metadata=metadata
             )
@@ -511,7 +513,9 @@ class PersianAnimeCaptionTests(unittest.TestCase):
 
     def test_unknown_metadata_is_not_invented(self):
         from unittest.mock import patch
-        with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"):
+        with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"), patch(
+            "app.anime_japanese_title", return_value="Some Anime"
+        ):
             caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
         self.assertIn("خلاصهٔ این انیمه فعلاً در دسترس نیست.", caption)
         self.assertIn("@Animehighbo", caption)
