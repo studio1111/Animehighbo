@@ -112,6 +112,50 @@ def render_srt(cues: list[Cue]) -> str:
     return "\n\n".join(blocks) + "\n"
 
 
+def _srt_timestamp_to_ass(value: str) -> str:
+    match = re.fullmatch(r"(\d{2}):(\d{2}):(\d{2}),(\d{3})", value.strip())
+    if not match:
+        raise ValueError(f"Invalid SRT timestamp: {value!r}")
+    hours, minutes, seconds, milliseconds = (int(part) for part in match.groups())
+    return f"{hours}:{minutes:02d}:{seconds:02d}.{milliseconds // 10:02d}"
+
+
+def render_ass(cues: list[Cue]) -> str:
+    """Render Persian cues as a selectable ASS track with yellow text and a thin black outline."""
+    lines = [
+        "[Script Info]",
+        "ScriptType: v4.00+",
+        "WrapStyle: 2",
+        "ScaledBorderAndShadow: yes",
+        "PlayResX: 1920",
+        "PlayResY: 1080",
+        "",
+        "[V4+ Styles]",
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
+        "Style: Persian,Noto Sans Arabic,42,&H0000FFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,1.5,0.0,2,40,40,42,1",
+        "",
+        "[Events]",
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
+    ]
+    for cue in cues:
+        start_end = cue.timing.split("-->")
+        if len(start_end) != 2:
+            raise ValueError(f"Invalid SRT cue timing: {cue.timing!r}")
+        start = _srt_timestamp_to_ass(start_end[0])
+        end = _srt_timestamp_to_ass(start_end[1])
+        text = cue.text.strip().replace("\\r\\n", "\\n").replace("\\n", r"\N")
+        for source, replacement in (
+            ("<i>", r"{\i1}"), ("</i>", r"{\i0}"),
+            ("<b>", r"{\b1}"), ("</b>", r"{\b0}"),
+            ("<u>", r"{\u1}"), ("</u>", r"{\u0}"),
+        ):
+            text = re.sub(re.escape(source), lambda _match, value=replacement: value, text, flags=re.I)
+        text = re.sub(r"</?(?:font|span|ruby|rt)(?:\s+[^>]*)?>", "", text, flags=re.I)
+        text = re.sub(r"<br\s*/?>", r"\N", text, flags=re.I)
+        lines.append(f"Dialogue: 0,{start},{end},Persian,,0,0,0,,{text}")
+    return "\n".join(lines) + "\n"
+
+
 class GeminiSubtitleTranslator:
     """Translate subtitle batches with Gemini and rotate configured API keys on quota/auth failures."""
 
@@ -411,13 +455,13 @@ def translate_cues(cues: list[Cue], translator) -> list[Cue]:
         translated.append(Cue(cue.index, cue.timing, result))
     return translated
 
-def make_bilingual_mkv(video: Path, english_srt: Path, persian_srt: Path, output: Path) -> None:
+def make_bilingual_mkv(video: Path, english_srt: Path, persian_ass: Path, output: Path) -> None:
     if output.suffix.lower() != ".mkv":
         raise ValueError("Output filename must end in .mkv so both subtitle tracks are supported.")
     output.parent.mkdir(parents=True, exist_ok=True)
     run_command([
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-        "-i", str(video), "-i", str(english_srt), "-i", str(persian_srt),
+        "-i", str(video), "-i", str(english_srt), "-i", str(persian_ass),
         "-map", "0:v?", "-map", "0:a?",
         "-map", "1:0", "-map", "2:0", "-map_metadata", "0", "-map_chapters", "0",
         "-c", "copy",
@@ -441,6 +485,7 @@ def process(video: Path, output: Path, requested_stream: int | None = None) -> t
         temp_dir = Path(temp)
         english_path = temp_dir / "english.srt"
         persian_path = temp_dir / "persian.srt"
+        persian_ass = temp_dir / "persian.ass"
         run_command([
             "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
             "-i", str(video), "-map", f"0:{stream_index}", "-c:s", "srt", str(english_path),
@@ -448,12 +493,15 @@ def process(video: Path, output: Path, requested_stream: int | None = None) -> t
         english_cues = parse_srt(english_path.read_text(encoding="utf-8-sig"))
         persian_cues = translate_cues(english_cues, translator)
         persian_path.write_text(render_srt(persian_cues), encoding="utf-8")
+        persian_ass.write_text(render_ass(persian_cues), encoding="utf-8")
         # Keep standalone subtitle files beside the output for inspection/editing.
         english_output = output.with_name(output.stem + ".en.srt")
         persian_output = output.with_name(output.stem + ".fa.srt")
+        persian_ass_output = output.with_name(output.stem + ".fa.ass")
         english_output.write_text(render_srt(english_cues), encoding="utf-8")
         persian_output.write_text(render_srt(persian_cues), encoding="utf-8")
-        make_bilingual_mkv(video, english_path, persian_path, output)
+        persian_ass_output.write_text(render_ass(persian_cues), encoding="utf-8")
+        make_bilingual_mkv(video, english_path, persian_ass, output)
     return english_output, persian_output
 
 
