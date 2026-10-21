@@ -19,10 +19,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: animehighbo-publisher
-  cancel-in-progress: false
-
 jobs:
   queue:
     name: Select oldest incomplete source upload date
@@ -72,7 +68,7 @@ jobs:
     timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 5
       matrix: ${{ fromJson(needs.queue.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
@@ -86,17 +82,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y aria2 ffmpeg fonts-noto-core
-      - name: Install offline subtitle fallback when Gemini keys are unavailable
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
-        run: |
-          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && [ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && [ -z "$GEMINI_API_KEY_4" ]; then
-            pip install -r requirements-subtitles.txt
-          fi
       - name: Prepare one episode and all three validated qualities
         env:
           ANIMEHIGHBO_EPISODE_ID: ${{ matrix.identity }}
@@ -104,10 +89,6 @@ jobs:
           ANIMEHIGHBO_DRY_RUN: 'false'
           ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
         run: python app.py
       - name: Upload this episode's prepared files
@@ -119,9 +100,12 @@ jobs:
           retention-days: 1
 
   publish:
-    name: Publish the completed upload-date batch in order
+    name: Publish every complete prepared episode independently
     needs: [queue, prepare]
-    if: needs.queue.outputs.has_work == 'true' && needs.prepare.result == 'success'
+    if: always() && needs.queue.outputs.has_work == 'true' && needs.prepare.result != 'cancelled'
+    concurrency:
+      group: animehighbo-publisher-state
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -183,7 +167,7 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Publish posters and replies for this upload-date batch
+      - name: Publish every valid prepared episode independently
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
           ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
@@ -219,6 +203,10 @@ jobs:
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
           fi
           echo "Publishing source upload date: $ANIMEHIGHBO_RELEASE_DATE"
+          if [ ! -d prepared-artifacts ] || ! find prepared-artifacts -name manifest.json -print -quit | grep -q .; then
+            echo "No complete prepared artifacts are available in this run; skipping publication."
+            exit 0
+          fi
           echo "Prepared episode artifacts: $(find prepared-artifacts -name manifest.json | wc -l)"
           python app.py
       - name: Persist duplicate-prevention state
