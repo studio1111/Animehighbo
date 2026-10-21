@@ -17,6 +17,8 @@ import time
 import requests
 import tempfile
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 
@@ -196,7 +198,16 @@ class GeminiSubtitleTranslator:
                         try:
                             delay = min(60.0, max(0.0, float(retry_after)))
                         except (TypeError, ValueError):
-                            delay = min(30.0, 2.0 ** (attempt + 1))
+                            try:
+                                retry_time = parsedate_to_datetime(retry_after)
+                                if retry_time.tzinfo is None:
+                                    retry_time = retry_time.replace(tzinfo=timezone.utc)
+                                delay = min(
+                                    60.0,
+                                    max(0.0, (retry_time - datetime.now(timezone.utc)).total_seconds()),
+                                )
+                            except (TypeError, ValueError, OverflowError):
+                                delay = min(30.0, 2.0 ** (attempt + 1))
                     else:
                         delay = min(30.0, 2.0 ** attempt)
                     time.sleep(delay)
