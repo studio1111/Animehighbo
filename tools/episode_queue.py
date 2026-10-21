@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from datetime import date
 
 
 def _day(value: object) -> str:
@@ -16,9 +17,10 @@ def _day(value: object) -> str:
         raise ValueError("Every archive entry must have a source release_date before processing.")
     # SubsPlease dates are ISO strings. Group by the source-local calendar date.
     try:
-        return raw[:10] if len(raw) >= 10 else ""
+        parsed = date.fromisoformat(raw[:10])
+        return parsed.isoformat()
     except (TypeError, ValueError):
-        return ""
+        raise ValueError(f"Invalid source release_date: {raw!r}")
 
 
 def select_oldest_upload_day(manifest: list[dict], state: dict) -> tuple[str, list[dict]]:
@@ -67,9 +69,9 @@ def main() -> int:
     has_work = "true" if entries else "false"
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as output:
-            output.write(f"has_work={has_work}\\n")
-            output.write(f"release_date={day}\\n")
-            output.write("matrix=" + json.dumps(matrix, ensure_ascii=False, separators=(",", ":")) + "\\n")
+            output.write(f"has_work={has_work}\n")
+            output.write(f"release_date={day}\n")
+            output.write("matrix=" + json.dumps(matrix, ensure_ascii=False, separators=(",", ":")) + "\n")
     else:
         print(json.dumps({"has_work": has_work, "release_date": day, "matrix": matrix},
                          ensure_ascii=False, separators=(",", ":")))
