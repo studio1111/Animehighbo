@@ -934,9 +934,11 @@ def _poster_identity(group_id: str, archive_mode: bool = False) -> str:
 
 
 def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: str, chat_id: str) -> int:
-    """Publish a fully prepared upload-day batch in stable date/title/episode order."""
+    """Publish a fully prepared episode-number tier in stable release-date/title order."""
     root = Path(os.getenv("ANIMEHIGHBO_PREPARED_DIR", "prepared-artifacts"))
     expected_day = os.getenv("ANIMEHIGHBO_RELEASE_DATE", "").strip()
+    expected_tier_raw = os.getenv("ANIMEHIGHBO_EPISODE_TIER", "").strip()
+    expected_tier = int(expected_tier_raw) if expected_tier_raw else None
     manifest_paths = sorted(root.glob("episode-*/manifest.json"))
     if not manifest_paths:
         raise RuntimeError(f"No prepared episode manifests found under {root}.")
@@ -949,6 +951,14 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
         if expected_day and day != expected_day:
             raise ValueError(f"Mixed upload-day batch: expected {expected_day}, found {day}.")
+        try:
+            episode_tier = int(manifest.get("episode") or 0)
+        except (TypeError, ValueError):
+            episode_tier = 0
+        if expected_tier is not None and episode_tier != expected_tier:
+            raise ValueError(
+                f"Mixed episode-tier batch: expected episode {expected_tier}, found {episode_tier} in {manifest_path}."
+            )
         identity = str(manifest.get("identity") or "")
         if not identity:
             raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
@@ -978,13 +988,13 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
         episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
 
     episodes.sort(key=lambda item: (
+        int(item.get("episode") or 0),
         item["release_date"],
         str(item.get("title") or "").casefold(),
-        int(item.get("episode") or 0),
         str(item.get("identity") or ""),
     ))
 
-    # Validate the entire day before publishing the first poster.
+    # Validate the entire episode tier before publishing the first poster.
     for episode in episodes:
         identity = episode["identity"]
         existing = state["published"].get(identity, {})
@@ -996,7 +1006,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 continue
             if quality not in episode["files"]:
                 raise RuntimeError(
-                    f"Upload-day batch is incomplete: {episode.get('title')} is missing {quality}."
+                    f"Episode-tier batch is incomplete: {episode.get('title')} is missing {quality}."
                 )
         if not poster_exists and any(
             f"{identity}:{quality}" in state["published"]
@@ -1005,8 +1015,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             raise RuntimeError(f"Episode {episode.get('title')} has delivered files but no recorded poster.")
 
     if dry_run:
-        LOG.info("[DRY RUN] Prepared %d episodes for upload day %s; no Telegram posts sent.",
-                 len(episodes), expected_day or "unknown")
+        LOG.info("[DRY RUN] Prepared %d episodes for episode tier %s; no Telegram posts sent.",
+                 len(episodes), expected_tier if expected_tier is not None else "unknown")
         return 0
 
     published_count = 0
@@ -1075,7 +1085,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             "release_date": episode["release_date"],
         }
         save_state(config["state_file"], state)
-        LOG.info("Completed episode %s from upload day %s.", title, episode["release_date"])
+        LOG.info("Completed episode %s (episode tier %s, source upload date %s).",
+                 title, episode.get("episode"), episode["release_date"])
     return published_count
 
 def run() -> int:
