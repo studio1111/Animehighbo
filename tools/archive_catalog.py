@@ -1,6 +1,7 @@
 """Build a chronological archive manifest from the SubsPlease show catalogue.
 
 The generator only records one-episode releases with 1080p or 720p magnets.
+Fresh queues include only series whose available sequence begins at episode 1.
 It requires an explicit CLI confirmation that the operator has redistribution
 rights; it never downloads or publishes media itself.
 """
