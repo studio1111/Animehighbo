@@ -7,50 +7,34 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkflowContractTests(unittest.TestCase):
-    def test_publisher_uses_only_one_gemini_secret_and_no_offline_fallback(self):
-        prepare = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
-        self.assertIn("GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}", prepare)
+    def test_dispatcher_runs_five_independent_episode_workers_without_pat(self):
+        dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
+        worker = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("max-parallel: 5", dispatcher)
+        self.assertIn("fail-fast: false", dispatcher)
+        self.assertIn("uses: ./.github/workflows/prepare-one-episode.yml", dispatcher)
+        self.assertIn("matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}", dispatcher)
+        self.assertIn("workflow_call:", worker)
+        self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", worker)
+        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", worker)
+        self.assertIn("GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}", worker)
+        self.assertNotIn("GH_WORKFLOW_TOKEN", dispatcher + worker)
+        self.assertNotIn("createDispatchEvent", dispatcher + worker)
         for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
-            self.assertNotIn(name, prepare)
-        self.assertNotIn("requirements-subtitles.txt", prepare)
-        self.assertNotIn("Install offline subtitle fallback", prepare)
-        self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", prepare)
-        self.assertIn("fail-fast: false", prepare)
-        self.assertIn("max-parallel: 1", prepare)
-        self.assertIn("group: animehighbo-preparation", prepare)
-        self.assertIn("cancel-in-progress: false", prepare)
-        self.assertIn("actions/upload-artifact@v4", prepare)
-        self.assertIn("createDispatchEvent", prepare)
-        self.assertIn("animehighbo-episode-prepared", prepare)
-        self.assertIn("animehighbo-episode-published", prepare)
-        self.assertIn("ANIMEHIGHBO_TARGET_SERIES", prepare)
-        self.assertIn("group: animehighbo-preparation-${{ github.event.client_payload.series_key || 'initial' }}", prepare)
-        self.assertIn("client_payload", prepare)
+            self.assertNotIn(name, worker)
+        self.assertNotIn("requirements-subtitles.txt", worker)
+        self.assertNotIn("Install offline subtitle fallback", worker)
 
-    def test_publisher_is_a_separate_workflow_and_runs_after_failed_prepare_workers(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        trigger = workflow.split("permissions:", 1)[0]
-        self.assertIn("repository_dispatch:", trigger)
-        self.assertIn("animehighbo-episode-prepared", trigger)
-        self.assertIn("workflow_run:", trigger)
-        self.assertNotIn("workflow_dispatch:", trigger)
-        self.assertIn("Animehighbo episode preparation", trigger)
-        self.assertIn("types: [completed]", trigger)
-        self.assertIn("github.event.workflow_run.conclusion != 'cancelled'", workflow)
-        self.assertIn("context.payload.workflow_run.id", workflow)
-        self.assertIn("context.payload.client_payload.run_id", workflow)
-        self.assertIn("context.payload.client_payload.identity", workflow)
-        self.assertIn("const selected = identity", workflow)
-        self.assertIn("available.filter(item => item.name ===", workflow)
-        self.assertIn("ANIMEHIGHBO_PUBLISH_EVENTS_FILE: publish-events.json", workflow)
-        self.assertIn("animehighbo-episode-published", workflow)
-        self.assertIn("steps.persist.outputs.persisted == 'true'", workflow)
+    def test_each_episode_publishes_independently_and_serializes_state_writes(self):
+        workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
-        self.assertNotIn("needs.prepare.result == 'success'", workflow)
-        self.assertIn("group: animehighbo-publisher", workflow)
+        self.assertIn("group: animehighbo-publisher-global", workflow)
         self.assertIn("git fetch origin main", workflow)
         self.assertIn("git rebase origin/main", workflow)
         self.assertIn("git push origin HEAD:main", workflow)
+        self.assertNotIn("createDispatchEvent", workflow)
+        self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
 
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
@@ -89,7 +73,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("workflow_run:", workflow)
         self.assertIn("types: [completed]", workflow)
         self.assertIn("group: animehighbo-run-retention", workflow)
-        self.assertIn("- Animehighbo episode preparation", workflow)
+        self.assertIn("- Animehighbo episode dispatcher", workflow)
 
     def test_manual_delivery_workflow_uses_one_gemini_key_without_offline_fallback(self):
         workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
