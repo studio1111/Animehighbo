@@ -34,6 +34,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
         manifest = {
             "schema_version": 1,
             "identity": name,
+            "series_key": f"series {name}::season-1",
             "group_id": f"group-{name}",
             "poster_identity": f"poster-{name}",
             "title": f"Series {name}",
@@ -86,6 +87,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             with patch.dict(os.environ, {
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
+                "ANIMEHIGHBO_PUBLISH_EVENTS_FILE": str(root / "publish-events.json"),
             }), patch.object(
                 app, "telegram_send_anime_poster",
                 side_effect=[RuntimeError("temporary Telegram error"), "poster-message"],
@@ -128,6 +130,8 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             self.assertEqual(upload.call_count, 3)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
+            events = json.loads((root / "publish-events.json").read_text(encoding="utf-8"))
+            self.assertEqual(events, ["series good::season-1"])
 
 
 if __name__ == "__main__":
