@@ -139,6 +139,16 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
+      - name: Acquire global Telegram publisher lock
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
+        run: python tools/publisher_lock.py acquire --identity "$ANIMEHIGHBO_EPISODE_ID"
+      - name: Refresh publication state after acquiring the global lock
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
       - name: Publish the episode poster and three reply videos
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
@@ -231,3 +241,10 @@ jobs:
           else
             echo "No publication state changes to persist."
           fi
+      - name: Release global Telegram publisher lock
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
+        run: python tools/publisher_lock.py release --identity "$ANIMEHIGHBO_EPISODE_ID"
