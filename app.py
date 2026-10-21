@@ -1420,6 +1420,7 @@ def run() -> int:
                                 "output_identity": output_identity,
                             })
                         prepared_manifest = {
+                            "schema_version": 1,
                             "identity": identity,
                             "group_id": group_id,
                             "poster_identity": poster_identity,
