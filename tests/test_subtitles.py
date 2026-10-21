@@ -1,3 +1,4 @@
+import json
 import os
 import unittest
 from unittest.mock import patch, Mock
@@ -61,22 +62,20 @@ Hello there.
         with self.assertRaisesRegex(ValueError, "No English text subtitle track"):
             choose_english_stream([{"index": 2, "tags": {"language": "jpn"}}], None)
 
-    def test_batch_translation_runs_review_and_preserves_placeholders(self):
+    def test_translation_performs_self_review_in_one_pass_and_preserves_placeholders(self):
         class FakeTranslator:
             def translate_batch(self, cues):
                 return [Cue(c.index, c.timing, c.text.replace("Hello", "سلام")) for c in cues]
 
             def review_batch(self, source, translated):
-                self.review_called = True
-                return [Cue(c.index, c.timing, c.text.replace("سلام", "درود")) for c in translated]
+                raise AssertionError("A second Gemini review request would waste the shared request quota.")
 
         translator = FakeTranslator()
         cues = [Cue(1, "00:00:01,000 --> 00:00:02,000", "<i>Hello</i>")]
         translated = translate_cues(cues, translator)
-        self.assertTrue(translator.review_called)
         self.assertEqual(translated[0].timing, cues[0].timing)
         self.assertIn("<i>", translated[0].text)
-        self.assertIn("درود", translated[0].text)
+        self.assertIn("سلام", translated[0].text)
 
     def test_translation_preserves_cue_timing_and_formatting_tags(self):
         class FakeTranslator:
@@ -91,6 +90,29 @@ Hello there.
 
 
 class GeminiSingleKeyPolicyTests(unittest.TestCase):
+    def test_full_episode_translation_uses_one_request_for_a_typical_subtitle_file(self):
+        cues = [
+            Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
+            for index in range(1, 42)
+        ]
+        response = Mock(status_code=200)
+        response.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": json.dumps({
+                    "translations": [{"id": cue.index, "text": f"ترجمه {cue.index}"} for cue in cues]
+                }, ensure_ascii=False)
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator("primary")
+
+        with patch("tools.bilingual_subtitles.requests.post", return_value=response) as post:
+            translated = translator.translate_batch(cues)
+
+        self.assertEqual(len(translated), len(cues))
+        self.assertEqual(post.call_count, 1)
+        prompt = post.call_args.kwargs["json"]["contents"][0]["parts"][0]["text"]
+        self.assertIn("self-review", prompt.casefold())
+
     def test_429_retries_the_same_key_and_honors_retry_after(self):
         limited = Mock(status_code=429, headers={"Retry-After": "2"})
         success = Mock(status_code=200)
