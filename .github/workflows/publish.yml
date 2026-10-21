@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   queue:
-    name: Select oldest incomplete source upload date
+    name: Select independently eligible episodes
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -43,7 +43,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Plan the oldest incomplete source upload date
+      - name: Plan independently eligible episodes across all series
         id: plan
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned batch
@@ -53,7 +53,7 @@ jobs:
           MATRIX: ${{ steps.plan.outputs.matrix }}
         run: |
           echo "Work available: $HAS_WORK"
-          echo "Oldest incomplete source upload date: $RELEASE_DATE"
+          echo "Eligible episode preparation is independent of source upload date."
           python - <<'PY'
           import json, os
           matrix = json.loads(os.environ["MATRIX"])
