@@ -279,6 +279,40 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
             client.close()
 
 
+def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cutoff: date) -> list[dict]:
+    """Keep authorized, dated entries already curated when the source API omits them."""
+    merged = list(manifest)
+    seen_uris = {str(row.get("uri") or row.get("url") or "").strip() for row in merged}
+    for index, row in enumerate(existing_rows):
+        if not isinstance(row, dict) or row.get("authorized_for_redistribution") is not True:
+            continue
+        title = str(row.get("title") or "").strip()
+        uri = str(row.get("uri") or row.get("url") or "").strip()
+        released = parse_release_date(row.get("release_date") or "")
+        if (
+            not title or not uri or uri in seen_uris or "[batch]" in title.casefold()
+            or _episode_number(row) is None or released is None or released < cutoff
+        ):
+            continue
+        parsed = urlparse(uri)
+        if parsed.scheme.lower() not in {"https", "magnet"}:
+            continue
+        preserved = dict(row)
+        preserved["title"] = title
+        preserved["uri"] = uri
+        preserved["release_date"] = released.isoformat()
+        preserved["authorized_for_redistribution"] = True
+        merged.append(preserved)
+        seen_uris.add(uri)
+
+    merged.sort(key=lambda row: (
+        str(row.get("release_date") or "9999-12-31"),
+        str(row.get("title") or "").casefold(),
+        int(row.get("episode") or 0),
+    ))
+    return merged
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--since", default="2026-09-01", help="Include releases from this date (YYYY-MM-DD).")
@@ -302,6 +336,15 @@ def main() -> int:
         LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
         return 1
     destination = Path(args.output)
+    if destination.exists():
+        try:
+            existing_rows = json.loads(destination.read_text(encoding="utf-8"))
+            if not isinstance(existing_rows, list):
+                raise ValueError("Existing archive manifest must be a JSON list.")
+            manifest = merge_existing_manifest(manifest, existing_rows, cutoff)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            LOG.error("Could not safely preserve existing curated archive entries: %s", exc)
+            return 1
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     LOG.info("Wrote %d ordered episode entries to %s.", len(manifest), destination)
