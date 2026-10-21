@@ -272,6 +272,7 @@ class GeminiSubtitleTranslator:
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {
                 "temperature": temperature,
+                "maxOutputTokens": 16384,
                 "responseMimeType": "application/json",
                 "responseSchema": {
                     "type": "OBJECT",
@@ -311,7 +312,7 @@ class GeminiSubtitleTranslator:
         if not cues:
             return []
         translated: list[Cue] = []
-        batch_size = 20
+        batch_size = 500
         for offset in range(0, len(cues), batch_size):
             batch = cues[offset:offset + batch_size]
             context = f"translation cues {batch[0].index}-{batch[-1].index}"
@@ -323,7 +324,11 @@ class GeminiSubtitleTranslator:
                 "tags such as <i>...</i>. Do not translate or alter placeholder tokens. Do not add "
                 "explanations, omit dialogue, or merge cues. Keep every input id exactly once and "
                 "return only JSON matching the requested schema. Prefer concise Persian suitable "
-                "for on-screen subtitles. The source cues are in chronological order.\n\n"
+                "for on-screen subtitles. The source cues are in chronological order. Perform a "
+                "self-review before returning: compare every Persian line against its English source, "
+                "correct meaning errors, omissions, unnatural phrasing, name inconsistencies, and lines "
+                "that are too long for readable on-screen subtitles. Return only the final reviewed "
+                "translation for each cue, without notes.\n\n"
                 + json.dumps(payload, ensure_ascii=False)
             )
             body = self._translation_body(prompt, 0.2)
@@ -399,8 +404,8 @@ def translate_cues(cues: list[Cue], translator) -> list[Cue]:
             tag_maps[cue.index] = tags
             tagged_cues.append(Cue(cue.index, cue.timing, text))
         translated = translator.translate_batch(tagged_cues)
-        if hasattr(translator, "review_batch"):
-            translated = translator.review_batch(tagged_cues, translated)
+        # Gemini performs its own per-cue review in the same response. A second
+        # request doubles quota usage and can exhaust the free-tier request rate.
         restored: list[Cue] = []
         for cue in translated:
             text = cue.text
