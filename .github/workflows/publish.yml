@@ -31,8 +31,16 @@ jobs:
       has_work: ${{ steps.plan.outputs.has_work }}
       release_date: ${{ steps.plan.outputs.release_date }}
       matrix: ${{ steps.plan.outputs.matrix }}
+      source_ref: ${{ steps.revision.outputs.source_ref }}
     steps:
       - uses: actions/checkout@v4
+      - name: Pin queue planning to the latest main snapshot
+        run: |
+          git fetch origin main
+          git checkout --detach origin/main
+      - name: Record the exact source revision for every worker
+        id: revision
+        run: echo "source_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -66,6 +74,8 @@ jobs:
       matrix: ${{ fromJson(needs.queue.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.queue.outputs.source_ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -114,6 +124,8 @@ jobs:
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.queue.outputs.source_ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
