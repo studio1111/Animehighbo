@@ -1,0 +1,178 @@
+name: Animehighbo single episode publisher
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Source preparation workflow run ID
+        required: true
+        type: string
+      artifact_name:
+        description: Exact prepared episode artifact name
+        required: true
+        type: string
+      identity:
+        description: Stable episode identity from the archive manifest
+        required: true
+        type: string
+      series_key:
+        description: Stable series/season concurrency key
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: animehighbo-publish-${{ inputs.series_key }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download the exact artifact from its preparation run
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: prepared-artifacts/${{ inputs.artifact_name }}
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify artifact identity before publication
+        env:
+          EXPECTED_IDENTITY: ${{ inputs.identity }}
+          ARTIFACT_NAME: ${{ inputs.artifact_name }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path("prepared-artifacts") / os.environ["ARTIFACT_NAME"] / "manifest.json"
+          if not path.is_file():
+              raise SystemExit("Prepared artifact has no manifest.json")
+          manifest = json.loads(path.read_text(encoding="utf-8"))
+          if str(manifest.get("identity") or "") != os.environ["EXPECTED_IDENTITY"]:
+              raise SystemExit("Prepared artifact identity does not match the dispatch request")
+          if len(manifest.get("files", [])) != 3:
+              raise SystemExit("Prepared artifact must contain all three quality records")
+          print("Artifact identity and three-quality manifest verified.")
+          PY
+      - name: Install media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core
+      - name: Configure Telegram API endpoint
+        env:
+          TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
+          TELEGRAM_LOCAL_API_VAR: ${{ vars.TELEGRAM_LOCAL_API }}
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
+        run: |
+          if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_SECRET"
+          elif [ -n "$TELEGRAM_LOCAL_API_VAR" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_VAR"
+          else
+            TELEGRAM_LOCAL_API="false"
+          fi
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ]; then
+            if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+              echo "::error::TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID, TELEGRAM_API_HASH, and TELEGRAM_BOT_TOKEN."
+              exit 1
+            fi
+            docker run --pull always --detach --name animehighbo-local-bot-api               --publish 127.0.0.1:8081:8081               --env TELEGRAM_API_ID="$TELEGRAM_API_ID"               --env TELEGRAM_API_HASH="$TELEGRAM_API_HASH"               --env TELEGRAM_LOCAL=1               aiogram/telegram-bot-api:latest
+            ready=false
+            for attempt in $(seq 1 60); do
+              if curl --silent --show-error --fail "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+                ready=true
+                break
+              fi
+              sleep 2
+            done
+            if [ "$ready" != "true" ]; then
+              docker logs animehighbo-local-bot-api || true
+              echo "::error::Local Telegram Bot API did not become ready."
+              exit 1
+            fi
+            echo "TELEGRAM_API_BASE_URL=http://127.0.0.1:8081" >> "$GITHUB_ENV"
+          elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
+            echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
+          fi
+      - name: Publish this complete episode
+        env:
+          ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
+          ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
+          ANIMEHIGHBO_RELEASE_DATE: ''
+          ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"
+            dry_run_source="repository secret"
+          elif [ -n "$ANIMEHIGHBO_DRY_RUN_VAR" ]; then
+            export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_VAR"
+            dry_run_source="repository variable"
+          else
+            export ANIMEHIGHBO_DRY_RUN="$(python -c 'import json; print(str(json.load(open("config.json", encoding="utf-8")).get("dry_run", True)).lower())')"
+            dry_run_source="config.json"
+          fi
+          case "${ANIMEHIGHBO_DRY_RUN,,}" in
+            false|0|no|off) dry_run_state="disabled" ;;
+            *) dry_run_state="enabled" ;;
+          esac
+          echo "Publisher dry-run state: $dry_run_state"
+          echo "Publisher dry-run setting source: $dry_run_source"
+          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
+          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
+          else
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
+          fi
+          if [ ! -d prepared-artifacts ] || ! find prepared-artifacts -name manifest.json -print -quit | grep -q .; then
+            echo "::error::No prepared manifest found; refusing publication."
+            exit 1
+          fi
+          python app.py
+      - name: Merge and persist publication state without overwriting other episodes
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain data/state.json)" ]; then
+            echo "No publication state changes to persist."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --mixed origin/main
+            git show origin/main:data/state.json > "$RUNNER_TEMP/state-main.json"
+            python tools/merge_state.py               --base "$RUNNER_TEMP/state-main.json"               --local data/state.json               --output data/state.json
+            if git diff --quiet -- data/state.json; then
+              echo "Durable state already contains this update."
+              exit 0
+            fi
+            git add data/state.json
+            git commit -m "chore: merge Animehighbo publication state [skip ci]"
+            if git push origin HEAD:main; then
+              echo "Merged publication state persisted to main."
+              exit 0
+            fi
+            echo "State push attempt $attempt conflicted with another publisher; merging latest main and retrying."
+          done
+          echo "::error::Could not persist merged publication state after five attempts."
+          exit 1
