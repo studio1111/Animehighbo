@@ -90,7 +90,7 @@ Hello there.
 
 
 class GeminiSingleKeyPolicyTests(unittest.TestCase):
-    def test_full_episode_translation_uses_one_request_for_a_typical_subtitle_file(self):
+    def test_translation_splits_long_subtitle_files_into_json_safe_batches(self):
         cues = [
             Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
             for index in range(1, 42)
@@ -109,9 +109,10 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             translated = translator.translate_batch(cues)
 
         self.assertEqual(len(translated), len(cues))
-        self.assertEqual(post.call_count, 1)
-        prompt = post.call_args.kwargs["json"]["contents"][0]["parts"][0]["text"]
-        self.assertIn("self-review", prompt.casefold())
+        self.assertEqual(post.call_count, 2)
+        prompts = [call.kwargs["json"]["contents"][0]["parts"][0]["text"] for call in post.call_args_list]
+        self.assertTrue(all("self-review" in prompt.casefold() for prompt in prompts))
+        self.assertTrue(all(len(json.loads(prompt.split("\\n\\n", 1)[1])) <= 40 for prompt in prompts))
 
     def test_429_retries_the_same_key_and_honors_retry_after(self):
         limited = Mock(status_code=429, headers={"Retry-After": "2"})
