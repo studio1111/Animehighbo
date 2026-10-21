@@ -197,10 +197,22 @@ class GeminiSubtitleTranslator:
                         continue
                     break
 
-                # Quota exhaustion and key-level authorization failures can be
-                # isolated to one key, so try the next configured key.
-                if response.status_code in {401, 403, 429}:
+                # 401/403 are key-specific. A 429 is normally project-scoped,
+                # so retry this key with backoff before trying another project/key.
+                if response.status_code in {401, 403}:
                     errors.append(f"key {index + 1}: HTTP {response.status_code}")
+                    break
+                if response.status_code == 429:
+                    if attempt < 2:
+                        retry_after = response.headers.get("Retry-After", "")
+                        try:
+                            delay = min(60.0, max(0.0, float(retry_after)))
+                        except (TypeError, ValueError):
+                            delay = min(30.0, 2.0 ** (attempt + 1))
+                        time.sleep(delay)
+                        continue
+                    detail = self._safe_api_error(response)
+                    errors.append(f"key {index + 1}: HTTP 429 ({detail})")
                     break
                 if response.status_code in {500, 502, 503, 504}:
                     errors.append(f"key {index + 1}: HTTP {response.status_code}")
@@ -235,6 +247,33 @@ class GeminiSubtitleTranslator:
             f"All {key_count} configured Gemini API key(s) failed during {context} "
             f"({details}). The subtitle batch remains incomplete and must not be published."
         )
+
+    @staticmethod
+    def _safe_api_error(response) -> str:
+        """Return a short provider error summary without request credentials."""
+        try:
+            payload = response.json()
+            error = payload.get("error", {}) if isinstance(payload, dict) else {}
+            message = str(error.get("message", "")).strip()
+            details = error.get("details", [])
+            quota_labels = []
+            if isinstance(details, list):
+                for detail in details:
+                    if not isinstance(detail, dict):
+                        continue
+                    for violation in detail.get("violations", []) if isinstance(detail.get("violations", []), list) else []:
+                        if isinstance(violation, dict):
+                            label = " / ".join(
+                                str(violation.get(key, "")).strip()
+                                for key in ("quotaMetric", "quotaId", "description")
+                                if violation.get(key)
+                            )
+                            if label:
+                                quota_labels.append(label)
+            summary = "; ".join([message, *quota_labels]).strip("; ")
+            return summary[:500] or "provider did not include quota details"
+        except (ValueError, TypeError, AttributeError):
+            return "provider did not include readable quota details"
 
     @staticmethod
     def _translation_body(prompt: str, temperature: float) -> dict:
