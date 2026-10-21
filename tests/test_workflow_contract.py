@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class WorkflowContractTests(unittest.TestCase):
     def test_publisher_selects_secrets_before_stale_repository_variables(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/publish-prepared-episode.yml").read_text(encoding="utf-8")
         self.assertIn(
             "ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}",
             workflow,
@@ -33,21 +33,16 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
-    def test_episode_matrix_is_parallel_and_publisher_survives_peer_failure(self):
+    def test_episode_matrix_is_parallel_and_dispatches_after_each_success(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         self.assertIn("Select independently eligible episodes", workflow)
-        self.assertIn("tools/bilingual_subtitles.py", workflow)
         self.assertIn("max-parallel: 5", workflow)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
-        self.assertIn("actions/download-artifact@v4", workflow)
-        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
-        self.assertIn("needs.prepare.result != 'cancelled'", workflow)
-        self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
-        self.assertIn("if: always()", workflow)
-        self.assertIn("group: animehighbo-publisher-state", workflow)
-        self.assertIn("No complete prepared artifacts are available", workflow)
-        self.assertNotIn("group: animehighbo-publisher\n", workflow)
+        self.assertIn("gh workflow run publish-prepared-episode.yml", workflow)
+        self.assertIn("fail-fast: false", workflow)
+        self.assertNotIn("needs.prepare.result", workflow)
+        self.assertNotIn("  publish:\\n", workflow)
 
     def test_each_prepared_episode_dispatches_an_independent_publisher(self):
         prepare = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
@@ -95,18 +90,18 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("types: [completed]", workflow)
         workflow_run_block = workflow.split("workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
         self.assertIn("workflows:", workflow_run_block)
-        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config", "Build authorized episode archive catalog"):
+        for name in ("CI", "Animehighbo publisher", "Animehighbo single episode publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config", "Build authorized episode archive catalog"):
             self.assertIn(f"- {name}", workflow_run_block)
         self.assertIn("group: animehighbo-run-retention", workflow)
         self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
 
 
-    def test_publisher_state_persistence_rebases_before_push(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        state_step = workflow.split("      - name: Persist duplicate-prevention state", 1)[1]
-        self.assertIn("git fetch origin main", state_step)
-        self.assertIn("git rebase origin/main", state_step)
-        self.assertIn("git push origin HEAD:main", state_step)
+    def test_publisher_state_persistence_merges_concurrent_episode_updates(self):
+        workflow = (ROOT / ".github/workflows/publish-prepared-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("git fetch origin main", workflow)
+        self.assertIn("git reset --mixed origin/main", workflow)
+        self.assertIn("python tools/merge_state.py", workflow)
+        self.assertIn("git push origin HEAD:main", workflow)
 
     def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
