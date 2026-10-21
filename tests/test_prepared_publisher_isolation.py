@@ -97,7 +97,9 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
-            self.assertEqual(result, 3)
+            # Successful unrelated delivery is retained, but the run must be red
+            # so the failed episode is visible and eligible for retry.
+            self.assertEqual(result, 1)
             self.assertEqual(poster.call_count, 2)
             self.assertEqual(upload.call_count, 3)
             self.assertIn("good", state["published"])
