@@ -91,50 +91,11 @@ Hello there.
         self.assertIn("سلام", translated[0].text)
 
 
-class GeminiKeyRotationTests(unittest.TestCase):
-    def test_translation_rotates_to_next_key_after_key_authorization_failure(self):
-        limited = Mock(status_code=403)
-        limited.raise_for_status.side_effect = requests.HTTPError("key authorization")
-        success = Mock(status_code=200)
-        success.json.return_value = {
-            "candidates": [{"content": {"parts": [{
-                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
-            }]}}]
-        }
-        translator = GeminiSubtitleTranslator(["primary", "backup"])
-        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
-
-        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep"):
-            result = translator.translate_batch([cue])
-
-        self.assertEqual(result[0].text, "سلام")
-        self.assertEqual(post.call_count, 2)
-        self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
-        self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "backup")
-
-    def test_rate_limit_retries_same_key_before_rotating(self):
-        limited = Mock(status_code=429, headers={"Retry-After": "2"})
-        success = Mock(status_code=200)
-        success.json.return_value = {
-            "candidates": [{"content": {"parts": [{
-                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
-            }]}}]
-        }
-        translator = GeminiSubtitleTranslator(["primary", "backup"])
-        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
-
-        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep") as sleep:
-            result = translator.translate_batch([cue])
-
-        self.assertEqual(result[0].text, "سلام")
-        self.assertEqual(post.call_count, 2)
-        self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
-        self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "primary")
-        sleep.assert_called_once_with(2.0)
-
-    def test_environment_loader_collects_all_configured_gemini_keys(self):
+class GeminiSingleKeyTests(unittest.TestCase):
+    def test_environment_loader_uses_only_primary_gemini_key(self):
         env = {
             "GEMINI_API_KEY": "primary",
+            "GEMINI_API_KEY_1": "backup-one",
             "GEMINI_API_KEY_2": "backup-two",
             "GEMINI_API_KEY_3": "backup-three",
             "GEMINI_API_KEY_4": "backup-four",
@@ -143,14 +104,49 @@ class GeminiKeyRotationTests(unittest.TestCase):
             translator = get_english_to_persian_translator()
 
         self.assertIsInstance(translator, GeminiSubtitleTranslator)
-        self.assertEqual(
-            translator.api_keys,
-            ["primary", "backup-two", "backup-three", "backup-four"],
-        )
+        self.assertEqual(translator.api_key, "primary")
+        self.assertFalse(hasattr(translator, "api_keys"))
 
-    def test_duplicate_keys_are_removed_without_reordering(self):
-        translator = GeminiSubtitleTranslator(["same", "same", "next", ""])
-        self.assertEqual(translator.api_keys, ["same", "next"])
+    def test_missing_primary_key_fails_closed_without_offline_fallback(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(RuntimeError, "offline fallback is disabled"):
+                get_english_to_persian_translator()
+
+    def test_rate_limit_retries_same_key_and_honors_retry_after(self):
+        limited = Mock(status_code=429, headers={"Retry-After": "2"})
+        success = Mock(status_code=200)
+        success.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator("primary")
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep") as sleep:
+            result = translator.translate_batch([cue])
+
+        self.assertEqual(result[0].text, "سلام")
+        self.assertEqual(post.call_count, 2)
+        self.assertEqual([call.kwargs["params"]["key"] for call in post.call_args_list], ["primary", "primary"])
+        sleep.assert_called_once_with(2.0)
+
+    def test_exhausted_rate_limit_fails_closed_and_never_rotates(self):
+        limited = Mock(status_code=429, headers={"Retry-After": "0"})
+        limited.json.return_value = {"error": {"message": "quota exceeded"}}
+        translator = GeminiSubtitleTranslator("only-key")
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", return_value=limited) as post, patch("tools.bilingual_subtitles.time.sleep"):
+            with self.assertRaisesRegex(RuntimeError, "subtitle batch remains incomplete"):
+                translator.translate_batch([cue])
+
+        self.assertEqual(post.call_count, 3)
+        self.assertEqual({call.kwargs["params"]["key"] for call in post.call_args_list}, {"only-key"})
+
+    def test_constructor_rejects_empty_key(self):
+        with self.assertRaisesRegex(ValueError, "GEMINI_API_KEY"):
+            GeminiSubtitleTranslator("  ")
 
 
 if __name__ == "__main__":
