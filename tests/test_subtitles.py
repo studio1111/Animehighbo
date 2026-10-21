@@ -122,6 +122,42 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertTrue(all("self-review" in prompt.casefold() for prompt in prompts))
         self.assertTrue(all(len(json.loads(prompt.split("\n\n", 1)[1])) <= 40 for prompt in prompts))
 
+    def test_invalid_json_batch_is_retried_as_smaller_batches(self):
+        cues = [
+            Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
+            for index in range(1, 5)
+        ]
+        calls = []
+
+        def response_for_request(*args, **kwargs):
+            calls.append(kwargs)
+            response = Mock(status_code=200)
+            if len(calls) == 1:
+                response.json.return_value = {
+                    "candidates": [{"content": {"parts": [{"text": '{"translations":[{"id":1,"text":"truncated"'}]}}]
+                }
+                return response
+            prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
+            payload = json.loads(prompt.rsplit("\\n\\n", 1)[1])
+            response.json.return_value = {
+                "candidates": [{"content": {"parts": [{
+                    "text": json.dumps({
+                        "translations": [
+                            {"id": item["id"], "text": f"ترجمه {item['id']}"}
+                            for item in payload
+                        ]
+                    }, ensure_ascii=False)
+                }]}}]
+            }
+            return response
+
+        translator = GeminiSubtitleTranslator("primary")
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=response_for_request):
+            translated = translator.translate_batch(cues)
+
+        self.assertEqual([cue.text for cue in translated], [f"ترجمه {i}" for i in range(1, 5)])
+        self.assertEqual(len(calls), 3)
+
     def test_429_retries_the_same_key_and_honors_retry_after(self):
         limited = Mock(status_code=429, headers={"Retry-After": "2"})
         success = Mock(status_code=200)
