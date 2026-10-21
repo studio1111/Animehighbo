@@ -945,7 +945,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
     for manifest_path in manifest_paths:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         day = str(manifest.get("release_date") or "").strip()
-        if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", day):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
             raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
         if expected_day and day != expected_day:
             raise ValueError(f"Mixed upload-day batch: expected {expected_day}, found {day}.")
@@ -1399,7 +1399,7 @@ def run() -> int:
                             "source_quality": source_quality,
                             "files": sorted(file_rows, key=lambda row: _quality_rank(row["quality"])),
                         }
-                        if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", prepared_manifest["release_date"]):
+                        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", prepared_manifest["release_date"]):
                             raise ValueError(f"Source upload date is missing or invalid for {group['title']}.")
                         (prepared_dir / "manifest.json").write_text(
                             json.dumps(prepared_manifest, ensure_ascii=False, indent=2) + "\\n",
