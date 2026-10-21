@@ -658,6 +658,7 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                     "published_at": int(time.time()),
                 }
                 save_state(config["state_file"], state)
+                published_series_keys.add(series_key)
                 published_count += 1
                 LOG.info("Published episode link: %s | episode=%s", anime_title, episode or "unknown")
             except Exception as exc:
@@ -956,6 +957,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             identity = str(manifest.get("identity") or "")
             if not identity:
                 raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
+            if not str(manifest.get("series_key") or "").strip():
+                raise ValueError(f"Prepared episode manifest is missing series/season identity: {manifest_path}")
             if not str(manifest.get("poster_identity") or "").strip() or not str(manifest.get("group_id") or "").strip():
                 raise ValueError(f"Prepared episode manifest is missing poster/group identity: {manifest_path}")
             if _episode_record_complete(state["published"].get(identity, {})):
@@ -1024,6 +1027,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
 
     published_count = 0
     publication_failure_count = 0
+    published_series_keys: set[str] = set()
     for episode in episodes:
         try:
             identity = episode["identity"]
@@ -1031,7 +1035,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             episode_number = str(episode.get("episode") or "")
             poster_identity = str(episode.get("poster_identity") or "")
             group_id = str(episode.get("group_id") or "")
-            if not poster_identity or not group_id:
+            series_key = str(episode.get("series_key") or "").strip()
+            if not poster_identity or not group_id or not series_key:
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
             if not state["posters"].get(poster_identity, {}).get("message_id"):
@@ -1047,6 +1052,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                     "release_date": episode["release_date"],
                 }
                 save_state(config["state_file"], state)
+                published_series_keys.add(series_key)
 
             poster_message_id = state["posters"][poster_identity].get("message_id")
             if not poster_message_id:
@@ -1090,6 +1096,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 "release_date": episode["release_date"],
             }
             save_state(config["state_file"], state)
+            published_series_keys.add(series_key)
             LOG.info("Completed episode %s (episode tier %s, source upload date %s).",
                      title, episode.get("episode"), episode["release_date"])
         except OSError:
@@ -1103,6 +1110,12 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
     if publication_failure_count:
         LOG.error("%d prepared episode(s) failed during Telegram publishing and remain eligible for retry.",
                   publication_failure_count)
+    event_file = os.getenv("ANIMEHIGHBO_PUBLISH_EVENTS_FILE", "").strip()
+    if event_file and published_series_keys:
+        Path(event_file).write_text(
+            json.dumps(sorted(published_series_keys), ensure_ascii=False),
+            encoding="utf-8",
+        )
     return published_count
 
 def run() -> int:
@@ -1418,6 +1431,7 @@ def run() -> int:
                         prepared_manifest = {
                             "schema_version": 1,
                             "identity": identity,
+                            "series_key": os.getenv("ANIMEHIGHBO_SERIES_KEY", "").strip(),
                             "group_id": group_id,
                             "poster_identity": poster_identity,
                             "title": group["title"],
