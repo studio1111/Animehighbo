@@ -1,9 +1,10 @@
-"""Select the oldest incomplete source-upload date, ignoring episode numbers for scheduling."""
+"""Select and gate authorized episodes without cross-series failure coupling."""
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from datetime import date
 
@@ -17,6 +18,116 @@ def _day(value: object) -> str:
         return parsed.isoformat()
     except (TypeError, ValueError):
         raise ValueError(f"Invalid source release_date: {raw!r}")
+
+
+def episode_identity(entry: dict) -> str:
+    """Return a stable identity based on an immutable source URI or explicit identity."""
+    explicit = str(entry.get("identity") or "").strip()
+    if explicit:
+        return explicit
+    uri = str(entry.get("uri") or entry.get("url") or "").strip()
+    if not uri:
+        raise ValueError("Episode identity requires a source URI or explicit identity.")
+    return hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+
+
+def series_identity(entry: dict) -> str | None:
+    """Return a conservative series/season key; ambiguous identity is held."""
+    title = str(entry.get("series_title") or "").strip()
+    season = entry.get("season")
+    if not title:
+        raw_title = str(entry.get("title") or "").strip()
+        # Only strip an explicit episode suffix; do not infer a series from arbitrary text.
+        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?(?:\s|$|\()", raw_title, re.I)
+        if match:
+            title = match.group(1).strip(" -–—")
+        else:
+            return None
+    if season in (None, ""):
+        raw_title = str(entry.get("title") or "")
+        season_match = re.search(r"(?i)\bS(\d{1,2})\s*E\d{1,4}\b", raw_title)
+        if season_match:
+            season = int(season_match.group(1))
+        else:
+            # Season one is accepted only when the manifest explicitly provides a clean
+            # series title and episode number, rather than trying to parse a vague title.
+            if not str(entry.get("series_title") or "").strip():
+                return None
+            season = 1
+    try:
+        season_number = int(season)
+    except (TypeError, ValueError):
+        return None
+    if season_number < 1 or not title:
+        return None
+    normalized_title = re.sub(r"\s+", " ", title).casefold()
+    return f"{normalized_title}::season-{season_number}"
+
+
+def _is_complete(record: object) -> bool:
+    return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
+        set(record.get("complete_qualities", []))
+    )
+
+
+def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
+    """Select prepared episodes whose earlier known episodes in the same season are complete.
+
+    A failed or ambiguous episode is never published, but only blocks later episodes in
+    its own series. Different series are evaluated independently.
+    """
+    if not isinstance(entries, list) or not entries:
+        return []
+    published = state.get("published", {}) if isinstance(state, dict) else {}
+    if not isinstance(published, dict):
+        published = {}
+
+    parsed: list[tuple[dict, str, str, int]] = []
+    counts: dict[tuple[str, int], int] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        try:
+            number = int(entry.get("episode") or 0)
+        except (TypeError, ValueError):
+            continue
+        series = series_identity(entry)
+        if number < 1 or series is None:
+            continue
+        try:
+            identity = episode_identity(entry)
+        except ValueError:
+            continue
+        parsed.append((entry, identity, series, number))
+        counts[(series, number)] = counts.get((series, number), 0) + 1
+
+    eligible: list[dict] = []
+    for entry, identity, series, number in parsed:
+        status = str(entry.get("status") or "prepared").casefold()
+        if status not in {"prepared", "ready", "complete"}:
+            continue
+        if _is_complete(published.get(identity)):
+            continue
+        # Duplicate entries for the same series/episode are ambiguous and held.
+        if counts[(series, number)] != 1:
+            continue
+        blocked = False
+        for earlier, earlier_identity, earlier_series, earlier_number in parsed:
+            if earlier_series != series or earlier_number >= number:
+                continue
+            if not _is_complete(published.get(earlier_identity)):
+                blocked = True
+                break
+        if not blocked:
+            eligible.append(entry)
+    return sorted(
+        eligible,
+        key=lambda entry: (
+            (series_identity(entry) or "").casefold(),
+            int(entry.get("episode") or 0),
+            episode_identity(entry),
+        ),
+    )
 
 
 def select_next_upload_date(
@@ -47,7 +158,7 @@ def select_next_upload_date(
             )
         identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
         record = published.get(identity, {}) if isinstance(published, dict) else {}
-        if {"1080p", "720p", "480p"}.issubset(set(record.get("complete_qualities", []))):
+        if _is_complete(record):
             continue
         normalized.append({
             "identity": identity,
@@ -58,8 +169,6 @@ def select_next_upload_date(
         })
     if not normalized:
         return None, []
-    # Source upload date is the sole scheduling priority. Episode numbers are metadata
-    # only, so delayed premieres or delayed episodes are not reordered.
     oldest_upload_date = min(row["release_date"] for row in normalized)
     selected = [row for row in normalized if row["release_date"] == oldest_upload_date]
     selected.sort(key=lambda row: (row["title"].casefold(), row["identity"]))
