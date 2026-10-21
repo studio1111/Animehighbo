@@ -984,6 +984,21 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
             if len(files) != len(manifest.get("files", [])):
                 raise ValueError(f"Duplicate quality in prepared manifest: {manifest_path}")
+            for quality in ("1080p", "720p", "480p"):
+                output_identity = f"{identity}:{quality}"
+                if output_identity not in state["published"] and quality not in files:
+                    raise ValueError(
+                        f"Prepared episode {manifest.get('title')} is missing required {quality}."
+                    )
+            poster_identity = str(manifest.get("poster_identity") or "")
+            poster_exists = bool(state["posters"].get(poster_identity, {}).get("message_id"))
+            if not poster_exists and any(
+                f"{identity}:{quality}" in state["published"]
+                for quality in ("1080p", "720p", "480p")
+            ):
+                raise ValueError(
+                    f"Episode {manifest.get('title')} has delivered files but no recorded poster."
+                )
             episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
 
         except Exception as exc:
@@ -1001,29 +1016,10 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
         LOG.error("Skipped %d invalid prepared episode bundle(s); they remain eligible for a later retry.",
                   invalid_bundle_count)
 
-    # Validate the entire episode tier before publishing the first poster.
-    for episode in episodes:
-        identity = episode["identity"]
-        existing = state["published"].get(identity, {})
-        poster_identity = str(episode.get("poster_identity") or "")
-        poster_exists = bool(state["posters"].get(poster_identity, {}).get("message_id"))
-        for quality in ("1080p", "720p", "480p"):
-            output_identity = f"{identity}:{quality}"
-            if output_identity in state["published"]:
-                continue
-            if quality not in episode["files"]:
-                raise RuntimeError(
-                    f"Upload-date batch is incomplete: {episode.get('title')} is missing {quality}."
-                )
-        if not poster_exists and any(
-            f"{identity}:{quality}" in state["published"]
-            for quality in ("1080p", "720p", "480p")
-        ):
-            raise RuntimeError(f"Episode {episode.get('title')} has delivered files but no recorded poster.")
 
     if dry_run:
-        LOG.info("[DRY RUN] Prepared %d episodes for episode tier %s; no Telegram posts sent.",
-                 len(episodes), expected_tier if expected_tier is not None else "unknown")
+        LOG.info("[DRY RUN] Prepared %d complete episode bundle(s); no Telegram posts sent.",
+                 len(episodes))
         return 0
 
     published_count = 0
