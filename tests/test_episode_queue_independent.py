@@ -38,9 +38,9 @@ def published(*uris):
 class IndependentEpisodeQueueTests(unittest.TestCase):
     def test_queue_selects_first_episode_of_each_series_without_global_date_gate(self):
         rows = [
-            catalog_catalog_row("Series A - 01 (1080p)", 1, "2026-10-10", "https://cdn.example/a1.mkv"),
-            catalog_catalog_row("Series A - 02 (1080p)", 2, "2026-10-01", "https://cdn.example/a2.mkv"),
-            catalog_catalog_row("Series B - 01 (1080p)", 1, "2026-10-09", "https://cdn.example/b1.mkv"),
+            catalog_row("Series A - 01 (1080p)", 1, "2026-10-10", "https://cdn.example/a1.mkv"),
+            catalog_row("Series A - 02 (1080p)", 2, "2026-10-01", "https://cdn.example/a2.mkv"),
+            catalog_row("Series B - 01 (1080p)", 1, "2026-10-09", "https://cdn.example/b1.mkv"),
         ]
         selected = select_independent_episodes(rows, {"published": {}}, cutoff_date="2026-09-01")
         self.assertEqual({item["url"] for item in selected}, {
@@ -49,9 +49,9 @@ class IndependentEpisodeQueueTests(unittest.TestCase):
 
     def test_queue_advances_each_series_independently_after_publication(self):
         rows = [
-            row("Series A - 01 (1080p)", 1, "2026-10-10", "https://cdn.example/a1.mkv"),
-            row("Series A - 02 (1080p)", 2, "2026-10-01", "https://cdn.example/a2.mkv"),
-            row("Series B - 01 (1080p)", 1, "2026-10-09", "https://cdn.example/b1.mkv"),
+            catalog_row("Series A - 01 (1080p)", 1, "2026-10-10", "https://cdn.example/a1.mkv"),
+            catalog_row("Series A - 02 (1080p)", 2, "2026-10-01", "https://cdn.example/a2.mkv"),
+            catalog_row("Series B - 01 (1080p)", 1, "2026-10-09", "https://cdn.example/b1.mkv"),
             catalog_row("Series B - 02 (1080p)", 2, "2026-10-11", "https://cdn.example/b2.mkv"),
         ]
         state = published("https://cdn.example/a1.mkv", "https://cdn.example/b1.mkv")
