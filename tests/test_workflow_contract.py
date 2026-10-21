@@ -31,7 +31,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("Animehighbo episode preparation", trigger)
         self.assertIn("types: [completed]", trigger)
         self.assertIn("github.event.workflow_run.conclusion != 'cancelled'", workflow)
-        self.assertIn("github.event.workflow_run.id", workflow)
+        self.assertIn("context.payload.workflow_run.id", workflow)
         self.assertIn("github.event.client_payload.run_id", workflow)
         self.assertIn("github.event.client_payload.identity", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
