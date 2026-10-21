@@ -92,14 +92,15 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
     if not normalized:
         return []
     normalized.sort(key=lambda item: (item["episode"], item["release_date"]))
-    # If episode 1 itself debuted in the requested window, backfill from episode 1.
+    # A clean archive must begin with episode 1 of the current show/season.
+    # Never queue only the last few episodes of an older season just because
+    # those releases happen to fall after the requested date.
     episode_one = next((item for item in normalized if item["episode"] == 1), None)
-    if episode_one and episode_one["release_date"] >= cutoff:
-        selected = [item for item in normalized if item["episode"] >= 1]
-        expected_start = 1
-    else:
-        selected = [item for item in normalized if item["release_date"] >= cutoff]
-        expected_start = selected[0]["episode"] if selected else 0
+    if episode_one is None:
+        LOG.info("Skipping %s because episode 1 is not available in the source catalogue.", show_title)
+        return []
+    selected = [item for item in normalized if item["episode"] >= 1]
+    expected_start = 1
     if not selected:
         return []
     expected = list(range(expected_start, selected[-1]["episode"] + 1))
