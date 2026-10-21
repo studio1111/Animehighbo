@@ -276,15 +276,16 @@ def translate_title_to_persian(title: str, timeout: int = 10) -> str:
 
 
 def anime_japanese_title(title: str, media: dict | None = None, timeout: int = 10) -> str:
-    """Resolve Japanese title from AniList, then use Jikan/MAL as a fallback."""
+    """Return the Japanese-language title in Latin/Romaji writing, not Japanese characters."""
     media = media if isinstance(media, dict) else {}
     titles = media.get("title") or {}
-    native = str(titles.get("native") or "").strip()
-    if native:
-        return native
-    search_title = str(titles.get("english") or titles.get("romaji") or title or "").strip()
+    # AniList's romaji title is the preferred Japanese pronunciation in Latin letters.
+    romaji = str(titles.get("romaji") or "").strip()
+    if romaji:
+        return romaji
+    search_title = str(titles.get("english") or title or "").strip()
     if not search_title:
-        return "日本語タイトル未登録"
+        return "Japanese title unavailable"
     try:
         response = requests.get(
             "https://api.jikan.moe/v4/anime",
@@ -303,12 +304,14 @@ def anime_japanese_title(title: str, media: dict | None = None, timeout: int = 1
             ]
             normalized = [re.sub(r"[^a-z0-9]+", "", item.lower()) for item in candidates]
             if target and target in normalized:
-                japanese = str(entry.get("title_japanese") or "").strip()
-                if japanese:
-                    return japanese
+                # Jikan exposes title_japanese in Japanese script and title in Romaji/Latin.
+                latin_title = str(entry.get("title") or "").strip()
+                if latin_title and not re.search(r"[\\u3040-\\u30ff\\u3400-\\u9fff]", latin_title):
+                    return latin_title
     except Exception as exc:
-        LOG.warning("Japanese title lookup unavailable for %r: %s", search_title, exc)
-    return str(titles.get("romaji") or search_title).strip() or "日本語タイトル未登録"
+        LOG.warning("Japanese Romaji title lookup unavailable for %r: %s", search_title, exc)
+    # AniList's romaji field is preferable; this last fallback is never blank.
+    return search_title
 
 
 def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
@@ -479,7 +482,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title)}",
-        f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title)}",
+        f"🇯🇵 <b>日本語 (Romaji):</b> {_safe_caption_text(japanese_title)}",
     ]
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
