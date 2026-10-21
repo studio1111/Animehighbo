@@ -143,7 +143,7 @@ def render_ass(cues: list[Cue]) -> str:
             raise ValueError(f"Invalid SRT cue timing: {cue.timing!r}")
         start = _srt_timestamp_to_ass(start_end[0])
         end = _srt_timestamp_to_ass(start_end[1])
-        text = cue.text.strip().replace("\\r\\n", "\\n").replace("\\n", r"\N")
+        text = cue.text.strip().replace("\r\n", "\n").replace("\n", r"\N")
         for source, replacement in (
             ("<i>", r"{\i1}"), ("</i>", r"{\i0}"),
             ("<b>", r"{\b1}"), ("</b>", r"{\b0}"),
@@ -151,7 +151,7 @@ def render_ass(cues: list[Cue]) -> str:
         ):
             text = re.sub(re.escape(source), lambda _match, value=replacement: value, text, flags=re.I)
         text = re.sub(r"</?(?:font|span|ruby|rt)(?:\s+[^>]*)?>", "", text, flags=re.I)
-        text = re.sub(r"<br\s*/?>", r"\N", text, flags=re.I)
+        text = re.sub(r"<br\s*/?>", lambda _match: r"\N", text, flags=re.I)
         lines.append(f"Dialogue: 0,{start},{end},Persian,,0,0,0,,{text}")
     return "\n".join(lines) + "\n"
 
