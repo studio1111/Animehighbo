@@ -123,9 +123,9 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertTrue(all("self-review" in prompt.casefold() for prompt in prompts))
         self.assertTrue(all(len(json.loads(prompt.split("\n\n", 1)[1])) <= 100 for prompt in prompts))
 
-    def test_default_model_is_current_stable_gemini_flash(self):
+    def test_default_model_is_current_stable_gemini_flash_lite(self):
         translator = GeminiSubtitleTranslator("primary")
-        self.assertEqual(translator.model, "gemini-3.6-flash")
+        self.assertEqual(translator.model, "gemini-3.1-flash-lite")
 
     def test_long_google_retry_info_stops_without_wasting_more_requests(self):
         limited = Mock(status_code=429, headers={})
