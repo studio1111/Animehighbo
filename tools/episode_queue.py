@@ -35,6 +35,12 @@ def select_next_upload_date(
         day = _day(row.get("release_date"))
         if not uri or not title or len(day) != 10:
             raise ValueError(f"Archive entry {index + 1} requires title, URI and ISO release_date.")
+        try:
+            episode_number = int(row.get("episode") or 0)
+        except (TypeError, ValueError):
+            episode_number = 0
+        if episode_number < 1:
+            raise ValueError(f"Archive entry {index + 1} requires an episode number for metadata.")
         if cutoff and date.fromisoformat(day) < cutoff:
             raise ValueError(
                 f"Archive entry {index + 1} predates configured archive cutoff {cutoff.isoformat()}: {title}"
@@ -48,7 +54,7 @@ def select_next_upload_date(
             "title": title,
             "url": uri,
             "release_date": day,
-            "episode": row.get("episode"),
+            "episode": episode_number,
         })
     if not normalized:
         return None, []
