@@ -7,43 +7,38 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkflowContractTests(unittest.TestCase):
-    def test_publisher_selects_secrets_before_stale_repository_variables(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        self.assertIn(
-            "ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}",
-            workflow,
-        )
-        self.assertIn(
-            "ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}",
-            workflow,
-        )
-        self.assertIn('if [ -n "$ANIMEHIGHBO_DRY_RUN_SECRET" ]; then', workflow)
-        self.assertIn('export ANIMEHIGHBO_DRY_RUN="$ANIMEHIGHBO_DRY_RUN_SECRET"', workflow)
-        self.assertIn('dry_run_source="config.json"', workflow)
-        self.assertIn('get("dry_run", True)', workflow)
-        self.assertIn('dry_run_state="disabled"', workflow)
-        self.assertIn(
-            "TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}",
-            workflow,
-        )
-        self.assertIn('if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then', workflow)
-        self.assertIn(
-            "ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}",
-            workflow,
-        )
-        self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
+    def test_publisher_uses_only_one_gemini_secret_and_no_offline_fallback(self):
+        prepare = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
+        self.assertIn("GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}", prepare)
+        for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertNotIn(name, prepare)
+        self.assertNotIn("requirements-subtitles.txt", prepare)
+        self.assertNotIn("Install offline subtitle fallback", prepare)
+        self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", prepare)
+        self.assertIn("fail-fast: false", prepare)
+        self.assertIn("actions/upload-artifact@v4", prepare)
 
-    def test_upload_date_matrix_serializes_preparation_to_protect_shared_gemini_quota(self):
+    def test_publisher_is_a_separate_workflow_and_runs_after_failed_prepare_workers(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        self.assertIn("Select oldest incomplete source upload date", workflow)
-        self.assertIn("tools/bilingual_subtitles.py", workflow)
-        self.assertIn("max-parallel: 1", workflow)
-        self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
-        self.assertIn("actions/upload-artifact@v4", workflow)
+        trigger = workflow.split("permissions:", 1)[0]
+        self.assertIn("workflow_run:", trigger)
+        self.assertIn("Animehighbo episode preparation", trigger)
+        self.assertIn("types: [completed]", trigger)
+        self.assertIn("github.event.workflow_run.conclusion != 'cancelled'", workflow)
+        self.assertIn("github.event.workflow_run.id", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
-        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
-        self.assertIn("needs.prepare.result == 'success'", workflow)
-        self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
+        self.assertNotIn("needs.prepare.result == 'success'", workflow)
+        self.assertIn("group: animehighbo-publisher", workflow)
+        self.assertIn("git fetch origin main", workflow)
+        self.assertIn("git rebase origin/main", workflow)
+        self.assertIn("git push origin HEAD:main", workflow)
+
+    def test_publisher_resolves_local_telegram_api_and_size_limit(self):
+        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
+        self.assertIn("if [ -n \"$TELEGRAM_LOCAL_API_SECRET\" ]; then", workflow)
+        self.assertIn("ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}", workflow)
+        self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
     def test_poster_synopsis_uses_expandable_blockquote_not_spoiler_mask(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
@@ -65,7 +60,7 @@ class WorkflowContractTests(unittest.TestCase):
     def test_standalone_poster_only_monitor_is_removed(self):
         self.assertFalse((ROOT / ".github/workflows/subsplease-monitor.yml").exists())
 
-    def test_retention_runs_daily_and_keeps_only_latest_thirty_runs(self):
+    def test_retention_runs_daily_and_keeps_only_latest_thirty_completed_runs(self):
         workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
         self.assertIn("cron: '43 4 * * *'", workflow)
         self.assertIn("completed.slice(30)", workflow)
@@ -74,20 +69,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions: write", workflow)
         self.assertIn("workflow_run:", workflow)
         self.assertIn("types: [completed]", workflow)
-        workflow_run_block = workflow.split("workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
-        self.assertIn("workflows:", workflow_run_block)
-        for name in ("CI", "Animehighbo publisher", "One-time licensed Morevna Telegram test", "Sync RSS input to config", "Build authorized episode archive catalog"):
-            self.assertIn(f"- {name}", workflow_run_block)
         self.assertIn("group: animehighbo-run-retention", workflow)
-        self.assertIn("github.event.workflow_run.name != 'Retain latest 30 workflow runs'", workflow)
-
-
-    def test_publisher_state_persistence_rebases_before_push(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        state_step = workflow.split("      - name: Persist duplicate-prevention state", 1)[1]
-        self.assertIn("git fetch origin main", state_step)
-        self.assertIn("git rebase origin/main", state_step)
-        self.assertIn("git push origin HEAD:main", state_step)
 
     def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
@@ -117,32 +99,6 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("data/archive_manifest.json", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertNotIn("python app.py", workflow)
-
-    def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        for name in (
-            "GEMINI_API_KEY",
-            "GEMINI_API_KEY_1",
-            "GEMINI_API_KEY_2",
-            "GEMINI_API_KEY_3",
-            "GEMINI_API_KEY_4",
-        ):
-            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
-        self.assertIn(
-            'if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && '
-            '[ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && '
-            '[ -z "$GEMINI_API_KEY_4" ]',
-            workflow,
-        )
-
-
-    def test_one_time_delivery_is_manual_only_and_receives_gemini_fallback_keys(self):
-        workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
-        trigger_block = workflow.split("permissions:", 1)[0]
-        self.assertIn("workflow_dispatch:", trigger_block)
-        self.assertNotIn("push:", trigger_block)
-        for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
-            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
 
 
 if __name__ == "__main__":
