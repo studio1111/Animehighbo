@@ -245,6 +245,9 @@ def select_independent_episodes(
 
     ready_ids = {row["identity"] for row in normalized}
     eligible = eligible_prepared_episodes(normalized, state, ready_ids=ready_ids)
+    for row in eligible:
+        key = series_identity(row)
+        row["series_key"] = hashlib.sha256((key or row["identity"]).encode("utf-8")).hexdigest()[:20]
     eligible.sort(key=lambda row: (
         row["release_date"],
         str(row.get("series_title") or "").casefold(),
