@@ -19,6 +19,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: animehighbo-preparation
+  cancel-in-progress: false
+
 jobs:
   queue:
     name: Select oldest incomplete source upload date
