@@ -150,6 +150,39 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         post.assert_called_once()
         sleep.assert_not_called()
 
+    def test_review_batches_use_40_cues_to_keep_review_responses_safe(self):
+        source = [
+            Cue(index, f"00:{index // 60:02d}:{index % 60:02d},000 --> 00:{(index + 1) // 60:02d}:{(index + 1) % 60:02d},000", f"Line {index}")
+            for index in range(1, 42)
+        ]
+        translated = [Cue(cue.index, cue.timing, f"ترجمه {cue.index}") for cue in source]
+
+        def response_for_request(*args, **kwargs):
+            prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
+            payload = json.loads(prompt.rsplit("\n\n", 1)[1])
+            response = Mock(status_code=200)
+            response.json.return_value = {
+                "candidates": [{"content": {"parts": [{
+                    "text": json.dumps({
+                        "translations": [
+                            {"id": item["id"], "text": item["persian"]}
+                            for item in payload
+                        ]
+                    }, ensure_ascii=False)
+                }]}}]
+            }
+            return response
+
+        translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=response_for_request) as post:
+            reviewed = translator.review_batch(source, translated)
+
+        self.assertEqual(len(reviewed), 41)
+        self.assertEqual(post.call_count, 2)
+        prompts = [call.kwargs["json"]["contents"][0]["parts"][0]["text"] for call in post.call_args_list]
+        self.assertTrue(all(len(json.loads(prompt.rsplit("\n\n", 1)[1])) <= 40 for prompt in prompts))
+
     def test_gemini_requests_are_spaced_for_shared_project_quota(self):
         translator = GeminiSubtitleTranslator("primary")
 
