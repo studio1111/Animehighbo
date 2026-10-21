@@ -85,6 +85,17 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertLess(download, subtitle)
         self.assertLess(subtitle, poster)
 
+    def test_all_three_qualities_are_encoded_before_first_poster_is_sent(self):
+        source = (ROOT / "app.py").read_text(encoding="utf-8")
+        group_flow = source.split("# Each anime/episode group is handled independently", 1)[1]
+        subtitle = group_flow.index("process_bilingual_subtitles(")
+        encode = group_flow.index("encode_h265(")
+        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        upload = group_flow.index("telegram_upload_and_send(")
+        self.assertLess(subtitle, encode)
+        self.assertLess(encode, poster)
+        self.assertLess(poster, upload)
+
     def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
         workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
         self.assertTrue(workflow_path.exists())
