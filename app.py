@@ -946,6 +946,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
     for manifest_path in manifest_paths:
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if not isinstance(manifest, dict) or manifest.get("schema_version") != 1:
+                raise ValueError(f"Prepared episode manifest has an unsupported schema version: {manifest_path}")
             day = str(manifest.get("release_date") or "").strip()
             if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
                 raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
@@ -954,6 +956,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             identity = str(manifest.get("identity") or "")
             if not identity:
                 raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
+            if not str(manifest.get("poster_identity") or "").strip() or not str(manifest.get("group_id") or "").strip():
+                raise ValueError(f"Prepared episode manifest is missing poster/group identity: {manifest_path}")
             if _episode_record_complete(state["published"].get(identity, {})):
                 continue
             files = {}
@@ -962,7 +966,10 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 filename = str(row.get("filename") or "")
                 if quality not in {"1080p", "720p", "480p"} or not filename:
                     raise ValueError(f"Invalid prepared quality entry in {manifest_path}.")
-                path = manifest_path.parent / filename
+                bundle_root = manifest_path.parent.resolve()
+                path = (bundle_root / filename).resolve()
+                if path.parent != bundle_root:
+                    raise ValueError(f"Prepared {quality} filename escapes its bundle directory: {filename!r}")
                 if not path.is_file() or path.stat().st_size < 1024:
                     raise ValueError(f"Prepared {quality} file is missing or too small: {path}")
                 if path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
