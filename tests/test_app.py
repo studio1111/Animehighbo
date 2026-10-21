@@ -40,11 +40,11 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
                          "Kimetsu no Yaiba")
 
     def test_japanese_title_caption_labels_romaji_explicitly(self):
-        caption = build_episode_caption(
-            "Demon Slayer - 01 (1080p)",
-            {"title": {"english": "Demon Slayer", "romaji": "Kimetsu no Yaiba", "native": "鬼滅の刃"}},
-            "پوستر آزمایشی",
-        )
+        metadata = {"title": {"english": "Demon Slayer", "romaji": "Kimetsu no Yaiba", "native": "鬼滅の刃"}}
+        with patch("app.translate_title_to_persian", return_value="شیطان‌کش"), patch(
+            "app.translate_anime_synopsis", return_value="خلاصهٔ آزمایشی"
+        ):
+            caption = build_episode_caption("Demon Slayer - 01 (1080p)", "01", metadata=metadata)
         self.assertIn("English:", caption)
         self.assertIn("فارسی:", caption)
         self.assertIn("日本語 (Romaji):", caption)
