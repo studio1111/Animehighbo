@@ -22,7 +22,6 @@ concurrency:
 
 jobs:
   publish:
-    if: false # TEMPORARY SAFETY PAUSE: re-enable only after reset and validation
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
