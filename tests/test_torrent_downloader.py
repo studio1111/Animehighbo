@@ -34,6 +34,7 @@ class TorrentSourceValidationTests(unittest.TestCase):
 
             def fake_popen(command, stdout=None, stderr=None):
                 captured["stdout"] = stdout
+                captured["command"] = command
                 download_dir = Path(command[command.index("--dir") + 1])
                 video = download_dir / "sample.mkv"
                 video.write_bytes(bytes.fromhex("1A45DFA3") + b"x" * 2048)
@@ -50,6 +51,8 @@ class TorrentSourceValidationTests(unittest.TestCase):
                     authorized_for_redistribution=True,
                 )
 
+            self.assertIn("--bt-stop-timeout=900", captured["command"])
+            self.assertIn("--summary-interval=30", captured["command"])
             self.assertNotEqual(captured["stdout"], __import__("subprocess").PIPE)
             self.assertTrue(hasattr(captured["stdout"], "write"))
             self.assertEqual(result.read_bytes()[:4], bytes.fromhex("1A45DFA3"))
