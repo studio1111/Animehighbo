@@ -157,18 +157,13 @@ def render_ass(cues: list[Cue]) -> str:
 
 
 class GeminiSubtitleTranslator:
-    """Translate subtitle batches with Gemini and rotate configured API keys on quota/auth failures."""
+    """Translate subtitle batches with one Gemini key and bounded quota retries."""
 
-    def __init__(self, api_key: str | list[str], model: str | None = None):
-        candidates = [api_key] if isinstance(api_key, str) else list(api_key)
-        self.api_keys = list(dict.fromkeys(
-            key.strip() for key in candidates if isinstance(key, str) and key.strip()
-        ))
-        if not self.api_keys:
-            raise ValueError("At least one non-empty Gemini API key is required.")
-        # Keep the original attribute for compatibility with existing integrations.
-        self.api_key = self.api_keys[0]
-        self._key_index = 0
+    def __init__(self, api_key: str, model: str | None = None):
+        if not isinstance(api_key, str) or not api_key.strip():
+            raise ValueError("GEMINI_API_KEY is required.")
+        self.api_key = api_key.strip()
+        self.api_keys = [self.api_key]
         self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")).strip()
         self.endpoint = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
@@ -176,76 +171,61 @@ class GeminiSubtitleTranslator:
         )
 
     def _generate_json(self, body: dict, context: str) -> dict:
-        """Try each configured key, retry transient errors, and never log key values."""
+        """Retry transient errors with the same key; never rotate or log credentials."""
         errors = []
-        key_count = len(self.api_keys)
-        for key_offset in range(key_count):
-            index = (self._key_index + key_offset) % key_count
-            key = self.api_keys[index]
-            for attempt in range(3):
-                try:
-                    response = requests.post(
-                        self.endpoint,
-                        params={"key": key},
-                        json=body,
-                        timeout=(20, 120),
-                    )
-                except requests.RequestException as exc:
-                    errors.append(f"key {index + 1}: network error")
-                    if attempt < 2:
-                        time.sleep(2 ** attempt)
-                        continue
-                    break
+        for attempt in range(3):
+            try:
+                response = requests.post(
+                    self.endpoint,
+                    params={"key": self.api_key},
+                    json=body,
+                    timeout=(20, 120),
+                )
+            except requests.RequestException:
+                errors.append("network error")
+                if attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                break
 
-                # 401/403 are key-specific. A 429 is normally project-scoped,
-                # so retry this key with backoff before trying another project/key.
-                if response.status_code in {401, 403}:
-                    errors.append(f"key {index + 1}: HTTP {response.status_code}")
-                    break
-                if response.status_code == 429:
-                    if attempt < 2:
+            if response.status_code == 429 or response.status_code in {500, 502, 503, 504}:
+                errors.append(f"HTTP {response.status_code}")
+                if attempt < 2:
+                    if response.status_code == 429:
                         retry_after = response.headers.get("Retry-After", "")
                         try:
                             delay = min(60.0, max(0.0, float(retry_after)))
                         except (TypeError, ValueError):
                             delay = min(30.0, 2.0 ** (attempt + 1))
-                        time.sleep(delay)
-                        continue
-                    detail = self._safe_api_error(response)
-                    errors.append(f"key {index + 1}: HTTP 429 ({detail})")
-                    break
-                if response.status_code in {500, 502, 503, 504}:
-                    errors.append(f"key {index + 1}: HTTP {response.status_code}")
-                    if attempt < 2:
-                        time.sleep(2 ** attempt)
-                        continue
-                    break
-                try:
-                    response.raise_for_status()
-                except requests.RequestException as exc:
-                    # Other 4xx responses usually indicate a malformed request
-                    # or unsupported model, so rotating keys will not help.
-                    raise RuntimeError(
-                        f"Gemini request failed during {context} (HTTP {response.status_code})."
-                    ) from exc
-                try:
-                    data = response.json()
-                    parts = data["candidates"][0]["content"]["parts"]
-                    raw_text = "".join(part.get("text", "") for part in parts)
-                    decoded = json.loads(raw_text)
-                    if not isinstance(decoded, dict):
-                        raise ValueError("Expected a JSON object.")
-                except (ValueError, KeyError, TypeError, IndexError) as exc:
-                    raise RuntimeError(
-                        f"Gemini returned invalid JSON during {context}."
-                    ) from exc
-                self._key_index = index
-                return decoded
+                    else:
+                        delay = min(30.0, 2.0 ** attempt)
+                    time.sleep(delay)
+                    continue
+                break
 
-        details = ", ".join(errors) if errors else "no usable API key"
+            try:
+                response.raise_for_status()
+            except requests.RequestException as exc:
+                raise RuntimeError(
+                    f"Gemini request failed during {context} (HTTP {response.status_code})."
+                ) from exc
+
+            try:
+                data = response.json()
+                parts = data["candidates"][0]["content"]["parts"]
+                raw_text = "".join(part.get("text", "") for part in parts)
+                decoded = json.loads(raw_text)
+                if not isinstance(decoded, dict):
+                    raise ValueError("Expected a JSON object.")
+            except (ValueError, KeyError, TypeError, IndexError) as exc:
+                raise RuntimeError(f"Gemini returned invalid JSON during {context}.") from exc
+            return decoded
+
+        detail = self._safe_api_error(response) if "response" in locals() and response.status_code == 429 else ""
+        suffix = f" ({detail})" if detail else ""
         raise RuntimeError(
-            f"All {key_count} configured Gemini API key(s) failed during {context} "
-            f"({details}). The subtitle batch remains incomplete and must not be published."
+            f"Gemini failed during {context} after bounded retries ({', '.join(errors) or 'no response'}). "
+            f"The subtitle batch remains incomplete and must not be published.{suffix}"
         )
 
     @staticmethod
@@ -381,66 +361,15 @@ class GeminiSubtitleTranslator:
         return result[0].text
 
 def get_english_to_persian_translator():
-    key_names = (
-        "GEMINI_API_KEY",
-        "GEMINI_API_KEY_1",
-        "GEMINI_API_KEY_2",
-        "GEMINI_API_KEY_3",
-        "GEMINI_API_KEY_4",
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is required; offline translation fallback is disabled.")
+    print(
+        f"Subtitle translator: Gemini ({os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')}); one API key configured",
+        flush=True,
     )
-    api_keys = list(dict.fromkeys(
-        os.environ.get(name, "").strip()
-        for name in key_names
-        if os.environ.get(name, "").strip()
-    ))
-    if api_keys:
-        print(
-            f"Subtitle translator: Gemini ({os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')}); "
-            f"{len(api_keys)} API key(s) configured",
-            flush=True,
-        )
-        return GeminiSubtitleTranslator(api_keys)
+    return GeminiSubtitleTranslator(api_key)
 
-    # Optional offline fallback for local runs without a Gemini secret.
-    try:
-        import argostranslate.package
-        import argostranslate.translate
-    except ImportError as exc:
-        raise RuntimeError(
-            "No Gemini API key is configured and the offline Argos dependency is missing."
-        ) from exc
-
-    languages = argostranslate.translate.get_installed_languages()
-    english = next((lang for lang in languages if lang.code == "en"), None)
-    persian = next((lang for lang in languages if lang.code == "fa"), None)
-    if english and persian:
-        translation = english.get_translation(persian)
-        if translation:
-            print("Subtitle translator: offline Argos fallback", flush=True)
-            return translation
-
-    argostranslate.package.update_package_index()
-    package = next(
-        (
-            item for item in argostranslate.package.get_available_packages()
-            if item.from_code == "en" and item.to_code == "fa"
-        ),
-        None,
-    )
-    if package is None:
-        raise RuntimeError("No English-to-Persian Argos model is currently available.")
-    package_path = package.download()
-    argostranslate.package.install_from_path(package_path)
-    languages = argostranslate.translate.get_installed_languages()
-    english = next((lang for lang in languages if lang.code == "en"), None)
-    persian = next((lang for lang in languages if lang.code == "fa"), None)
-    if not english or not persian:
-        raise RuntimeError("English-to-Persian translation model installed, but languages are unavailable.")
-    translation = english.get_translation(persian)
-    if not translation:
-        raise RuntimeError("English-to-Persian translation is not available after model installation.")
-    print("Subtitle translator: offline Argos fallback", flush=True)
-    return translation
 
 def translate_cues(cues: list[Cue], translator) -> list[Cue]:
     # Gemini gets small chronological batches, improving consistency and reducing API calls.
