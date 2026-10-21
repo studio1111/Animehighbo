@@ -97,7 +97,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         ]
         def response_for_request(*args, **kwargs):
             prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
-            payload = json.loads(prompt.rsplit("\\n\\n", 1)[1])
+            payload = json.loads(prompt.rsplit("\n\n", 1)[1])
             response = Mock(status_code=200)
             response.json.return_value = {
                 "candidates": [{"content": {"parts": [{
