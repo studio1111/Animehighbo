@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 import requests
 
 LOCK_PATH = "data/publisher.lock"
+STATE_PATH = "data/state.json"
 API_VERSION = "2022-11-28"
 
 
@@ -68,6 +69,29 @@ def _read_lock(identity: str, token: str, repository: str) -> dict | None:
     return {**record, "sha": sha}
 
 
+def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
+    """Check persisted state before reclaiming a lock left by a completed publisher."""
+    response = requests.get(
+        f"https://api.github.com/repos/{repository}/contents/{STATE_PATH}",
+        headers=_headers(token),
+        params={"ref": "main"},
+        timeout=20,
+    )
+    if response.status_code == 404:
+        return False
+    response.raise_for_status()
+    try:
+        payload = response.json()
+        decoded = base64.b64decode(payload["content"]).decode("utf-8")
+        state = json.loads(decoded)
+    except (ValueError, KeyError, TypeError, UnicodeDecodeError) as exc:
+        raise RuntimeError("Publication state is malformed; refusing to reclaim the publisher lock.") from exc
+    published = state.get("published", {}) if isinstance(state, dict) else {}
+    record = published.get(identity, {}) if isinstance(published, dict) else {}
+    required = {"1080p", "720p", "480p"}
+    return isinstance(record, dict) and required.issubset(set(record.get("complete_qualities", [])))
+
+
 def acquire_lock(
     identity: str,
     token: str | None = None,
@@ -89,6 +113,13 @@ def acquire_lock(
             if current["identity"] == identity:
                 print(f"Global publisher lock acquired for retry of episode {identity}.", flush=True)
                 return current
+            if _episode_is_complete(current["identity"], token, repository):
+                print(
+                    f"Recovering stale publisher lock left by completed episode {current['identity']}.",
+                    flush=True,
+                )
+                release_lock(current["identity"], token=token, repository=repository)
+                continue
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise TimeoutError(
@@ -158,6 +189,12 @@ def release_lock(
             raise RuntimeError(
                 f"Cannot release publisher lock owned by {current['identity']} from episode {identity}."
             )
+        if not _episode_is_complete(identity, token, repository):
+            print(
+                f"Retaining global publisher lock for {identity}; its three-quality publication is not complete.",
+                flush=True,
+            )
+            return False
         response = requests.delete(
             url,
             headers=headers,
