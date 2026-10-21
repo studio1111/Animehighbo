@@ -1,8 +1,6 @@
 name: Animehighbo episode dispatcher
 
 on:
-  repository_dispatch:
-    types: [animehighbo-episode-published]
   workflow_dispatch:
   push:
     branches: [main]
@@ -20,80 +18,55 @@ on:
     - cron: '*/30 * * * *'
 
 permissions:
-  actions: write
-  contents: read
+  actions: read
+  contents: write
 
 concurrency:
-  group: animehighbo-episode-dispatcher-${{ github.event.client_payload.series_key || 'all-series' }}
+  group: animehighbo-episode-dispatcher
   cancel-in-progress: false
 
 jobs:
   queue:
-    name: Select eligible episodes and launch five independent workers
+    name: Select up to five eligible episodes
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
       has_work: ${{ steps.plan.outputs.has_work }}
+      matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
-      - name: Pin queue planning to the latest main snapshot
-        run: |
-          git fetch origin main
-          git checkout --detach origin/main
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Plan eligible episodes for all series or the requested series
+      - name: Plan up to five independently publishable episodes
         id: plan
-        env:
-          ANIMEHIGHBO_TARGET_SERIES: ${{ github.event.client_payload.series_key || '' }}
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
-      - name: Launch up to five independent episode workflows
-        if: steps.plan.outputs.has_work == 'true'
-        uses: actions/github-script@v7
+      - name: Report planned independent workers
         env:
           MATRIX: ${{ steps.plan.outputs.matrix }}
-        with:
-          github-token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-          script: |
-            const entries = JSON.parse(process.env.MATRIX).include || [];
-            const activeResult = await github.rest.actions.listWorkflowRuns({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'prepare-one-episode.yml',
-              per_page: 100
-            });
-            const active = new Set(
-              activeResult.data.workflow_runs
-                .filter(run => ['queued', 'in_progress', 'waiting', 'pending'].includes(run.status))
-                .map(run => String(run.display_title || run.name || ''))
-            );
-            let launched = 0;
-            for (const episode of entries) {
-              if (launched >= 5) break;
-              const identity = String(episode.identity || '');
-              const title = String(episode.title || '');
-              const runTitle = `Prepare episode ${identity}`;
-              if (!identity || !episode.series_key) {
-                core.warning(`Skipping entry without stable identity/series key: ${title}`);
-                continue;
-              }
-              if (active.has(runTitle)) {
-                core.info(`Worker already active for ${title} (${identity}); skipping duplicate dispatch.`);
-                continue;
-              }
-              await github.rest.repos.createDispatchEvent({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                event_type: 'animehighbo-prepare-episode',
-                client_payload: {
-                  identity,
-                  series_key: String(episode.series_key),
-                  title
-                }
-              });
-              core.info(`Launched independent workflow for ${title} (${identity}).`);
-              launched += 1;
-            }
-            core.info(`Launched ${launched} episode workflow(s), maximum five per dispatcher run.`);
+        run: |
+          python - <<'PY'
+          import json, os
+          entries = json.loads(os.environ["MATRIX"]).get("include", [])
+          print(f"Planned independent episode workers: {len(entries)} (maximum 5)")
+          for entry in entries:
+              print(f"- {entry.get('title')} [{entry.get('identity')}]")
+          PY
+
+  episodes:
+    name: Prepare and publish ${{ matrix.title }}
+    needs: queue
+    if: needs.queue.outputs.has_work == 'true'
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}
+    uses: ./.github/workflows/prepare-one-episode.yml
+    with:
+      identity: ${{ matrix.identity }}
+      series_key: ${{ matrix.series_key }}
+      title: ${{ matrix.title }}
+    secrets: inherit
