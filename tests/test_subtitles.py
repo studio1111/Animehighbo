@@ -34,7 +34,6 @@ Hello there.
         self.assertIn("00:00:03,000 --> 00:00:04,000", rendered)
         self.assertIn("<i>Run!</i>", rendered)
 
-
     def test_persian_ass_track_is_soft_subtitle_with_yellow_text_and_thin_black_outline(self):
         cues = [Cue(1, "00:00:01,000 --> 00:00:02,500", "سلام دنیا")]
         rendered = render_ass(cues)
@@ -91,28 +90,8 @@ Hello there.
         self.assertIn("سلام", translated[0].text)
 
 
-class GeminiKeyRotationTests(unittest.TestCase):
-    def test_translation_rotates_to_next_key_after_key_authorization_failure(self):
-        limited = Mock(status_code=403)
-        limited.raise_for_status.side_effect = requests.HTTPError("key authorization")
-        success = Mock(status_code=200)
-        success.json.return_value = {
-            "candidates": [{"content": {"parts": [{
-                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
-            }]}}]
-        }
-        translator = GeminiSubtitleTranslator(["primary", "backup"])
-        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
-
-        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep"):
-            result = translator.translate_batch([cue])
-
-        self.assertEqual(result[0].text, "سلام")
-        self.assertEqual(post.call_count, 2)
-        self.assertEqual(post.call_args_list[0].kwargs["params"]["key"], "primary")
-        self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "backup")
-
-    def test_rate_limit_retries_same_key_before_rotating(self):
+class GeminiSingleKeyPolicyTests(unittest.TestCase):
+    def test_429_retries_the_same_key_and_honors_retry_after(self):
         limited = Mock(status_code=429, headers={"Retry-After": "2"})
         success = Mock(status_code=200)
         success.json.return_value = {
@@ -120,7 +99,7 @@ class GeminiKeyRotationTests(unittest.TestCase):
                 "text": '{"translations":[{"id":1,"text":"سلام"}]}'
             }]}}]
         }
-        translator = GeminiSubtitleTranslator(["primary", "backup"])
+        translator = GeminiSubtitleTranslator("primary")
         cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
 
         with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep") as sleep:
@@ -132,9 +111,23 @@ class GeminiKeyRotationTests(unittest.TestCase):
         self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "primary")
         sleep.assert_called_once_with(2.0)
 
-    def test_environment_loader_collects_all_configured_gemini_keys(self):
+    def test_429_exhaustion_fails_closed_without_rotating_keys(self):
+        limited = Mock(status_code=429, headers={})
+        limited.json.return_value = {"error": {"message": "quota exhausted"}}
+        translator = GeminiSubtitleTranslator("primary")
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", return_value=limited) as post, patch("tools.bilingual_subtitles.time.sleep"):
+            with self.assertRaisesRegex(RuntimeError, "subtitle batch remains incomplete"):
+                translator.translate_batch([cue])
+
+        self.assertEqual(post.call_count, 3)
+        self.assertTrue(all(call.kwargs["params"]["key"] == "primary" for call in post.call_args_list))
+
+    def test_environment_loader_uses_only_the_primary_key(self):
         env = {
             "GEMINI_API_KEY": "primary",
+            "GEMINI_API_KEY_1": "backup-one",
             "GEMINI_API_KEY_2": "backup-two",
             "GEMINI_API_KEY_3": "backup-three",
             "GEMINI_API_KEY_4": "backup-four",
@@ -143,14 +136,23 @@ class GeminiKeyRotationTests(unittest.TestCase):
             translator = get_english_to_persian_translator()
 
         self.assertIsInstance(translator, GeminiSubtitleTranslator)
-        self.assertEqual(
-            translator.api_keys,
-            ["primary", "backup-two", "backup-three", "backup-four"],
-        )
+        self.assertEqual(translator.api_key, "primary")
+        self.assertEqual(translator.api_keys, ["primary"])
 
-    def test_duplicate_keys_are_removed_without_reordering(self):
-        translator = GeminiSubtitleTranslator(["same", "same", "next", ""])
-        self.assertEqual(translator.api_keys, ["same", "next"])
+    def test_missing_primary_key_fails_without_offline_fallback(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(RuntimeError, "GEMINI_API_KEY is required"):
+                get_english_to_persian_translator()
+
+    def test_secret_is_not_in_error_when_provider_returns_error(self):
+        secret = "never-log-this-key"
+        response = Mock(status_code=400)
+        response.raise_for_status.side_effect = requests.HTTPError("bad request")
+        translator = GeminiSubtitleTranslator(secret)
+        with patch("tools.bilingual_subtitles.requests.post", return_value=response):
+            with self.assertRaises(RuntimeError) as caught:
+                translator._generate_json({}, "test request")
+        self.assertNotIn(secret, str(caught.exception))
 
 
 if __name__ == "__main__":
