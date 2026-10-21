@@ -92,8 +92,8 @@ Hello there.
 class GeminiSingleKeyPolicyTests(unittest.TestCase):
     def test_translation_splits_long_subtitle_files_into_json_safe_batches(self):
         cues = [
-            Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
-            for index in range(1, 42)
+            Cue(index, f"00:{index // 60:02d}:{index % 60:02d},000 --> 00:{(index + 1) // 60:02d}:{(index + 1) % 60:02d},000", f"Line {index}")
+            for index in range(1, 102)
         ]
         def response_for_request(*args, **kwargs):
             prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
@@ -121,7 +121,34 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertEqual(post.call_count, 2)
         prompts = [call.kwargs["json"]["contents"][0]["parts"][0]["text"] for call in post.call_args_list]
         self.assertTrue(all("self-review" in prompt.casefold() for prompt in prompts))
-        self.assertTrue(all(len(json.loads(prompt.split("\n\n", 1)[1])) <= 40 for prompt in prompts))
+        self.assertTrue(all(len(json.loads(prompt.split("\n\n", 1)[1])) <= 100 for prompt in prompts))
+
+    def test_default_model_is_current_stable_gemini_flash(self):
+        translator = GeminiSubtitleTranslator("primary")
+        self.assertEqual(translator.model, "gemini-3.6-flash")
+
+    def test_long_google_retry_info_stops_without_wasting_more_requests(self):
+        limited = Mock(status_code=429, headers={})
+        limited.json.return_value = {
+            "error": {
+                "message": "Please retry in 19h1m28s.",
+                "details": [
+                    {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "68488s"}
+                ],
+            }
+        }
+        translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", return_value=limited) as post, patch(
+            "tools.bilingual_subtitles.time.sleep"
+        ) as sleep:
+            with self.assertRaisesRegex(RuntimeError, "retry in 19h1m28s"):
+                translator.translate_batch([cue])
+
+        post.assert_called_once()
+        sleep.assert_not_called()
 
     def test_gemini_requests_are_spaced_for_shared_project_quota(self):
         translator = GeminiSubtitleTranslator("primary")
