@@ -22,6 +22,7 @@ permissions:
 
 jobs:
   queue:
+    if: github.ref == 'refs/heads/main'
     name: Select independently eligible episodes
     runs-on: ubuntu-latest
     timeout-minutes: 10
