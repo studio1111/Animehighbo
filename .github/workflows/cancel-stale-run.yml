@@ -23,7 +23,7 @@ jobs:
               run_id: runId
             });
             core.info(`Verified target run ${run.data.id}: ${run.data.name}, status=${run.data.status}, SHA=${run.data.head_sha}`);
-            if (run.data.name !== "Animehighbo episode dispatcher" || run.data.head_sha !== "feadcbd850216d1a9fab661de7580d918348a709cd119099b024842eb16b97a5".slice(0, 40)) {
+            if (run.data.name !== "Animehighbo episode dispatcher" || run.data.head_sha !== "feadcbd850216d1a9fab661de9d7a5652fe1c8b") {
               core.setFailed("Target identity did not match the known outdated dispatcher; refusing to cancel.");
             } else if (["queued", "in_progress", "pending", "waiting"].includes(run.data.status)) {
               await github.rest.actions.cancelWorkflowRun({
