@@ -33,12 +33,16 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
-    def test_media_dependencies_are_gated_by_actual_authorized_media_sources(self):
+    def test_upload_day_matrix_prepares_in_parallel_and_publishes_after_all_workers(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        self.assertIn("from app import has_file_media_source", workflow)
-        self.assertIn("file_pipeline = config.get(\"mode\") != \"links\" and has_file_media_source(config)", workflow)
-        self.assertIn('if [ "$ANIMEHIGHBO_FILE_PIPELINE" = "true" ]', workflow)
-
+        self.assertIn("Select oldest upload-day group", workflow)
+        self.assertIn("max-parallel: 5", workflow)
+        self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
+        self.assertIn("actions/upload-artifact@v4", workflow)
+        self.assertIn("actions/download-artifact@v4", workflow)
+        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
+        self.assertIn("needs.prepare.result == 'success'", workflow)
+        self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
     def test_unverified_torrent_is_not_enabled_in_default_config(self):
         config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(config.get("torrent_sources", []), [])
