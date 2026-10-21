@@ -995,7 +995,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 continue
             if quality not in episode["files"]:
                 raise RuntimeError(
-                    f"Episode-tier batch is incomplete: {episode.get('title')} is missing {quality}."
+                    f"Upload-date batch is incomplete: {episode.get('title')} is missing {quality}."
                 )
         if not poster_exists and any(
             f"{identity}:{quality}" in state["published"]
