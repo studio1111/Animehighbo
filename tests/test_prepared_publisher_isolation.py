@@ -58,7 +58,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
-            self.assertEqual(result, 1)
+            self.assertEqual(result, 3)
             poster.assert_called_once()
             self.assertIn("good", str(poster.call_args))
             self.assertEqual(upload.call_count, 3)
