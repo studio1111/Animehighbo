@@ -306,7 +306,7 @@ def anime_japanese_title(title: str, media: dict | None = None, timeout: int = 1
             if target and target in normalized:
                 # Jikan exposes title_japanese in Japanese script and title in Romaji/Latin.
                 latin_title = str(entry.get("title") or "").strip()
-                if latin_title and not re.search(r"[\\u3040-\\u30ff\\u3400-\\u9fff]", latin_title):
+                if latin_title and not re.search(r"[\u3040-\u30ff\u3400-\u9fff]", latin_title):
                     return latin_title
     except Exception as exc:
         LOG.warning("Japanese Romaji title lookup unavailable for %r: %s", search_title, exc)
