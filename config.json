@@ -40,5 +40,7 @@
   "h265_audio_bitrate": "128k",
   "archive_mode": true,
   "archive_cutoff_date": "2026-09-01",
-  "archive_manifest": "data/archive_manifest.json"
+  "archive_manifest": "data/archive_manifest.json",
+  "torrent_stall_timeout_seconds": 900,
+  "torrent_summary_interval_seconds": 30
 }
