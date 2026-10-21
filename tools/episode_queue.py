@@ -233,10 +233,11 @@ def select_next_upload_date(
 
     if not eligible:
         return None, []
+    # Upload date is a stable priority, not a global batch barrier. Return every
+    # currently eligible episode so one failed anime cannot hold unrelated series.
     oldest_upload_date = min(row["release_date"] for row in eligible)
-    selected = [row for row in eligible if row["release_date"] == oldest_upload_date]
-    selected.sort(key=lambda row: (row["title"].casefold(), row["identity"]))
-    return oldest_upload_date, selected
+    eligible.sort(key=lambda row: (row["release_date"], row["title"].casefold(), row["identity"]))
+    return oldest_upload_date, eligible
 
 
 def main() -> int:
