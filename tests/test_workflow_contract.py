@@ -49,6 +49,21 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("No complete prepared artifacts are available", workflow)
         self.assertNotIn("group: animehighbo-publisher\n", workflow)
 
+    def test_each_prepared_episode_dispatches_an_independent_publisher(self):
+        prepare = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        self.assertIn("actions: write", prepare)
+        self.assertIn("gh workflow run publish-prepared-episode.yml", prepare)
+        self.assertIn("source_run_id", prepare)
+        self.assertIn("series_key", prepare)
+        publisher_path = ROOT / ".github/workflows/publish-prepared-episode.yml"
+        self.assertTrue(publisher_path.exists())
+        publisher = publisher_path.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", publisher)
+        self.assertIn("run-id: ${{ inputs.source_run_id }}", publisher)
+        self.assertIn("group: animehighbo-publish-${{ inputs.series_key }}", publisher)
+        self.assertIn("tools/merge_state.py", publisher)
+        self.assertNotIn("needs.prepare.result == 'success'", prepare)
+
     def test_poster_synopsis_uses_expandable_blockquote_not_spoiler_mask(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
         caption_builder = source.split("def build_episode_caption(", 1)[1].split("\ndef ", 1)[0]
