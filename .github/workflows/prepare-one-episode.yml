@@ -197,7 +197,7 @@ jobs:
               for key, value in local_section.items():
                   if key not in current_section:
                       current_section[key] = value
-                  continue
+                      continue
                   if section == "published" and isinstance(value, dict):
                       existing = current_section[key]
                       required = {"1080p", "720p", "480p"}
