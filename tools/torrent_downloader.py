@@ -1,6 +1,7 @@
 """Download explicitly authorized torrent media with aria2; never infer rights from a feed."""
 from __future__ import annotations
 
+import logging
 import os
 import shutil
 import subprocess
@@ -8,6 +9,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
+LOG = logging.getLogger(__name__)
 VIDEO_EXTENSIONS = {".mkv", ".mp4", ".webm", ".mov"}
 
 
@@ -62,11 +64,14 @@ def download_authorized_torrent(
     work_dir = target_dir / (".torrent-" + str(os.getpid()) + "-" + str(time.time_ns()))
     work_dir.mkdir(parents=True, exist_ok=False)
     max_bytes = int(config.get("max_file_size_mb", 45)) * 1024 * 1024
-    timeout = max(1, int(config.get("torrent_timeout_seconds", 18000)))
+    timeout = max(1, int(config.get("torrent_timeout_seconds", 7200)))
+    stall_timeout = max(1, int(config.get("torrent_stall_timeout_seconds", 900)))
+    summary_interval = max(5, int(config.get("torrent_summary_interval_seconds", 30)))
     command = [
         aria2, "--dir", str(work_dir), "--continue=true",
-        "--file-allocation=none", "--seed-time=0", "--summary-interval=0",
-        "--console-log-level=warn", "--max-connection-per-server=8",
+        "--file-allocation=none", "--seed-time=0",
+        f"--summary-interval={summary_interval}", f"--bt-stop-timeout={stall_timeout}",
+        "--console-log-level=notice", "--max-connection-per-server=8",
         "--split=8", "--bt-save-metadata=true", "--allow-overwrite=true",
         source,
     ]
@@ -78,8 +83,12 @@ def download_authorized_torrent(
         log_stream = log_path.open("wb")
         process = subprocess.Popen(command, stdout=log_stream, stderr=subprocess.STDOUT)
         started = time.monotonic()
+        last_report = started
+        last_log_offset = 0
         while process.poll() is None:
-            if _tree_size(work_dir) > max_bytes:
+            now = time.monotonic()
+            current_size = _tree_size(work_dir)
+            if current_size > max_bytes:
                 process.terminate()
                 try:
                     process.wait(timeout=10)
@@ -87,7 +96,7 @@ def download_authorized_torrent(
                     process.kill()
                     process.wait()
                 raise ValueError("Torrent download exceeded configured total size limit.")
-            if time.monotonic() - started > timeout:
+            if now - started > timeout:
                 process.terminate()
                 try:
                     process.wait(timeout=10)
@@ -95,6 +104,22 @@ def download_authorized_torrent(
                     process.kill()
                     process.wait()
                 raise TimeoutError(f"Torrent download timed out after {timeout} seconds.")
+            if now - last_report >= summary_interval:
+                log_stream.flush()
+                if log_path.exists():
+                    with log_path.open("rb") as log_reader:
+                        log_reader.seek(last_log_offset)
+                        chunk = log_reader.read()
+                    last_log_offset += len(chunk)
+                    lines = chunk.decode("utf-8", errors="replace").splitlines()
+                    for line in lines[-8:]:
+                        LOG.info("aria2 [%s]: %s", safe_title, line[:500])
+                    if not lines:
+                        LOG.info(
+                            "Still downloading %s: %.1f MiB received after %.0f seconds.",
+                            safe_title, current_size / (1024 * 1024), now - started,
+                        )
+                last_report = now
             time.sleep(2)
         log_stream.flush()
         output = ""
