@@ -21,6 +21,16 @@ def github_lock_response(identity, sha="lock-sha"):
     return response
 
 
+def github_state_response(identity, complete=True):
+    qualities = ["1080p", "720p", "480p"] if complete else []
+    encoded = base64.b64encode(
+        json.dumps({"published": {identity: {"complete_qualities": qualities}}}).encode("utf-8")
+    ).decode("ascii")
+    response = Mock(status_code=200)
+    response.json.return_value = {"sha": "state-sha", "content": encoded}
+    return response
+
+
 class PublisherLockTests(unittest.TestCase):
     def test_acquire_creates_lock_when_no_episode_owns_it(self):
         lock = load_publisher_lock(self)
@@ -50,7 +60,7 @@ class PublisherLockTests(unittest.TestCase):
         created = Mock(status_code=201)
         created.json.return_value = {"content": {"sha": "created-sha"}}
 
-        with patch.object(lock.requests, "get", side_effect=[held, missing]), patch.object(
+        with patch.object(lock.requests, "get", side_effect=[held, github_state_response("episode-b", complete=False), missing]), patch.object(
             lock.requests, "put", return_value=created
         ), patch.object(lock.time, "monotonic", side_effect=[0.0, 1.0]), patch.object(
             lock.time, "sleep"
@@ -83,7 +93,7 @@ class PublisherLockTests(unittest.TestCase):
         current = github_lock_response("episode-a", "owned-sha")
         deleted = Mock(status_code=200)
 
-        with patch.object(lock.requests, "get", return_value=current), patch.object(
+        with patch.object(lock.requests, "get", side_effect=[current, github_state_response("episode-a")]), patch.object(
             lock.requests, "delete", return_value=deleted
         ) as delete:
             released = lock.release_lock(
@@ -92,6 +102,44 @@ class PublisherLockTests(unittest.TestCase):
 
         self.assertTrue(released)
         self.assertEqual(delete.call_args.kwargs["json"]["sha"], "owned-sha")
+
+    def test_release_keeps_lock_when_episode_is_not_complete(self):
+        lock = load_publisher_lock(self)
+        current = github_lock_response("episode-a", "owned-sha")
+
+        with patch.object(lock.requests, "get", side_effect=[
+            current, github_state_response("episode-a", complete=False)
+        ]), patch.object(lock.requests, "delete") as delete:
+            released = lock.release_lock(
+                "episode-a", token="token", repository="owner/repo"
+            )
+
+        self.assertFalse(released)
+        delete.assert_not_called()
+
+    def test_acquire_recovers_a_stale_lock_for_an_already_completed_episode(self):
+        lock = load_publisher_lock(self)
+        held = github_lock_response("episode-b", "other-sha")
+        missing = Mock(status_code=404)
+        created = Mock(status_code=201)
+        created.json.return_value = {"content": {"sha": "new-sha"}}
+
+        with patch.object(lock.requests, "get", side_effect=[
+            held,
+            github_state_response("episode-b"),
+            held,
+            github_state_response("episode-b"),
+            missing,
+        ]), patch.object(lock.requests, "delete", return_value=Mock(status_code=200)) as delete, patch.object(
+            lock.requests, "put", return_value=created
+        ):
+            result = lock.acquire_lock(
+                "episode-a", token="token", repository="owner/repo",
+                timeout_seconds=10, poll_seconds=1,
+            )
+
+        self.assertEqual(result["identity"], "episode-a")
+        delete.assert_called_once()
 
     def test_release_refuses_to_delete_another_episode_lock(self):
         lock = load_publisher_lock(self)
