@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   publish:
+    if: false # TEMPORARY SAFETY PAUSE: pre-validate all three files before posting poster
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
