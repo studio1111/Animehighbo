@@ -278,7 +278,7 @@ class GeminiSubtitleTranslator:
                 continue
             if isinstance(value, (int, float)):
                 return max(0.0, float(value))
-            match = re.fullmatch(r"\\s*(\\d+(?:\\.\\d+)?)s\\s*", str(value))
+            match = re.fullmatch(r"\s*(\d+(?:\.\d+)?)s\s*", str(value))
             if match:
                 return max(0.0, float(match.group(1)))
         return None
