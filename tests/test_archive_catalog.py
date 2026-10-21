@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, select_show_episodes
+from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, merge_existing_manifest, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
@@ -38,6 +38,50 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             [row["release_date"] for row in selected],
             ["2026-09-05", "2026-09-12", "2026-09-19"],
         )
+
+    def test_preserves_curated_authorized_entries_missing_from_catalog_api(self):
+        generated = [{
+            "title": "New Saga - 01 (1080p)",
+            "episode": 1,
+            "quality": "1080p",
+            "uri": "magnet:?xt=urn:btih:new",
+            "release_date": "2026-10-10",
+            "authorized_for_redistribution": True,
+        }]
+        existing = [
+            {
+                "title": "Curated Saga - 01 (1080p)",
+                "episode": 1,
+                "quality": "1080p",
+                "uri": "magnet:?xt=urn:btih:curated",
+                "release_date": "2026-10-07",
+                "authorized_for_redistribution": True,
+            },
+            {
+                "title": "Old Saga - 01 (1080p)",
+                "episode": 1,
+                "quality": "1080p",
+                "uri": "magnet:?xt=urn:btih:old",
+                "release_date": "2026-08-07",
+                "authorized_for_redistribution": True,
+            },
+            {
+                "title": "Unapproved Saga - 01 (1080p)",
+                "episode": 1,
+                "quality": "1080p",
+                "uri": "magnet:?xt=urn:btih:unapproved",
+                "release_date": "2026-10-08",
+                "authorized_for_redistribution": False,
+            },
+        ]
+
+        merged = merge_existing_manifest(generated, existing, date(2026, 9, 1))
+
+        self.assertEqual(
+            [row["title"] for row in merged],
+            ["Curated Saga - 01 (1080p)", "New Saga - 01 (1080p)"],
+        )
+        self.assertEqual([row["release_date"] for row in merged], ["2026-10-07", "2026-10-10"])
 
     def test_old_series_without_episode_one_is_excluded_from_fresh_archive(self):
         rows = [
