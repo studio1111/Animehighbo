@@ -237,11 +237,14 @@ def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024
 
 
 def translate_title_to_persian(title: str, timeout: int = 10) -> str:
-    """Translate an English anime title to Persian using a free translation endpoint."""
+    """Translate an English anime title with two free services and never return an empty field."""
+    clean_title = re.sub(r"\\s+", " ", str(title or "")).strip()
+    if not clean_title:
+        return "عنوان فارسی در دسترس نیست"
     try:
         response = requests.get(
             "https://translate.googleapis.com/translate_a/single",
-            params={"client": "gtx", "sl": "en", "tl": "fa", "dt": "t", "q": title},
+            params={"client": "gtx", "sl": "en", "tl": "fa", "dt": "t", "q": clean_title},
             timeout=timeout,
             headers={"User-Agent": USER_AGENT},
         )
@@ -251,11 +254,61 @@ def translate_title_to_persian(title: str, timeout: int = 10) -> str:
             part[0] for part in (data[0] if data and data[0] else [])
             if part and isinstance(part[0], str)
         ).strip()
-        if translated and translated.lower() != title.lower():
+        if translated and translated.lower() != clean_title.lower():
             return translated
     except Exception as exc:
-        LOG.warning("Persian title translation unavailable for %r: %s", title, exc)
-    return "ترجمهٔ فارسی در دسترس نیست"
+        LOG.warning("Google Persian title translation unavailable for %r: %s", clean_title, exc)
+    try:
+        response = requests.get(
+            "https://api.mymemory.translated.net/get",
+            params={"q": clean_title, "langpair": "en|fa"},
+            timeout=timeout,
+            headers={"User-Agent": USER_AGENT},
+        )
+        response.raise_for_status()
+        translated = str((response.json().get("responseData") or {}).get("translatedText") or "").strip()
+        if translated and translated.lower() != clean_title.lower():
+            return html.unescape(translated)
+    except Exception as exc:
+        LOG.warning("MyMemory Persian title translation unavailable for %r: %s", clean_title, exc)
+    # Show the original title rather than an unavailable-message placeholder.
+    return clean_title
+
+
+def anime_japanese_title(title: str, media: dict | None = None, timeout: int = 10) -> str:
+    """Resolve Japanese title from AniList, then use Jikan/MAL as a fallback."""
+    media = media if isinstance(media, dict) else {}
+    titles = media.get("title") or {}
+    native = str(titles.get("native") or "").strip()
+    if native:
+        return native
+    search_title = str(titles.get("english") or titles.get("romaji") or title or "").strip()
+    if not search_title:
+        return "日本語タイトル未登録"
+    try:
+        response = requests.get(
+            "https://api.jikan.moe/v4/anime",
+            params={"q": search_title, "limit": 5, "sfw": "true"},
+            timeout=timeout,
+            headers={"User-Agent": USER_AGENT},
+        )
+        response.raise_for_status()
+        entries = response.json().get("data") or []
+        target = re.sub(r"[^a-z0-9]+", "", search_title.lower())
+        for entry in entries:
+            candidates = [
+                str(entry.get("title_english") or ""),
+                str(entry.get("title") or ""),
+                *[str(item.get("title") or "") for item in (entry.get("titles") or []) if isinstance(item, dict)],
+            ]
+            normalized = [re.sub(r"[^a-z0-9]+", "", item.lower()) for item in candidates]
+            if target and target in normalized:
+                japanese = str(entry.get("title_japanese") or "").strip()
+                if japanese:
+                    return japanese
+    except Exception as exc:
+        LOG.warning("Japanese title lookup unavailable for %r: %s", search_title, exc)
+    return str(titles.get("romaji") or search_title).strip() or "日本語タイトル未登録"
 
 
 def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
@@ -422,7 +475,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
             details.append("استودیو: " + "، ".join(names))
     if media.get("isAdult") is True:
         details.append("رده‌بندی: بزرگسال")
-    japanese_title = str(titles.get("native") or "").strip() or "日本語タイトル未登録"
+    japanese_title = anime_japanese_title(title, media)
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title)}",
