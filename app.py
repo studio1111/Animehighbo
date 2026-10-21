@@ -1116,6 +1116,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             json.dumps(sorted(published_series_keys), ensure_ascii=False),
             encoding="utf-8",
         )
+    if publication_failure_count:
+        return 1
     return published_count
 
 def run() -> int:
