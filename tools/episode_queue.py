@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 from datetime import date
@@ -136,7 +137,10 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
 
 
 def select_next_upload_date(
-    manifest: list[dict], state: dict, cutoff_date: str | None = None
+    manifest: list[dict],
+    state: dict,
+    cutoff_date: str | None = None,
+    target_series: str | None = None,
 ) -> tuple[str | None, list[dict]]:
     """Select the oldest eligible upload date while respecting per-series episode order."""
     if not isinstance(manifest, list) or not manifest:
@@ -197,6 +201,12 @@ def select_next_upload_date(
             # Ambiguous identity is held rather than guessed.
             continue
 
+        series_key = series_identity({
+            "series_title": series_title,
+            "season": season_number,
+        })
+        if series_key is None:
+            continue
         normalized.append({
             "identity": identity,
             "title": title,
@@ -205,6 +215,7 @@ def select_next_upload_date(
             "episode": episode_number,
             "series_title": series_title,
             "season": season_number,
+            "series_key": series_key,
         })
 
     if not normalized:
@@ -231,6 +242,9 @@ def select_next_upload_date(
         if not blocked:
             eligible.append(row)
 
+    if target_series:
+        target = re.sub(r"\s+", " ", target_series).strip().casefold()
+        eligible = [row for row in eligible if row["series_key"] == target]
     if not eligible:
         return None, []
     # Upload date is a stable priority, not a global batch barrier. Return every
@@ -252,7 +266,10 @@ def main() -> int:
     cutoff = str(config.get("archive_cutoff_date") or "2026-09-01")
     state_path = Path(args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
-    upload_date, entries = select_next_upload_date(manifest, state, cutoff_date=cutoff)
+    target_series = os.environ.get("ANIMEHIGHBO_TARGET_SERIES", "").strip()
+    upload_date, entries = select_next_upload_date(
+        manifest, state, cutoff_date=cutoff, target_series=target_series or None
+    )
     batch_key = f"upload-date-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
