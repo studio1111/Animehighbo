@@ -1122,7 +1122,8 @@ def run() -> int:
                         bilingual_path = media_path.with_name(media_path.stem + ".bilingual.mkv")
                         english_srt = bilingual_path.with_name(bilingual_path.stem + ".en.srt")
                         persian_srt = bilingual_path.with_name(bilingual_path.stem + ".fa.srt")
-                        generated_paths.extend([bilingual_path, english_srt, persian_srt])
+                        persian_ass = bilingual_path.with_name(bilingual_path.stem + ".fa.ass")
+                        generated_paths.extend([bilingual_path, english_srt, persian_srt, persian_ass])
                         process_bilingual_subtitles(media_path, bilingual_path, config.get("subtitle_stream_index"))
                         publish_path = bilingual_path
                         LOG.info("Prepared bilingual MKV with English and Persian subtitle tracks.")
