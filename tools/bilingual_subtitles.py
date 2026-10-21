@@ -161,6 +161,10 @@ def render_ass(cues: list[Cue]) -> str:
 class GeminiSubtitleTranslator:
     """Translate subtitle batches with one Gemini key and bounded quota retries."""
 
+    # Five concurrent episode workers share one Gemini project quota. A 35-second
+    # per-worker interval caps their aggregate request rate below 15 RPM.
+    MIN_REQUEST_INTERVAL_SECONDS = 35.0
+
     def __init__(self, api_key: str, model: str | None = None):
         if not isinstance(api_key, str) or not api_key.strip():
             raise ValueError("GEMINI_API_KEY is required.")
@@ -171,12 +175,24 @@ class GeminiSubtitleTranslator:
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"{self.model}:generateContent"
         )
+        self._last_request_at: float | None = None
+
+    def _wait_for_request_slot(self) -> None:
+        """Pace requests per worker to respect the shared project-level Gemini quota."""
+        now = time.monotonic()
+        if self._last_request_at is not None:
+            delay = self.MIN_REQUEST_INTERVAL_SECONDS - (now - self._last_request_at)
+            if delay > 0:
+                time.sleep(delay)
+                now = time.monotonic()
+        self._last_request_at = now
 
     def _generate_json(self, body: dict, context: str) -> dict:
         """Retry transient errors with the same key; never rotate or log credentials."""
         errors = []
         for attempt in range(3):
             try:
+                self._wait_for_request_slot()
                 response = requests.post(
                     self.endpoint,
                     params={"key": self.api_key},
