@@ -17,7 +17,7 @@ on:
     - cron: '*/30 * * * *'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   queue:
@@ -105,3 +105,17 @@ jobs:
           path: prepared/${{ matrix.identity }}
           if-no-files-found: error
           retention-days: 7
+      - name: Dispatch publisher for this completed episode
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: 'animehighbo-episode-prepared',
+              client_payload: {
+                run_id: context.runId,
+                identity: '${{ matrix.identity }}'
+              }
+            });
