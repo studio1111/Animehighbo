@@ -195,8 +195,8 @@ jobs:
               if not isinstance(current_section, dict) or not isinstance(local_section, dict):
                   raise SystemExit(f"Invalid state section: {section}")
               for key, value in local_section.items():
-              if key not in current_section:
-                  current_section[key] = value
+                  if key not in current_section:
+                      current_section[key] = value
                   continue
               if section == "published" and isinstance(value, dict):
                   existing = current_section[key]
