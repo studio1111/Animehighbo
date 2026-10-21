@@ -15,7 +15,7 @@ def row(title, episode, day, uri=None):
 
 
 class UploadDateQueueTests(unittest.TestCase):
-    def test_oldest_site_upload_date_wins_regardless_of_episode_number(self):
+    def test_oldest_upload_date_wins_only_after_episode_order_is_respected(self):
         manifest = [
             row("Delayed show - 01", 1, "2026-10-12"),
             row("Older show - 08", 8, "2026-10-05"),
@@ -26,10 +26,7 @@ class UploadDateQueueTests(unittest.TestCase):
         upload_date, selected = select_next_upload_date(manifest, {"published": {}})
 
         self.assertEqual(upload_date, "2026-10-05")
-        self.assertEqual(
-            [item["title"] for item in selected],
-            ["Older show - 08", "Older show - 09"],
-        )
+        self.assertEqual([item["title"] for item in selected], ["Older show - 08"])
 
     def test_all_items_from_oldest_upload_date_are_selected_even_when_episode_numbers_differ(self):
         manifest = [
@@ -82,6 +79,32 @@ class UploadDateQueueTests(unittest.TestCase):
                 {"published": {}},
                 cutoff_date="2026-09-01",
             )
+
+    def test_later_episode_cannot_jump_ahead_even_if_its_upload_date_is_older(self):
+        manifest = [
+            row("Series A - 02", 2, "2026-10-01"),
+            row("Series A - 01", 1, "2026-10-10"),
+            row("Series B - 01", 1, "2026-10-02"),
+        ]
+
+        upload_date, selected = select_next_upload_date(manifest, {"published": {}})
+
+        self.assertEqual(upload_date, "2026-10-02")
+        self.assertEqual([item["title"] for item in selected], ["Series B - 01"])
+
+    def test_episode_two_is_released_after_episode_one_is_complete(self):
+        first = row("Series A - 01", 1, "2026-10-10")
+        second = row("Series A - 02", 2, "2026-10-11")
+        first_id = hashlib.sha256(("archive:" + first["uri"]).encode()).hexdigest()
+        manifest = [first, second]
+        state = {"published": {
+            first_id: {"complete_qualities": ["1080p", "720p", "480p"]}
+        }}
+
+        upload_date, selected = select_next_upload_date(manifest, state)
+
+        self.assertEqual(upload_date, "2026-10-11")
+        self.assertEqual([item["title"] for item in selected], ["Series A - 02"])
 
     def test_fails_closed_when_upload_date_is_missing(self):
         with self.assertRaisesRegex(ValueError, "release_date"):
