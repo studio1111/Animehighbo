@@ -37,7 +37,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
 
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
-        workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
         self.assertIn("if [ -n \"$TELEGRAM_LOCAL_API_SECRET\" ]; then", workflow)
         self.assertIn("ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}", workflow)
