@@ -238,7 +238,7 @@ def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024
 
 def translate_title_to_persian(title: str, timeout: int = 10) -> str:
     """Translate an English anime title with two free services and never return an empty field."""
-    clean_title = re.sub(r"\\s+", " ", str(title or "")).strip()
+    clean_title = re.sub(r"\s+", " ", str(title or "")).strip()
     if not clean_title:
         return "عنوان فارسی در دسترس نیست"
     try:
