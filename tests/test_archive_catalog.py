@@ -52,7 +52,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(selected, [], "Do not start an archive at an arbitrary late-season episode.")
 
 
-    def test_current_season_with_episode_one_before_cutoff_still_starts_at_one(self):
+    def test_old_season_is_excluded_when_episode_one_predates_cutoff(self):
         rows = [
             {"title": "Current Season - 01", "episode": "1", "release_date": "2026-08-28T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
@@ -61,8 +61,11 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             {"title": "Current Season - 03", "episode": "3", "release_date": "2026-09-11T10:00:00Z",
              "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:cccc"}]},
         ]
-        selected = select_show_episodes("Current Season", rows, date(2026, 9, 1))
-        self.assertEqual([row["episode"] for row in selected], [1, 2, 3])
+        self.assertEqual(
+            select_show_episodes("Current Season", rows, date(2026, 9, 1)),
+            [],
+            "Do not expand an older season just because later episodes appeared after the cutoff.",
+        )
 
     def test_missing_episode_number_or_missing_1080p_and_720p_source_is_not_queued(self):
         rows = [
