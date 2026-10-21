@@ -36,7 +36,8 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertLess(refresh, publish)
         self.assertLess(publish, persist)
         self.assertLess(persist, release)
-        self.assertIn("data/publisher.lock", workflow)
+        lock_helper = (ROOT / "tools/publisher_lock.py").read_text(encoding="utf-8")
+        self.assertIn("data/publisher.lock", lock_helper)
         self.assertIn("python tools/publisher_lock.py acquire", workflow)
         self.assertIn("python tools/publisher_lock.py release", workflow)
         release_step = workflow.split("Release global Telegram publisher lock", 1)[1]
