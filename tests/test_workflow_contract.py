@@ -17,16 +17,23 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", prepare)
         self.assertIn("fail-fast: false", prepare)
         self.assertIn("actions/upload-artifact@v4", prepare)
+        self.assertIn("createDispatchEvent", prepare)
+        self.assertIn("animehighbo-episode-prepared", prepare)
+        self.assertIn("client_payload", prepare)
 
     def test_publisher_is_a_separate_workflow_and_runs_after_failed_prepare_workers(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         trigger = workflow.split("permissions:", 1)[0]
+        self.assertIn("repository_dispatch:", trigger)
+        self.assertIn("animehighbo-episode-prepared", trigger)
         self.assertIn("workflow_run:", trigger)
         self.assertNotIn("workflow_dispatch:", trigger)
         self.assertIn("Animehighbo episode preparation", trigger)
         self.assertIn("types: [completed]", trigger)
         self.assertIn("github.event.workflow_run.conclusion != 'cancelled'", workflow)
         self.assertIn("github.event.workflow_run.id", workflow)
+        self.assertIn("github.event.client_payload.run_id", workflow)
+        self.assertIn("github.event.client_payload.identity", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertNotIn("needs.prepare.result == 'success'", workflow)
         self.assertIn("group: animehighbo-publisher", workflow)
