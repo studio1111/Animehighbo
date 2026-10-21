@@ -270,6 +270,9 @@ def main() -> int:
     upload_date, entries = select_next_upload_date(
         manifest, state, cutoff_date=cutoff, target_series=target_series or None
     )
+    # Launch no more than five independent episode workers per dispatcher run.
+    # Episode order remains gated per series by select_next_upload_date.
+    entries = entries[:5]
     batch_key = f"upload-date-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
