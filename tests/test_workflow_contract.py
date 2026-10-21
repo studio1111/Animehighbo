@@ -31,7 +31,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertIn("group: animehighbo-publisher-${{ inputs.identity }}", workflow)
         self.assertIn("git fetch origin main", workflow)
-        self.assertIn("current_section.setdefault(key, value)", workflow)
+        self.assertIn("if key not in current_section:", workflow)
         self.assertIn("git push origin HEAD:main", workflow)
         self.assertNotIn("createDispatchEvent", workflow)
         self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
