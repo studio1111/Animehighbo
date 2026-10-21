@@ -193,6 +193,34 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertEqual(post.call_args_list[1].kwargs["params"]["key"], "primary")
         sleep.assert_called_once_with(2.0)
 
+    def test_429_uses_google_retry_info_when_retry_after_header_is_missing(self):
+        limited = Mock(status_code=429, headers={})
+        limited.json.return_value = {
+            "error": {
+                "message": "quota exceeded",
+                "details": [
+                    {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "42s"}
+                ],
+            }
+        }
+        success = Mock(status_code=200)
+        success.json.return_value = {
+            "candidates": [{"content": {"parts": [{
+                "text": '{"translations":[{"id":1,"text":"سلام"}]}'
+            }]}}]
+        }
+        translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
+        cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
+
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]), patch(
+            "tools.bilingual_subtitles.time.sleep"
+        ) as sleep:
+            result = translator.translate_batch([cue])
+
+        self.assertEqual(result[0].text, "سلام")
+        sleep.assert_called_once_with(42.0)
+
     def test_429_honors_http_date_retry_after_with_a_safe_cap(self):
         limited = Mock(status_code=429, headers={"Retry-After": "Wed, 21 Oct 2031 07:00:00 GMT"})
         success = Mock(status_code=200)
