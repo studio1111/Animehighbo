@@ -1,6 +1,8 @@
 name: Animehighbo episode preparation
 
 on:
+  repository_dispatch:
+    types: [animehighbo-episode-published]
   workflow_dispatch:
   push:
     branches: [main]
@@ -20,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: animehighbo-preparation
+  group: animehighbo-preparation-${{ github.event.client_payload.series_key || 'initial' }}
   cancel-in-progress: false
 
 jobs:
@@ -46,8 +48,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Plan the oldest incomplete source upload date
+      - name: Plan eligible episodes for all series or the requested series
         id: plan
+        env:
+          ANIMEHIGHBO_TARGET_SERIES: ${{ github.event.client_payload.series_key || '' }}
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned batch
         env:
@@ -96,6 +100,7 @@ jobs:
       - name: Prepare one episode and all three validated qualities
         env:
           ANIMEHIGHBO_EPISODE_ID: ${{ matrix.identity }}
+          ANIMEHIGHBO_SERIES_KEY: ${{ matrix.series_key }}
           ANIMEHIGHBO_PREPARE_ONLY: 'true'
           ANIMEHIGHBO_DRY_RUN: 'false'
           ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
