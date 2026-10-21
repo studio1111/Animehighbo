@@ -167,8 +167,8 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertEqual(result[0].text, "سلام")
         self.assertEqual(post.call_count, 6)
         self.assertIn("/gemini-3.1-flash-lite:generateContent", post.call_args_list[0].args[0])
-        self.assertIn("/gemini-2.5-flash-lite:generateContent", post.call_args_list[-1].args[0])
-        self.assertEqual(translator.model, "gemini-2.5-flash-lite")
+        self.assertIn("/gemini-3.5-flash-lite:generateContent", post.call_args_list[-1].args[0])
+        self.assertEqual(translator.model, "gemini-3.5-flash-lite")
         self.assertTrue(all(call.kwargs["params"]["key"] == "primary" for call in post.call_args_list))
 
     def test_long_google_retry_info_stops_without_wasting_more_requests(self):
