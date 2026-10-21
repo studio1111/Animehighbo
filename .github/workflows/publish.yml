@@ -46,7 +46,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Plan one complete source-upload day
+      - name: Plan the lowest incomplete episode tier
         id: plan
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned batch
@@ -182,7 +182,7 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Publish posters and replies in source upload-date order
+      - name: Publish posters and replies for this episode tier in release-date order
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
           ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
