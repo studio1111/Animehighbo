@@ -29,7 +29,7 @@ class EpisodeQueueTests(unittest.TestCase):
         self.assertEqual(tier, 1)
         self.assertEqual(
             [item["title"] for item in selected],
-            ["Series A - 01", "Series B - 01"],
+            ["Series A - 01", "Series B - 01", "Series C - 01"],
         )
         self.assertTrue(all(item["episode"] == 1 for item in selected))
 
@@ -46,7 +46,7 @@ class EpisodeQueueTests(unittest.TestCase):
         tier, selected = select_next_episode_tier(manifest, state)
 
         self.assertEqual(tier, 1)
-        self.assertEqual([item["title"] for item in selected], ["Series B - 01"])
+        self.assertEqual([item["title"] for item in selected], ["Series B - 01", "Series C - 01"])
 
     def test_returns_empty_when_every_episode_is_complete(self):
         item = row("Series A - 01", 1, "2026-10-05")
