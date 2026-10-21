@@ -1120,7 +1120,7 @@ def run() -> int:
         )
         return 0
 
-    if not dry_run and (not token or not chat_id):
+    if not prepare_only and not dry_run and (not token or not chat_id):
         raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
 
     session = requests.Session()
