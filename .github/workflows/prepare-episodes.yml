@@ -55,7 +55,7 @@ jobs:
         env:
           MATRIX: ${{ steps.plan.outputs.matrix }}
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           script: |
             const entries = JSON.parse(process.env.MATRIX).include || [];
             const activeResult = await github.rest.actions.listWorkflowRuns({
