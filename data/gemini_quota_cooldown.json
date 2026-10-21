@@ -1,0 +1,5 @@
+{
+  "cooldown_until": "2026-10-22T07:00:00Z",
+  "reason": "Gemini free-tier quota response reported retry after approximately 64199 seconds.",
+  "model": "gemini-3.5-flash-lite"
+}
