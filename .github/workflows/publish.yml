@@ -1,144 +1,72 @@
 name: Animehighbo publisher
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'app.py'
-      - 'config.json'
-      - 'data/archive_manifest.json'
-      - 'tools/episode_queue.py'
-      - 'tools/bilingual_subtitles.py'
-      - 'tools/torrent_downloader.py'
-      - 'tools/video_encoder.py'
-      - '.github/workflows/publish.yml'
-  schedule:
-    - cron: '*/30 * * * *'
+  repository_dispatch:
+    types: [animehighbo-episode-prepared]
+  workflow_run:
+    workflows:
+      - Animehighbo episode preparation
+    types: [completed]
 
 permissions:
+  actions: read
   contents: write
 
-concurrency:
-  group: animehighbo-publisher
-  cancel-in-progress: false
-
 jobs:
-  queue:
-    name: Select oldest incomplete source upload date
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      has_work: ${{ steps.plan.outputs.has_work }}
-      release_date: ${{ steps.plan.outputs.release_date }}
-      batch_key: ${{ steps.plan.outputs.batch_key }}
-      matrix: ${{ steps.plan.outputs.matrix }}
-      source_ref: ${{ steps.revision.outputs.source_ref }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Pin queue planning to the latest main snapshot
-        run: |
-          git fetch origin main
-          git checkout --detach origin/main
-      - name: Record the exact source revision for every worker
-        id: revision
-        run: echo "source_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install -r requirements.txt
-      - name: Plan the oldest incomplete source upload date
-        id: plan
-        run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
-      - name: Report planned batch
-        env:
-          HAS_WORK: ${{ steps.plan.outputs.has_work }}
-          RELEASE_DATE: ${{ steps.plan.outputs.release_date }}
-          MATRIX: ${{ steps.plan.outputs.matrix }}
-        run: |
-          echo "Work available: $HAS_WORK"
-          echo "Oldest incomplete source upload date: $RELEASE_DATE"
-          python - <<'PY'
-          import json, os
-          matrix = json.loads(os.environ["MATRIX"])
-          print(f"Independent episode workers selected: {len(matrix.get('include', []))}")
-          PY
-
-  prepare:
-    name: Prepare ${{ matrix.title }}
-    needs: queue
-    if: needs.queue.outputs.has_work == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix: ${{ fromJson(needs.queue.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.queue.outputs.source_ref }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install -r requirements.txt
-      - name: Install media tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y aria2 ffmpeg fonts-noto-core
-      - name: Install offline subtitle fallback when Gemini keys are unavailable
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
-        run: |
-          if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && [ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && [ -z "$GEMINI_API_KEY_4" ]; then
-            pip install -r requirements-subtitles.txt
-          fi
-      - name: Prepare one episode and all three validated qualities
-        env:
-          ANIMEHIGHBO_EPISODE_ID: ${{ matrix.identity }}
-          ANIMEHIGHBO_PREPARE_ONLY: 'true'
-          ANIMEHIGHBO_DRY_RUN: 'false'
-          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
-          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
-          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
-          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
-        run: python app.py
-      - name: Upload this episode's prepared files
-        uses: actions/upload-artifact@v4
-        with:
-          name: episode-${{ matrix.identity }}
-          path: prepared/${{ matrix.identity }}
-          if-no-files-found: error
-          retention-days: 1
-
   publish:
-    name: Publish the completed upload-date batch in order
-    needs: [queue, prepare]
-    if: needs.queue.outputs.has_work == 'true' && needs.prepare.result == 'success'
+    name: Publish every complete prepared episode independently
+    if: ${{ github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    concurrency:
+      group: animehighbo-publisher
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.queue.outputs.source_ref }}
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Download all prepared episode artifacts
+      - name: Check whether the completed preparation run has any artifacts
+        id: artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runId = context.eventName === 'repository_dispatch'
+              ? Number(context.payload.client_payload.run_id)
+              : context.payload.workflow_run.id;
+            const result = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+              per_page: 100
+            });
+            const available = result.data.artifacts.filter(item => !item.expired);
+            const identity = context.eventName === 'repository_dispatch'
+              ? String(context.payload.client_payload.identity || '')
+              : '';
+            const selected = identity
+              ? available.filter(item => item.name === `episode-${identity}`)
+              : available;
+            core.setOutput('run_id', String(runId));
+            core.setOutput('pattern', identity ? `episode-${identity}` : 'episode-*');
+            core.setOutput('available', String(selected.length > 0));
+            core.info(`Prepared artifacts selected: ${selected.length}`);
+      - name: Download artifacts from the exact preparation run
+        id: download
+        if: steps.artifacts.outputs.available == 'true'
         uses: actions/download-artifact@v4
         with:
-          pattern: episode-*
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ steps.artifacts.outputs.run_id }}
+          pattern: ${{ steps.artifacts.outputs.pattern }}
           path: prepared-artifacts
           merge-multiple: false
       - name: Configure Telegram API endpoint
+        if: steps.download.outcome == 'success'
         env:
           TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
           TELEGRAM_LOCAL_API_VAR: ${{ vars.TELEGRAM_LOCAL_API }}
@@ -154,8 +82,7 @@ jobs:
           else
             TELEGRAM_LOCAL_API="false"
           fi
-          needs_file_api=true
-          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ] && [ "$needs_file_api" = "true" ]; then
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ]; then
             if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
               echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID, TELEGRAM_API_HASH, and TELEGRAM_BOT_TOKEN secrets."
               exit 1
@@ -183,11 +110,12 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Publish posters and replies for this upload-date batch
+      - name: Publish complete prepared episodes only
+        if: steps.download.outcome == 'success'
         env:
           ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
           ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
-          ANIMEHIGHBO_RELEASE_DATE: ${{ needs.queue.outputs.release_date }}
+          ANIMEHIGHBO_PUBLISH_EVENTS_FILE: publish-events.json
           ANIMEHIGHBO_DRY_RUN_SECRET: ${{ secrets.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_DRY_RUN_VAR: ${{ vars.ANIMEHIGHBO_DRY_RUN }}
           ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
@@ -218,13 +146,14 @@ jobs:
           else
             export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
           fi
-          echo "Publishing source upload date: $ANIMEHIGHBO_RELEASE_DATE"
-          echo "Prepared episode artifacts: $(find prepared-artifacts -name manifest.json | wc -l)"
+          echo "Prepared episode manifests: $(find prepared-artifacts -name manifest.json | wc -l)"
           python app.py
       - name: Persist duplicate-prevention state
+        id: persist
         if: always()
         run: |
           if [ -n "$(git status --porcelain data/state.json)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/state.json
@@ -234,6 +163,7 @@ jobs:
             for attempt in 1 2 3; do
               if git push origin HEAD:main; then
                 echo "Publication state persisted to main."
+                echo "persisted=true" >> "$GITHUB_OUTPUT"
                 exit 0
               fi
               echo "Push attempt $attempt was rejected; refreshing main before retry."
@@ -247,4 +177,26 @@ jobs:
             done
             echo "Could not persist publication state after three attempts."
             exit 1
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "persisted=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Queue the next eligible episode for each affected series
+        if: steps.persist.outputs.persisted == 'true' && steps.persist.outputs.changed == 'true' && hashFiles('publish-events.json') != ''
+        uses: actions/github-script@v7
+        env:
+          PUBLISH_EVENTS_FILE: publish-events.json
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const fs = require('fs');
+            const keys = JSON.parse(fs.readFileSync(process.env.PUBLISH_EVENTS_FILE, 'utf8'));
+            for (const series_key of [...new Set(keys.filter(key => typeof key === 'string' && key.trim()))]) {
+              await github.rest.repos.createDispatchEvent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                event_type: 'animehighbo-episode-published',
+                client_payload: { series_key }
+              });
+              core.info(`Queued the next eligible episode for ${series_key}.`);
+            }

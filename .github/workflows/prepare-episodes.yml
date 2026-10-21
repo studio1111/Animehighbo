@@ -1,0 +1,130 @@
+name: Animehighbo episode preparation
+
+on:
+  repository_dispatch:
+    types: [animehighbo-episode-published]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app.py'
+      - 'config.json'
+      - 'data/archive_manifest.json'
+      - 'tools/episode_queue.py'
+      - 'tools/bilingual_subtitles.py'
+      - 'tools/torrent_downloader.py'
+      - 'tools/video_encoder.py'
+      - '.github/workflows/prepare-episodes.yml'
+  schedule:
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: animehighbo-preparation-${{ github.event.client_payload.series_key || 'initial' }}
+  cancel-in-progress: false
+
+jobs:
+  queue:
+    name: Select oldest incomplete source upload date
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      has_work: ${{ steps.plan.outputs.has_work }}
+      release_date: ${{ steps.plan.outputs.release_date }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      source_ref: ${{ steps.revision.outputs.source_ref }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pin queue planning to the latest main snapshot
+        run: |
+          git fetch origin main
+          git checkout --detach origin/main
+      - name: Record the exact source revision for every worker
+        id: revision
+        run: echo "source_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Plan eligible episodes for all series or the requested series
+        id: plan
+        env:
+          ANIMEHIGHBO_TARGET_SERIES: ${{ github.event.client_payload.series_key || '' }}
+        run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
+      - name: Report planned batch
+        env:
+          HAS_WORK: ${{ steps.plan.outputs.has_work }}
+          RELEASE_DATE: ${{ steps.plan.outputs.release_date }}
+          MATRIX: ${{ steps.plan.outputs.matrix }}
+        run: |
+          echo "Work available: $HAS_WORK"
+          echo "Oldest incomplete source upload date: $RELEASE_DATE"
+          python - <<'PY'
+          import json, os
+          matrix = json.loads(os.environ["MATRIX"])
+          print(f"Independent episode workers selected: {len(matrix.get('include', []))}")
+          PY
+
+  prepare:
+    name: Prepare ${{ matrix.title }}
+    needs: queue
+    if: needs.queue.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJson(needs.queue.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.queue.outputs.source_ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Install media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y aria2 ffmpeg fonts-noto-core
+      - name: Require the single configured Gemini key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "GEMINI_API_KEY is required; no offline or alternate-key fallback is enabled."
+            exit 1
+          fi
+      - name: Prepare one episode and all three validated qualities
+        env:
+          ANIMEHIGHBO_EPISODE_ID: ${{ matrix.identity }}
+          ANIMEHIGHBO_SERIES_KEY: ${{ matrix.series_key }}
+          ANIMEHIGHBO_PREPARE_ONLY: 'true'
+          ANIMEHIGHBO_DRY_RUN: 'false'
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
+        run: python app.py
+      - name: Upload this episode's prepared files
+        uses: actions/upload-artifact@v4
+        with:
+          name: episode-${{ matrix.identity }}
+          path: prepared/${{ matrix.identity }}
+          if-no-files-found: error
+          retention-days: 7
+      - name: Dispatch publisher for this completed episode
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: 'animehighbo-episode-prepared',
+              client_payload: {
+                run_id: context.runId,
+                identity: '${{ matrix.identity }}'
+              }
+            });

@@ -1,9 +1,11 @@
-"""Select the oldest incomplete source-upload date, ignoring episode numbers for scheduling."""
+"""Select and gate authorized episodes without cross-series failure coupling."""
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import os
+import re
 from pathlib import Path
 from datetime import date
 
@@ -19,13 +21,134 @@ def _day(value: object) -> str:
         raise ValueError(f"Invalid source release_date: {raw!r}")
 
 
+def episode_identity(entry: dict) -> str:
+    """Return a stable identity based on an immutable source URI or explicit identity."""
+    explicit = str(entry.get("identity") or "").strip()
+    if explicit:
+        return explicit
+    uri = str(entry.get("uri") or entry.get("url") or "").strip()
+    if not uri:
+        raise ValueError("Episode identity requires a source URI or explicit identity.")
+    return hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+
+
+def series_identity(entry: dict) -> str | None:
+    """Return a conservative series/season key; ambiguous identity is held."""
+    title = str(entry.get("series_title") or "").strip()
+    season = entry.get("season")
+    if not title:
+        raw_title = str(entry.get("title") or "").strip()
+        # Only strip an explicit episode suffix; do not infer a series from arbitrary text.
+        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?(?:\s|$|\()", raw_title, re.I)
+        if match:
+            title = match.group(1).strip(" -–—")
+        else:
+            return None
+    if season in (None, ""):
+        raw_title = str(entry.get("title") or "")
+        season_match = re.search(r"(?i)\bS(\d{1,2})\s*E\d{1,4}\b", raw_title)
+        if season_match:
+            season = int(season_match.group(1))
+        else:
+            # A season-one default is allowed only for a title with an explicit
+            # conventional "Series - NN" episode suffix, or explicit series metadata.
+            explicit_episode_suffix = re.search(
+                r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))",
+                raw_title,
+                re.I,
+            )
+            if not str(entry.get("series_title") or "").strip() and not explicit_episode_suffix:
+                return None
+            season = 1
+    try:
+        season_number = int(season)
+    except (TypeError, ValueError):
+        return None
+    if season_number < 1 or not title:
+        return None
+    normalized_title = re.sub(r"\s+", " ", title).casefold()
+    return f"{normalized_title}::season-{season_number}"
+
+
+def _is_complete(record: object) -> bool:
+    return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
+        set(record.get("complete_qualities", []))
+    )
+
+
+def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
+    """Select prepared episodes whose earlier known episodes in the same season are complete.
+
+    A failed or ambiguous episode is never published, but only blocks later episodes in
+    its own series. Different series are evaluated independently.
+    """
+    if not isinstance(entries, list) or not entries:
+        return []
+    published = state.get("published", {}) if isinstance(state, dict) else {}
+    if not isinstance(published, dict):
+        published = {}
+
+    parsed: list[tuple[dict, str, str, int]] = []
+    counts: dict[tuple[str, int], int] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        try:
+            number = int(entry.get("episode") or 0)
+        except (TypeError, ValueError):
+            continue
+        series = series_identity(entry)
+        if number < 1 or series is None:
+            continue
+        try:
+            identity = episode_identity(entry)
+        except ValueError:
+            continue
+        parsed.append((entry, identity, series, number))
+        counts[(series, number)] = counts.get((series, number), 0) + 1
+
+    eligible: list[dict] = []
+    for entry, identity, series, number in parsed:
+        status = str(entry.get("status") or "prepared").casefold()
+        if status not in {"prepared", "ready", "complete"}:
+            continue
+        if _is_complete(published.get(identity)):
+            continue
+        # Duplicate entries for the same series/episode are ambiguous and held.
+        if counts[(series, number)] != 1:
+            continue
+        blocked = False
+        for earlier, earlier_identity, earlier_series, earlier_number in parsed:
+            if earlier_series != series or earlier_number >= number:
+                continue
+            if not _is_complete(published.get(earlier_identity)):
+                blocked = True
+                break
+        if not blocked:
+            eligible.append(entry)
+    return sorted(
+        eligible,
+        key=lambda entry: (
+            (series_identity(entry) or "").casefold(),
+            int(entry.get("episode") or 0),
+            episode_identity(entry),
+        ),
+    )
+
+
 def select_next_upload_date(
-    manifest: list[dict], state: dict, cutoff_date: str | None = None
+    manifest: list[dict],
+    state: dict,
+    cutoff_date: str | None = None,
+    target_series: str | None = None,
 ) -> tuple[str | None, list[dict]]:
+    """Select the oldest eligible upload date while respecting per-series episode order."""
     if not isinstance(manifest, list) or not manifest:
         return None, []
     cutoff = date.fromisoformat(cutoff_date) if cutoff_date else None
     published = state.get("published", {}) if isinstance(state, dict) else {}
+    if not isinstance(published, dict):
+        published = {}
     normalized = []
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
@@ -46,8 +169,43 @@ def select_next_upload_date(
                 f"Archive entry {index + 1} predates configured archive cutoff {cutoff.isoformat()}: {title}"
             )
         identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
-        record = published.get(identity, {}) if isinstance(published, dict) else {}
-        if {"1080p", "720p", "480p"}.issubset(set(record.get("complete_qualities", []))):
+        record = published.get(identity, {})
+        if _is_complete(record):
+            continue
+
+        series_title = str(row.get("series_title") or "").strip()
+        season = row.get("season")
+        if not series_title:
+            raw = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title)
+            raw = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", raw)
+            raw = re.sub(r"\s*\[[^\]]*\]\s*$", "", raw).strip()
+            match = re.match(
+                r"^(.*?)\s+-\s+(\d{1,4}(?:\.\d+)?)(?=\s*(?:\(|\[|$))",
+                raw,
+                re.I,
+            )
+            if match:
+                series_title = match.group(1).strip(" -–—")
+            else:
+                season_match = re.search(r"(?i)^(.*?)\s+S(\d{1,2})\s*E\d{1,4}\b", raw)
+                if season_match:
+                    series_title = season_match.group(1).strip(" -–—")
+                    season = int(season_match.group(2))
+        if season in (None, ""):
+            season = 1 if series_title else None
+        try:
+            season_number = int(season) if season is not None else 0
+        except (TypeError, ValueError):
+            season_number = 0
+        if not series_title or season_number < 1:
+            # Ambiguous identity is held rather than guessed.
+            continue
+
+        series_key = series_identity({
+            "series_title": series_title,
+            "season": season_number,
+        })
+        if series_key is None:
             continue
         normalized.append({
             "identity": identity,
@@ -55,15 +213,45 @@ def select_next_upload_date(
             "url": uri,
             "release_date": day,
             "episode": episode_number,
+            "series_title": series_title,
+            "season": season_number,
+            "series_key": series_key,
         })
+
     if not normalized:
         return None, []
-    # Source upload date is the sole scheduling priority. Episode numbers are metadata
-    # only, so delayed premieres or delayed episodes are not reordered.
-    oldest_upload_date = min(row["release_date"] for row in normalized)
-    selected = [row for row in normalized if row["release_date"] == oldest_upload_date]
-    selected.sort(key=lambda row: (row["title"].casefold(), row["identity"]))
-    return oldest_upload_date, selected
+    counts: dict[tuple[str, int, int], int] = {}
+    for row in normalized:
+        key = (row["series_title"].casefold(), row["season"], row["episode"])
+        counts[key] = counts.get(key, 0) + 1
+
+    eligible = []
+    for row in normalized:
+        series_key = (row["series_title"].casefold(), row["season"])
+        episode_key = (*series_key, row["episode"])
+        if counts[episode_key] != 1:
+            continue
+        blocked = False
+        for earlier in normalized:
+            earlier_series = (earlier["series_title"].casefold(), earlier["season"])
+            if earlier_series != series_key or earlier["episode"] >= row["episode"]:
+                continue
+            if not _is_complete(published.get(earlier["identity"], {})):
+                blocked = True
+                break
+        if not blocked:
+            eligible.append(row)
+
+    if target_series:
+        target = re.sub(r"\s+", " ", target_series).strip().casefold()
+        eligible = [row for row in eligible if row["series_key"] == target]
+    if not eligible:
+        return None, []
+    # Upload date is a stable priority, not a global batch barrier. Return every
+    # currently eligible episode so one failed anime cannot hold unrelated series.
+    oldest_upload_date = min(row["release_date"] for row in eligible)
+    eligible.sort(key=lambda row: (row["release_date"], row["title"].casefold(), row["identity"]))
+    return oldest_upload_date, eligible
 
 
 def main() -> int:
@@ -78,7 +266,10 @@ def main() -> int:
     cutoff = str(config.get("archive_cutoff_date") or "2026-09-01")
     state_path = Path(args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
-    upload_date, entries = select_next_upload_date(manifest, state, cutoff_date=cutoff)
+    target_series = os.environ.get("ANIMEHIGHBO_TARGET_SERIES", "").strip()
+    upload_date, entries = select_next_upload_date(
+        manifest, state, cutoff_date=cutoff, target_series=target_series or None
+    )
     batch_key = f"upload-date-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"

@@ -109,7 +109,9 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 "output_identity": f"{identity}:{quality}",
             })
         (folder / "manifest.json").write_text(json.dumps({
+            "schema_version": 1,
             "identity": identity,
+            "series_key": f"{title.casefold()}::season-1",
             "group_id": f"group-{identity}",
             "poster_identity": f"archive:group-{identity}",
             "title": title,
@@ -179,13 +181,13 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
             }), patch.object(app, "telegram_send_anime_poster") as poster:
-                with self.assertRaisesRegex(RuntimeError, "missing 480p"):
-                    app.publish_prepared_episodes(
-                        {"state_file": str(Path(temp) / "state.json"),
-                         "max_file_size_mb": 1800, "bilingual_subtitles": True},
-                        {"published": {}, "seen": {}, "posters": {}},
-                        False, "token", "@channel",
-                    )
+                count = app.publish_prepared_episodes(
+                    {"state_file": str(Path(temp) / "state.json"),
+                     "max_file_size_mb": 1800, "bilingual_subtitles": True},
+                    {"published": {}, "seen": {}, "posters": {}},
+                    False, "token", "@channel",
+                )
+                self.assertEqual(count, 0)
                 poster.assert_not_called()
 
 
