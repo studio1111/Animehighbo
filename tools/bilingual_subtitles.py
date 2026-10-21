@@ -308,41 +308,62 @@ class GeminiSubtitleTranslator:
             )
         return by_id
 
+    def _translate_chunk(self, batch: list[Cue]) -> list[Cue]:
+        """Translate one small batch, splitting it if Gemini returns malformed structured output."""
+        if not batch:
+            return []
+        context = f"translation cues {batch[0].index}-{batch[-1].index}"
+        payload = [{"id": cue.index, "text": cue.text} for cue in batch]
+        prompt = (
+            "You are a professional Persian anime subtitle localizer. Translate the English "
+            "dialogue into natural, readable contemporary Persian with conversational phrasing. "
+            "Preserve meaning, emotion, humor, character voice, names, and subtitle formatting "
+            "tags such as <i>...</i>. Do not translate or alter placeholder tokens. Do not add "
+            "explanations, omit dialogue, or merge cues. Keep every input id exactly once and "
+            "return only JSON matching the requested schema. Prefer concise Persian suitable "
+            "for on-screen subtitles. The source cues are in chronological order. Perform a "
+            "self-review before returning: compare every Persian line against its English source, "
+            "correct meaning errors, omissions, unnatural phrasing, name inconsistencies, and lines "
+            "that are too long for readable on-screen subtitles. Return only the final reviewed "
+            "translation for each cue, without notes.\n\n"
+            + json.dumps(payload, ensure_ascii=False)
+        )
+        body = self._translation_body(prompt, 0.2)
+        body["systemInstruction"] = {
+            "parts": [{
+                "text": "Return faithful, idiomatic Persian subtitle translations. "
+                        "Output must contain exactly one translation for each supplied id."
+            }]
+        }
+        try:
+            decoded = self._generate_json(body, context)
+            by_id = self._index_translations(decoded, {cue.index for cue in batch}, context)
+        except RuntimeError as exc:
+            recoverable = any(marker in str(exc) for marker in (
+                "returned invalid JSON",
+                "returned malformed translations",
+                "omitted, duplicated, or emptied subtitle cues",
+            ))
+            if recoverable and len(batch) > 1:
+                midpoint = len(batch) // 2
+                print(
+                    f"Gemini structured output was invalid for {context}; retrying as "
+                    f"{len(batch[:midpoint])}-cue and {len(batch[midpoint:])}-cue batches.",
+                    flush=True,
+                )
+                return self._translate_chunk(batch[:midpoint]) + self._translate_chunk(batch[midpoint:])
+            raise
+        return [Cue(cue.index, cue.timing, by_id[cue.index]) for cue in batch]
+
     def translate_batch(self, cues: list[Cue]) -> list[Cue]:
         if not cues:
             return []
         translated: list[Cue] = []
-        # Keep each structured response small enough to avoid Gemini truncating JSON.
-        # Real episode subtitle tracks commonly contain hundreds or thousands of cues.
+        # Small structured responses avoid output-token truncation on full episodes.
+        # Adaptive splitting below recovers automatically if a provider response is malformed.
         batch_size = 40
         for offset in range(0, len(cues), batch_size):
-            batch = cues[offset:offset + batch_size]
-            context = f"translation cues {batch[0].index}-{batch[-1].index}"
-            payload = [{"id": cue.index, "text": cue.text} for cue in batch]
-            prompt = (
-                "You are a professional Persian anime subtitle localizer. Translate the English "
-                "dialogue into natural, readable contemporary Persian with conversational phrasing. "
-                "Preserve meaning, emotion, humor, character voice, names, and subtitle formatting "
-                "tags such as <i>...</i>. Do not translate or alter placeholder tokens. Do not add "
-                "explanations, omit dialogue, or merge cues. Keep every input id exactly once and "
-                "return only JSON matching the requested schema. Prefer concise Persian suitable "
-                "for on-screen subtitles. The source cues are in chronological order. Perform a "
-                "self-review before returning: compare every Persian line against its English source, "
-                "correct meaning errors, omissions, unnatural phrasing, name inconsistencies, and lines "
-                "that are too long for readable on-screen subtitles. Return only the final reviewed "
-                "translation for each cue, without notes.\n\n"
-                + json.dumps(payload, ensure_ascii=False)
-            )
-            body = self._translation_body(prompt, 0.2)
-            body["systemInstruction"] = {
-                "parts": [{
-                    "text": "Return faithful, idiomatic Persian subtitle translations. "
-                            "Output must contain exactly one translation for each supplied id."
-                }]
-            }
-            decoded = self._generate_json(body, context)
-            by_id = self._index_translations(decoded, {cue.index for cue in batch}, context)
-            translated.extend(Cue(cue.index, cue.timing, by_id[cue.index]) for cue in batch)
+            translated.extend(self._translate_chunk(cues[offset:offset + batch_size]))
         return translated
 
     def review_batch(self, source_cues: list[Cue], translated_cues: list[Cue]) -> list[Cue]:
