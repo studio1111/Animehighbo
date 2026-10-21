@@ -1257,8 +1257,8 @@ def run() -> int:
         )
         selected_source = _preferred_source(entries)
         if selected_source is None:
-            LOG.warning("No 1080p or 720p release available for %s; stopping to preserve channel order.", group["title"])
-            break
+            LOG.warning("No 1080p or 720p release available for %s; skipping only this group.", group["title"])
+            continue
         # Download one source only. Lower-resolution releases are never downloaded.
         entries = [selected_source]
         LOG.info("Selected single %s source for %s.", _quality_from_title(selected_source["title"]), group["title"])
@@ -1461,7 +1461,7 @@ def run() -> int:
                 except Exception as exc:
                     failure_count += 1
                     group_failed = True
-                    LOG.exception("Failed to process %s; stopping before the next anime to preserve order: %s", entry["title"], exc)
+                    LOG.exception("Failed to process %s; continuing with unrelated anime: %s", entry["title"], exc)
                 finally:
                     cleanup = set(generated_paths)
                     if media_path:
@@ -1474,12 +1474,12 @@ def run() -> int:
                 if group_failed:
                     break
             if group_failed:
-                break
+                continue
         except Exception as exc:
             failure_count += 1
-            LOG.exception("Could not complete anime group %s; stopping before the next anime: %s",
+            LOG.exception("Could not complete anime group %s; continuing with unrelated groups: %s",
                           group["title"], exc)
-            break
+            continue
     if failure_count:
         LOG.error(
             "Run completed with %d failed media item(s); published %d item(s). "
