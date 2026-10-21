@@ -41,7 +41,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("python tools/publisher_lock.py acquire", workflow)
         self.assertIn("python tools/publisher_lock.py release", workflow)
         release_step = workflow.split("Release global Telegram publisher lock", 1)[1]
-        self.assertIn("if: success()", release_step)
+        self.assertIn("if: always()", release_step)
         self.assertIn("git reset --hard origin/main", workflow)
 
     def test_each_episode_publishes_independently_and_serializes_state_writes(self):
