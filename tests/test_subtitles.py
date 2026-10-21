@@ -39,7 +39,7 @@ Hello there.
         cues = [Cue(1, "00:00:01,000 --> 00:00:02,500", "سلام دنیا")]
         rendered = render_ass(cues)
         self.assertIn("[V4+ Styles]", rendered)
-        self.assertIn("PrimaryColour,&H0000FFFF", rendered)
+        self.assertIn("Style: Persian,Noto Sans Arabic,42,&H0000FFFF", rendered)
         self.assertIn("OutlineColour,&H00000000", rendered)
         self.assertIn("Persian,Noto Sans Arabic", rendered)
         self.assertIn("Dialogue: 0,0:00:01.00,0:00:02.50,Persian", rendered)
