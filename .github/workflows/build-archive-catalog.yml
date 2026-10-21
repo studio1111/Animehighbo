@@ -27,10 +27,11 @@ permissions:
 
 concurrency:
   group: archive-catalog-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
+    if: false # TEMPORARY SAFETY PAUSE while the archive queue is being reset
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
