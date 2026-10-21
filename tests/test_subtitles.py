@@ -95,17 +95,25 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
             for index in range(1, 42)
         ]
-        response = Mock(status_code=200)
-        response.json.return_value = {
-            "candidates": [{"content": {"parts": [{
-                "text": json.dumps({
-                    "translations": [{"id": cue.index, "text": f"ترجمه {cue.index}"} for cue in cues]
-                }, ensure_ascii=False)
-            }]}}]
-        }
+        def response_for_request(*args, **kwargs):
+            prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
+            payload = json.loads(prompt.rsplit("\\n\\n", 1)[1])
+            response = Mock(status_code=200)
+            response.json.return_value = {
+                "candidates": [{"content": {"parts": [{
+                    "text": json.dumps({
+                        "translations": [
+                            {"id": item["id"], "text": f"ترجمه {item['id']}"}
+                            for item in payload
+                        ]
+                    }, ensure_ascii=False)
+                }]}}]
+            }
+            return response
+
         translator = GeminiSubtitleTranslator("primary")
 
-        with patch("tools.bilingual_subtitles.requests.post", return_value=response) as post:
+        with patch("tools.bilingual_subtitles.requests.post", side_effect=response_for_request) as post:
             translated = translator.translate_batch(cues)
 
         self.assertEqual(len(translated), len(cues))
