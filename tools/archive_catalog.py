@@ -69,10 +69,11 @@ def _preferred_download(row: dict) -> tuple[str, str] | None:
 
 
 def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) -> list[dict]:
-    """Select full runs for series debuting on/after cutoff, otherwise only recent episodes.
+    """Select complete runs only for series whose episode 1 is on/after cutoff.
 
-    A show is treated as a new series only when its episode 1 release date is
-    on/after cutoff. Selected episodes must be consecutive; a gap fails closed.
+    Older seasons are skipped entirely rather than expanding into a large
+    historical backlog or starting at a late episode. Selected episodes must
+    be consecutive; a gap or out-of-window episode fails closed.
     """
     normalized = []
     for row in episodes:
@@ -100,7 +101,16 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
     if episode_one is None:
         LOG.info("Skipping %s because episode 1 is not available in the source catalogue.", show_title)
         return []
+    if episode_one["release_date"] < cutoff:
+        LOG.info(
+            "Skipping %s because episode 1 predates cutoff %s; refusing to queue a partial old season.",
+            show_title, cutoff.isoformat(),
+        )
+        return []
     selected = [item for item in normalized if item["episode"] >= 1]
+    if any(item["release_date"] < cutoff for item in selected):
+        LOG.info("Skipping %s because its selected run crosses the archive cutoff.", show_title)
+        return []
     expected_start = 1
     if not selected:
         return []
