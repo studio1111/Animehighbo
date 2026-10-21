@@ -182,26 +182,26 @@ jobs:
               git reset --hard origin/main
               git checkout -B state-update origin/main
               python - <<'PY'
-              import json
-              from pathlib import Path
+          import json
+          from pathlib import Path
 
-              local_path = Path("/tmp/animehighbo-local-state.json")
-              local = json.loads(local_path.read_text(encoding="utf-8"))
-              state_path = Path("data/state.json")
-              current = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-              for section in ("published", "posters", "seen"):
-                  current_section = current.setdefault(section, {})
-                  local_section = local.get(section, {})
-                  if not isinstance(current_section, dict) or not isinstance(local_section, dict):
-                      raise SystemExit(f"Invalid state section: {section}")
-                  for key, value in local_section.items():
-                      current_section.setdefault(key, value)
-              state_path.parent.mkdir(parents=True, exist_ok=True)
-              state_path.write_text(
-                  json.dumps(current, ensure_ascii=False, indent=2) + "\n",
-                  encoding="utf-8",
-              )
-              PY
+          local_path = Path("/tmp/animehighbo-local-state.json")
+          local = json.loads(local_path.read_text(encoding="utf-8"))
+          state_path = Path("data/state.json")
+          current = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          for section in ("published", "posters", "seen"):
+              current_section = current.setdefault(section, {})
+              local_section = local.get(section, {})
+              if not isinstance(current_section, dict) or not isinstance(local_section, dict):
+                  raise SystemExit(f"Invalid state section: {section}")
+              for key, value in local_section.items():
+                  current_section.setdefault(key, value)
+          state_path.parent.mkdir(parents=True, exist_ok=True)
+          state_path.write_text(
+              json.dumps(current, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
               if git diff --quiet -- data/state.json; then
                 echo "Publication state is already present on main."
                 exit 0
