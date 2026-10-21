@@ -195,6 +195,65 @@ def eligible_prepared_episodes(
 
 
 
+
+def select_independent_episodes(
+    manifest: list[dict], state: dict, cutoff_date: str | None = None
+) -> list[dict]:
+    """Select the next known unpublished episode from each series, across all upload dates."""
+    if not isinstance(manifest, list) or not manifest:
+        return []
+    cutoff = date.fromisoformat(cutoff_date) if cutoff_date else None
+    normalized = []
+    seen_identities = set()
+    for index, row in enumerate(manifest):
+        if not isinstance(row, dict):
+            raise ValueError(f"Archive entry {index + 1} must be an object.")
+        uri = str(row.get("uri") or row.get("url") or "").strip()
+        title = str(row.get("title") or "").strip()
+        day = _day(row.get("release_date"))
+        if not uri or not title:
+            raise ValueError(f"Archive entry {index + 1} requires title, URI and ISO release_date.")
+        episode_number = _episode_number(row)
+        if episode_number is None:
+            raise ValueError(f"Archive entry {index + 1} requires a valid episode number.")
+        if row.get("authorized_for_redistribution") is not True:
+            raise PermissionError(
+                f"Archive entry {index + 1} must explicitly authorize redistribution."
+            )
+        if cutoff and date.fromisoformat(day) < cutoff:
+            raise ValueError(
+                f"Archive entry {index + 1} predates configured archive cutoff {cutoff.isoformat()}: {title}"
+            )
+        identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+        if identity in seen_identities:
+            raise ValueError(f"Duplicate archive source at entry {index + 1}: {title}")
+        seen_identities.add(identity)
+        series_title = _normalized_series_title(row)
+        if not series_title:
+            continue
+        normalized.append({
+            "identity": identity,
+            "title": title,
+            "series_title": series_title,
+            "season": row.get("season_number", row.get("season", 1)),
+            "url": uri,
+            "uri": uri,
+            "release_date": day,
+            "episode": episode_number,
+            "authorized_for_redistribution": True,
+        })
+
+    ready_ids = {row["identity"] for row in normalized}
+    eligible = eligible_prepared_episodes(normalized, state, ready_ids=ready_ids)
+    eligible.sort(key=lambda row: (
+        row["release_date"],
+        str(row.get("series_title") or "").casefold(),
+        _episode_number(row) or 0,
+        row["identity"],
+    ))
+    return eligible
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", default="data/archive_manifest.json")
@@ -207,20 +266,20 @@ def main() -> int:
     cutoff = str(config.get("archive_cutoff_date") or "2026-09-01")
     state_path = Path(args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
-    upload_date, entries = select_next_upload_date(manifest, state, cutoff_date=cutoff)
-    batch_key = f"upload-date-{upload_date}" if upload_date else ""
+    entries = select_independent_episodes(manifest, state, cutoff_date=cutoff)
+    batch_key = "independent-episodes" if entries else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as output:
             output.write(f"has_work={has_work}\n")
-            output.write(f"release_date={upload_date if upload_date is not None else ''}\n")
+            output.write("release_date=\n")
             output.write(f"batch_key={batch_key}\n")
             output.write("matrix=" + json.dumps(matrix, ensure_ascii=False, separators=(",", ":")) + "\n")
     else:
         print(json.dumps({
             "has_work": has_work,
-            "release_date": upload_date,
+            "release_date": "",
             "batch_key": batch_key,
             "matrix": matrix,
         }, ensure_ascii=False, separators=(",", ":")))
