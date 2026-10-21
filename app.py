@@ -942,46 +942,57 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
         raise RuntimeError(f"No prepared episode manifests found under {root}.")
 
     episodes = []
+    invalid_bundle_count = 0
     for manifest_path in manifest_paths:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        day = str(manifest.get("release_date") or "").strip()
-        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
-            raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
-        if expected_day and day != expected_day:
-            raise ValueError(f"Mixed upload-day batch: expected {expected_day}, found {day}.")
-        identity = str(manifest.get("identity") or "")
-        if not identity:
-            raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
-        if _episode_record_complete(state["published"].get(identity, {})):
-            continue
-        files = {}
-        for row in manifest.get("files", []):
-            quality = str(row.get("quality") or "")
-            filename = str(row.get("filename") or "")
-            if quality not in {"1080p", "720p", "480p"} or not filename:
-                raise ValueError(f"Invalid prepared quality entry in {manifest_path}.")
-            path = manifest_path.parent / filename
-            if not path.is_file() or path.stat().st_size < 1024:
-                raise ValueError(f"Prepared {quality} file is missing or too small: {path}")
-            if path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
-                raise ValueError(f"Prepared {quality} file exceeds configured size limit: {path}")
-            actual_hash = sha256_file(path)
-            if actual_hash != str(row.get("sha256") or ""):
-                raise ValueError(f"Prepared {quality} checksum mismatch: {path}")
-            files[quality] = {
-                "path": path,
-                "sha256": actual_hash,
-                "output_identity": str(row.get("output_identity") or f"{identity}:{quality}"),
-            }
-        if len(files) != len(manifest.get("files", [])):
-            raise ValueError(f"Duplicate quality in prepared manifest: {manifest_path}")
-        episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            day = str(manifest.get("release_date") or "").strip()
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+                raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
+            if expected_day and day != expected_day:
+                raise ValueError(f"Mixed upload-day batch: expected {expected_day}, found {day}.")
+            identity = str(manifest.get("identity") or "")
+            if not identity:
+                raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
+            if _episode_record_complete(state["published"].get(identity, {})):
+                continue
+            files = {}
+            for row in manifest.get("files", []):
+                quality = str(row.get("quality") or "")
+                filename = str(row.get("filename") or "")
+                if quality not in {"1080p", "720p", "480p"} or not filename:
+                    raise ValueError(f"Invalid prepared quality entry in {manifest_path}.")
+                path = manifest_path.parent / filename
+                if not path.is_file() or path.stat().st_size < 1024:
+                    raise ValueError(f"Prepared {quality} file is missing or too small: {path}")
+                if path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                    raise ValueError(f"Prepared {quality} file exceeds configured size limit: {path}")
+                actual_hash = sha256_file(path)
+                if actual_hash != str(row.get("sha256") or ""):
+                    raise ValueError(f"Prepared {quality} checksum mismatch: {path}")
+                files[quality] = {
+                    "path": path,
+                    "sha256": actual_hash,
+                    "output_identity": str(row.get("output_identity") or f"{identity}:{quality}"),
+                }
+            if len(files) != len(manifest.get("files", [])):
+                raise ValueError(f"Duplicate quality in prepared manifest: {manifest_path}")
+            episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
+
+        except Exception as exc:
+            invalid_bundle_count += 1
+            LOG.exception("Skipping invalid prepared episode bundle %s; unrelated episodes will continue: %s",
+                          manifest_path.parent.name, exc)
 
     episodes.sort(key=lambda item: (
         item["release_date"],
         str(item.get("title") or "").casefold(),
         str(item.get("identity") or ""),
     ))
+
+    if invalid_bundle_count:
+        LOG.error("Skipped %d invalid prepared episode bundle(s); they remain eligible for a later retry.",
+                  invalid_bundle_count)
 
     # Validate the entire episode tier before publishing the first poster.
     for episode in episodes:
