@@ -122,6 +122,18 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         self.assertTrue(all("self-review" in prompt.casefold() for prompt in prompts))
         self.assertTrue(all(len(json.loads(prompt.split("\n\n", 1)[1])) <= 40 for prompt in prompts))
 
+    def test_gemini_requests_are_spaced_for_shared_project_quota(self):
+        translator = GeminiSubtitleTranslator("primary")
+
+        with patch(
+            "tools.bilingual_subtitles.time.monotonic",
+            side_effect=[100.0, 105.0, 135.0],
+        ), patch("tools.bilingual_subtitles.time.sleep") as sleep:
+            translator._wait_for_request_slot()
+            translator._wait_for_request_slot()
+
+        sleep.assert_called_once_with(30.0)
+
     def test_invalid_json_batch_is_retried_as_smaller_batches(self):
         cues = [
             Cue(index, f"00:00:{index:02d},000 --> 00:00:{index + 1:02d},000", f"Line {index}")
