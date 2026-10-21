@@ -112,6 +112,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             return response
 
         translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
 
         with patch("tools.bilingual_subtitles.requests.post", side_effect=response_for_request) as post:
             translated = translator.translate_batch(cues)
@@ -164,6 +165,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             return response
 
         translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
         with patch("tools.bilingual_subtitles.requests.post", side_effect=response_for_request):
             translated = translator.translate_batch(cues)
 
@@ -179,6 +181,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             }]}}]
         }
         translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
         cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
 
         with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]) as post, patch("tools.bilingual_subtitles.time.sleep") as sleep:
@@ -199,6 +202,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
             }]}}]
         }
         translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
         cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
 
         with patch("tools.bilingual_subtitles.requests.post", side_effect=[limited, success]), patch(
@@ -212,6 +216,7 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         limited = Mock(status_code=429, headers={})
         limited.json.return_value = {"error": {"message": "quota exhausted"}}
         translator = GeminiSubtitleTranslator("primary")
+        translator.MIN_REQUEST_INTERVAL_SECONDS = 0.0
         cue = Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello")
 
         with patch("tools.bilingual_subtitles.requests.post", return_value=limited) as post, patch("tools.bilingual_subtitles.time.sleep"):
