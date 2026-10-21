@@ -170,7 +170,7 @@ class GeminiSubtitleTranslator:
             raise ValueError("GEMINI_API_KEY is required.")
         self.api_key = api_key.strip()
         self.api_keys = [self.api_key]
-        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")).strip()
+        self.model = (model or os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")).strip()
         self.endpoint = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"{self.model}:generateContent"
@@ -208,6 +208,10 @@ class GeminiSubtitleTranslator:
 
             if response.status_code == 429 or response.status_code in {500, 502, 503, 504}:
                 errors.append(f"HTTP {response.status_code}")
+                provider_delay = self._retry_delay_from_body(response) if response.status_code == 429 else None
+                if provider_delay is not None and provider_delay > 300:
+                    errors.append(f"provider cooldown {provider_delay:.0f}s; stopping retries")
+                    break
                 if attempt < 2:
                     if response.status_code == 429:
                         retry_after = response.headers.get("Retry-After", "")
@@ -223,7 +227,6 @@ class GeminiSubtitleTranslator:
                                     max(0.0, (retry_time - datetime.now(timezone.utc)).total_seconds()),
                                 )
                             except (TypeError, ValueError, OverflowError):
-                                provider_delay = self._retry_delay_from_body(response)
                                 if provider_delay is not None:
                                     delay = min(60.0, provider_delay)
                                 else:
@@ -405,7 +408,7 @@ class GeminiSubtitleTranslator:
         translated: list[Cue] = []
         # Small structured responses avoid output-token truncation on full episodes.
         # Adaptive splitting below recovers automatically if a provider response is malformed.
-        batch_size = 40
+        batch_size = 100
         for offset in range(0, len(cues), batch_size):
             translated.extend(self._translate_chunk(cues[offset:offset + batch_size]))
         return translated
@@ -415,7 +418,7 @@ class GeminiSubtitleTranslator:
         if len(source_cues) != len(translated_cues):
             raise RuntimeError("Subtitle review received mismatched source and translation cue counts.")
         reviewed: list[Cue] = []
-        batch_size = 20
+        batch_size = 40
         for offset in range(0, len(source_cues), batch_size):
             sources = source_cues[offset:offset + batch_size]
             translations = translated_cues[offset:offset + batch_size]
