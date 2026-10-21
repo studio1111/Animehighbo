@@ -33,17 +33,21 @@ class WorkflowContractTests(unittest.TestCase):
         )
         self.assertIn('export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"', workflow)
 
-    def test_upload_date_matrix_serializes_preparation_to_protect_shared_gemini_quota(self):
+    def test_episode_matrix_is_parallel_and_publisher_survives_peer_failure(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
         self.assertIn("Select oldest incomplete source upload date", workflow)
         self.assertIn("tools/bilingual_subtitles.py", workflow)
-        self.assertIn("max-parallel: 1", workflow)
+        self.assertIn("max-parallel: 5", workflow)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
-        self.assertIn("needs.prepare.result == 'success'", workflow)
+        self.assertIn("needs.prepare.result != 'cancelled'", workflow)
         self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
+        self.assertIn("if: always()", workflow)
+        self.assertIn("group: animehighbo-publisher-state", workflow)
+        self.assertIn("No complete prepared artifacts are available", workflow)
+        self.assertNotIn("group: animehighbo-publisher\n", workflow)
 
     def test_poster_synopsis_uses_expandable_blockquote_not_spoiler_mask(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
@@ -118,30 +122,23 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertNotIn("python app.py", workflow)
 
-    def test_publisher_passes_all_gemini_key_secrets_to_subtitle_pipeline(self):
+    def test_publisher_passes_only_primary_gemini_key(self):
         workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-        for name in (
-            "GEMINI_API_KEY",
-            "GEMINI_API_KEY_1",
-            "GEMINI_API_KEY_2",
-            "GEMINI_API_KEY_3",
-            "GEMINI_API_KEY_4",
-        ):
-            self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
-        self.assertIn(
-            'if [ -z "$GEMINI_API_KEY" ] && [ -z "$GEMINI_API_KEY_1" ] && '
-            '[ -z "$GEMINI_API_KEY_2" ] && [ -z "$GEMINI_API_KEY_3" ] && '
-            '[ -z "$GEMINI_API_KEY_4" ]',
-            workflow,
-        )
+        self.assertIn("GEMINI_API_KEY: " + "$" + "{{ secrets.GEMINI_API_KEY }}", workflow)
+        for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertNotIn(f"{name}:", workflow)
+        self.assertNotIn("offline subtitle fallback", workflow)
 
 
-    def test_one_time_delivery_is_manual_only_and_receives_gemini_fallback_keys(self):
+    def test_one_time_delivery_is_manual_only_and_uses_one_gemini_key(self):
         workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
         trigger_block = workflow.split("permissions:", 1)[0]
         self.assertIn("workflow_dispatch:", trigger_block)
         self.assertNotIn("push:", trigger_block)
-        for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+        self.assertIn("GEMINI_API_KEY: " + "$" + "{{ secrets.GEMINI_API_KEY }}", workflow)
+        for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            self.assertNotIn(f"{name}:", workflow)
+        self.assertNotIn("requirements-subtitles.txt", workflow)
             self.assertIn(f"{name}: ${{{{ secrets.{name} }}}}", workflow)
 
 
