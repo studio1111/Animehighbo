@@ -1,7 +1,6 @@
 name: Animehighbo publisher
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows:
       - Animehighbo episode preparation
@@ -14,7 +13,7 @@ permissions:
 jobs:
   publish:
     name: Publish every complete prepared episode independently
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
+    if: ${{ github.event.workflow_run.conclusion != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     concurrency:
@@ -30,7 +29,6 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Check whether the completed preparation run has any artifacts
         id: artifacts
-        if: github.event_name == 'workflow_run'
         uses: actions/github-script@v7
         with:
           script: |
@@ -46,12 +44,12 @@ jobs:
             core.info(`Prepared artifacts available: ${available.length}`);
       - name: Download artifacts from the exact preparation run
         id: download
-        if: github.event_name == 'workflow_dispatch' || steps.artifacts.outputs.available == 'true'
+        if: steps.artifacts.outputs.available == 'true'
         uses: actions/download-artifact@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id || github.run_id }}
+          run-id: ${{ github.event.workflow_run.id }}
           pattern: episode-*
           path: prepared-artifacts
           merge-multiple: false
