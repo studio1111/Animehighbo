@@ -1,6 +1,11 @@
 name: Build authorized episode archive catalog
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/archive_catalog.py'
+      - '.github/workflows/build-archive-catalog.yml'
   workflow_dispatch:
     inputs:
       since:
@@ -56,7 +61,12 @@ jobs:
               raise SystemExit("Archive manifest is empty or invalid.")
           if any(row.get("authorized_for_redistribution") is not True for row in rows):
               raise SystemExit("Manifest contains an entry without explicit redistribution authorization.")
-          print(f"Validated {len(rows)} ordered archive entries.")
+          if any(not row.get("release_date") for row in rows):
+              raise SystemExit("Manifest contains an entry without its source upload date.")
+          ordered = [row["release_date"] for row in rows]
+          if ordered != sorted(ordered):
+              raise SystemExit("Manifest is not globally sorted by source upload date.")
+          print(f"Validated {len(rows)} date-ordered archive entries.")
           PY
       - name: Upload manifest for inspection
         uses: actions/upload-artifact@v4
