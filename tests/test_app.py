@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import (allowed_media_url, anime_japanese_title, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source)
+from app import (allowed_media_url, anime_japanese_title, build_episode_caption, episode_details, has_authorized_torrent_source, has_file_media_source, load_archive_manifest, load_config, load_state, parse_episode_feed, parse_feed, processed_filename, safe_filename, telegram_api_endpoint, telegram_method_for_file, torrent_source_uri, telegram_upload_and_send, run as run_app, _episode_group, _episode_record_complete, _poster_identity, _quality_rank, _preferred_source, _episode_predecessors_complete)
 from tools.subsplease_monitor import parse_releases
 
 
@@ -187,6 +187,28 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                         False, "token", "@channel",
                     )
                 poster.assert_not_called()
+
+
+class EpisodeOrderingTests(unittest.TestCase):
+    def test_later_episode_is_blocked_until_known_predecessor_is_complete(self):
+        episode = {"title": "Series A", "episode": "02", "identity": "a2"}
+        catalog = [
+            {"title": "Series A - 01 (1080p)", "identity": "a1"},
+            {"title": "Series B - 01 (1080p)", "identity": "b1"},
+        ]
+        state = {"published": {"a1": {"complete_qualities": ["1080p", "720p"]}}}
+        self.assertFalse(_episode_predecessors_complete(episode, state, catalog))
+
+    def test_later_episode_becomes_eligible_after_predecessor_is_complete(self):
+        episode = {"title": "Series A", "episode": "02", "identity": "a2"}
+        catalog = [{"title": "Series A - 01 (1080p)", "identity": "a1"}]
+        state = {"published": {"a1": {"complete_qualities": ["1080p", "720p", "480p"]}}}
+        self.assertTrue(_episode_predecessors_complete(episode, state, catalog))
+
+    def test_different_series_do_not_block_each_other(self):
+        episode = {"title": "Series B", "episode": "01", "identity": "b1"}
+        catalog = [{"title": "Series A - 01 (1080p)", "identity": "a1"}]
+        self.assertTrue(_episode_predecessors_complete(episode, {"published": {}}, catalog))
 
 
 class ArchiveManifestTests(unittest.TestCase):
