@@ -43,6 +43,14 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
         self.assertIn("needs.prepare.result == 'success'", workflow)
         self.assertIn("ANIMEHIGHBO_RELEASE_DATE", workflow)
+
+    def test_poster_synopsis_uses_expandable_blockquote_not_spoiler_mask(self):
+        source = (ROOT / "app.py").read_text(encoding="utf-8")
+        caption_builder = source.split("def build_episode_caption(", 1)[1].split("\ndef ", 1)[0]
+        self.assertIn("<blockquote expandable>", caption_builder)
+        self.assertNotIn("<tg-spoiler>", caption_builder)
+        self.assertIn("</blockquote>", caption_builder)
+
     def test_unverified_torrent_is_not_enabled_in_default_config(self):
         config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
         self.assertEqual(config.get("torrent_sources", []), [])
