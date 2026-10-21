@@ -954,6 +954,8 @@ def _episode_predecessors_complete(episode: dict, state: dict, catalog: list[dic
     identity = str(episode.get("identity") or "")
     if not current_title or current_number is None or not identity:
         return False
+    if current_number > 1 and not catalog:
+        return False
 
     published = state.get("published", {}) if isinstance(state, dict) else {}
     if not isinstance(published, dict):
@@ -1282,9 +1284,14 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             LOG.exception("Failed to publish %s episode %s; unrelated episodes will continue: %s",
                           title, episode_number, exc)
 
-    if episode_failures:
+    total_failures = episode_failures + len(invalid_bundles)
+    if total_failures:
         LOG.error("Publisher finished with %d episode-local failure(s); %d video file(s) were sent.",
-                  episode_failures, published_count)
+                  total_failures, published_count)
+        raise RuntimeError(
+            f"Publisher completed with {total_failures} held/failed episode bundle(s); "
+            f"{published_count} video file(s) were sent successfully."
+        )
     return published_count
 
 
