@@ -11,6 +11,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -920,6 +921,7 @@ def load_archive_manifest(path: str) -> list[dict]:
             "identity": identity,
             "torrent_source": is_torrent_source,
             "authorized_for_redistribution": True,
+            "release_date": str(item.get("release_date") or "").strip(),
             "archive_order": index,
         })
     return result
@@ -929,6 +931,152 @@ def _poster_identity(group_id: str, archive_mode: bool = False) -> str:
     """Use fresh poster state for a channel archive rebuild after old posts are deleted."""
     return f"archive:{group_id}" if archive_mode else group_id
 
+
+
+def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: str, chat_id: str) -> int:
+    """Publish a fully prepared upload-day batch in stable date/title/episode order."""
+    root = Path(os.getenv("ANIMEHIGHBO_PREPARED_DIR", "prepared-artifacts"))
+    expected_day = os.getenv("ANIMEHIGHBO_RELEASE_DATE", "").strip()
+    manifest_paths = sorted(root.glob("episode-*/manifest.json"))
+    if not manifest_paths:
+        raise RuntimeError(f"No prepared episode manifests found under {root}.")
+
+    episodes = []
+    for manifest_path in manifest_paths:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        day = str(manifest.get("release_date") or "").strip()
+        if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", day):
+            raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
+        if expected_day and day != expected_day:
+            raise ValueError(f"Mixed upload-day batch: expected {expected_day}, found {day}.")
+        identity = str(manifest.get("identity") or "")
+        if not identity:
+            raise ValueError(f"Prepared episode manifest is missing identity: {manifest_path}")
+        if _episode_record_complete(state["published"].get(identity, {})):
+            continue
+        files = {}
+        for row in manifest.get("files", []):
+            quality = str(row.get("quality") or "")
+            filename = str(row.get("filename") or "")
+            if quality not in {"1080p", "720p", "480p"} or not filename:
+                raise ValueError(f"Invalid prepared quality entry in {manifest_path}.")
+            path = manifest_path.parent / filename
+            if not path.is_file() or path.stat().st_size < 1024:
+                raise ValueError(f"Prepared {quality} file is missing or too small: {path}")
+            if path.stat().st_size > int(config["max_file_size_mb"]) * 1024 * 1024:
+                raise ValueError(f"Prepared {quality} file exceeds configured size limit: {path}")
+            actual_hash = sha256_file(path)
+            if actual_hash != str(row.get("sha256") or ""):
+                raise ValueError(f"Prepared {quality} checksum mismatch: {path}")
+            files[quality] = {
+                "path": path,
+                "sha256": actual_hash,
+                "output_identity": str(row.get("output_identity") or f"{identity}:{quality}"),
+            }
+        if len(files) != len(manifest.get("files", [])):
+            raise ValueError(f"Duplicate quality in prepared manifest: {manifest_path}")
+        episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
+
+    episodes.sort(key=lambda item: (
+        item["release_date"],
+        str(item.get("title") or "").casefold(),
+        int(item.get("episode") or 0),
+        str(item.get("identity") or ""),
+    ))
+
+    # Validate the entire day before publishing the first poster.
+    for episode in episodes:
+        identity = episode["identity"]
+        existing = state["published"].get(identity, {})
+        poster_identity = str(episode.get("poster_identity") or "")
+        poster_exists = bool(state["posters"].get(poster_identity, {}).get("message_id"))
+        for quality in ("1080p", "720p", "480p"):
+            output_identity = f"{identity}:{quality}"
+            if output_identity in state["published"]:
+                continue
+            if quality not in episode["files"]:
+                raise RuntimeError(
+                    f"Upload-day batch is incomplete: {episode.get('title')} is missing {quality}."
+                )
+        if not poster_exists and any(
+            f"{identity}:{quality}" in state["published"]
+            for quality in ("1080p", "720p", "480p")
+        ):
+            raise RuntimeError(f"Episode {episode.get('title')} has delivered files but no recorded poster.")
+
+    if dry_run:
+        LOG.info("[DRY RUN] Prepared %d episodes for upload day %s; no Telegram posts sent.",
+                 len(episodes), expected_day or "unknown")
+        return 0
+
+    published_count = 0
+    for episode in episodes:
+        identity = episode["identity"]
+        title = str(episode.get("title") or "")
+        episode_number = str(episode.get("episode") or "")
+        poster_identity = str(episode.get("poster_identity") or "")
+        group_id = str(episode.get("group_id") or "")
+        if not poster_identity or not group_id:
+            raise ValueError(f"Prepared episode is missing poster identity: {title}")
+
+        if not state["posters"].get(poster_identity, {}).get("message_id"):
+            metadata = anime_catalog_metadata(title)
+            poster_message_id = telegram_send_anime_poster(
+                token, chat_id, title, episode_number, metadata
+            )
+            state["posters"][poster_identity] = {
+                "title": title,
+                "episode": episode_number or None,
+                "message_id": poster_message_id,
+                "published_at": int(time.time()),
+                "release_date": episode["release_date"],
+            }
+            save_state(config["state_file"], state)
+
+        poster_message_id = state["posters"][poster_identity].get("message_id")
+        if not poster_message_id:
+            raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
+
+        for quality in ("1080p", "720p", "480p"):
+            output_identity = f"{identity}:{quality}"
+            if output_identity in state["published"]:
+                continue
+            output = episode["files"].get(quality)
+            if output is None:
+                raise RuntimeError(f"Missing prepared {quality} output for {title}.")
+            file_hash = output["sha256"]
+            duplicate_of = state["seen"].get(file_hash)
+            if duplicate_of and duplicate_of != output_identity:
+                raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
+            message_id = telegram_upload_and_send(
+                token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
+                reply_to_message_id=poster_message_id,
+            )
+            state["seen"][file_hash] = output_identity
+            state["published"][output_identity] = {
+                "title": title,
+                "quality": quality,
+                "source_quality": episode.get("source_quality", "1080p"),
+                "feed": episode.get("feed", "episode archive manifest"),
+                "file_sha256": file_hash,
+                "message_id": message_id,
+                "published_at": int(time.time()),
+                "bilingual_subtitles": bool(config.get("bilingual_subtitles", False)),
+            }
+            save_state(config["state_file"], state)
+            published_count += 1
+            LOG.info("Published %s %s as a reply to poster %s", title, quality, poster_message_id)
+
+        state["published"][identity] = {
+            "title": title,
+            "complete_qualities": ["1080p", "720p", "480p"],
+            "source_quality": episode.get("source_quality", "1080p"),
+            "published_at": int(time.time()),
+            "release_date": episode["release_date"],
+        }
+        save_state(config["state_file"], state)
+        LOG.info("Completed episode %s from upload day %s.", title, episode["release_date"])
+    return published_count
 
 def run() -> int:
     logging.basicConfig(
@@ -944,6 +1092,13 @@ def run() -> int:
         dry_run = bool(config["dry_run"])
     token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+    prepare_only = os.getenv("ANIMEHIGHBO_PREPARE_ONLY", "").strip().lower() in {"1", "true", "yes", "on"}
+    publish_prepared = os.getenv("ANIMEHIGHBO_PUBLISH_PREPARED", "").strip().lower() in {"1", "true", "yes", "on"}
+
+    if publish_prepared:
+        if not dry_run and (not token or not chat_id):
+            raise RuntimeError("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID secrets before live publishing.")
+        return 0 if not has_file_media_source(config) else publish_prepared_episodes(config, state, dry_run, token, chat_id)
 
     if config.get("mode", "links") == "links":
         if not config["feeds"]:
@@ -1059,6 +1214,18 @@ def run() -> int:
                 "authorized_for_redistribution": True,
             })
 
+    requested_identity = os.getenv("ANIMEHIGHBO_EPISODE_ID", "").strip()
+    if prepare_only:
+        if not requested_identity:
+            raise RuntimeError("ANIMEHIGHBO_PREPARE_ONLY requires ANIMEHIGHBO_EPISODE_ID.")
+        pending = [
+            entry for entry in pending
+            if str(entry.get("identity") or hashlib.sha256(("archive:" + str(entry.get("url") or "")).encode("utf-8")).hexdigest())
+            == requested_identity
+        ]
+        if not pending:
+            raise RuntimeError(f"Requested episode identity was not found in the current manifest: {requested_identity}")
+
     groups = {}
     for entry in pending:
         group_id, anime_title, episode = _episode_group(entry["title"])
@@ -1068,11 +1235,17 @@ def run() -> int:
             continue
         group = groups.setdefault(group_id, {
             "title": anime_title, "episode": episode, "entries": [],
+            "release_date": str(entry.get("release_date") or ""),
         })
         group["entries"].append({**entry, "identity": identity})
 
-    # Process only the newest eligible episode group per scheduled run by default.
-    # Multiple quality feeds for the same episode remain grouped together.
+    # Process oldest source-upload dates first. The coordinator normally narrows
+    # workers to one date; this ordering is also a safe fallback for single runs.
+    groups = dict(sorted(groups.items(), key=lambda pair: (
+        pair[1].get("release_date") or "9999-12-31",
+        pair[1]["title"].casefold(),
+        int(pair[1]["episode"] or 0),
+    )))
     max_groups = max(1, int(config.get("max_episode_groups_per_run", 1)))
     groups = dict(list(groups.items())[:max_groups])
 
@@ -1193,6 +1366,48 @@ def run() -> int:
                                 f"{quality} output duplicates {duplicate_of}; refusing to publish a poster or mark the quality complete."
                             )
                         prepared_outputs[quality] = (output_path, file_hash, output_identity)
+
+                    # Preparation workers leave all validated outputs as an artifact.
+                    # Only the single publisher job is allowed to contact Telegram.
+                    if prepare_only:
+                        if poster_identity not in state["posters"] and (
+                            completed_qualities or len(prepared_outputs) != len(variants)
+                        ):
+                            raise RuntimeError(
+                                "Refusing to hand off an episode until all three quality files are prepared."
+                            )
+                        prepared_dir = Path("prepared") / identity
+                        prepared_dir.mkdir(parents=True, exist_ok=True)
+                        file_rows = []
+                        for quality, (output_path, file_hash, output_identity) in prepared_outputs.items():
+                            target_path = prepared_dir / output_path.name
+                            shutil.copy2(output_path, target_path)
+                            file_rows.append({
+                                "quality": quality,
+                                "filename": target_path.name,
+                                "sha256": file_hash,
+                                "output_identity": output_identity,
+                            })
+                        prepared_manifest = {
+                            "identity": identity,
+                            "group_id": group_id,
+                            "poster_identity": poster_identity,
+                            "title": group["title"],
+                            "episode": group["episode"],
+                            "release_date": str(selected_source.get("release_date") or group.get("release_date") or ""),
+                            "feed": selected_source.get("feed", "episode archive manifest"),
+                            "source_quality": source_quality,
+                            "files": sorted(file_rows, key=lambda row: _quality_rank(row["quality"])),
+                        }
+                        if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", prepared_manifest["release_date"]):
+                            raise ValueError(f"Source upload date is missing or invalid for {group['title']}.")
+                        (prepared_dir / "manifest.json").write_text(
+                            json.dumps(prepared_manifest, ensure_ascii=False, indent=2) + "\\n",
+                            encoding="utf-8",
+                        )
+                        LOG.info("Prepared episode artifact for %s (%s): %d missing quality file(s).",
+                                 group["title"], prepared_manifest["release_date"], len(file_rows))
+                        continue
 
                     # A new poster must have all required, validated output files ready.
                     if poster_identity not in state["posters"]:
