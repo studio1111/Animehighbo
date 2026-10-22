@@ -18,7 +18,7 @@ on:
     - cron: '*/5 * * * *'
 
 permissions:
-  actions: read
+  actions: write
   contents: write
 
 concurrency:
@@ -41,8 +41,35 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Exclude episodes already queued or running
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          repo = os.environ["GITHUB_REPOSITORY"]
+          active = set()
+          for status in ("queued", "in_progress"):
+              result = subprocess.run(
+                  ["gh", "api", f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status={status}&per_page=100"],
+                  check=True, capture_output=True, text=True,
+              )
+              for run in json.loads(result.stdout).get("workflow_runs", []):
+                  title = str(run.get("display_title") or "")
+                  prefix = "Animehighbo worker "
+                  if title.startswith(prefix):
+                      identity = title[len(prefix):].strip()
+                      if identity:
+                          active.add(identity)
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\\n")
+          print(f"Found {len(active)} episode worker(s) already queued or running.")
+          PY
       - name: Plan up to five independently publishable episodes
         id: plan
+        env:
+          ANIMEHIGHBO_ACTIVE_IDENTITIES: ${{ env.ANIMEHIGHBO_ACTIVE_IDENTITIES }}
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned independent workers
         env:
@@ -57,16 +84,24 @@ jobs:
           PY
 
   episodes:
-    name: Prepare and publish ${{ matrix.title }}
+    name: Dispatch worker for ${{ matrix.title }}
     needs: queue
     if: needs.queue.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 5
       matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}
-    uses: ./.github/workflows/prepare-one-episode.yml
-    with:
-      identity: ${{ matrix.identity }}
-      series_key: ${{ matrix.series_key }}
-      title: ${{ matrix.title }}
-    secrets: inherit
+    steps:
+      - name: Dispatch an independent episode workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IDENTITY: ${{ matrix.identity }}
+          SERIES_KEY: ${{ matrix.series_key }}
+          TITLE: ${{ matrix.title }}
+        run: |
+          gh workflow run prepare-one-episode.yml --ref main \
+            --field "identity=$IDENTITY" \
+            --field "series_key=$SERIES_KEY" \
+            --field "title=$TITLE"
+          echo "Dispatched independent worker for $TITLE [$IDENTITY]"
