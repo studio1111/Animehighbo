@@ -33,10 +33,17 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Install media tools
+      - name: Install media tools with bounded package setup
+        timeout-minutes: 5
         run: |
-          sudo apt-get update
-          sudo apt-get install -y aria2 ffmpeg fonts-noto-core
+          # GitHub-hosted Ubuntu runners already include ffmpeg. Avoid a full
+          # apt index refresh on every parallel worker, which can stall all five
+          # workers on shared package mirrors.
+          command -v ffmpeg
+          sudo timeout 180 apt-get install -y aria2 fonts-noto-core
+          command -v aria2c
+          ffmpeg -version | head -n 1
+          aria2c --version | head -n 1
       - name: Validate episode identity
         env:
           EPISODE_ID: ${{ inputs.identity }}
