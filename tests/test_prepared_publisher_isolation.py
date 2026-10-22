@@ -65,7 +65,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
-            self.assertEqual(result, 3)
+            self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
             self.assertEqual(poster.call_count, 1)
             self.assertIn("good", state["published"])
             self.assertNotIn("escape", state["published"])
@@ -127,7 +127,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
-            self.assertEqual(result, 3)
+            self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
             poster.assert_called_once()
             self.assertIn("good", str(poster.call_args))
             self.assertEqual(upload.call_count, 3)
