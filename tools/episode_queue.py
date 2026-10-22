@@ -384,16 +384,14 @@ def main() -> int:
     # before selecting unrelated episodes, otherwise every publisher can wait forever.
     if entries or not cooldown_until:
         entries = prioritize_locked_episode(entries, state, args.publisher_lock)
-    # Complete every eligible entry from the oldest source-upload date before
-    # advancing to a later date. An interrupted publisher lock is the sole
-    # exception and runs alone so its poster thread can be completed safely.
-    entries = select_upload_date_group(entries, upload_date, state, args.publisher_lock)
+    # Upload date is a priority only, not a barrier: later dates may run as soon
+    # as their own series is eligible, without waiting for the slowest earlier date.
+    # The per-series publisher lock still preserves each anime's episode order.
     if entries:
-        upload_date = _day(entries[0].get("release_date"))
+        upload_date = min(_day(entry.get("release_date")) for entry in entries)
     # Launch no more than five independent episode workers per dispatcher run.
-    # Episode order remains gated per series by select_next_upload_date.
     entries = entries[:5]
-    batch_key = f"upload-date-{upload_date}" if upload_date else ""
+    batch_key = f"priority-from-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
     if args.github_output:
