@@ -2,6 +2,12 @@ name: Animehighbo episode dispatcher
 
 on:
   workflow_dispatch:
+    inputs:
+      completed_identity:
+        description: Episode worker that has finished and released a queue slot
+        required: false
+        default: ''
+        type: string
   push:
     branches: [main]
     paths:
@@ -50,6 +56,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          COMPLETED_IDENTITY: ${{ inputs.completed_identity || '' }}
         run: |
           python - <<'PY'
           import json, os, subprocess
@@ -67,9 +74,13 @@ jobs:
                       identity = title[len(prefix):].strip()
                       if identity:
                           active.add(identity)
+          completed_identity = os.environ.get("COMPLETED_IDENTITY", "").strip()
+          if completed_identity:
+              active.discard(completed_identity)
+              print(f"Releasing one worker slot for completed identity {completed_identity}.")
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
               output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\n")
-          print(f"Found {len(active)} episode worker(s) already queued or running.")
+          print(f"Found {len(active)} episode worker(s) already queued or running after accounting for the completed worker.")
           PY
       - name: Plan up to five independently publishable episodes
         id: plan
