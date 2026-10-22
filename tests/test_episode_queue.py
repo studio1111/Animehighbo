@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, select_next_upload_date
+from tools.episode_queue import active_quota_cooldown, select_next_upload_date, select_upload_date_group
 
 
 def row(title, episode, day, uri=None):
@@ -213,6 +213,51 @@ class UploadDateQueueTests(unittest.TestCase):
             }, lock_path)
 
         self.assertEqual(result, entries)
+
+
+    def test_dispatch_group_contains_only_the_oldest_upload_date(self):
+        entries = [
+            {"identity": "old-a", "title": "Old A", "release_date": "2026-10-05"},
+            {"identity": "old-b", "title": "Old B", "release_date": "2026-10-05"},
+            {"identity": "new-c", "title": "New C", "release_date": "2026-10-06"},
+        ]
+
+        selected = select_upload_date_group(entries, "2026-10-05", {"published": {}})
+
+        self.assertEqual([item["identity"] for item in selected], ["old-a", "old-b"])
+
+    def test_incomplete_publisher_lock_overrides_date_group_and_runs_alone(self):
+        entries = [
+            {"identity": "older-date", "title": "Older date", "release_date": "2026-10-01"},
+            {"identity": "locked-date", "title": "Interrupted episode", "release_date": "2026-10-03"},
+            {"identity": "same-later-date", "title": "Other later episode", "release_date": "2026-10-03"},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            lock_path = f"{directory}/publisher.lock"
+            with open(lock_path, "w", encoding="utf-8") as stream:
+                json.dump({"identity": "locked-date", "run_id": "cancelled-run"}, stream)
+
+            selected = select_upload_date_group(entries, "2026-10-01", {"published": {}}, lock_path)
+
+        self.assertEqual([item["identity"] for item in selected], ["locked-date"])
+
+    def test_completed_publisher_lock_does_not_override_oldest_date_group(self):
+        entries = [
+            {"identity": "old-date", "title": "Old date", "release_date": "2026-10-01"},
+            {"identity": "new-date", "title": "New date", "release_date": "2026-10-02"},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            lock_path = f"{directory}/publisher.lock"
+            with open(lock_path, "w", encoding="utf-8") as stream:
+                json.dump({"identity": "finished"}, stream)
+
+            selected = select_upload_date_group(entries, "2026-10-01", {
+                "published": {
+                    "finished": {"complete_qualities": ["1080p", "720p", "480p"]}
+                }
+            }, lock_path)
+
+        self.assertEqual([item["identity"] for item in selected], ["old-date"])
 
 
 if __name__ == "__main__":
