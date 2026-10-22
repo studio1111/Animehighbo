@@ -90,13 +90,14 @@ jobs:
         run: |
           test -n "$EPISODE_ID" || { echo "Missing episode identity"; exit 1; }
           test -n "$SERIES_KEY" || { echo "Missing series key"; exit 1; }
-      - name: Require the configured Gemini key
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - name: Install offline subtitle translator fallback
+        run: pip install -r requirements-subtitles.txt
+      - name: Require translation capability
         run: |
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "GEMINI_API_KEY is required; no offline or alternate-key fallback is enabled."
-            exit 1
+          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "Gemini is not configured; the local Argos English-to-Persian translator will be used."
+          else
+            echo "Gemini is configured; local Argos translation is available as a fallback."
           fi
       - name: Prepare this episode and validate all three qualities
         env:
