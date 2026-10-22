@@ -68,8 +68,6 @@ jobs:
           PY
       - name: Plan up to five independently publishable episodes
         id: plan
-        env:
-          ANIMEHIGHBO_ACTIVE_IDENTITIES: ${{ env.ANIMEHIGHBO_ACTIVE_IDENTITIES }}
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned independent workers
         env:
