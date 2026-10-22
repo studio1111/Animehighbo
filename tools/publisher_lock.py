@@ -1,8 +1,10 @@
-"""Serialize Telegram episode publications across independent GitHub Actions workers.
+"""Serialize Telegram episode publications within one series.
 
 The lock is a tiny GitHub Contents API file. It is acquired only after an episode's
 three validated videos are ready, and it remains owned by that episode if sending
-fails so a later retry can finish the same poster thread before another episode posts.
+fails so a later retry can finish the same poster thread before another episode in
+the same series posts. Different series use different lock paths and can publish
+in parallel.
 """
 from __future__ import annotations
 
@@ -17,7 +19,9 @@ from datetime import datetime, timezone
 
 import requests
 
-LOCK_PATH = "data/publisher.lock"
+# The workflow derives one lock path per series. The fallback keeps manual runs
+# backward-compatible and preserves the safe single-lock behavior when no scope is set.
+LOCK_PATH = os.getenv("ANIMEHIGHBO_PUBLISH_LOCK_PATH", "data/publisher.lock")
 STATE_PATH = "data/state.json"
 API_VERSION = "2022-11-28"
 
@@ -32,6 +36,8 @@ def _validate(identity: str, token: str | None, repository: str | None) -> tuple
         raise ValueError("GITHUB_TOKEN is required for the publisher lock.")
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
         raise ValueError("GITHUB_REPOSITORY must be in owner/repository form.")
+    if not re.fullmatch(r"data/publisher-locks/[0-9a-f]{64}\.lock|data/publisher\.lock", LOCK_PATH):
+        raise ValueError("ANIMEHIGHBO_PUBLISH_LOCK_PATH must be a safe publisher lock path.")
     return identity, token, repository
 
 
@@ -63,9 +69,9 @@ def _read_lock(identity: str, token: str, repository: str) -> dict | None:
         record = json.loads(decoded)
         sha = str(payload["sha"])
     except (ValueError, KeyError, TypeError, UnicodeDecodeError) as exc:
-        raise RuntimeError("The global publisher lock file is malformed; refusing to publish.") from exc
+        raise RuntimeError("The publisher lock file is malformed; refusing to publish.") from exc
     if not isinstance(record, dict) or not str(record.get("identity") or "").strip():
-        raise RuntimeError("The global publisher lock has no episode identity; refusing to publish.")
+        raise RuntimeError("The publisher lock has no episode identity; refusing to publish.")
     return {**record, "sha": sha}
 
 
@@ -100,7 +106,7 @@ def acquire_lock(
     timeout_seconds: float = 21600,
     poll_seconds: float = 10,
 ) -> dict:
-    """Acquire the global lock, or resume a retained lock for the same failed episode."""
+    """Acquire the lock for this series, or resume a retained lock for the same episode."""
     identity, token, repository = _validate(identity, token, repository)
     if timeout_seconds < 0 or poll_seconds <= 0:
         raise ValueError("Lock timeout must be non-negative and polling interval must be positive.")
@@ -112,7 +118,7 @@ def acquire_lock(
         current = _read_lock(identity, token, repository)
         if current:
             if current["identity"] == identity:
-                print(f"Global publisher lock acquired for retry of episode {identity}.", flush=True)
+                print(f"Publisher lock acquired for retry of episode {identity}.", flush=True)
                 return current
             if _episode_is_complete(current["identity"], token, repository):
                 print(
@@ -124,10 +130,10 @@ def acquire_lock(
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise TimeoutError(
-                    f"Timed out waiting for the global publisher lock held by {current['identity']}."
+                    f"Timed out waiting for the publisher lock held by {current['identity']}."
                 )
             print(
-                f"Waiting for global publisher lock held by episode {current['identity']}.",
+                f"Waiting for publisher lock held by episode {current['identity']}.",
                 flush=True,
             )
             time.sleep(min(poll_seconds, remaining))
@@ -156,7 +162,7 @@ def acquire_lock(
             sha = str(content.get("sha") or "")
             if not sha:
                 raise RuntimeError("GitHub created the publisher lock but returned no file SHA.")
-            print(f"Global publisher lock acquired for episode {identity}.", flush=True)
+            print(f"Publisher lock acquired for episode {identity}.", flush=True)
             return {**record, "sha": sha}
         if response.status_code in {409, 422}:
             # Another worker may have created the file between GET and PUT.
@@ -177,7 +183,7 @@ def release_lock(
     token: str | None = None,
     repository: str | None = None,
 ) -> bool:
-    """Delete the global lock only when this episode owns it."""
+    """Delete the lock only when this episode owns it and is complete."""
     identity, token, repository = _validate(identity, token, repository)
     url = _url(repository)
     headers = _headers(token)
@@ -192,7 +198,7 @@ def release_lock(
             )
         if not _episode_is_complete(identity, token, repository):
             print(
-                f"Retaining global publisher lock for {identity}; its three-quality publication is not complete.",
+                f"Retaining publisher lock for {identity}; its three-quality publication is not complete.",
                 flush=True,
             )
             return False
@@ -207,7 +213,7 @@ def release_lock(
             timeout=20,
         )
         if response.status_code in {200, 204}:
-            print(f"Global publisher lock released for episode {identity}.", flush=True)
+            print(f"Publisher lock released for {identity}.", flush=True)
             return True
         if response.status_code == 404:
             return False
