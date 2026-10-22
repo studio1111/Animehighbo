@@ -333,6 +333,24 @@ def select_next_upload_date(
     return oldest_upload_date, eligible
 
 
+def limit_to_available_slots(
+    entries: list[dict],
+    active_identities: set[str],
+    max_workers: int = 5,
+) -> list[dict]:
+    """Keep total queued/running episode workers within the global concurrency cap."""
+    if max_workers < 1:
+        return []
+    active = {identity for identity in active_identities if isinstance(identity, str) and identity}
+    available_slots = max(0, max_workers - len(active))
+    if available_slots == 0:
+        return []
+    return [
+        entry for entry in entries
+        if str(entry.get("identity") or "") not in active
+    ][:available_slots]
+
+
 def active_quota_cooldown(path: str | Path, now: datetime | None = None) -> str | None:
     """Return a future Gemini quota reset timestamp, if one is recorded."""
     cooldown_path = Path(path)
@@ -404,9 +422,9 @@ def main() -> int:
             raise ValueError("active identities must be strings")
     except (TypeError, ValueError, json.JSONDecodeError) as exc:
         raise RuntimeError("Could not safely determine active episode workers; refusing to dispatch.") from exc
-    entries = [entry for entry in entries if entry.get("identity") not in active_identities]
-    # Launch no more than five independent episode workers per dispatcher run.
-    entries = entries[:5]
+    # The cap applies to all queued/running workers across dispatcher runs, not
+    # merely to the number launched by this invocation.
+    entries = limit_to_available_slots(entries, active_identities, max_workers=5)
     batch_key = f"priority-from-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
