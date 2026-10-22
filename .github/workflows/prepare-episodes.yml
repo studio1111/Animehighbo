@@ -63,7 +63,7 @@ jobs:
                       if identity:
                           active.add(identity)
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
-              output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\\n")
+              output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\n")
           print(f"Found {len(active)} episode worker(s) already queued or running.")
           PY
       - name: Plan up to five independently publishable episodes
