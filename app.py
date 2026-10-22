@@ -431,7 +431,7 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
         "seasonYear": int(year_match.group(1)) if year_match else None,
         "episodes": chosen.get("episodeCount"), "genres": [],
         "format": anime_format, "status": status,
-        "averageScore": round(float(rating) / 10) if rating else None,
+        "averageScore": round(float(rating)) if rating else None,
         "studios": {"nodes": []},
         "isAdult": str(chosen.get("ageRating") or "").upper() in {"R", "R18"},
         "description": chosen.get("synopsis") or "",
