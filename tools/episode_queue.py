@@ -394,6 +394,17 @@ def main() -> int:
     # The per-series publisher lock still preserves each anime's episode order.
     if entries:
         upload_date = min(_day(entry.get("release_date")) for entry in entries)
+    # Do not redispatch work that already has a queued or running worker. The
+    # dispatcher workflow serializes this short planning phase, while workers run
+    # as independent workflow runs and can overlap for different anime.
+    try:
+        active_raw = os.environ.get("ANIMEHIGHBO_ACTIVE_IDENTITIES", "[]")
+        active_identities = set(json.loads(active_raw))
+        if not all(isinstance(identity, str) for identity in active_identities):
+            raise ValueError("active identities must be strings")
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise RuntimeError("Could not safely determine active episode workers; refusing to dispatch.") from exc
+    entries = [entry for entry in entries if entry.get("identity") not in active_identities]
     # Launch no more than five independent episode workers per dispatcher run.
     entries = entries[:5]
     batch_key = f"priority-from-{upload_date}" if upload_date else ""
