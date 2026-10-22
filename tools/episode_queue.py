@@ -270,7 +270,15 @@ def active_quota_cooldown(path: str | Path, now: datetime | None = None) -> str 
         current = now or datetime.now(timezone.utc)
         if current.tzinfo is None:
             current = current.replace(tzinfo=timezone.utc)
-        return until.astimezone(timezone.utc).isoformat().replace("+00:00", "Z") if until > current else None
+        if until > current:
+            return until.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+        # Remove an expired cooldown marker so later runs cannot mistake a stale
+        # quota incident for an active block and operators can see it has cleared.
+        try:
+            cooldown_path.unlink(missing_ok=True)
+        except OSError:
+            pass
+        return None
     except (OSError, ValueError, TypeError, AttributeError):
         return None
 
@@ -308,7 +316,7 @@ def main() -> int:
             output.write(f"has_work={has_work}\n")
             output.write(f"release_date={upload_date if upload_date is not None else ''}\n")
             output.write(f"batch_key={batch_key}\n")
-            output.write(f"quota_cooldown_until={cooldown_until or chr(39) + chr(39)}\n")
+            output.write(f"quota_cooldown_until={cooldown_until or ''}\n")
             output.write("matrix=" + json.dumps(matrix, ensure_ascii=False, separators=(",", ":")) + "\n")
     else:
         print(json.dumps({
