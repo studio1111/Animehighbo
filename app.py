@@ -337,16 +337,20 @@ def _anilist_metadata(title: str, timeout: int) -> dict:
 
 
 def _jikan_metadata(title: str, timeout: int) -> dict:
+    year_match = re.search(r"\b((?:19|20)\d{2})\b", title)
+    requested_year = int(year_match.group(1)) if year_match else None
+    query_title = re.sub(r"\s*[\(\[]?\s*(?:19|20)\d{2}\s*[\)\]]?\s*$", "", title).strip(" -_()[]")
+    query_title = query_title or title
     response = requests.get(
         "https://api.jikan.moe/v4/anime",
-        params={"q": title, "limit": 5, "sfw": "true"},
+        params={"q": query_title, "limit": 10, "sfw": "true"},
         timeout=timeout,
         headers={"User-Agent": USER_AGENT},
     )
     response.raise_for_status()
     entries = response.json().get("data") or []
-    target = re.sub(r"[^a-z0-9]+", "", title.casefold())
-    chosen = None
+    target = re.sub(r"[^a-z0-9]+", "", query_title.casefold())
+    matches = []
     for item in entries:
         if not isinstance(item, dict):
             continue
@@ -354,8 +358,21 @@ def _jikan_metadata(title: str, timeout: int) -> dict:
         names.extend(row.get("title") for row in item.get("titles", []) if isinstance(row, dict))
         normalized = {re.sub(r"[^a-z0-9]+", "", str(name or "").casefold()) for name in names}
         if target and target in normalized:
-            chosen = item
-            break
+            matches.append(item)
+    chosen = None
+    if requested_year:
+        for item in matches:
+            aired_from = str((item.get("aired") or {}).get("from") or "")
+            item_year = item.get("year")
+            if item_year == requested_year or aired_from.startswith(str(requested_year)):
+                chosen = item
+                break
+        # Do not silently use an older series' poster when the requested reboot/year
+        # is not represented in this catalog. Kitsu gets its own chance below.
+        if chosen is None and any(item.get("year") or (item.get("aired") or {}).get("from") for item in matches):
+            return {}
+    elif matches:
+        chosen = matches[0]
     if not chosen:
         return {}
     image = ((chosen.get("images") or {}).get("jpg") or {})
@@ -367,19 +384,13 @@ def _jikan_metadata(title: str, timeout: int) -> dict:
     status_raw = str(chosen.get("status") or "").casefold()
     status = "RELEASING" if "currently airing" in status_raw else "FINISHED" if "finished" in status_raw else ""
     anime_format = str(chosen.get("type") or "").upper()
-    if anime_format == "TV":
-        anime_format = "TV"
-    elif anime_format == "MOVIE":
-        anime_format = "MOVIE"
-    elif anime_format in {"OVA", "ONA", "SPECIAL"}:
-        pass
-    else:
+    if anime_format not in {"TV", "MOVIE", "OVA", "ONA", "SPECIAL"}:
         anime_format = ""
     score = chosen.get("score")
     return {
         "title": {"english": title_english, "romaji": romaji, "native": chosen.get("title_japanese") or ""},
         "coverImage": {"extraLarge": image.get("large_image_url") or image.get("image_url") or ""},
-        "season": season, "seasonYear": chosen.get("year"),
+        "season": season, "seasonYear": chosen.get("year") or (str((chosen.get("aired") or {}).get("from") or "")[:4] or None),
         "episodes": chosen.get("episodes"), "genres": genres, "format": anime_format,
         "status": status, "averageScore": round(float(score) * 10) if score else None,
         "studios": {"nodes": [{"name": name} for name in studios]},
@@ -389,24 +400,39 @@ def _jikan_metadata(title: str, timeout: int) -> dict:
 
 
 def _kitsu_metadata(title: str, timeout: int) -> dict:
+    year_match = re.search(r"\b((?:19|20)\d{2})\b", title)
+    requested_year = int(year_match.group(1)) if year_match else None
+    query_title = re.sub(r"\s*[\(\[]?\s*(?:19|20)\d{2}\s*[\)\]]?\s*$", "", title).strip(" -_()[]")
+    query_title = query_title or title
     response = requests.get(
         "https://kitsu.io/api/edge/anime",
-        params={"filter[text]": title, "page[limit]": 5, "include": "genres"},
+        params={"filter[text]": query_title, "page[limit]": 10, "include": "genres"},
         timeout=timeout,
         headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.api+json"},
     )
     response.raise_for_status()
-    entries = response.json().get("data") or []
-    target = re.sub(r"[^a-z0-9]+", "", title.casefold())
-    chosen = None
+    payload = response.json()
+    entries = payload.get("data") or []
+    target = re.sub(r"[^a-z0-9]+", "", query_title.casefold())
+    matches = []
     for item in entries:
         attrs = item.get("attributes") or {}
         names = [attrs.get("canonicalTitle"), attrs.get("slug")]
         names.extend((attrs.get("titles") or {}).values())
         normalized = {re.sub(r"[^a-z0-9]+", "", str(name or "").casefold()) for name in names}
         if target and target in normalized:
-            chosen = attrs
-            break
+            matches.append(attrs)
+    chosen = None
+    if requested_year:
+        for attrs in matches:
+            start_date = str(attrs.get("startDate") or "")
+            if start_date.startswith(str(requested_year)):
+                chosen = attrs
+                break
+        if chosen is None and any(attrs.get("startDate") for attrs in matches):
+            return {}
+    elif matches:
+        chosen = matches[0]
     if not chosen:
         return {}
     poster = chosen.get("posterImage") or {}
@@ -419,7 +445,7 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
     rating = chosen.get("averageRating")
     genres = [
         str(row.get("attributes", {}).get("name"))
-        for row in response.json().get("included", [])
+        for row in payload.get("included", [])
         if isinstance(row, dict) and row.get("type") == "genres"
         and row.get("attributes", {}).get("name")
     ]
@@ -454,7 +480,7 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     merged = {}
     for source_name, lookup in sources:
         try:
-            candidate = lookup(search_title, timeout)
+            lookup_title = search_title if source_name == "AniList" else str(title or search_title)\n            candidate = lookup(lookup_title, timeout)
             if not isinstance(candidate, dict) or not candidate:
                 # Some catalogs index the complete release title rather than its base title.
                 candidate = lookup(title, timeout) if search_title != title else {}
