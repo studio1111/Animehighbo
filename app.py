@@ -315,8 +315,7 @@ def anime_japanese_title(title: str, media: dict | None = None, timeout: int = 1
     return search_title
 
 
-def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
-    """Fetch anime facts from AniList; unknown data is never guessed."""
+def _anilist_metadata(title: str, timeout: int) -> dict:
     query = """
     query ($search: String) {
       Media(search: $search, type: ANIME) {
@@ -326,22 +325,158 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
       }
     }
     """
-    try:
-        response = requests.post(
-            "https://graphql.anilist.co",
-            json={"query": query, "variables": {"search": title}},
-            timeout=timeout,
-            headers={"User-Agent": USER_AGENT, "Content-Type": "application/json"},
-        )
-        response.raise_for_status()
-        payload = response.json()
-        media = (payload.get("data") or {}).get("Media")
-        if not isinstance(media, dict):
-            return {}
-        return media
-    except Exception as exc:
-        LOG.warning("Anime metadata lookup failed for %r: %s", title, exc)
+    response = requests.post(
+        "https://graphql.anilist.co",
+        json={"query": query, "variables": {"search": title}},
+        timeout=timeout,
+        headers={"User-Agent": USER_AGENT, "Content-Type": "application/json"},
+    )
+    response.raise_for_status()
+    media = (response.json().get("data") or {}).get("Media")
+    return media if isinstance(media, dict) else {}
+
+
+def _jikan_metadata(title: str, timeout: int) -> dict:
+    response = requests.get(
+        "https://api.jikan.moe/v4/anime",
+        params={"q": title, "limit": 5, "sfw": "true"},
+        timeout=timeout,
+        headers={"User-Agent": USER_AGENT},
+    )
+    response.raise_for_status()
+    entries = response.json().get("data") or []
+    target = re.sub(r"[^a-z0-9]+", "", title.casefold())
+    chosen = None
+    for item in entries:
+        if not isinstance(item, dict):
+            continue
+        names = [item.get("title_english"), item.get("title"), item.get("title_japanese")]
+        names.extend(row.get("title") for row in item.get("titles", []) if isinstance(row, dict))
+        normalized = {re.sub(r"[^a-z0-9]+", "", str(name or "").casefold()) for name in names}
+        if target and target in normalized:
+            chosen = item
+            break
+    if chosen is None and entries and isinstance(entries[0], dict):
+        chosen = entries[0]
+    if not chosen:
         return {}
+    image = ((chosen.get("images") or {}).get("jpg") or {})
+    title_english = str(chosen.get("title_english") or "").strip()
+    romaji = str(chosen.get("title") or "").strip()
+    genres = [str(row.get("name")) for row in chosen.get("genres", []) if isinstance(row, dict) and row.get("name")]
+    studios = [str(row.get("name")) for row in chosen.get("studios", []) if isinstance(row, dict) and row.get("name")]
+    season = str(chosen.get("season") or "").upper()
+    status_raw = str(chosen.get("status") or "").casefold()
+    status = "RELEASING" if "currently airing" in status_raw else "FINISHED" if "finished" in status_raw else ""
+    anime_format = str(chosen.get("type") or "").upper()
+    if anime_format == "TV":
+        anime_format = "TV"
+    elif anime_format == "MOVIE":
+        anime_format = "MOVIE"
+    elif anime_format in {"OVA", "ONA", "SPECIAL"}:
+        pass
+    else:
+        anime_format = ""
+    score = chosen.get("score")
+    return {
+        "title": {"english": title_english, "romaji": romaji, "native": chosen.get("title_japanese") or ""},
+        "coverImage": {"extraLarge": image.get("large_image_url") or image.get("image_url") or ""},
+        "season": season, "seasonYear": chosen.get("year"),
+        "episodes": chosen.get("episodes"), "genres": genres, "format": anime_format,
+        "status": status, "averageScore": round(float(score) * 10) if score else None,
+        "studios": {"nodes": [{"name": name} for name in studios]},
+        "isAdult": "rx" in str(chosen.get("rating") or "").casefold(),
+        "description": chosen.get("synopsis") or "",
+    }
+
+
+def _kitsu_metadata(title: str, timeout: int) -> dict:
+    response = requests.get(
+        "https://kitsu.io/api/edge/anime",
+        params={"filter[text]": title, "page[limit]": 5},
+        timeout=timeout,
+        headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.api+json"},
+    )
+    response.raise_for_status()
+    entries = response.json().get("data") or []
+    target = re.sub(r"[^a-z0-9]+", "", title.casefold())
+    chosen = None
+    for item in entries:
+        attrs = item.get("attributes") or {}
+        names = [attrs.get("canonicalTitle"), attrs.get("slug")]
+        names.extend((attrs.get("titles") or {}).values())
+        normalized = {re.sub(r"[^a-z0-9]+", "", str(name or "").casefold()) for name in names}
+        if target and target in normalized:
+            chosen = attrs
+            break
+    if chosen is None and entries and isinstance(entries[0], dict):
+        chosen = entries[0].get("attributes") or {}
+    if not chosen:
+        return {}
+    poster = chosen.get("posterImage") or {}
+    start_date = str(chosen.get("startDate") or "")
+    year_match = re.match(r"(\d{4})", start_date)
+    status_raw = str(chosen.get("status") or "").casefold()
+    status = "RELEASING" if status_raw == "current" else "FINISHED" if status_raw == "finished" else ""
+    show_type = str(chosen.get("showType") or "").casefold()
+    anime_format = {"tv": "TV", "movie": "MOVIE", "ova": "OVA", "ona": "ONA", "special": "SPECIAL"}.get(show_type, "")
+    rating = chosen.get("averageRating")
+    return {
+        "title": {
+            "english": (chosen.get("titles") or {}).get("en") or "",
+            "romaji": (chosen.get("titles") or {}).get("en_jp") or chosen.get("canonicalTitle") or "",
+            "native": (chosen.get("titles") or {}).get("ja_jp") or "",
+        },
+        "coverImage": {"extraLarge": poster.get("large") or poster.get("original") or ""},
+        "seasonYear": int(year_match.group(1)) if year_match else None,
+        "episodes": chosen.get("episodeCount"), "genres": [],
+        "format": anime_format, "status": status,
+        "averageScore": round(float(rating) / 10) if rating else None,
+        "studios": {"nodes": []},
+        "isAdult": str(chosen.get("ageRating") or "").upper() in {"R", "R18"},
+        "description": chosen.get("synopsis") or "",
+    }
+
+
+def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
+    """Combine AniList, Jikan/MyAnimeList and Kitsu; retain every verified field available."""
+    sources = (
+        ("AniList", _anilist_metadata),
+        ("Jikan/MyAnimeList", _jikan_metadata),
+        ("Kitsu", _kitsu_metadata),
+    )
+    merged = {}
+    for source_name, lookup in sources:
+        try:
+            candidate = lookup(title, timeout)
+            if not isinstance(candidate, dict) or not candidate:
+                continue
+            # Prefer the first useful value per field, but fill gaps from later catalogs.
+            for key, value in candidate.items():
+                if key == "title" or key == "coverImage" or key == "studios":
+                    current = merged.setdefault(key, {})
+                    if isinstance(value, dict):
+                        for subkey, subvalue in value.items():
+                            if subkey == "nodes" and isinstance(subvalue, list):
+                                if not current.get(subkey) and subvalue:
+                                    current[subkey] = subvalue
+                            elif subkey in {"extraLarge", "large", "medium", "english", "romaji", "native"}:
+                                if not current.get(subkey) and subvalue:
+                                    current[subkey] = subvalue
+                    continue
+                if key == "genres":
+                    if not merged.get(key) and value:
+                        merged[key] = value
+                elif merged.get(key) in (None, "", [], {} ) and value not in (None, "", [], {}):
+                    merged[key] = value
+            if merged.get("coverImage", {}).get("extraLarge") or merged.get("coverImage", {}).get("large") or merged.get("coverImage", {}).get("medium"):
+                # Still consult the other catalogs to fill missing facts, not just the poster.
+                pass
+        except Exception as exc:
+            LOG.warning("%s metadata lookup failed for %r: %s", source_name, title, exc)
+    if not merged:
+        LOG.warning("No anime metadata found for %r across AniList, Jikan and Kitsu.", title)
+    return merged
 
 
 def _quality_from_title(title: str) -> str:
