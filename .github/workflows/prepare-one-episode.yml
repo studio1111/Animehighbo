@@ -76,6 +76,7 @@ jobs:
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
           ANIMEHIGHBO_SERIES_KEY: ${{ inputs.series_key }}
           ANIMEHIGHBO_PREPARE_ONLY: 'true'
+          ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE: '68'
           ANIMEHIGHBO_DRY_RUN: 'false'
           ANIMEHIGHBO_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
