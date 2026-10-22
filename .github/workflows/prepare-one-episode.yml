@@ -174,27 +174,18 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Write normalized series key for lock scoping
-        env:
-          ANIMEHIGHBO_SERIES_KEY: ${{ inputs.series_key }}
-        run: |
-          python - <<'PY'
-          import os
-          from pathlib import Path
-
-          key = os.environ["ANIMEHIGHBO_SERIES_KEY"].strip()
-          if not key:
-              raise SystemExit("Missing series key; refusing to create publisher lock scope.")
-          Path("series-key.txt").write_text(key + "\n", encoding="utf-8")
-          PY
-      - name: Acquire global Telegram publisher lock
+      - name: Acquire per-series Telegram publisher lock
         id: acquire_lock
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
-          ANIMEHIGHBO_PUBLISH_LOCK_PATH: data/publisher-locks/${{ hashFiles('series-key.txt') }}.lock
-        run: python tools/publisher_lock.py acquire --identity "$ANIMEHIGHBO_EPISODE_ID"
+          ANIMEHIGHBO_SERIES_KEY: ${{ inputs.series_key }}
+        run: |
+          lock_hash=$(printf '%s' "$ANIMEHIGHBO_SERIES_KEY" | sha256sum | cut -d' ' -f1)
+          echo "ANIMEHIGHBO_PUBLISH_LOCK_PATH=data/publisher-locks/${lock_hash}.lock" >> "$GITHUB_ENV"
+          export ANIMEHIGHBO_PUBLISH_LOCK_PATH="data/publisher-locks/${lock_hash}.lock"
+          python tools/publisher_lock.py acquire --identity "$ANIMEHIGHBO_EPISODE_ID"
       - name: Refresh publication state after acquiring the global lock
         run: |
           git fetch origin main
@@ -297,5 +288,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
-          ANIMEHIGHBO_PUBLISH_LOCK_PATH: data/publisher-locks/${{ hashFiles('series-key.txt') }}.lock
         run: python tools/publisher_lock.py release --identity "$ANIMEHIGHBO_EPISODE_ID"
