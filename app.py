@@ -1116,7 +1116,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             json.dumps(sorted(published_series_keys), ensure_ascii=False),
             encoding="utf-8",
         )
-    if publication_failure_count:
+    if publication_failure_count or invalid_bundle_count:
         return 1
     return published_count
 
@@ -1446,7 +1446,7 @@ def run() -> int:
                         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", prepared_manifest["release_date"]):
                             raise ValueError(f"Source upload date is missing or invalid for {group['title']}.")
                         (prepared_dir / "manifest.json").write_text(
-                            json.dumps(prepared_manifest, ensure_ascii=False, indent=2) + "\\n",
+                            json.dumps(prepared_manifest, ensure_ascii=False, indent=2) + "\n",
                             encoding="utf-8",
                         )
                         LOG.info("Prepared episode artifact for %s (%s): %d missing quality file(s).",
