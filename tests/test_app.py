@@ -166,6 +166,30 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
 
+    def test_invalid_manifest_returns_failure_instead_of_green_success(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            folder = root / "episode-broken"
+            folder.mkdir()
+            (folder / "manifest.json").write_text('{"schema_version": 1}\\n', encoding="utf-8")
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
+            }), patch.object(app, "telegram_send_anime_poster") as poster:
+                result = app.publish_prepared_episodes(
+                    {"state_file": str(Path(temp) / "state.json"), "max_file_size_mb": 1800},
+                    {"published": {}, "seen": {}, "posters": {}},
+                    False, "token", "@channel",
+                )
+            self.assertEqual(result, 1)
+            poster.assert_not_called()
+
     def test_missing_quality_prevents_any_poster_from_being_sent(self):
         import os
         import tempfile
