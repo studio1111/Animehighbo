@@ -1121,7 +1121,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
         )
     if publication_failure_count or invalid_bundle_count:
         return 1
-    return published_count
+    # A successful publication must be a shell-safe zero exit status.
+    return 0
 
 def run() -> int:
     logging.basicConfig(
