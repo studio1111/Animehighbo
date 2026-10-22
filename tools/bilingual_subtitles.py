@@ -480,15 +480,111 @@ class GeminiSubtitleTranslator:
         result = self.translate_batch([Cue(1, "00:00:00,000 --> 00:00:01,000", text)])
         return result[0].text
 
+class ArgosOfflineTranslator:
+    """Local English-to-Persian neural translation; no external translation API is used."""
+
+    def __init__(self):
+        try:
+            import argostranslate.package
+            import argostranslate.translate
+        except ImportError as exc:
+            raise RuntimeError(
+                "Offline subtitle fallback requires argostranslate; install requirements-subtitles.txt."
+            ) from exc
+
+        self._translate_module = argostranslate.translate
+        installed = argostranslate.package.get_installed_packages()
+        has_pair = any(
+            package.from_code == "en" and package.to_code == "fa"
+            for package in installed
+        )
+        if not has_pair:
+            print("Installing the open-source English-to-Persian offline language model...", flush=True)
+            argostranslate.package.update_package_index()
+            available = argostranslate.package.get_available_packages()
+            package = next(
+                (item for item in available if item.from_code == "en" and item.to_code == "fa"),
+                None,
+            )
+            if package is None:
+                raise RuntimeError("Argos Translate has no English-to-Persian model in its package index.")
+            package_path = package.download()
+            argostranslate.package.install_from_path(package_path)
+
+        source = self._translate_module.get_language_from_code("en")
+        target = self._translate_module.get_language_from_code("fa")
+        if source is None or target is None:
+            raise RuntimeError("Argos English/Persian language model was not installed correctly.")
+        self._translation = source.get_translation(target)
+        if self._translation is None:
+            raise RuntimeError("Argos could not initialize English-to-Persian translation.")
+        print("Subtitle translator: local Argos English → Persian (no Gemini quota)", flush=True)
+
+    def translate_batch(self, cues: list[Cue]) -> list[Cue]:
+        translated = []
+        for cue in cues:
+            result = self._translation.translate(cue.text)
+            if not isinstance(result, str) or not result.strip():
+                raise RuntimeError(f"Offline translation returned an empty result at cue {cue.index}.")
+            translated.append(Cue(cue.index, cue.timing, result.strip()))
+        return translated
+
+    def translate(self, text: str) -> str:
+        result = self._translation.translate(text)
+        if not isinstance(result, str) or not result.strip():
+            raise RuntimeError("Offline translation returned an empty result.")
+        return result.strip()
+
+
+class ResilientSubtitleTranslator:
+    """Prefer polished Gemini translations, but finish locally when Gemini is unavailable."""
+
+    def __init__(self, primary=None, fallback_factory=ArgosOfflineTranslator):
+        self.primary = primary
+        self.fallback_factory = fallback_factory
+        self._fallback = None
+
+    def _offline(self):
+        if self._fallback is None:
+            self._fallback = self.fallback_factory()
+        return self._fallback
+
+    def translate_batch(self, cues: list[Cue]) -> list[Cue]:
+        if self.primary is not None:
+            try:
+                return self.primary.translate_batch(cues)
+            except RuntimeError as exc:
+                print(
+                    f"Gemini subtitle translation failed ({exc}). Switching this episode to "
+                    "offline English-to-Persian translation so quota limits do not block publishing.",
+                    flush=True,
+                )
+        return self._offline().translate_batch(cues)
+
+    def translate(self, text: str) -> str:
+        if self.primary is not None:
+            try:
+                return self.primary.translate(text)
+            except RuntimeError as exc:
+                print(
+                    f"Gemini subtitle translation failed ({exc}). Switching to offline translation.",
+                    flush=True,
+                )
+        return self._offline().translate(text)
+
+
 def get_english_to_persian_translator():
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is required; offline translation fallback is disabled.")
-    print(
-        f"Subtitle translator: Gemini ({os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')}); one API key configured",
-        flush=True,
-    )
-    return GeminiSubtitleTranslator(api_key)
+    if api_key:
+        print(
+            f"Subtitle translator: Gemini ({os.environ.get('GEMINI_MODEL', 'gemini-3.1-flash-lite')}); "
+            "local Argos fallback enabled",
+            flush=True,
+        )
+        return ResilientSubtitleTranslator(primary=GeminiSubtitleTranslator(api_key))
+
+    print("GEMINI_API_KEY is not configured; using local Argos English → Persian translation.", flush=True)
+    return ResilientSubtitleTranslator()
 
 
 def translate_cues(cues: list[Cue], translator) -> list[Cue]:
