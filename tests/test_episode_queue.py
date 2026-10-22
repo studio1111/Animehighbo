@@ -35,6 +35,17 @@ class QuotaCooldownTests(unittest.TestCase):
             self.assertIsNone(active_quota_cooldown(path, now))
 
 
+    def test_expired_cooldown_is_cleared_from_disk(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = f"{directory}/cooldown.json"
+            with open(path, "w", encoding="utf-8") as stream:
+                json.dump({"cooldown_until": "2026-10-22T07:00:00Z"}, stream)
+            now = datetime(2026, 10, 22, 7, 1, tzinfo=timezone.utc)
+
+            self.assertIsNone(active_quota_cooldown(path, now))
+            self.assertFalse(__import__("pathlib").Path(path).exists())
+
+
 class UploadDateQueueTests(unittest.TestCase):
     def test_oldest_upload_date_wins_only_after_episode_order_is_respected(self):
         manifest = [
