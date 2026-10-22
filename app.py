@@ -670,7 +670,10 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
             f"published {published_count} episode link(s)."
         )
     LOG.info("Link-mode run complete. Published %d episode link(s).", published_count)
-    return published_count
+    # This function is the process entry point for prepared publication: a
+    # positive count becomes a non-zero shell exit code, incorrectly marking
+    # successful delivery as failed. Report status only; counts stay in logs/state.
+    return 0
 
 
 def torrent_source_uri(source: dict) -> str:
