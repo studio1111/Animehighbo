@@ -36,10 +36,11 @@ jobs:
       - name: Install media tools with bounded package setup
         timeout-minutes: 5
         run: |
-          # Some hosted images do not include ffmpeg or aria2. Refresh package
-          # indexes with a hard timeout, then install every required tool.
+          # Azure package mirrors can stall on large media dependencies. Prefer
+          # the primary Ubuntu archive, bound network time, and skip recommendations.
+          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/apt-mirrors.txt
           sudo timeout 120 apt-get update
-          sudo timeout 120 apt-get install -y ffmpeg aria2 fonts-noto-core
+          sudo timeout 120 apt-get install -y --no-install-recommends ffmpeg aria2 fonts-noto-core
           command -v ffmpeg
           command -v aria2c
           ffmpeg -version | head -n 1
@@ -101,8 +102,9 @@ jobs:
       - name: Install media tools for poster and file validation
         timeout-minutes: 5
         run: |
+          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/apt-mirrors.txt
           sudo timeout 120 apt-get update
-          sudo timeout 120 apt-get install -y ffmpeg fonts-noto-core
+          sudo timeout 120 apt-get install -y --no-install-recommends ffmpeg fonts-noto-core
           command -v ffmpeg
       - name: Configure Telegram API endpoint
         env:
