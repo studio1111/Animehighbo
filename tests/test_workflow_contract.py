@@ -148,7 +148,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("sudo timeout 120 apt-get install -y --no-install-recommends ffmpeg aria2 fonts-noto-core", workflow)
         self.assertIn("timeout-minutes: 5", workflow)
         self.assertNotIn("command -v ffmpeg\n          sudo timeout 180 apt-get install", workflow)
-        self.assertIn("sudo timeout 120 apt-get install -y ffmpeg fonts-noto-core", workflow)
+        self.assertIn("sudo timeout 120 apt-get install -y --no-install-recommends ffmpeg fonts-noto-core", workflow)
 
 
 if __name__ == "__main__":
