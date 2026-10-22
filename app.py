@@ -356,8 +356,6 @@ def _jikan_metadata(title: str, timeout: int) -> dict:
         if target and target in normalized:
             chosen = item
             break
-    if chosen is None and entries and isinstance(entries[0], dict):
-        chosen = entries[0]
     if not chosen:
         return {}
     image = ((chosen.get("images") or {}).get("jpg") or {})
@@ -393,7 +391,7 @@ def _jikan_metadata(title: str, timeout: int) -> dict:
 def _kitsu_metadata(title: str, timeout: int) -> dict:
     response = requests.get(
         "https://kitsu.io/api/edge/anime",
-        params={"filter[text]": title, "page[limit]": 5},
+        params={"filter[text]": title, "page[limit]": 5, "include": "genres"},
         timeout=timeout,
         headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.api+json"},
     )
@@ -409,8 +407,6 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
         if target and target in normalized:
             chosen = attrs
             break
-    if chosen is None and entries and isinstance(entries[0], dict):
-        chosen = entries[0].get("attributes") or {}
     if not chosen:
         return {}
     poster = chosen.get("posterImage") or {}
@@ -421,6 +417,12 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
     show_type = str(chosen.get("showType") or "").casefold()
     anime_format = {"tv": "TV", "movie": "MOVIE", "ova": "OVA", "ona": "ONA", "special": "SPECIAL"}.get(show_type, "")
     rating = chosen.get("averageRating")
+    genres = [
+        str(row.get("attributes", {}).get("name"))
+        for row in response.json().get("included", [])
+        if isinstance(row, dict) and row.get("type") == "genres"
+        and row.get("attributes", {}).get("name")
+    ]
     return {
         "title": {
             "english": (chosen.get("titles") or {}).get("en") or "",
@@ -429,7 +431,7 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
         },
         "coverImage": {"extraLarge": poster.get("large") or poster.get("original") or ""},
         "seasonYear": int(year_match.group(1)) if year_match else None,
-        "episodes": chosen.get("episodeCount"), "genres": [],
+        "episodes": chosen.get("episodeCount"), "genres": genres,
         "format": anime_format, "status": status,
         "averageScore": round(float(rating)) if rating else None,
         "studios": {"nodes": []},
@@ -445,10 +447,17 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
         ("Jikan/MyAnimeList", _jikan_metadata),
         ("Kitsu", _kitsu_metadata),
     )
+    # Feed titles sometimes append a year or contain a truncated parenthesis.
+    # Search the normalized catalog title first to avoid selecting an unrelated older season.
+    normalized_title = re.sub(r"\\s*[\\(\\[]?\\s*(?:19|20)\\d{2}\\s*[\\)\\]]?\\s*$", "", str(title or "")).strip(" -_")
+    search_title = normalized_title or str(title or "").strip()
     merged = {}
     for source_name, lookup in sources:
         try:
-            candidate = lookup(title, timeout)
+            candidate = lookup(search_title, timeout)
+            if not isinstance(candidate, dict) or not candidate:
+                # Some catalogs index the complete release title rather than its base title.
+                candidate = lookup(title, timeout) if search_title != title else {}
             if not isinstance(candidate, dict) or not candidate:
                 continue
             # Prefer the first useful value per field, but fill gaps from later catalogs.
