@@ -111,25 +111,6 @@ jobs:
         with:
           name: episode-${{ inputs.identity }}
           path: prepared-artifacts/episode-${{ inputs.identity }}
-      - name: Install media tools for poster and file validation
-        timeout-minutes: 15
-        run: |
-          # Validate the same media runtime used by the preparation job. The full
-          # ffmpeg codec package set can be slow on hosted-runner mirrors.
-          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/apt-mirrors.txt
-          sudo timeout 300 apt-get -o Acquire::Retries=3 update
-          for attempt in 1 2 3; do
-            if sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg fonts-noto-core; then
-              break
-            fi
-            if [ "$attempt" -eq 3 ]; then
-              echo "Publisher media package installation failed after three attempts."
-              exit 1
-            fi
-            echo "Publisher media package installation attempt $attempt failed; retrying in 10 seconds."
-            sleep 10
-          done
-          command -v ffmpeg
       - name: Configure Telegram API endpoint
         env:
           TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
