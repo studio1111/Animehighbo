@@ -15,7 +15,7 @@ on:
       - '.github/workflows/prepare-episodes.yml'
       - '.github/workflows/prepare-one-episode.yml'
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
 
 permissions:
   actions: read
