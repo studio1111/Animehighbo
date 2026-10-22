@@ -22,8 +22,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("createDispatchEvent", dispatcher + worker)
         for name in ("GEMINI_API_KEY_1", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
             self.assertNotIn(name, worker)
-        self.assertNotIn("requirements-subtitles.txt", worker)
-        self.assertNotIn("Install offline subtitle fallback", worker)
+        self.assertIn("requirements-subtitles.txt", worker)
+        self.assertIn("Install offline subtitle translator fallback", worker)
+        self.assertIn("local Argos", worker)
 
     def test_per_series_publisher_lock_keeps_each_poster_and_three_files_contiguous(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
@@ -113,7 +114,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("group: animehighbo-run-retention", workflow)
         self.assertIn("- Animehighbo episode dispatcher", workflow)
 
-    def test_manual_delivery_workflow_uses_one_gemini_key_without_offline_fallback(self):
+    def test_manual_delivery_workflow_uses_one_gemini_key(self):
         workflow = (ROOT / ".github/workflows/morevna-test-delivery.yml").read_text(encoding="utf-8")
         trigger = workflow.split("permissions:", 1)[0]
         self.assertIn("workflow_dispatch:", trigger)
