@@ -32,7 +32,7 @@ on:
         type: string
 
 permissions:
-  actions: read
+  actions: write
   contents: write
 
 jobs:
@@ -297,3 +297,21 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
         run: python tools/publisher_lock.py release --identity "$ANIMEHIGHBO_EPISODE_ID"
+
+  refill:
+    name: Refill episode queue after this worker finishes
+    if: always()
+    needs: [prepare, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wait briefly for worker state to settle
+        run: sleep 15
+      - name: Dispatch the next queue planner
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
+        run: |
+          gh workflow run prepare-episodes.yml --ref main \
+            --field "completed_identity=$ANIMEHIGHBO_EPISODE_ID"
+          echo "Requested queue refill after worker $ANIMEHIGHBO_EPISODE_ID"
