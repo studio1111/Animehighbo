@@ -1357,11 +1357,31 @@ def run() -> int:
                     ]
                     if not config.get("encode_h265", False):
                         variants = [(source_quality, None, "")]
-                    from tools.video_encoder import encode_h265
+                    from tools.video_encoder import encode_h265, encode_h265_variants
                     persian_srt = publish_path.with_name(publish_path.stem + ".fa.srt")
                     burn_subtitle = persian_srt if config.get("burn_persian_subtitles", False) else None
                     completed_qualities = []
                     prepared_outputs = {}
+                    multi_encoded_outputs = {}
+                    if config.get("encode_h265", False) and not any(
+                        f"{identity}:{quality}" in state["published"]
+                        for quality, _, _ in variants
+                    ):
+                        multi_paths = {
+                            quality: publish_path.with_name(processed_filename(entry["title"], quality, ".mkv"))
+                            for quality, _, _ in variants
+                        }
+                        generated_paths.extend(multi_paths.values())
+                        multi_encoded_outputs = encode_h265_variants(
+                            publish_path, multi_paths,
+                            crf=int(config.get("h265_crf", 24)),
+                            preset=str(config.get("h265_preset", "medium")),
+                            burn_subtitle=burn_subtitle,
+                            video_bitrates={quality: bitrate for quality, _, bitrate in variants},
+                            audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
+                            target_heights={quality: height for quality, height, _ in variants},
+                        )
+                        LOG.info("Encoded 1080p, 720p, and 480p in one FFmpeg process.")
 
                     for quality, target_height, video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
@@ -1376,19 +1396,21 @@ def run() -> int:
 
                         variant_source = publish_path
                         if config.get("encode_h265", False):
-                            encoded_path = publish_path.with_name(
-                                processed_filename(entry["title"], quality, ".mkv")
-                            )
-                            generated_paths.append(encoded_path)
-                            encode_h265(
-                                variant_source, encoded_path,
-                                crf=int(config.get("h265_crf", 24)),
-                                preset=str(config.get("h265_preset", "medium")),
-                                burn_subtitle=burn_subtitle,
-                                video_bitrate=video_bitrate,
-                                audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
-                                target_height=target_height,
-                            )
+                            encoded_path = multi_encoded_outputs.get(quality)
+                            if encoded_path is None:
+                                encoded_path = publish_path.with_name(
+                                    processed_filename(entry["title"], quality, ".mkv")
+                                )
+                                generated_paths.append(encoded_path)
+                                encode_h265(
+                                    variant_source, encoded_path,
+                                    crf=int(config.get("h265_crf", 24)),
+                                    preset=str(config.get("h265_preset", "medium")),
+                                    burn_subtitle=burn_subtitle,
+                                    video_bitrate=video_bitrate,
+                                    audio_bitrate=str(config.get("h265_audio_bitrate", "128k")),
+                                    target_height=target_height,
+                                )
                             output_path = encoded_path
                             LOG.info(
                                 "Encoded and validated %s H.265 output with video bitrate %s and AAC audio %s.",
