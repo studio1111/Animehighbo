@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: animehighbo-episode-dispatcher-recovery
+  group: animehighbo-episode-dispatcher-planner-v2
   cancel-in-progress: false
 
 jobs:
