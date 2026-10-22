@@ -142,8 +142,10 @@ class WorkflowContractTests(unittest.TestCase):
 
     def test_media_tool_installation_is_bounded_and_installs_ffmpeg(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("sudo sed -i", workflow)
+        self.assertIn("https://archive.ubuntu.com/ubuntu", workflow)
         self.assertIn("sudo timeout 120 apt-get update", workflow)
-        self.assertIn("sudo timeout 120 apt-get install -y ffmpeg aria2 fonts-noto-core", workflow)
+        self.assertIn("sudo timeout 120 apt-get install -y --no-install-recommends ffmpeg aria2 fonts-noto-core", workflow)
         self.assertIn("timeout-minutes: 5", workflow)
         self.assertNotIn("command -v ffmpeg\n          sudo timeout 180 apt-get install", workflow)
         self.assertIn("sudo timeout 120 apt-get install -y ffmpeg fonts-noto-core", workflow)
