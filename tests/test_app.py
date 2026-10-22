@@ -11,6 +11,51 @@ from tools.subsplease_monitor import parse_releases
 
 
 
+class AnimeCatalogFallbackTests(unittest.TestCase):
+    def test_fills_missing_anilist_fields_from_jikan_and_kitsu(self):
+        import app
+        with patch.object(app, "_anilist_metadata", return_value={
+            "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
+            "coverImage": {},
+            "genres": [],
+            "description": "",
+        }), patch.object(app, "_jikan_metadata", return_value={
+            "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
+            "coverImage": {"extraLarge": "https://cdn.example/poster.jpg"},
+            "seasonYear": 2026,
+            "genres": ["Comedy", "Sci-Fi"],
+            "format": "TV",
+            "studios": {"nodes": [{"name": "Sunrise"}]},
+            "description": "A verified synopsis.",
+        }), patch.object(app, "_kitsu_metadata", return_value={
+            "title": {"english": "Keroro Gunsou"},
+            "coverImage": {"extraLarge": "https://kitsu.example/poster.jpg"},
+            "status": "RELEASING",
+            "averageScore": 78,
+        }):
+            metadata = app.anime_catalog_metadata("Keroro Gunsou (2026)")
+        self.assertEqual(metadata["coverImage"]["extraLarge"], "https://cdn.example/poster.jpg")
+        self.assertEqual(metadata["genres"], ["Comedy", "Sci-Fi"])
+        self.assertEqual(metadata["seasonYear"], 2026)
+        self.assertEqual(metadata["status"], "RELEASING")
+        self.assertEqual(metadata["averageScore"], 78)
+        self.assertEqual(metadata["studios"]["nodes"][0]["name"], "Sunrise")
+        self.assertEqual(metadata["description"], "A verified synopsis.")
+
+    def test_metadata_catalog_failure_does_not_prevent_other_sources(self):
+        import app
+        with patch.object(app, "_anilist_metadata", side_effect=RuntimeError("AniList unavailable")), \\
+             patch.object(app, "_jikan_metadata", return_value={}), \\
+             patch.object(app, "_kitsu_metadata", return_value={
+                 "title": {"english": "Sample"},
+                 "coverImage": {"extraLarge": "https://kitsu.example/poster.jpg"},
+                 "description": "Sample synopsis",
+             }):
+            metadata = app.anime_catalog_metadata("Sample")
+        self.assertEqual(metadata["coverImage"]["extraLarge"], "https://kitsu.example/poster.jpg")
+        self.assertEqual(metadata["description"], "Sample synopsis")
+
+
 class JapaneseRomajiTitleTests(unittest.TestCase):
     def test_prefers_anilist_romaji_over_japanese_script(self):
         self.assertEqual(
