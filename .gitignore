@@ -6,3 +6,11 @@ downloads/
 __pycache__/
 .pytest_cache/
 .venv/
+
+# Generated episode media must never be committed to Git.
+prepared/
+*.mkv
+*.mp4
+*.webm
+*.mov
+*.m4v
