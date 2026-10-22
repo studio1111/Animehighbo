@@ -777,6 +777,47 @@
       "source_quality": "1080p",
       "published_at": 1792699257,
       "release_date": "2026-10-03"
+    },
+    "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:1080p": {
+      "title": "Saikyosoubi",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "3a9b58aabb5eeedcd985f8b2d7053f5fb31cea498e9da21818695b0cffd25f73",
+      "message_id": "130",
+      "published_at": 1792707667,
+      "bilingual_subtitles": true
+    },
+    "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:720p": {
+      "title": "Saikyosoubi",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a007b24e52ec24baaef8d3f4feccddcc47e928e0200f0aefe70ef9f4fa2c6b1c",
+      "message_id": "131",
+      "published_at": 1792707673,
+      "bilingual_subtitles": true
+    },
+    "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:480p": {
+      "title": "Saikyosoubi",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7a61973d5eb673c86c69ef351e9bf09e7a321bc5d4e6383f726d84c80e581be6",
+      "message_id": "132",
+      "published_at": 1792707676,
+      "bilingual_subtitles": true
+    },
+    "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75": {
+      "title": "Saikyosoubi",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792707676,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -836,7 +877,10 @@
     "4d095710a5396e904ca3a474598bf414745796ab52e481e2ccab26b83b8aec70": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:480p",
     "faeb30630c9957ccc5a7e1f82083887d0fe1a8060e3d4a283e21358a0155eaa5": "5474a04fd0ba4f9734a3dc7344de8f2fe2045efbb9ada698dc17ab9738af9db9:1080p",
     "41c50808c9fa772d852133349c8263d2461481515e5faacb122379e5760781ea": "5474a04fd0ba4f9734a3dc7344de8f2fe2045efbb9ada698dc17ab9738af9db9:720p",
-    "84f73ad505f8c89588e31b1061404da9c7c3b643c35de4106341d12279fb0ba7": "5474a04fd0ba4f9734a3dc7344de8f2fe2045efbb9ada698dc17ab9738af9db9:480p"
+    "84f73ad505f8c89588e31b1061404da9c7c3b643c35de4106341d12279fb0ba7": "5474a04fd0ba4f9734a3dc7344de8f2fe2045efbb9ada698dc17ab9738af9db9:480p",
+    "3a9b58aabb5eeedcd985f8b2d7053f5fb31cea498e9da21818695b0cffd25f73": "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:1080p",
+    "a007b24e52ec24baaef8d3f4feccddcc47e928e0200f0aefe70ef9f4fa2c6b1c": "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:720p",
+    "7a61973d5eb673c86c69ef351e9bf09e7a321bc5d4e6383f726d84c80e581be6": "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -970,6 +1014,13 @@
       "message_id": "125",
       "published_at": 1792699238,
       "release_date": "2026-10-03"
+    },
+    "archive:0cf135045d878a34695824304e1fb099a3bb56d19b26c9143c3282dcb198b536": {
+      "title": "Saikyosoubi",
+      "episode": "01",
+      "message_id": "129",
+      "published_at": 1792707660,
+      "release_date": "2026-10-04"
     }
   }
 }
