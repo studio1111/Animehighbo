@@ -124,7 +124,7 @@ def _srt_timestamp_to_ass(value: str) -> str:
 
 def render_ass(cues: list[Cue]) -> str:
     """Render Persian cues as a selectable ASS track with yellow text and a thin black outline."""
-    font_size = int(os.getenv("ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE", "54"))
+    font_size = int(os.getenv("ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE", "72"))
     if not 36 <= font_size <= 100:
         raise ValueError("Persian subtitle font size must be between 36 and 100.")
     lines = [
