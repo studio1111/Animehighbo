@@ -1,6 +1,6 @@
 import unittest
 
-from tools.episode_queue import eligible_prepared_episodes, episode_identity, series_identity
+from tools.episode_queue import eligible_prepared_episodes, episode_identity, series_identity, limit_to_available_slots
 
 
 def episode(title, number, identity, season=1, status="prepared"):
@@ -12,6 +12,25 @@ def episode(title, number, identity, season=1, status="prepared"):
         "identity": identity,
         "status": status,
     }
+
+
+class WorkerSlotLimitTests(unittest.TestCase):
+    def test_only_fills_remaining_global_worker_slots(self):
+        entries = [episode(f"A{i} - 01", 1, f"a{i}") for i in range(1, 6)]
+        selected = limit_to_available_slots(entries, {"running-1", "running-2", "running-3"})
+        self.assertEqual([row["identity"] for row in selected], ["a1", "a2"])
+
+    def test_does_not_dispatch_more_when_five_workers_are_already_active(self):
+        entries = [episode("A - 01", 1, "a1")]
+        self.assertEqual(
+            limit_to_available_slots(entries, {"one", "two", "three", "four", "five"}),
+            [],
+        )
+
+    def test_does_not_redispatch_an_active_identity(self):
+        entries = [episode("A - 01", 1, "a1"), episode("B - 01", 1, "b1")]
+        selected = limit_to_available_slots(entries, {"a1"})
+        self.assertEqual([row["identity"] for row in selected], ["b1"])
 
 
 class IndependentEpisodeQueueTests(unittest.TestCase):
