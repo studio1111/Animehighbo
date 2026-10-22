@@ -1,6 +1,21 @@
 name: Animehighbo single-episode worker
+run-name: Animehighbo worker ${{ inputs.identity }}
 
 on:
+  workflow_dispatch:
+    inputs:
+      identity:
+        description: Stable identity of the one episode to process
+        required: true
+        type: string
+      series_key:
+        description: Normalized series and season key
+        required: true
+        type: string
+      title:
+        description: Human-readable source title
+        required: true
+        type: string
   workflow_call:
     inputs:
       identity:
