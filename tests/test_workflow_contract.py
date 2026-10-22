@@ -56,6 +56,11 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("limit_to_available_slots(entries, active_identities, max_workers=5)", queue)
         self.assertIn("workflow_run:", dispatcher)
         self.assertIn('workflows: ["Animehighbo single-episode worker"]', dispatcher)
+        self.assertIn("completed_identity:", dispatcher)
+        self.assertIn("limit_to_available_slots(entries, active_identities, max_workers=5)", queue)
+        self.assertIn("name: Refill episode queue after this worker finishes", worker)
+        self.assertIn('gh workflow run prepare-episodes.yml --ref main', worker)
+        self.assertIn("actions: write", worker)
         self.assertIn("max-parallel: 5", dispatcher)
 
     def test_each_episode_publishes_independently_and_serializes_state_writes(self):
