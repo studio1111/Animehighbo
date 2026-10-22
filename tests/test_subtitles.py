@@ -8,6 +8,7 @@ import requests
 from tools.bilingual_subtitles import (
     Cue,
     GeminiSubtitleTranslator,
+    ResilientSubtitleTranslator,
     get_english_to_persian_translator,
     choose_english_stream,
     parse_srt,
@@ -369,14 +370,36 @@ class GeminiSingleKeyPolicyTests(unittest.TestCase):
         with patch.dict(os.environ, env, clear=True):
             translator = get_english_to_persian_translator()
 
-        self.assertIsInstance(translator, GeminiSubtitleTranslator)
-        self.assertEqual(translator.api_key, "primary")
-        self.assertEqual(translator.api_keys, ["primary"])
+        self.assertIsInstance(translator, ResilientSubtitleTranslator)
+        self.assertIsInstance(translator.primary, GeminiSubtitleTranslator)
+        self.assertEqual(translator.primary.api_key, "primary")
+        self.assertEqual(translator.primary.api_keys, ["primary"])
 
-    def test_missing_primary_key_fails_without_offline_fallback(self):
+    def test_missing_primary_key_selects_offline_translation(self):
         with patch.dict(os.environ, {}, clear=True):
-            with self.assertRaisesRegex(RuntimeError, "GEMINI_API_KEY is required"):
-                get_english_to_persian_translator()
+            translator = get_english_to_persian_translator()
+        self.assertIsInstance(translator, ResilientSubtitleTranslator)
+        self.assertIsNone(translator.primary)
+
+    def test_gemini_failure_falls_back_to_offline_without_dropping_cues(self):
+        class FailedPrimary:
+            def translate_batch(self, cues):
+                raise RuntimeError("Gemini failed after HTTP 429")
+
+        class Offline:
+            def translate_batch(self, cues):
+                return [Cue(c.index, c.timing, "آفلاین: " + c.text) for c in cues]
+
+        translator = ResilientSubtitleTranslator(FailedPrimary(), fallback_factory=Offline)
+        cues = [
+            Cue(1, "00:00:01,000 --> 00:00:02,000", "Hello"),
+            Cue(2, "00:00:02,000 --> 00:00:03,000", "Run!"),
+        ]
+        with patch("builtins.print"):
+            result = translator.translate_batch(cues)
+        self.assertEqual(len(result), 2)
+        self.assertEqual([cue.timing for cue in result], [cue.timing for cue in cues])
+        self.assertEqual([cue.text for cue in result], ["آفلاین: Hello", "آفلاین: Run!"])
 
     def test_secret_is_not_in_error_when_provider_returns_error(self):
         secret = "never-log-this-key"
