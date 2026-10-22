@@ -16,6 +16,11 @@ on:
       - '.github/workflows/prepare-one-episode.yml'
   schedule:
     - cron: '*/5 * * * *'
+  # Refill worker slots immediately whenever an episode worker finishes,
+  # including failures, so queued episodes do not wait for the next 5-minute poll.
+  workflow_run:
+    workflows: ["Animehighbo single-episode worker"]
+    types: [completed]
 
 permissions:
   actions: write
