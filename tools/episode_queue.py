@@ -174,6 +174,42 @@ def prioritize_locked_episode(
     )
 
 
+
+def select_upload_date_group(
+    entries: list[dict],
+    upload_date: str | None,
+    state: dict,
+    lock_path: str | Path = "data/publisher.lock",
+) -> list[dict]:
+    """Keep normal dispatches on one source-upload date; resume an interrupted thread first."""
+    if not entries:
+        return []
+    path = Path(lock_path)
+    if path.exists():
+        try:
+            lock = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError) as exc:
+            raise RuntimeError("Publisher lock is malformed; refusing to cross upload-date groups.") from exc
+        if not isinstance(lock, dict):
+            raise RuntimeError("Publisher lock is malformed; refusing to cross upload-date groups.")
+        identity = str(lock.get("identity") or "").strip()
+        if not identity:
+            raise RuntimeError("Publisher lock has no episode identity; refusing to cross upload-date groups.")
+        published = state.get("published", {}) if isinstance(state, dict) else {}
+        record = published.get(identity, {}) if isinstance(published, dict) else {}
+        if not _is_complete(record):
+            matching = [entry for entry in entries if episode_identity(entry) == identity]
+            if not matching:
+                raise RuntimeError(
+                    f"Publisher lock is held by incomplete episode {identity}, but it is not eligible."
+                )
+            # Do not let another date or poster thread overtake an interrupted publication.
+            return [matching[0]]
+    if not upload_date:
+        return []
+    return [entry for entry in entries if _day(entry.get("release_date")) == upload_date]
+
+
 def select_next_upload_date(
     manifest: list[dict],
     state: dict,
@@ -348,6 +384,12 @@ def main() -> int:
     # before selecting unrelated episodes, otherwise every publisher can wait forever.
     if entries or not cooldown_until:
         entries = prioritize_locked_episode(entries, state, args.publisher_lock)
+    # Complete every eligible entry from the oldest source-upload date before
+    # advancing to a later date. An interrupted publisher lock is the sole
+    # exception and runs alone so its poster thread can be completed safely.
+    entries = select_upload_date_group(entries, upload_date, state, args.publisher_lock)
+    if entries:
+        upload_date = _day(entries[0].get("release_date"))
     # Launch no more than five independent episode workers per dispatcher run.
     # Episode order remains gated per series by select_next_upload_date.
     entries = entries[:5]
