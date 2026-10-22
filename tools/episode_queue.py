@@ -136,6 +136,44 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
     )
 
 
+
+
+def prioritize_locked_episode(
+    entries: list[dict],
+    state: dict,
+    lock_path: str | Path = "data/publisher.lock",
+) -> list[dict]:
+    """Resume an interrupted episode before allowing unrelated Telegram posts."""
+    path = Path(lock_path)
+    if not path.exists():
+        return entries
+    try:
+        lock = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as exc:
+        raise RuntimeError("Publisher lock is malformed; refusing to queue unrelated episodes.") from exc
+    if not isinstance(lock, dict):
+        raise RuntimeError("Publisher lock is malformed; refusing to queue unrelated episodes.")
+    identity = str(lock.get("identity") or "").strip()
+    if not identity:
+        raise RuntimeError("Publisher lock has no episode identity; refusing to queue unrelated episodes.")
+
+    matching = [entry for entry in entries if episode_identity(entry) == identity]
+    if matching:
+        # A retained lock means the previous episode may have a partial poster thread.
+        # Retry it first so the three files stay together and the lock can be released.
+        return matching + [entry for entry in entries if episode_identity(entry) != identity]
+
+    published = state.get("published", {}) if isinstance(state, dict) else {}
+    if _is_complete(published.get(identity) if isinstance(published, dict) else None):
+        # The next publisher will verify completion and remove this stale lock.
+        return entries
+
+    raise RuntimeError(
+        f"Publisher lock is held by incomplete episode {identity}, but that episode "
+        "is not eligible in the current archive queue. Refusing to start unrelated publishers."
+    )
+
+
 def select_next_upload_date(
     manifest: list[dict],
     state: dict,
@@ -289,6 +327,7 @@ def main() -> int:
     parser.add_argument("--state", default="data/state.json")
     parser.add_argument("--github-output", default="")
     parser.add_argument("--quota-cooldown", default="data/gemini_quota_cooldown.json")
+    parser.add_argument("--publisher-lock", default="data/publisher.lock")
     args = parser.parse_args()
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     config_path = Path("config.json")
@@ -305,6 +344,10 @@ def main() -> int:
         upload_date, entries = select_next_upload_date(
             manifest, state, cutoff_date=cutoff, target_series=target_series or None
         )
+    # A retained lock represents an interrupted three-quality thread. Resume it
+    # before selecting unrelated episodes, otherwise every publisher can wait forever.
+    if entries or not cooldown_until:
+        entries = prioritize_locked_episode(entries, state, args.publisher_lock)
     # Launch no more than five independent episode workers per dispatcher run.
     # Episode order remains gated per series by select_next_upload_date.
     entries = entries[:5]
