@@ -44,6 +44,19 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("if: always()", release_step)
         self.assertIn("git reset --hard origin/main", workflow)
 
+    def test_dispatcher_launches_independent_workers_and_skips_active_episodes(self):
+        dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
+        worker = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        queue = (ROOT / "tools/episode_queue.py").read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", worker)
+        self.assertIn("run-name: Animehighbo worker ${{ inputs.identity }}", worker)
+        self.assertIn("gh workflow run prepare-one-episode.yml --ref main", dispatcher)
+        self.assertIn("status=queued", dispatcher)
+        self.assertIn("status=in_progress", dispatcher)
+        self.assertIn("ANIMEHIGHBO_ACTIVE_IDENTITIES", dispatcher)
+        self.assertIn('entry.get("identity") not in active_identities', queue)
+        self.assertIn("max-parallel: 5", dispatcher)
+
     def test_each_episode_publishes_independently_and_serializes_state_writes(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("actions/upload-artifact@v4", workflow)
