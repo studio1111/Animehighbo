@@ -683,6 +683,31 @@ class PersianAnimeCaptionTests(unittest.TestCase):
         self.assertLessEqual(len(caption), 1024)
         self.assertNotIn("لینک تماشا", caption)
 
+    def test_long_metadata_never_truncates_or_removes_synopsis_block(self):
+        import app
+        metadata = {
+            "title": {"english": "A Long Example Anime Title"},
+            "seasonYear": 2026,
+            "episodes": 24,
+            "genres": ["Action", "Adventure", "Fantasy", "Drama", "Mystery", "Sci-Fi"],
+            "format": "TV",
+            "status": "RELEASING",
+            "averageScore": 87,
+            "studios": {"nodes": [{"name": "A Very Long Animation Studio Name"}]},
+            "description": "An extended catalog synopsis.",
+        }
+        long_synopsis = "این خلاصهٔ فارسی باید حتی وقتی اطلاعات پست طولانی است در کپشن باقی بماند. " * 30
+        with patch("app.translate_title_to_persian", return_value="عنوان فارسی"), patch(
+            "app.translate_anime_synopsis", return_value=long_synopsis
+        ), patch("app.anime_japanese_title", return_value="Example Anime"):
+            caption = app.build_episode_caption("A Long Example Anime Title - 01 (1080p)", "01", metadata=metadata)
+        self.assertLessEqual(len(caption), 1000)
+        self.assertIn("<blockquote expandable>📝 ", caption)
+        self.assertIn("</blockquote>", caption)
+        self.assertIn("@Animehighbo", caption)
+        self.assertLess(caption.index("📝 "), caption.rindex("@Animehighbo"))
+        self.assertGreater(len(caption.split("📝 ", 1)[1].split("</blockquote>", 1)[0]), 40)
+
     def test_unknown_metadata_is_not_invented(self):
         from unittest.mock import patch
         with patch("app.translate_title_to_persian", return_value="ترجمه فارسی"), patch(
