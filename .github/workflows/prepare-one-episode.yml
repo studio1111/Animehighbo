@@ -185,7 +185,7 @@ jobs:
           key = os.environ["ANIMEHIGHBO_SERIES_KEY"].strip()
           if not key:
               raise SystemExit("Missing series key; refusing to create publisher lock scope.")
-          Path("series-key.txt").write_text(key + "\\n", encoding="utf-8")
+          Path("series-key.txt").write_text(key + "\n", encoding="utf-8")
           PY
       - name: Acquire global Telegram publisher lock
         id: acquire_lock
