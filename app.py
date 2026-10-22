@@ -480,7 +480,8 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     merged = {}
     for source_name, lookup in sources:
         try:
-            lookup_title = search_title if source_name == "AniList" else str(title or search_title)\n            candidate = lookup(lookup_title, timeout)
+            lookup_title = search_title if source_name == "AniList" else str(title or search_title)
+            candidate = lookup(lookup_title, timeout)
             if not isinstance(candidate, dict) or not candidate:
                 # Some catalogs index the complete release title rather than its base title.
                 candidate = lookup(title, timeout) if search_title != title else {}
