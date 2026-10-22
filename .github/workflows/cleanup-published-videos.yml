@@ -1,0 +1,59 @@
+name: Cleanup successfully published repository videos
+
+on:
+  workflow_run:
+    workflows: ["Animehighbo single-episode worker"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: animehighbo-published-video-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Remove only video blobs confirmed in Telegram publication state
+        run: python tools/cleanup_published_videos.py --delete
+      - name: Commit repository cleanup without changing publication history
+        run: |
+          if git diff --quiet --; then
+            echo "No confirmed published video files needed removal."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -u
+          git commit -m "chore: remove video files already published to Telegram [skip ci]"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            if git push origin HEAD:main; then
+              echo "Removed successfully published video files from the current repository tree."
+              exit 0
+            fi
+            git reset --hard origin/main
+            python tools/cleanup_published_videos.py --delete
+            if git diff --quiet --; then
+              echo "Another worker already completed the cleanup."
+              exit 0
+            fi
+            git add -u
+            git commit -m "chore: remove video files already published to Telegram [skip ci]"
+          done
+          echo "Could not push video cleanup after five attempts."
+          exit 1
