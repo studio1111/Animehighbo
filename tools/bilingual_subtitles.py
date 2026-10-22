@@ -124,6 +124,9 @@ def _srt_timestamp_to_ass(value: str) -> str:
 
 def render_ass(cues: list[Cue]) -> str:
     """Render Persian cues as a selectable ASS track with yellow text and a thin black outline."""
+    font_size = int(os.getenv("ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE", "54"))
+    if not 36 <= font_size <= 100:
+        raise ValueError("Persian subtitle font size must be between 36 and 100.")
     lines = [
         "[Script Info]",
         "ScriptType: v4.00+",
@@ -134,7 +137,7 @@ def render_ass(cues: list[Cue]) -> str:
         "",
         "[V4+ Styles]",
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-        "Style: Persian,Noto Sans Arabic,68,&H0000FFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,1.5,0.0,2,40,40,42,1",
+        f"Style: Persian,Noto Sans Arabic,{font_size},&H0000FFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,1.5,0.0,2,40,40,42,1",
         "",
         "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
