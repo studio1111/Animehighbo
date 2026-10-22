@@ -613,7 +613,7 @@ def translate_anime_synopsis(description: str) -> str:
 
 
 def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build a detailed poster caption with Telegram's expandable blockquote for the synopsis."""
+    """Build a detailed poster caption while always preserving a visible synopsis block."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
@@ -659,20 +659,32 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     if episode_number:
         lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
     lines.extend(f"ℹ️ {_safe_caption_text(item)}" for item in details)
-    lines.append(f"<blockquote expandable>📝 {_safe_caption_text(synopsis)}</blockquote>")
-    lines.append("@Animehighbo")
-    caption = "\n".join(lines)
-    if len(caption) > 1024:
-        overflow = len(caption) - 1024
-        synopsis = synopsis[:max(0, len(synopsis) - overflow - 1)].rstrip()
-        lines[-2] = f"<blockquote expandable>📝 {_safe_caption_text(synopsis)}…</blockquote>"
-        caption = "\n".join(lines)
-    if len(caption) > 1024:
-        lines = lines[:2] + [line for line in lines[2:-2] if len(line) < 120][:5] + lines[-2:]
-        caption = "\n".join(lines)
-    if len(caption) > 1024:
-        caption = caption[:1000] + "…\n@Animehighbo"
-    return caption
+    synopsis_open = "<blockquote expandable>📝 "
+    synopsis_close = "</blockquote>"
+    footer = "@Animehighbo"
+
+    # Do not blindly slice the finished HTML: that used to cut off the synopsis
+    # block entirely on captions with long metadata. Shrink synopsis first, then
+    # drop lower-priority metadata while preserving balanced Telegram HTML tags.
+    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip()
+    while True:
+        synopsis_line = synopsis_open + _safe_caption_text(synopsis) + synopsis_close
+        caption = "\n".join(lines + [synopsis_line, footer])
+        if len(caption) <= 1000:
+            return caption
+        overflow = len(caption) - 1000
+        if len(synopsis) > 120:
+            synopsis = synopsis[:max(120, len(synopsis) - overflow - 8)].rstrip()
+            continue
+        if len(lines) > 4:
+            lines.pop()
+            continue
+        # Titles are exceptionally long only for malformed source names. Trim
+        # them conservatively as a last resort, never slicing the HTML structure.
+        if len(synopsis) > 40:
+            synopsis = synopsis[:max(40, len(synopsis) - overflow - 8)].rstrip()
+            continue
+        raise ValueError("Episode poster caption cannot fit Telegram's caption limit without removing the synopsis.")
 
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
