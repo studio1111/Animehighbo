@@ -36,11 +36,11 @@ jobs:
       - name: Install media tools with bounded package setup
         timeout-minutes: 5
         run: |
-          # GitHub-hosted Ubuntu runners already include ffmpeg. Avoid a full
-          # apt index refresh on every parallel worker, which can stall all five
-          # workers on shared package mirrors.
+          # Some hosted images do not include ffmpeg or aria2. Refresh package
+          # indexes with a hard timeout, then install every required tool.
+          sudo timeout 120 apt-get update
+          sudo timeout 120 apt-get install -y ffmpeg aria2 fonts-noto-core
           command -v ffmpeg
-          sudo timeout 180 apt-get install -y aria2 fonts-noto-core
           command -v aria2c
           ffmpeg -version | head -n 1
           aria2c --version | head -n 1
@@ -99,9 +99,11 @@ jobs:
           name: episode-${{ inputs.identity }}
           path: prepared-artifacts/episode-${{ inputs.identity }}
       - name: Install media tools for poster and file validation
+        timeout-minutes: 5
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-noto-core
+          sudo timeout 120 apt-get update
+          sudo timeout 120 apt-get install -y ffmpeg fonts-noto-core
+          command -v ffmpeg
       - name: Configure Telegram API endpoint
         env:
           TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
