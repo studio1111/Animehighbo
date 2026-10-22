@@ -211,7 +211,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                     {"published": {}, "seen": {}, "posters": {}},
                     False, "token", "@channel",
                 )
-                self.assertEqual(count, 0)
+                self.assertEqual(count, 1)  # Invalid bundle must make the workflow fail.
                 poster.assert_not_called()
 
 
