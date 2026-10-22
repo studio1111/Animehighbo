@@ -216,7 +216,11 @@ def select_next_upload_date(
     cutoff_date: str | None = None,
     target_series: str | None = None,
 ) -> tuple[str | None, list[dict]]:
-    """Select the oldest eligible upload date while respecting per-series episode order."""
+    """Select eligible episodes in source-upload order while respecting per-series episode order.
+
+    A series with any upload before the cutoff started in an earlier season and is
+    skipped entirely, so the channel never receives an anime that is missing its start.
+    """
     if not isinstance(manifest, list) or not manifest:
         return None, []
     cutoff = date.fromisoformat(cutoff_date) if cutoff_date else None
@@ -224,6 +228,7 @@ def select_next_upload_date(
     if not isinstance(published, dict):
         published = {}
     normalized = []
+    pre_cutoff_series: set[str] = set()
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
             raise ValueError(f"Archive entry {index + 1} must be an object.")
@@ -238,14 +243,7 @@ def select_next_upload_date(
             episode_number = 0
         if episode_number < 1:
             raise ValueError(f"Archive entry {index + 1} requires an episode number for metadata.")
-        if cutoff and date.fromisoformat(day) < cutoff:
-            raise ValueError(
-                f"Archive entry {index + 1} predates configured archive cutoff {cutoff.isoformat()}: {title}"
-            )
         identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
-        record = published.get(identity, {})
-        if _is_complete(record):
-            continue
 
         series_title = str(row.get("series_title") or "").strip()
         season = row.get("season")
@@ -281,6 +279,12 @@ def select_next_upload_date(
         })
         if series_key is None:
             continue
+        if cutoff and date.fromisoformat(day) < cutoff:
+            # The series began before this season; skip it whole instead of failing the queue.
+            pre_cutoff_series.add(series_key)
+            continue
+        if _is_complete(published.get(identity, {})):
+            continue
         normalized.append({
             "identity": identity,
             "title": title,
@@ -292,6 +296,7 @@ def select_next_upload_date(
             "series_key": series_key,
         })
 
+    normalized = [row for row in normalized if row["series_key"] not in pre_cutoff_series]
     if not normalized:
         return None, []
     counts: dict[tuple[str, int, int], int] = {}
@@ -321,8 +326,8 @@ def select_next_upload_date(
         eligible = [row for row in eligible if row["series_key"] == target]
     if not eligible:
         return None, []
-    # Upload date is a stable priority, not a global batch barrier. Return every
-    # currently eligible episode so one failed anime cannot hold unrelated series.
+    # Source upload date is the publication order, like the source site. Each series
+    # contributes only its next pending episode, so one anime never holds another.
     oldest_upload_date = min(row["release_date"] for row in eligible)
     eligible.sort(key=lambda row: (row["release_date"], row["title"].casefold(), row["identity"]))
     return oldest_upload_date, eligible
@@ -368,7 +373,7 @@ def main() -> int:
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     config_path = Path("config.json")
     config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
-    cutoff = str(config.get("archive_cutoff_date") or "2026-09-01")
+    cutoff = str(config.get("archive_cutoff_date") or "2026-10-01")
     state_path = Path(args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
     target_series = os.environ.get("ANIMEHIGHBO_TARGET_SERIES", "").strip()

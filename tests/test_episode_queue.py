@@ -110,13 +110,19 @@ class UploadDateQueueTests(unittest.TestCase):
         self.assertIsNone(upload_date)
         self.assertEqual(selected, [])
 
-    def test_fails_closed_when_manifest_contains_pre_cutoff_uploads(self):
-        with self.assertRaisesRegex(ValueError, "predates configured archive cutoff"):
-            select_next_upload_date(
-                [row("Old Series - 01", 1, "2023-10-07")],
-                {"published": {}},
-                cutoff_date="2026-09-01",
-            )
+    def test_series_started_before_cutoff_is_skipped_whole_without_blocking_others(self):
+        manifest = [
+            row("Summer show - 01", 1, "2026-09-27"),
+            row("Summer show - 02", 2, "2026-10-04"),
+            row("Fall show - 01", 1, "2026-10-03"),
+        ]
+
+        upload_date, selected = select_next_upload_date(
+            manifest, {"published": {}}, cutoff_date="2026-10-01"
+        )
+
+        self.assertEqual(upload_date, "2026-10-03")
+        self.assertEqual([item["title"] for item in selected], ["Fall show - 01"])
 
     def test_later_episode_cannot_jump_ahead_even_if_its_upload_date_is_older(self):
         manifest = [
