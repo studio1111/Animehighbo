@@ -449,7 +449,7 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     )
     # Feed titles sometimes append a year or contain a truncated parenthesis.
     # Search the normalized catalog title first to avoid selecting an unrelated older season.
-    normalized_title = re.sub(r"\\s*[\\(\\[]?\\s*(?:19|20)\\d{2}\\s*[\\)\\]]?\\s*$", "", str(title or "")).strip(" -_")
+    normalized_title = re.sub(r"\s*[\(\[]?\s*(?:19|20)\d{2}\s*[\)\]]?\s*$", "", str(title or "")).strip(" -_")
     search_title = normalized_title or str(title or "").strip()
     merged = {}
     for source_name, lookup in sources:
