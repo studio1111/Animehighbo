@@ -102,6 +102,101 @@ def build_ffmpeg_command(
     return args
 
 
+
+def build_ffmpeg_multi_command(input_path: Path, output_paths: dict[str, Path], crf: int = 24,
+    preset: str = "medium", burn_subtitle: Path | None = None,
+    video_bitrates: dict[str, str] | None = None, audio_bitrate: str = "128k",
+    target_heights: dict[str, int] | None = None) -> list[str]:
+    """Build one FFmpeg command to decode once and encode all three qualities."""
+    required = ("1080p", "720p", "480p")
+    if set(output_paths) != set(required):
+        raise ValueError("Multi-output encoding requires exactly 1080p, 720p, and 480p paths.")
+    if not 18 <= crf <= 28:
+        raise ValueError("H.265 CRF must be between 18 and 28.")
+    if preset not in PRESETS:
+        raise ValueError(f"Unsupported H.265 preset: {preset}")
+    if not audio_bitrate.endswith("k"):
+        raise ValueError("Audio bitrate must use the 'k' suffix.")
+    video_bitrates = video_bitrates or {"1080p": "1800k", "720p": "1000k", "480p": "550k"}
+    target_heights = target_heights or {"1080p": 1080, "720p": 720, "480p": 480}
+    for quality in required:
+        if Path(output_paths[quality]).suffix.lower() != ".mkv":
+            raise ValueError("H.265 outputs must use the .mkv container.")
+        if target_heights.get(quality) != int(quality[:-1]):
+            raise ValueError(f"Target height for {quality} is invalid.")
+        if not str(video_bitrates[quality]).endswith("k"):
+            raise ValueError("Video bitrate must use the 'k' suffix.")
+    if burn_subtitle is not None and not Path(burn_subtitle).is_file():
+        raise FileNotFoundError(f"Persian subtitle file not found: {burn_subtitle}")
+    args = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(input_path)]
+    graph = "[0:v:0]split=3[v1080src][v720src][v480src];"
+    for quality, label in zip(required, ("v1080src", "v720src", "v480src")):
+        filters = [f"scale=-2:{target_heights[quality]}:flags=lanczos"]
+        if burn_subtitle is not None:
+            subtitle_path = Path(burn_subtitle).resolve().as_posix()
+            subtitle_path = subtitle_path.replace("\\", "\\\\").replace(":", "\\:")
+            filters.append(f"subtitles=filename='{subtitle_path}':force_style='{PERSIAN_SUBTITLE_STYLE}'")
+        graph += f"[{label}]" + ",".join(filters) + f"[{quality}out];"
+    args.extend(["-filter_complex", graph])
+    for quality in required:
+        args.extend([
+            "-map", f"[{quality}out]", "-map", "0:a?", "-map", "0:s?",
+            "-map_metadata", "0", "-map_chapters", "0",
+            "-c:v", "libx265", "-preset", preset, "-crf", str(crf),
+            "-maxrate", str(video_bitrates[quality]),
+            "-bufsize", str(int(str(video_bitrates[quality])[:-1]) * 2) + "k",
+            "-c:a", "aac", "-b:a", audio_bitrate, "-c:s", "copy",
+            "-max_muxing_queue_size", "2048", str(output_paths[quality]),
+        ])
+    return args
+
+
+def encode_h265_variants(input_path: Path, output_paths: dict[str, Path], crf: int = 24,
+    preset: str = "medium", burn_subtitle: Path | None = None,
+    video_bitrates: dict[str, str] | None = None, audio_bitrate: str = "128k",
+    target_heights: dict[str, int] | None = None) -> dict[str, Path]:
+    """Encode all three outputs in one FFmpeg process and validate each output."""
+    input_path = Path(input_path)
+    output_paths = {q: Path(p) for q, p in output_paths.items()}
+    if not input_path.is_file():
+        raise FileNotFoundError(f"Input video not found: {input_path}")
+    if any(input_path.resolve() == p.resolve() for p in output_paths.values()):
+        raise ValueError("Input and output paths must be different.")
+    source_info = probe_media(input_path)
+    for p in output_paths.values():
+        p.parent.mkdir(parents=True, exist_ok=True)
+    temporary = {q: p.with_name(f".{p.stem}.part.mkv") for q, p in output_paths.items()}
+    for p in temporary.values():
+        p.unlink(missing_ok=True)
+    try:
+        run_command(build_ffmpeg_multi_command(input_path, temporary, crf, preset, burn_subtitle,
+                                               video_bitrates, audio_bitrate, target_heights))
+        for quality, temp_path in temporary.items():
+            if not temp_path.is_file() or temp_path.stat().st_size < 1024:
+                raise RuntimeError(f"FFmpeg did not produce a valid-sized {quality} output.")
+            info = probe_media(temp_path)
+            if str(info["video"].get("codec_name", "")).lower() not in {"hevc", "h265"}:
+                raise RuntimeError(f"{quality} output is not HEVC/H.265.")
+            if abs(source_info["duration"] - info["duration"]) > max(2.0, source_info["duration"] * 0.03):
+                raise RuntimeError(f"{quality} output duration differs too much from the source.")
+            run_command(["ffmpeg", "-hide_banner", "-v", "error", "-xerror", "-i", str(temp_path),
+                         "-map", "0:v:0", "-map", "0:a?", "-f", "null", "-"])
+            for kind in ("audio", "subtitle"):
+                src_count = sum(s.get("codec_type") == kind for s in source_info["streams"])
+                out_count = sum(s.get("codec_type") == kind for s in info["streams"])
+                if out_count < src_count:
+                    raise RuntimeError(f"{quality} output lost {kind} stream(s).")
+            expected = (target_heights or {"1080p": 1080, "720p": 720, "480p": 480})[quality]
+            if int(info["video"].get("height", 0)) != expected:
+                raise RuntimeError(f"{quality} output height is not {expected}p.")
+        for quality, temp_path in temporary.items():
+            temp_path.replace(output_paths[quality])
+        return output_paths
+    except Exception:
+        for p in temporary.values():
+            p.unlink(missing_ok=True)
+        raise
+
 def encode_h265(
     input_path: Path,
     output_path: Path,
