@@ -92,9 +92,11 @@ jobs:
           test -n "$SERIES_KEY" || { echo "Missing series key"; exit 1; }
       - name: Install offline subtitle translator fallback
         run: pip install -r requirements-subtitles.txt
-      - name: Require translation capability
+      - name: Confirm translation fallback is available
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+          if [ -z "$GEMINI_API_KEY" ]; then
             echo "Gemini is not configured; the local Argos English-to-Persian translator will be used."
           else
             echo "Gemini is configured; local Argos translation is available as a fallback."
