@@ -203,6 +203,47 @@
       "source_quality": "1080p",
       "published_at": 1792688085,
       "release_date": "2026-10-03"
+    },
+    "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:1080p": {
+      "title": "VERTEX FORCE",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bb9dd55b2e0026863de0af00a668667245f5f43d423a50b44485627a4087b424",
+      "message_id": "69",
+      "published_at": 1792689160,
+      "bilingual_subtitles": true
+    },
+    "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:720p": {
+      "title": "VERTEX FORCE",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a9895cd56af674ce32e7d4dbafd7fd5520cfb9ee9050b873d2de6fe035056539",
+      "message_id": "70",
+      "published_at": 1792689167,
+      "bilingual_subtitles": true
+    },
+    "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:480p": {
+      "title": "VERTEX FORCE",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2149f2ab4933312cfd91727e4e0ad0c459969b429d369500fd1b7c3d41a20144",
+      "message_id": "71",
+      "published_at": 1792689170,
+      "bilingual_subtitles": true
+    },
+    "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11": {
+      "title": "VERTEX FORCE",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792689170,
+      "release_date": "2026-10-03"
     }
   },
   "seen": {
@@ -220,7 +261,10 @@
     "d0b1cadc7bae3b47b25494fed6f9daa08f3fb0c012ba9662ddb7ecc9660b327f": "2a14177cc97cb1661eec660946d2f8d147eb103387a3b75a96728175624dcf8b:480p",
     "ed4d7127481f79003d564833b52f499bb444a2ea58617ae1b05cc7dd517f19d4": "bf4a717c9f77c6f28ac692573fd7d0578ecf7971c38c6f41f88ccf2d1da4b10b:1080p",
     "df3cd4fd98fa128ad433ba37e1ffbed5b2aaae0ca6572233ed28054f0f1c6504": "bf4a717c9f77c6f28ac692573fd7d0578ecf7971c38c6f41f88ccf2d1da4b10b:720p",
-    "87de5a3c1c97e8fd227b8d0001c662e9354c7bde93d6ba30a319c4e795392ca2": "bf4a717c9f77c6f28ac692573fd7d0578ecf7971c38c6f41f88ccf2d1da4b10b:480p"
+    "87de5a3c1c97e8fd227b8d0001c662e9354c7bde93d6ba30a319c4e795392ca2": "bf4a717c9f77c6f28ac692573fd7d0578ecf7971c38c6f41f88ccf2d1da4b10b:480p",
+    "bb9dd55b2e0026863de0af00a668667245f5f43d423a50b44485627a4087b424": "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:1080p",
+    "a9895cd56af674ce32e7d4dbafd7fd5520cfb9ee9050b873d2de6fe035056539": "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:720p",
+    "2149f2ab4933312cfd91727e4e0ad0c459969b429d369500fd1b7c3d41a20144": "cb86b9d90eb32db9f2604f63b5cde48a52205143b5d9a0441e1b738b8e088d11:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -255,6 +299,13 @@
       "episode": "01",
       "message_id": "64",
       "published_at": 1792688067,
+      "release_date": "2026-10-03"
+    },
+    "archive:f7afff4383f76ade39f268428a062519b13048ce3ea1ce48bc6b9962af63af5a": {
+      "title": "VERTEX FORCE",
+      "episode": "01",
+      "message_id": "68",
+      "published_at": 1792689147,
       "release_date": "2026-10-03"
     }
   }
