@@ -44,8 +44,8 @@ class AnimeCatalogFallbackTests(unittest.TestCase):
 
     def test_metadata_catalog_failure_does_not_prevent_other_sources(self):
         import app
-        with patch.object(app, "_anilist_metadata", side_effect=RuntimeError("AniList unavailable")), \\
-             patch.object(app, "_jikan_metadata", return_value={}), \\
+        with patch.object(app, "_anilist_metadata", side_effect=RuntimeError("AniList unavailable")), \
+             patch.object(app, "_jikan_metadata", return_value={}), \
              patch.object(app, "_kitsu_metadata", return_value={
                  "title": {"english": "Sample"},
                  "coverImage": {"extraLarge": "https://kitsu.example/poster.jpg"},
