@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tools.video_encoder import build_ffmpeg_command, encode_h265
+from tools.video_encoder import build_ffmpeg_command, build_ffmpeg_multi_command, encode_h265
 
 
 def probe_json(codec="h264", duration="60.0"):
@@ -75,6 +75,18 @@ class VideoEncoderTests(unittest.TestCase):
         self.assertIn("128k", command)
         self.assertIn("aac", command)
         self.assertIn("scale=-2:1080:flags=lanczos", command)
+
+    def test_multi_quality_command_decodes_once_and_maps_three_outputs(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            outputs = {q: root / f"{q}.mkv" for q in ("1080p", "720p", "480p")}
+            command = build_ffmpeg_multi_command(root / "source.mkv", outputs)
+        self.assertEqual(command.count("-i"), 1)
+        self.assertIn("split=3", command[command.index("-filter_complex") + 1])
+        self.assertEqual(sum(str(p) in command for p in outputs.values()), 3)
+        self.assertIn("scale=-2:1080:flags=lanczos", command[command.index("-filter_complex") + 1])
+        self.assertIn("scale=-2:720:flags=lanczos", command[command.index("-filter_complex") + 1])
+        self.assertIn("scale=-2:480:flags=lanczos", command[command.index("-filter_complex") + 1])
 
     def test_rejects_unsupported_output_height(self):
         with tempfile.TemporaryDirectory() as temp:
