@@ -13,12 +13,12 @@ on:
       since:
         description: "Earliest release date (YYYY-MM-DD)"
         required: true
-        default: "2026-09-01"
+        default: "2026-10-01"
         type: string
       max_pages:
         description: "Maximum SubsPlease release pages to inspect"
         required: true
-        default: "100"
+        default: "250"
         type: string
 
 permissions:
@@ -43,8 +43,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Generate archive manifest
         env:
-          ARCHIVE_SINCE: ${{ inputs.since || '2026-09-01' }}
-          ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
+          ARCHIVE_SINCE: ${{ inputs.since || '2026-10-01' }}
+          ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '250' }}
         run: |
           python tools/archive_catalog.py \
             --since "$ARCHIVE_SINCE" \
