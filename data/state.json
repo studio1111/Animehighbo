@@ -2540,6 +2540,47 @@
       "source_quality": "1080p",
       "published_at": 1792774612,
       "release_date": "2026-10-15"
+    },
+    "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:1080p": {
+      "title": "Hotaru no Yomeiri",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9a95dea2a541fffd9e3bdbac74dc7483875fb1f775929a175a395e6395ed55e1",
+      "message_id": "302",
+      "published_at": 1792774675,
+      "bilingual_subtitles": true
+    },
+    "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:720p": {
+      "title": "Hotaru no Yomeiri",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "3259d942a82855e35a93bfd8b49d2d2538b78bdbab336cc73edccdfb284e8677",
+      "message_id": "303",
+      "published_at": 1792774680,
+      "bilingual_subtitles": true
+    },
+    "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:480p": {
+      "title": "Hotaru no Yomeiri",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "240a19584113eb3bebea68752f0ddf2a5c9f79c6911db1cd8a644fa1d61802bb",
+      "message_id": "304",
+      "published_at": 1792774684,
+      "bilingual_subtitles": true
+    },
+    "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24": {
+      "title": "Hotaru no Yomeiri",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792774684,
+      "release_date": "2026-10-16"
     }
   },
   "seen": {
@@ -2728,7 +2769,10 @@
     "5ba8b48624141ce947b1aeec567d305d29555f020399de223047361850d87249": "6b6b84b832a396e11771a379d1689025a7178e071748b398545a6a5f7d60daa4:480p",
     "76be4cc160d9e08d5eb0dedbd2d0d28cfa7e4e74624d07bbeaeafd5d19fe6a65": "ac5fa3282a3e58eab2d54c4e4d43be817e27cf3772e1a0391c9b887d1b1645b4:1080p",
     "68e404c836f8a2f6c5c65a2f38c158fb234dc0d5e469410035bc66c382a7bf3e": "ac5fa3282a3e58eab2d54c4e4d43be817e27cf3772e1a0391c9b887d1b1645b4:720p",
-    "ec360ea756409f295a207d7ad5378501dbe59082fddf487d7e1dbfd9a3cb28cd": "ac5fa3282a3e58eab2d54c4e4d43be817e27cf3772e1a0391c9b887d1b1645b4:480p"
+    "ec360ea756409f295a207d7ad5378501dbe59082fddf487d7e1dbfd9a3cb28cd": "ac5fa3282a3e58eab2d54c4e4d43be817e27cf3772e1a0391c9b887d1b1645b4:480p",
+    "9a95dea2a541fffd9e3bdbac74dc7483875fb1f775929a175a395e6395ed55e1": "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:1080p",
+    "3259d942a82855e35a93bfd8b49d2d2538b78bdbab336cc73edccdfb284e8677": "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:720p",
+    "240a19584113eb3bebea68752f0ddf2a5c9f79c6911db1cd8a644fa1d61802bb": "394467067e4370dff7208e7e9eff06e4c7dd926332118bed47281baf0de39c24:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -3163,6 +3207,13 @@
       "message_id": "297",
       "published_at": 1792774596,
       "release_date": "2026-10-15"
+    },
+    "archive:10f41688b172b53f5f77de525a669e7c82aa8de75b50a6a49d046a915279192b": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "02",
+      "message_id": "301",
+      "published_at": 1792774666,
+      "release_date": "2026-10-16"
     }
   }
 }
