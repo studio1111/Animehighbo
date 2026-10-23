@@ -2171,6 +2171,47 @@
       "source_quality": "1080p",
       "published_at": 1792768569,
       "release_date": "2026-10-12"
+    },
+    "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:1080p": {
+      "title": "PSYREN",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4e7e096a1773cb0255614855b4376aac41617f951afda6564a2ecfaa262592a4",
+      "message_id": "266",
+      "published_at": 1792769005,
+      "bilingual_subtitles": true
+    },
+    "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:720p": {
+      "title": "PSYREN",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7cf024b9bcdac71e161736cd1ca6575be9697f3cbdb1043ed247ca4be133c19e",
+      "message_id": "267",
+      "published_at": 1792769012,
+      "bilingual_subtitles": true
+    },
+    "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:480p": {
+      "title": "PSYREN",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e8d78cd82c401b452a021adf67dbc872052e30577f94865e5689a927e7488945",
+      "message_id": "268",
+      "published_at": 1792769017,
+      "bilingual_subtitles": true
+    },
+    "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663": {
+      "title": "PSYREN",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792769017,
+      "release_date": "2026-10-12"
     }
   },
   "seen": {
@@ -2332,7 +2373,10 @@
     "ab847d6b728bd8f3769931a7cd30cd87f9e00bfa958525960848eaa08318ca82": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:480p",
     "399e31eb938057ca3c00a7747a51bb5f8114d4c07cecee56f8d2871223f0dcdb": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:1080p",
     "b64dc7a0ac5d22c51d2bcd07f8b14ba1355fa4e3781e63bcc175afc25fccba8b": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:720p",
-    "b6fa61d3cc9d6915717caedeb65dbd3de9c82d1e43ce8678307f45e646cee5d0": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:480p"
+    "b6fa61d3cc9d6915717caedeb65dbd3de9c82d1e43ce8678307f45e646cee5d0": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:480p",
+    "4e7e096a1773cb0255614855b4376aac41617f951afda6564a2ecfaa262592a4": "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:1080p",
+    "7cf024b9bcdac71e161736cd1ca6575be9697f3cbdb1043ed247ca4be133c19e": "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:720p",
+    "e8d78cd82c401b452a021adf67dbc872052e30577f94865e5689a927e7488945": "e270f83ac27791ab1b78ca6de288d61c20594694429f1c8d52c24aa3d2c8a663:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -2703,6 +2747,13 @@
       "episode": "02",
       "message_id": "261",
       "published_at": 1792768554,
+      "release_date": "2026-10-12"
+    },
+    "archive:70d34191acbf6120552cc7847e8aa2f148fe3e659a34c21c2e41b5a72c018166": {
+      "title": "PSYREN",
+      "episode": "02",
+      "message_id": "265",
+      "published_at": 1792768997,
       "release_date": "2026-10-12"
     }
   }
