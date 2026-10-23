@@ -124,7 +124,7 @@ def _srt_timestamp_to_ass(value: str) -> str:
 
 def render_ass(cues: list[Cue]) -> str:
     """Render Persian cues as a selectable ASS track with yellow text and a thin black outline."""
-    font_size = int(os.getenv("ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE", "84"))
+    font_size = int(os.getenv("ANIMEHIGHBO_PERSIAN_SUBTITLE_FONT_SIZE", "92"))
     if not 36 <= font_size <= 100:
         raise ValueError("Persian subtitle font size must be between 36 and 100.")
     lines = [
@@ -148,7 +148,11 @@ def render_ass(cues: list[Cue]) -> str:
             raise ValueError(f"Invalid SRT cue timing: {cue.timing!r}")
         start = _srt_timestamp_to_ass(start_end[0])
         end = _srt_timestamp_to_ass(start_end[1])
-        text = cue.text.strip().replace("\r\n", "\n").replace("\n", r"\N")
+        text = cue.text.strip().replace("\r\n", "\n").replace("\r", "\n")
+        # Strip any untrusted ASS override tags so they cannot alter font size,
+        # outline colour, or border width. Trusted style is defined above.
+        text = re.sub(r"\{[^{}]*\}", "", text)
+        text = text.replace("{", "").replace("}", "").replace("\n", r"\N")
         for source, replacement in (
             ("<i>", r"{\i1}"), ("</i>", r"{\i0}"),
             ("<b>", r"{\b1}"), ("</b>", r"{\b0}"),
