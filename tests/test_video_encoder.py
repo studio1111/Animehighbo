@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from tools.video_encoder import build_ffmpeg_command, build_ffmpeg_multi_command, encode_h265, run_command
 
