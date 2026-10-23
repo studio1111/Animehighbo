@@ -69,19 +69,31 @@ def _preferred_download(row: dict) -> tuple[str, str] | None:
 
 
 def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) -> list[dict]:
-    """Select every eligible episode released on/after cutoff, including ongoing shows.
+    """Select all post-cutoff episodes and backfill up to three earlier episodes.
 
-    The archive is date-based: an anime season may have started before the cutoff.
-    Episodes without a valid 1080p/720p source are skipped individually so one
-    unavailable episode does not hide later releases from the same series.
+    If a series has one, two, or three episodes before the cutoff, include those
+    too so a short season is complete. If it has four or more earlier episodes,
+    keep the archive focused on releases on/after the cutoff. Source eligibility
+    is checked per episode, so one unavailable episode does not hide later ones.
     """
-    normalized = []
+    parsed_rows = []
     for row in episodes:
         if not isinstance(row, dict):
             continue
         number = _episode_number(row)
         released = parse_release_date(row.get("release_date") or row.get("releaseDate") or "")
-        if number is None or released is None or released < cutoff:
+        if number is None or released is None:
+            continue
+        parsed_rows.append((row, number, released))
+
+    # Count distinct pre-cutoff episode numbers even when one lacks a usable
+    # source, so missing downloads cannot accidentally trigger a historical backfill.
+    prior_episode_numbers = {number for _, number, released in parsed_rows if released < cutoff}
+    include_prior = len(prior_episode_numbers) <= 3
+
+    normalized = []
+    for row, number, released in parsed_rows:
+        if released < cutoff and not include_prior:
             continue
         source = _preferred_download(row)
         if not source:
