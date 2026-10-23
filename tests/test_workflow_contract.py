@@ -104,6 +104,11 @@ class WorkflowContractTests(unittest.TestCase):
     def test_standalone_poster_only_monitor_is_removed(self):
         self.assertFalse((ROOT / ".github/workflows/subsplease-monitor.yml").exists())
 
+    def test_retention_only_reacts_to_production_branch_workflows(self):
+        workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
+        workflow_run = workflow.split("  workflow_run:", 1)[1].split("\n\npermissions:", 1)[0]
+        self.assertIn("branches: [main]", workflow_run)
+
     def test_retention_runs_daily_and_keeps_only_latest_thirty_completed_runs(self):
         workflow = (ROOT / ".github/workflows/retention.yml").read_text(encoding="utf-8")
         self.assertIn("cron: '43 4 * * *'", workflow)
