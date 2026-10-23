@@ -308,6 +308,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Wait briefly for worker state to settle
         run: sleep 15
       - name: Dispatch the next queue planner
