@@ -19,6 +19,33 @@ from tools.bilingual_subtitles import (
 
 
 class SubtitleUtilityTests(unittest.TestCase):
+    def test_translation_and_review_report_progress_after_each_batch(self):
+        translator = GeminiSubtitleTranslator("test-key")
+        cues = [Cue(i, "00:00:01,000 --> 00:00:02,000", f"line {i}") for i in range(1, 102)]
+
+        with patch.object(translator, "_translate_chunk", side_effect=lambda batch: batch), \
+             patch("builtins.print") as progress:
+            self.assertEqual(translator.translate_batch(cues), cues)
+
+        progress_text = " ".join(str(call) for call in progress.call_args_list)
+        self.assertIn("100/101", progress_text)
+        self.assertIn("101/101", progress_text)
+
+        source = cues[:41]
+        translated = [Cue(cue.index, cue.timing, f"فارسی {cue.index}") for cue in source]
+        with patch.object(translator, "_generate_json", return_value={}), \
+             patch.object(
+                 translator, "_index_translations",
+                 side_effect=lambda _decoded, ids, _context: {cue_id: f"بازبینی {cue_id}" for cue_id in ids},
+             ), \
+             patch("builtins.print") as progress:
+            reviewed = translator.review_batch(source, translated)
+
+        self.assertEqual(len(reviewed), 41)
+        progress_text = " ".join(str(call) for call in progress.call_args_list)
+        self.assertIn("40/41", progress_text)
+        self.assertIn("41/41", progress_text)
+
     def test_parse_and_render_srt_preserves_timing_and_dialogue(self):
         source = """1
 00:00:01,000 --> 00:00:02,500
