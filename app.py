@@ -846,23 +846,45 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                 metadata = {}
                 image_url = entry.get("image_url", "")
                 if not image_url:
-                    metadata = page_metadata(page_url, int(config["request_timeout_seconds"]))
-                    image_url = metadata.get("image_url", "")
-                if not image_url:
-                    LOG.warning("No poster image found; skipping episode: %s", entry["title"])
-                    continue
+                    try:
+                        metadata = page_metadata(page_url, int(config["request_timeout_seconds"]))
+                        image_url = metadata.get("image_url", "")
+                    except Exception as exc:
+                        LOG.warning("Episode page metadata unavailable for %s; continuing without poster: %s", page_url, exc)
                 from urllib.parse import urljoin
-                image_url = urljoin(page_url, image_url)
+                image_url = urljoin(page_url, image_url) if image_url else ""
                 title = entry["title"]
                 if metadata.get("title") and len(title) < 4:
                     title = metadata["title"]
                 anime_title, episode = episode_details(title)
                 if dry_run:
                     LOG.info("[DRY RUN] Episode link: %s | episode=%s | poster=%s | %s",
-                             anime_title, episode or "unknown", image_url, page_url)
+                             anime_title, episode or "unknown", image_url or "text-only", page_url)
                     continue
-                image_data, image_type = download_poster(image_url, int(config["request_timeout_seconds"]))
-                message_id = telegram_send_episode(token, chat_id, image_data, image_type, title, episode, page_url)
+                if image_url:
+                    try:
+                        image_data, image_type = download_poster(image_url, int(config["request_timeout_seconds"]))
+                        message_id = telegram_send_episode(token, chat_id, image_data, image_type, title, episode, page_url)
+                    except Exception as poster_exc:
+                        LOG.warning("Poster path failed for %s; falling back to text-only post: %s", title, poster_exc)
+                        image_url = ""
+                if not image_url:
+                    catalog = anime_catalog_metadata(anime_title)
+                    caption = build_episode_caption(title, episode, page_url, catalog)
+                    response = requests.post(
+                        telegram_api_endpoint(token, "sendMessage"),
+                        data={"chat_id": chat_id, "text": caption, "parse_mode": "HTML",
+                              "disable_web_page_preview": "true"},
+                        timeout=(30, 60),
+                    )
+                    response.raise_for_status()
+                    result = response.json()
+                    if not isinstance(result, dict) or result.get("ok") is not True:
+                        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
+                        raise RuntimeError(f"Telegram text-only episode post failed: {detail}")
+                    message_id = str((result.get("result") or {}).get("message_id") or "")
+                    if not message_id:
+                        raise RuntimeError("Telegram text-only post succeeded without a message_id.")
                 state["published"][identity] = {
                     "title": anime_title,
                     "episode": episode or None,
