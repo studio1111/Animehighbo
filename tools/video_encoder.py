@@ -18,7 +18,55 @@ PERSIAN_SUBTITLE_STYLE = (
 )
 
 
+def _run_with_progress(args: list[str]) -> str:
+    """Stream FFmpeg's machine-readable progress so long encodes never look silent."""
+    try:
+        process = subprocess.Popen(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
+    except FileNotFoundError as exc:
+        raise RuntimeError(f"Required command not found: {args[0]}. Install FFmpeg.") from exc
+
+    output: list[str] = []
+    progress: dict[str, str] = {}
+    try:
+        for raw_line in process.stdout or ():
+            line = raw_line.strip()
+            if not line:
+                continue
+            if "=" in line:
+                key, value = line.split("=", 1)
+                progress[key] = value
+                if key == "progress":
+                    LOG.info(
+                        "FFmpeg progress: output_time=%s speed=%s frame=%s status=%s",
+                        progress.get("out_time", "unknown"),
+                        progress.get("speed", "unknown"),
+                        progress.get("frame", "unknown"),
+                        value,
+                    )
+                    progress.clear()
+            else:
+                output.append(line)
+        return_code = process.wait()
+    except BaseException:
+        process.kill()
+        process.wait()
+        raise
+
+    if return_code != 0:
+        detail = "\\n".join(output).strip() or f"process exited with code {return_code}"
+        raise RuntimeError(f"Command failed: {' '.join(args[:4])} ...\\n{detail[-2000:]}")
+    return "\\n".join(output)
+
+
 def run_command(args: list[str]) -> str:
+    if "-progress" in args and "pipe:1" in args:
+        return _run_with_progress(args)
     try:
         result = subprocess.run(args, check=True, capture_output=True, text=True)
     except FileNotFoundError as exc:
@@ -75,7 +123,8 @@ def build_ffmpeg_command(
     if not video_bitrate.endswith("k") or not audio_bitrate.endswith("k"):
         raise ValueError("Video and audio bitrates must use the 'k' suffix.")
     args = [
-        "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+        "ffmpeg", "-hide_banner", "-loglevel", "error",
+        "-progress", "pipe:1", "-stats_period", "30", "-y",
         "-i", str(input_path),
         "-map", "0:v:0", "-map", "0:a?", "-map", "0:s?",
         "-map_metadata", "0", "-map_chapters", "0",
@@ -128,7 +177,8 @@ def build_ffmpeg_multi_command(input_path: Path, output_paths: dict[str, Path], 
             raise ValueError("Video bitrate must use the 'k' suffix.")
     if burn_subtitle is not None and not Path(burn_subtitle).is_file():
         raise FileNotFoundError(f"Persian subtitle file not found: {burn_subtitle}")
-    args = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(input_path)]
+    args = ["ffmpeg", "-hide_banner", "-loglevel", "error",
+            "-progress", "pipe:1", "-stats_period", "30", "-y", "-i", str(input_path)]
     graph = "[0:v:0]split=3[v1080src][v720src][v480src];"
     for quality, label in zip(required, ("v1080src", "v720src", "v480src")):
         filters = [f"scale=-2:{target_heights[quality]}:flags=lanczos"]
