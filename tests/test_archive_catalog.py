@@ -85,8 +85,11 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
 
     def test_ongoing_series_keeps_all_episodes_released_since_cutoff(self):
         rows = [
-            {"title": "Long Runner - 100", "episode": "100", "release_date": "2026-08-28T10:00:00Z",
-             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
+            {"title": f"Long Runner - {number}", "episode": str(number),
+             "release_date": f"2026-08-{24 + number - 97:02d}T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": f"magnet:?xt=urn:btih:old{number}"}]}
+            for number in (97, 98, 99, 100)
+        ] + [
             {"title": "Long Runner - 101", "episode": "101", "release_date": "2026-10-04T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:bbbb"}]},
             {"title": "Long Runner - 102", "episode": "102", "release_date": "2026-10-11T10:00:00Z",
