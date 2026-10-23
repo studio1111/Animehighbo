@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 import requests
 
 # Every publisher worker uses this one repository-wide lock path.
-LOCK_PATH = os.getenv("ANIMEHIGHBO_PUBLISH_LOCK_PATH", "data/publisher.lock")
+LOCK_PATH = "data/publisher.lock"  # Intentionally ignore legacy per-series workflow overrides.
 STATE_PATH = "data/state.json"
 API_VERSION = "2022-11-28"
 
