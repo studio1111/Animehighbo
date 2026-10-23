@@ -449,6 +449,11 @@ class GeminiSubtitleTranslator:
         batch_size = 100
         for offset in range(0, len(cues), batch_size):
             translated.extend(self._translate_chunk(cues[offset:offset + batch_size]))
+            processed = min(offset + batch_size, len(cues))
+            print(
+                f"Subtitle translation progress: {processed}/{len(cues)} cues.",
+                flush=True,
+            )
         return translated
 
     def review_batch(self, source_cues: list[Cue], translated_cues: list[Cue]) -> list[Cue]:
@@ -477,6 +482,11 @@ class GeminiSubtitleTranslator:
             decoded = self._generate_json(self._translation_body(prompt, 0.1), context)
             by_id = self._index_translations(decoded, {cue.index for cue in sources}, context)
             reviewed.extend(Cue(cue.index, cue.timing, by_id[cue.index]) for cue in translations)
+            processed = min(offset + batch_size, len(source_cues))
+            print(
+                f"Subtitle review progress: {processed}/{len(source_cues)} cues.",
+                flush=True,
+            )
         return reviewed
 
     def translate(self, text: str) -> str:
