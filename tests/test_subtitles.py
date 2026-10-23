@@ -40,11 +40,21 @@ Hello there.
         cues = [Cue(1, "00:00:01,000 --> 00:00:02,500", "سلام دنیا")]
         rendered = render_ass(cues)
         self.assertIn("[V4+ Styles]", rendered)
-        self.assertIn("Style: Persian,Noto Sans Arabic,84,&H0000FFFF", rendered)
+        self.assertIn("Style: Persian,Noto Sans Arabic,92,&H0000FFFF", rendered)
         self.assertIn("&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,1.5,0.0,2", rendered)
         self.assertIn("Persian,Noto Sans Arabic", rendered)
         self.assertIn("Dialogue: 0,0:00:01.00,0:00:02.50,Persian", rendered)
         self.assertIn("سلام دنیا", rendered)
+
+    def test_ass_cue_cannot_override_black_outline_or_font_size(self):
+        cues = [Cue(1, "00:00:01,000 --> 00:00:02,500",
+                    r"{\\3c&H00FFFFFF&\\bord0\\fs12}سلام دنیا")]
+        rendered = render_ass(cues)
+        self.assertIn("Style: Persian,Noto Sans Arabic,92,", rendered)
+        self.assertIn("&H00000000,&H80000000", rendered)
+        self.assertIn("Dialogue: 0,0:00:01.00,0:00:02.50,Persian,,0,0,0,,سلام دنیا", rendered)
+        self.assertNotIn(r"\\3c", rendered)
+        self.assertNotIn(r"\\fs12", rendered)
 
     def test_parser_ignores_invalid_blocks_and_rejects_empty_file(self):
         self.assertEqual(len(parse_srt("header\n\n1\n00:00:01,000 --> 00:00:02,000\nHi")), 1)
