@@ -866,10 +866,16 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                 if image_url:
                     try:
                         image_data, image_type = download_poster(image_url, int(config["request_timeout_seconds"]))
-                        message_id = telegram_send_episode(token, chat_id, image_data, image_type, title, episode, page_url)
                     except Exception as poster_exc:
-                        LOG.warning("Poster path failed for %s; falling back to text-only post: %s", title, poster_exc)
+                        LOG.warning("Poster download failed for %s; falling back to text-only post: %s", title, poster_exc)
                         image_url = ""
+                if image_url:
+                    # Do not send a text fallback after a Telegram transport timeout:
+                    # the photo may already have been accepted, which would duplicate
+                    # the anchor post. Only poster acquisition failures are safe fallbacks.
+                    message_id = telegram_send_episode(
+                        token, chat_id, image_data, image_type, title, episode, page_url
+                    )
                 if not image_url:
                     catalog = anime_catalog_metadata(anime_title)
                     caption = build_episode_caption(title, episode, page_url, catalog)
