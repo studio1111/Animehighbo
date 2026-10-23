@@ -1,10 +1,10 @@
-"""Serialize Telegram episode publications within one series.
+"""Serialize Telegram episode publications repository-wide.
 
-The lock is a tiny GitHub Contents API file. It is acquired only after an episode's
+The lock is a single GitHub Contents API file. It is acquired only after an episode's
 three validated videos are ready, and it remains owned by that episode if sending
-fails so a later retry can finish the same poster thread before another episode in
-the same series posts. Different series use different lock paths and can publish
-in parallel.
+fails so a later retry can finish the same poster thread before any other episode
+publishes. Do not use a shared GitHub Actions concurrency group here: GitHub retains
+only one pending run per group and can cancel earlier pending jobs.
 """
 from __future__ import annotations
 
@@ -19,8 +19,7 @@ from datetime import datetime, timezone
 
 import requests
 
-# The workflow derives one lock path per series. The fallback keeps manual runs
-# backward-compatible and preserves the safe single-lock behavior when no scope is set.
+# Every publisher worker uses this one repository-wide lock path.
 LOCK_PATH = os.getenv("ANIMEHIGHBO_PUBLISH_LOCK_PATH", "data/publisher.lock")
 STATE_PATH = "data/state.json"
 API_VERSION = "2022-11-28"
@@ -106,7 +105,7 @@ def acquire_lock(
     timeout_seconds: float = 21600,
     poll_seconds: float = 10,
 ) -> dict:
-    """Acquire the lock for this series, or resume a retained lock for the same episode."""
+    """Acquire the global lock, or resume a retained lock for the same episode."""
     identity, token, repository = _validate(identity, token, repository)
     if timeout_seconds < 0 or poll_seconds <= 0:
         raise ValueError("Lock timeout must be non-negative and polling interval must be positive.")
