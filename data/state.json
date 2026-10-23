@@ -4057,6 +4057,47 @@
       "source_quality": "1080p",
       "published_at": 1792798739,
       "release_date": "2026-10-17"
+    },
+    "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:1080p": {
+      "title": "Ace of Diamond Act II S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4dd2887fb9a75d18993844357b9fcde7c5fefe465b6e7268092178de9cac5ff3",
+      "message_id": "450",
+      "published_at": 1792799242,
+      "bilingual_subtitles": true
+    },
+    "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:720p": {
+      "title": "Ace of Diamond Act II S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4b95f452497cfebb399124e0b3c958d1ff11e66e51b74d3fbfe21b9e320d7607",
+      "message_id": "451",
+      "published_at": 1792799249,
+      "bilingual_subtitles": true
+    },
+    "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:480p": {
+      "title": "Ace of Diamond Act II S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "20baf1d6a10455d0d737b4248498cbe0bd0f8f3048a996094fade7dbcd9457e6",
+      "message_id": "452",
+      "published_at": 1792799254,
+      "bilingual_subtitles": true
+    },
+    "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348": {
+      "title": "Ace of Diamond Act II S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792799254,
+      "release_date": "2026-10-18"
     }
   },
   "seen": {
@@ -4356,7 +4397,10 @@
     "274d3a97fa05782519aaef4026f99bd24b3d8fe0dd83d1e671dbb8ebc8f14177": "df995087529872bb24b691c8aa7d5d635448ed3412e1c759d6104cf931268dc3:480p",
     "46603d86526a3af2db677f08d0dab025e66b589e496233a3937e9ab12a8272cc": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:1080p",
     "c94c6dd45cca371bb4d16058839b59bc30458a7bba0a9510a8d525161506b2ee": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:720p",
-    "c58662abce95bebfceec7ec07eb0bfe24ec859ad675951913d24304a85f5845f": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:480p"
+    "c58662abce95bebfceec7ec07eb0bfe24ec859ad675951913d24304a85f5845f": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:480p",
+    "4dd2887fb9a75d18993844357b9fcde7c5fefe465b6e7268092178de9cac5ff3": "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:1080p",
+    "4b95f452497cfebb399124e0b3c958d1ff11e66e51b74d3fbfe21b9e320d7607": "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:720p",
+    "20baf1d6a10455d0d737b4248498cbe0bd0f8f3048a996094fade7dbcd9457e6": "197808f15ca051acf11069e96c19317c4f6d3decb5594e727d1ed74febe97348:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -5050,6 +5094,13 @@
       "message_id": "445",
       "published_at": 1792798718,
       "release_date": "2026-10-17"
+    },
+    "archive:1511f65bfb3151a31d24a454826d3780b9b4793600f60b070b0b60fcad50b185": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "15",
+      "message_id": "449",
+      "published_at": 1792799233,
+      "release_date": "2026-10-18"
     }
   }
 }
