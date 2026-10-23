@@ -28,7 +28,7 @@ class WorkflowContractTests(unittest.TestCase):
 
     def test_per_series_publisher_lock_keeps_each_poster_and_three_files_contiguous(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
-        acquire = workflow.index("Acquire per-series Telegram publisher lock")
+        acquire = workflow.index("Acquire global Telegram publisher lock")
         refresh = workflow.index("Refresh publication state after acquiring the global lock")
         publish = workflow.index("Publish the episode poster and three reply videos")
         persist = workflow.index("Persist duplicate-prevention state without overwriting parallel workers")
