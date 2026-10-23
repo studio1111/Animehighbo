@@ -1064,6 +1064,47 @@
       "source_quality": "1080p",
       "published_at": 1792732703,
       "release_date": "2026-10-08"
+    },
+    "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:1080p": {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d03b8fbbd099c7a17cdf80027b21ca1e4eca5cc85bbd7e53a1e0c895e102a85f",
+      "message_id": "158",
+      "published_at": 1792733804,
+      "bilingual_subtitles": true
+    },
+    "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:720p": {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "84ec3cf81c008859d5383b7d25ea99995af7015adbd0704d7d097bac2c01724b",
+      "message_id": "159",
+      "published_at": 1792733811,
+      "bilingual_subtitles": true
+    },
+    "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:480p": {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b158bf02d95618f5e53879520cba0f09ed66a6fcefa1999c6ed0aebf641f21f8",
+      "message_id": "160",
+      "published_at": 1792733815,
+      "bilingual_subtitles": true
+    },
+    "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64": {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792733815,
+      "release_date": "2026-10-05"
     }
   },
   "seen": {
@@ -1144,7 +1185,10 @@
     "09a4ed745c3214043b18f7319b32186ba5aa7bb3f18b02cbb43c7782eed19c25": "30ae2859bd918210eb9094a9e9d83f2c026931c60b40487f6d0a86f42d1ddecb:480p",
     "1bef467f35edaa3a7cc1430721e32cd959459e38b56c128789296f84cbdf512f": "fb55bdb86454d96ca31d6b358630d0ae50558f126f760be01cae1116b10f7a0e:1080p",
     "74db653c0d2d8df3c7fdf4bc410ed1e924c5ba129dec740f3997c316753ad674": "fb55bdb86454d96ca31d6b358630d0ae50558f126f760be01cae1116b10f7a0e:720p",
-    "6b351d0df671350c9a6f3dbf92479480fe2d3a8a7ba23f41247d16317b0b477b": "fb55bdb86454d96ca31d6b358630d0ae50558f126f760be01cae1116b10f7a0e:480p"
+    "6b351d0df671350c9a6f3dbf92479480fe2d3a8a7ba23f41247d16317b0b477b": "fb55bdb86454d96ca31d6b358630d0ae50558f126f760be01cae1116b10f7a0e:480p",
+    "d03b8fbbd099c7a17cdf80027b21ca1e4eca5cc85bbd7e53a1e0c895e102a85f": "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:1080p",
+    "84ec3cf81c008859d5383b7d25ea99995af7015adbd0704d7d097bac2c01724b": "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:720p",
+    "b158bf02d95618f5e53879520cba0f09ed66a6fcefa1999c6ed0aebf641f21f8": "b298ddfb7cdb7457f147513e053d5e447fb000f67b8704ee5758150354ffff64:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -1327,6 +1371,13 @@
       "message_id": "153",
       "published_at": 1792732685,
       "release_date": "2026-10-08"
+    },
+    "archive:2e9e7c560c252bd2861eecee41a933d6cfecd339fee5d68d80fb11eb3971fdd6": {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "episode": "02",
+      "message_id": "157",
+      "published_at": 1792733793,
+      "release_date": "2026-10-05"
     }
   }
 }
