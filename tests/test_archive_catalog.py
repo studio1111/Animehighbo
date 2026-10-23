@@ -96,7 +96,33 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual([row["episode"] for row in selected], [101, 102])
         self.assertEqual([row["release_date"] for row in selected], ["2026-10-04", "2026-10-11"])
 
-    def test_season_started_before_cutoff_includes_only_post_cutoff_episodes(self):
+    def test_backfills_one_to_three_pre_cutoff_episodes(self):
+        rows = [
+            {"title": f"Short Season - {number:02d}", "episode": str(number),
+             "release_date": f"2026-09-{20 + number:02d}T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": f"magnet:?xt=urn:btih:old{number}"}]}
+            for number in (1, 2, 3)
+        ] + [
+            {"title": "Short Season - 04", "episode": "4", "release_date": "2026-10-02T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:new4"}]}
+        ]
+        selected = select_show_episodes("Short Season", rows, date(2026, 10, 1))
+        self.assertEqual([row["episode"] for row in selected], [1, 2, 3, 4])
+
+    def test_does_not_backfill_pre_cutoff_episodes_when_more_than_three_exist(self):
+        rows = [
+            {"title": f"Long Season - {number:02d}", "episode": str(number),
+             "release_date": f"2026-09-{10 + number:02d}T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": f"magnet:?xt=urn:btih:old{number}"}]}
+            for number in (1, 2, 3, 4)
+        ] + [
+            {"title": "Long Season - 05", "episode": "5", "release_date": "2026-10-02T10:00:00Z",
+             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:new5"}]}
+        ]
+        selected = select_show_episodes("Long Season", rows, date(2026, 10, 1))
+        self.assertEqual([row["episode"] for row in selected], [5])
+
+    def test_season_started_before_cutoff_includes_its_single_prior_episode(self):
         rows = [
             {"title": "Current Season - 01", "episode": "1", "release_date": "2026-09-28T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
@@ -106,7 +132,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
              "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:cccc"}]},
         ]
         selected = select_show_episodes("Current Season", rows, date(2026, 10, 1))
-        self.assertEqual([row["episode"] for row in selected], [2, 3])
+        self.assertEqual([row["episode"] for row in selected], [1, 2, 3])
 
     def test_missing_source_skips_only_that_episode_and_keeps_later_releases(self):
         rows = [
