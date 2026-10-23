@@ -747,25 +747,27 @@ def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: st
             LOG.warning("Poster download failed for %r; publishing text-only post: %s", title, exc)
 
     if image_data:
+        # Do not fall back after a transport exception: Telegram may have accepted the
+        # photo while its response was lost, and sending text then could duplicate the
+        # anchor post. Explicit API rejection can safely use the text fallback.
+        response = requests.post(
+            telegram_api_endpoint(token, "sendPhoto"),
+            data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
+            files={"photo": ("anime-poster.jpg", image_data, image_type)},
+            timeout=(30, 60),
+        )
         try:
-            response = requests.post(
-                telegram_api_endpoint(token, "sendPhoto"),
-                data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
-                files={"photo": ("anime-poster.jpg", image_data, image_type)},
-                timeout=(30, 60),
-            )
-            response.raise_for_status()
             result = response.json()
-            if isinstance(result, dict) and result.get("ok") is True:
-                message_id = (result.get("result") or {}).get("message_id")
-                if message_id is not None:
-                    return str(message_id)
-                LOG.warning("Telegram sendPhoto returned no message_id for %r; trying text post.", title)
-            else:
-                detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
-                LOG.warning("Telegram sendPhoto failed for %r; trying text post: %s", title, detail)
-        except Exception as exc:
-            LOG.warning("Telegram sendPhoto request failed for %r; trying text post: %s", title, exc)
+        except ValueError:
+            result = {}
+        if response.status_code < 400 and isinstance(result, dict) and result.get("ok") is True:
+            message_id = (result.get("result") or {}).get("message_id")
+            if message_id is not None:
+                return str(message_id)
+            LOG.warning("Telegram sendPhoto returned no message_id for %r; trying text post.", title)
+        else:
+            detail = result.get("description", f"HTTP {response.status_code} or invalid Telegram API response.") if isinstance(result, dict) else f"HTTP {response.status_code} or invalid Telegram API response."
+            LOG.warning("Telegram sendPhoto was rejected for %r; trying text post: %s", title, detail)
 
     response = requests.post(
         telegram_api_endpoint(token, "sendMessage"),
