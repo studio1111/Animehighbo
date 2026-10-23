@@ -670,6 +670,8 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
         synopsis = "—"
 
     season = _season_label(title, media)
+    if season == "نامشخص":
+        season = "—"
     year = media.get("seasonYear") or "—"
     episode_count = media.get("episodes") or "—"
     genres = media.get("genres") or []
@@ -683,13 +685,13 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     studios = ((media.get("studios") or {}).get("nodes") or [])
     studio_names = [str(item.get("name", "")) for item in studios[:3] if isinstance(item, dict) and item.get("name")]
     studio_text = "، ".join(studio_names) or "—"
-    rating_text = "بزرگسال" if media.get("isAdult") is True else "عمومی/نامشخص" if media.get("isAdult") is None else "عمومی"
+    rating_text = "بزرگسال" if media.get("isAdult") is True else "عمومی" if media.get("isAdult") is False else "—"
 
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title or '—')}",
         f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title or '—')}",
-        f"📺 <b>قسمت:</b> {_safe_caption_text(str(episode_number or '—'))}",
+        f"📺 <b>قسمت {_safe_caption_text(str(episode_number or '—'))}</b>",
         f"📚 <b>فصل:</b> {_safe_caption_text(season or '—')}",
         f"📅 <b>سال پخش:</b> {_safe_caption_text(str(year))}",
         f"🎞 <b>تعداد قسمت‌ها:</b> {_safe_caption_text(str(episode_count))}",
