@@ -315,7 +315,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
+          COMPLETED_CONCLUSION: ${{ (needs.prepare.result == 'success' && needs.publish.result == 'success') && 'success' || 'failure' }}
         run: |
           gh workflow run prepare-episodes.yml --ref main \
-            --field "completed_identity=$ANIMEHIGHBO_EPISODE_ID"
-          echo "Requested queue refill after worker $ANIMEHIGHBO_EPISODE_ID"
+            --field "completed_identity=$ANIMEHIGHBO_EPISODE_ID" \
+            --field "completed_conclusion=$COMPLETED_CONCLUSION"
+          echo "Requested queue refill after worker $ANIMEHIGHBO_EPISODE_ID ($COMPLETED_CONCLUSION)"

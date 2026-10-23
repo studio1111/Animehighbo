@@ -221,6 +221,37 @@ class UploadDateQueueTests(unittest.TestCase):
         self.assertEqual(result, entries)
 
 
+    def test_recent_failure_backoff_skips_only_the_failed_series(self):
+        from tools.episode_queue import exclude_recently_failed_series
+
+        entries = [
+            {"identity": "failed-episode", "series_key": "series-a"},
+            {"identity": "later-episode", "series_key": "series-a"},
+            {"identity": "healthy-episode", "series_key": "series-b"},
+        ]
+
+        selected = exclude_recently_failed_series(entries, {"failed-episode"})
+
+        self.assertEqual([entry["identity"] for entry in selected], ["healthy-episode"])
+
+    def test_recent_failure_backoff_never_drops_global_lock_owner(self):
+        from tools.episode_queue import exclude_recently_failed_series
+
+        entries = [
+            {"identity": "locked-episode", "series_key": "series-a"},
+            {"identity": "later-episode", "series_key": "series-a"},
+            {"identity": "healthy-episode", "series_key": "series-b"},
+        ]
+
+        selected = exclude_recently_failed_series(
+            entries, {"locked-episode"}, locked_identity="locked-episode"
+        )
+
+        self.assertEqual(
+            [entry["identity"] for entry in selected],
+            ["locked-episode", "healthy-episode"],
+        )
+
     def test_dispatch_group_contains_only_the_oldest_upload_date(self):
         entries = [
             {"identity": "old-a", "title": "Old A", "release_date": "2026-10-05"},

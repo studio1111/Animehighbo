@@ -351,6 +351,34 @@ def limit_to_available_slots(
     ][:available_slots]
 
 
+def exclude_recently_failed_series(
+    entries: list[dict],
+    failed_identities: set[str],
+    locked_identity: str | None = None,
+) -> list[dict]:
+    """Back off a recently failing series while keeping unrelated anime eligible.
+
+    A retained global publisher lock is the exception: its owner must resume first
+    to finish the existing poster thread without duplicating or interleaving posts.
+    """
+    failed = {identity for identity in failed_identities if isinstance(identity, str) and identity}
+    if not entries or not failed:
+        return entries
+    blocked_series = {
+        str(entry.get("series_key") or "")
+        for entry in entries
+        if str(entry.get("identity") or "") in failed and entry.get("series_key")
+    }
+    return [
+        entry for entry in entries
+        if str(entry.get("identity") or "") == locked_identity
+        or (
+            str(entry.get("identity") or "") not in failed
+            and str(entry.get("series_key") or "") not in blocked_series
+        )
+    ]
+
+
 def active_quota_cooldown(path: str | Path, now: datetime | None = None) -> str | None:
     """Return a future Gemini quota reset timestamp, if one is recorded."""
     cooldown_path = Path(path)
@@ -407,6 +435,29 @@ def main() -> int:
     # before selecting unrelated episodes, otherwise every publisher can wait forever.
     if entries or not cooldown_until:
         entries = prioritize_locked_episode(entries, state, args.publisher_lock)
+    locked_identity = ""
+    lock_path = Path(args.publisher_lock)
+    if lock_path.exists():
+        lock_payload = json.loads(lock_path.read_text(encoding="utf-8"))
+        if isinstance(lock_payload, dict):
+            locked_identity = str(lock_payload.get("identity") or "").strip()
+    try:
+        failed_raw = os.environ.get("ANIMEHIGHBO_RECENT_FAILED_IDENTITIES", "[]")
+        failed_value = json.loads(failed_raw)
+        if not isinstance(failed_value, list) or not all(isinstance(item, str) for item in failed_value):
+            raise ValueError("recent failed identities must be a JSON list of strings")
+        recent_failed_identities = set(failed_value)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise RuntimeError("Could not safely determine recent episode failures; refusing to dispatch.") from exc
+    before_failure_backoff = len(entries)
+    entries = exclude_recently_failed_series(
+        entries, recent_failed_identities, locked_identity=locked_identity or None
+    )
+    if len(entries) < before_failure_backoff:
+        print(
+            f"Temporarily backing off {before_failure_backoff - len(entries)} episode candidate(s) "
+            "from recently failing series; unrelated anime remain eligible."
+        )
     # Upload date is a priority only, not a barrier: later dates may run as soon
     # as their own series is eligible, without waiting for the slowest earlier date.
     # The repository-wide publisher lock keeps each poster and its three replies contiguous.
