@@ -8,6 +8,7 @@ import requests
 from tools.bilingual_subtitles import (
     Cue,
     GeminiSubtitleTranslator,
+    ArgosOfflineTranslator,
     ResilientSubtitleTranslator,
     get_english_to_persian_translator,
     choose_english_stream,
@@ -19,6 +20,20 @@ from tools.bilingual_subtitles import (
 
 
 class SubtitleUtilityTests(unittest.TestCase):
+    def test_offline_fallback_reports_progress_during_large_subtitle_files(self):
+        translator = ArgosOfflineTranslator.__new__(ArgosOfflineTranslator)
+        translator._translation = Mock()
+        translator._translation.translate.side_effect = lambda text: f"ترجمه {text}"
+        cues = [Cue(i, "00:00:01,000 --> 00:00:02,000", f"line {i}") for i in range(1, 102)]
+
+        with patch("builtins.print") as progress:
+            translated = translator.translate_batch(cues)
+
+        self.assertEqual(len(translated), 101)
+        progress_text = " ".join(str(call) for call in progress.call_args_list)
+        self.assertIn("100/101", progress_text)
+        self.assertIn("101/101", progress_text)
+
     def test_translation_and_review_report_progress_after_each_batch(self):
         translator = GeminiSubtitleTranslator("test-key")
         cues = [Cue(i, "00:00:01,000 --> 00:00:02,000", f"line {i}") for i in range(1, 102)]
