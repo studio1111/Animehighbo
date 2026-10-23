@@ -8,6 +8,11 @@ on:
         required: false
         default: ''
         type: string
+      completed_conclusion:
+        description: Outcome of the worker that just finished
+        required: false
+        default: ''
+        type: string
   push:
     branches: [main]
     paths:
@@ -57,30 +62,68 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           COMPLETED_IDENTITY: ${{ inputs.completed_identity || '' }}
+          COMPLETED_CONCLUSION: ${{ inputs.completed_conclusion || github.event.workflow_run.conclusion || '' }}
         run: |
           python - <<'PY'
           import json, os, subprocess
+          from datetime import datetime, timedelta, timezone
+
           repo = os.environ["GITHUB_REPOSITORY"]
+          prefix = "Animehighbo worker "
           active = set()
+          recent_failed = set()
+          now = datetime.now(timezone.utc)
+          cooldown = timedelta(minutes=15)
+
           for status in ("queued", "in_progress"):
-              result = subprocess.run(
-                  ["gh", "api", f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status={status}&per_page=100"],
-                  check=True, capture_output=True, text=True,
-              )
-              for run in json.loads(result.stdout).get("workflow_runs", []):
-                  title = str(run.get("display_title") or "")
-                  prefix = "Animehighbo worker "
-                  if title.startswith(prefix):
-                      identity = title[len(prefix):].strip()
-                      if identity:
-                          active.add(identity)
+            result = subprocess.run(
+              ["gh", "api", f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status={status}&per_page=100"],
+              check=True, capture_output=True, text=True,
+            )
+            for run in json.loads(result.stdout).get("workflow_runs", []):
+              title = str(run.get("display_title") or "")
+              if title.startswith(prefix):
+                identity = title[len(prefix):].strip()
+                if identity:
+                  active.add(identity)
+
+          # A failed prepare job has no publisher lock to resume. Give that series
+          # a short cooldown so a bad source cannot consume a worker slot forever.
+          result = subprocess.run(
+            ["gh", "api", f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100"],
+            check=True, capture_output=True, text=True,
+          )
+          for run in json.loads(result.stdout).get("workflow_runs", []):
+            if run.get("conclusion") not in {"failure", "timed_out"}:
+              continue
+            title = str(run.get("display_title") or "")
+            if not title.startswith(prefix):
+              continue
+            identity = title[len(prefix):].strip()
+            raw_updated = str(run.get("updated_at") or "")
+            try:
+              updated = datetime.fromisoformat(raw_updated.replace("Z", "+00:00"))
+            except ValueError:
+              continue
+            age = now - updated.astimezone(timezone.utc)
+            if identity and timedelta(0) <= age <= cooldown:
+              recent_failed.add(identity)
+
           completed_identity = os.environ.get("COMPLETED_IDENTITY", "").strip()
+          completed_conclusion = os.environ.get("COMPLETED_CONCLUSION", "").strip().lower()
           if completed_identity:
-              active.discard(completed_identity)
-              print(f"Releasing one worker slot for completed identity {completed_identity}.")
+            active.discard(completed_identity)
+            print(f"Releasing one worker slot for completed identity {completed_identity}.")
+            if completed_conclusion in {"failure", "timed_out"}:
+              recent_failed.add(completed_identity)
+
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
-              output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\n")
-          print(f"Found {len(active)} episode worker(s) already queued or running after accounting for the completed worker.")
+            output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\n")
+            output.write("ANIMEHIGHBO_RECENT_FAILED_IDENTITIES=" + json.dumps(sorted(recent_failed)) + "\n")
+          print(
+            f"Found {len(active)} active worker(s) and {len(recent_failed)} recently failed episode(s); "
+            f"recently failing series are backed off for {int(cooldown.total_seconds() // 60)} minutes."
+          )
           PY
       - name: Plan up to five independently publishable episodes
         id: plan
