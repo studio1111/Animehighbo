@@ -85,7 +85,7 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
         self.assertEqual(anime_japanese_title("Demon Slayer", {"title": {"english": "Demon Slayer"}}),
                          "Kimetsu no Yaiba")
 
-    def test_japanese_title_caption_labels_romaji_explicitly(self):
+    def test_caption_uses_native_japanese_title_when_available(self):
         metadata = {"title": {"english": "Demon Slayer", "romaji": "Kimetsu no Yaiba", "native": "鬼滅の刃"}}
         with patch("app.translate_title_to_persian", return_value="شیطان‌کش"), patch(
             "app.translate_anime_synopsis", return_value="خلاصهٔ آزمایشی"
@@ -93,8 +93,8 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
             caption = build_episode_caption("Demon Slayer - 01 (1080p)", "01", metadata=metadata)
         self.assertIn("English:", caption)
         self.assertIn("فارسی:", caption)
-        self.assertIn("日本語 (Romaji):", caption)
-        self.assertIn("Kimetsu no Yaiba", caption)
+        self.assertIn("日本語:", caption)
+        self.assertIn("鬼滅の刃", caption)
 
 
 class PreferredSourceTests(unittest.TestCase):
@@ -756,7 +756,7 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             "app.anime_japanese_title", return_value="Some Anime"
         ):
             caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
-        self.assertIn("خلاصهٔ این انیمه فعلاً در دسترس نیست.", caption)
+        self.assertIn("<blockquote expandable>📝 —</blockquote>", caption)
         self.assertIn("@Animehighbo", caption)
 
     def test_sequel_season_is_not_mislabeled_as_first_season(self):
@@ -835,7 +835,7 @@ class PosterFallbackTests(unittest.TestCase):
         response = Mock()
         response.raise_for_status.return_value = None
         response.json.return_value = {"ok": True, "result": {"message_id": 731}}
-        with patch.object(app.requests, "post", return_value=response) as post:
+        with patch.object(app, "search_poster_image_urls", return_value=[]), patch.object(app.requests, "post", return_value=response) as post:
             message_id = app.telegram_send_anime_poster(
                 "token", "@channel", "Moonlit Saga", "07",
                 {"coverImage": {}, "title": {"english": "Moonlit Saga", "romaji": "Tsuki no Monogatari"}},
@@ -853,6 +853,7 @@ class PosterFallbackTests(unittest.TestCase):
         response.raise_for_status.return_value = None
         response.json.return_value = {"ok": True, "result": {"message_id": 732}}
         with patch.object(app, "download_poster", side_effect=OSError("catalog image unreachable")), \
+             patch.object(app, "search_poster_image_urls", return_value=[]), \
              patch.object(app.requests, "post", return_value=response) as post:
             message_id = app.telegram_send_anime_poster(
                 "token", "@channel", "Moonlit Saga", "07",
