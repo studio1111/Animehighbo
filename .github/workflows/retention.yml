@@ -17,6 +17,7 @@ on:
       - Sync RSS input to config
       - Build authorized episode archive catalog
     types: [completed]
+    branches: [main]
 
 permissions:
   actions: write
