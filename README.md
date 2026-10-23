@@ -52,6 +52,7 @@
 - `GEMINI_MODEL`: نام مدل Gemini.
 - `ANIMEHIGHBO_MAX_FILE_SIZE_MB`: سقف حجم، اگر به‌جای Secret تنظیم شده باشد.
 - `ANIMEHIGHBO_DRY_RUN`: مقدار `true` برای آزمایش بدون ارسال، یا `false` برای انتشار زنده.
+- `LOG_LEVEL`: اختیاری؛ سطح گزارش‌گیری مثل `INFO` (پیش‌فرض) یا `DEBUG` برای مشاهدهٔ مراحل دانلود، زیرنویس، رمزگذاری و انتشار.
 - `TELEGRAM_LOCAL_API`: مقدار `true` برای استفاده از Local Bot API.
 - `TELEGRAM_API_BASE_URL`: آدرس جایگزین Telegram Bot API در صورت نیاز.
 
