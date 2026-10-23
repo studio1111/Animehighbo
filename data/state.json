@@ -3647,6 +3647,47 @@
       "source_quality": "1080p",
       "published_at": 1792792093,
       "release_date": "2026-10-14"
+    },
+    "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:1080p": {
+      "title": "Black Clover",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f7aeb77cb14b506b1249d67dc57dadaa6f2f1ca25a3ca4315f7dbbd8433be412",
+      "message_id": "410",
+      "published_at": 1792793117,
+      "bilingual_subtitles": true
+    },
+    "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:720p": {
+      "title": "Black Clover",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1a15f06fc33be2ec1f424b90c4aee28e6d61115081da16246a6055d73654328d",
+      "message_id": "411",
+      "published_at": 1792793125,
+      "bilingual_subtitles": true
+    },
+    "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:480p": {
+      "title": "Black Clover",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "fb5ab3b7d54adf8d5cf4177b0ecde3ad915802775012dc1657b659668cbf5356",
+      "message_id": "412",
+      "published_at": 1792793130,
+      "bilingual_subtitles": true
+    },
+    "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc": {
+      "title": "Black Clover",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792793130,
+      "release_date": "2026-10-17"
     }
   },
   "seen": {
@@ -3916,7 +3957,10 @@
     "0887c3638475196cd0f220e00cc40d276f9cf32c974a4440b978dcb434805cb1": "b6fb98bffff8be24dbeb1b8e2e38deeac0a3139f5edaebaf3a41fd1ef3d70b3b:480p",
     "120cf757a2819b325581dcd37fd7922a58b5f285cc72eb09c217bf9ef0f76d5a": "cdda621e059e9a3819faacef0df95ce01cc33e8688ffb4b3bfb2e4ebf9ea9583:1080p",
     "9192fe003583c708d6e5ca65b5be6d8f1a0b44352fac1d52e0febbf65bbe505b": "cdda621e059e9a3819faacef0df95ce01cc33e8688ffb4b3bfb2e4ebf9ea9583:720p",
-    "5d6fc8d505206a0eca5e8c131b804d8a4de549ebc3287bee1415ac6eeef7e6f3": "cdda621e059e9a3819faacef0df95ce01cc33e8688ffb4b3bfb2e4ebf9ea9583:480p"
+    "5d6fc8d505206a0eca5e8c131b804d8a4de549ebc3287bee1415ac6eeef7e6f3": "cdda621e059e9a3819faacef0df95ce01cc33e8688ffb4b3bfb2e4ebf9ea9583:480p",
+    "f7aeb77cb14b506b1249d67dc57dadaa6f2f1ca25a3ca4315f7dbbd8433be412": "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:1080p",
+    "1a15f06fc33be2ec1f424b90c4aee28e6d61115081da16246a6055d73654328d": "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:720p",
+    "fb5ab3b7d54adf8d5cf4177b0ecde3ad915802775012dc1657b659668cbf5356": "91508d28e1eb94fedfbde7c58fbef49e22d46d70e3e72e68569808dc52448dfc:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -4540,6 +4584,13 @@
       "message_id": "405",
       "published_at": 1792792077,
       "release_date": "2026-10-14"
+    },
+    "archive:cc916e32c918d3b7bbc7b250692679e3a61d348e430a0d7c97fea8cf495dce99": {
+      "title": "Black Clover",
+      "episode": "173",
+      "message_id": "409",
+      "published_at": 1792793100,
+      "release_date": "2026-10-17"
     }
   }
 }
