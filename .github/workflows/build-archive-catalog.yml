@@ -11,12 +11,12 @@ on:
   workflow_dispatch:
     inputs:
       since:
-        description: "Earliest release date (YYYY-MM-DD)"
+        description: "Earliest episode release date to include (YYYY-MM-DD)"
         required: true
         default: "2026-10-01"
         type: string
       max_pages:
-        description: "Maximum SubsPlease release pages to inspect"
+        description: "Maximum SubsPlease release pages to inspect for eligible anime"
         required: true
         default: "250"
         type: string
