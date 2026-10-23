@@ -536,11 +536,16 @@ class ArgosOfflineTranslator:
 
     def translate_batch(self, cues: list[Cue]) -> list[Cue]:
         translated = []
-        for cue in cues:
+        for position, cue in enumerate(cues, start=1):
             result = self._translation.translate(cue.text)
             if not isinstance(result, str) or not result.strip():
                 raise RuntimeError(f"Offline translation returned an empty result at cue {cue.index}.")
             translated.append(Cue(cue.index, cue.timing, result.strip()))
+            if position % 100 == 0 or position == len(cues):
+                print(
+                    f"Offline subtitle translation progress: {position}/{len(cues)} cues.",
+                    flush=True,
+                )
         return translated
 
     def translate(self, text: str) -> str:

@@ -228,7 +228,10 @@ class UploadDateQueueTests(unittest.TestCase):
             {"identity": "new-c", "title": "New C", "release_date": "2026-10-06"},
         ]
 
-        selected = select_upload_date_group(entries, "2026-10-05", {"published": {}})
+        with tempfile.TemporaryDirectory() as directory:
+            selected = select_upload_date_group(
+                entries, "2026-10-05", {"published": {}}, f"{directory}/publisher.lock"
+            )
 
         self.assertEqual([item["identity"] for item in selected], ["old-a", "old-b"])
 
