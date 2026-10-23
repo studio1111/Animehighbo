@@ -1597,6 +1597,47 @@
       "source_quality": "1080p",
       "published_at": 1792760648,
       "release_date": "2026-10-10"
+    },
+    "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:1080p": {
+      "title": "Zombie Sagashitemasu",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d27f20a3aac5ea5318577c4d75cc4fff5ff3036358b8cf6d1d242a2356ef156c",
+      "message_id": "210",
+      "published_at": 1792761236,
+      "bilingual_subtitles": true
+    },
+    "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:720p": {
+      "title": "Zombie Sagashitemasu",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b6425d5010fd9a6f4084876bcb9ec2aaa7c3d2a5d4386a78566acc91cfff7d75",
+      "message_id": "211",
+      "published_at": 1792761241,
+      "bilingual_subtitles": true
+    },
+    "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:480p": {
+      "title": "Zombie Sagashitemasu",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "90a07294fa120e75bbf7166fc2ade9fde71ebed7e1ab8ad1f1e217b7ab722ef5",
+      "message_id": "212",
+      "published_at": 1792761244,
+      "bilingual_subtitles": true
+    },
+    "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848": {
+      "title": "Zombie Sagashitemasu",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792761244,
+      "release_date": "2026-10-10"
     }
   },
   "seen": {
@@ -1716,7 +1757,10 @@
     "c87625b5432c2353882751812bc0f5c3b9a530304fa4c4a8e576d34b1f3deaac": "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3:480p",
     "b0458cf583bd8d945b31c7b6e565966cc474a1fd3bac82915c10f9850da042d0": "8f9c743da09161241cf17dd19c072bfb70a69b93909a7acd56568d6b87b26d89:1080p",
     "aeb0d6a3e8f3199c22b2304643e5df9091b98c6c34e3b8b4d748ebe7aedd8104": "8f9c743da09161241cf17dd19c072bfb70a69b93909a7acd56568d6b87b26d89:720p",
-    "3d87d3cef1d0f2849192bf45c246e750324843b77552ad5a3708fd0df9cb2378": "8f9c743da09161241cf17dd19c072bfb70a69b93909a7acd56568d6b87b26d89:480p"
+    "3d87d3cef1d0f2849192bf45c246e750324843b77552ad5a3708fd0df9cb2378": "8f9c743da09161241cf17dd19c072bfb70a69b93909a7acd56568d6b87b26d89:480p",
+    "d27f20a3aac5ea5318577c4d75cc4fff5ff3036358b8cf6d1d242a2356ef156c": "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:1080p",
+    "b6425d5010fd9a6f4084876bcb9ec2aaa7c3d2a5d4386a78566acc91cfff7d75": "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:720p",
+    "90a07294fa120e75bbf7166fc2ade9fde71ebed7e1ab8ad1f1e217b7ab722ef5": "2f43b77e50f7119de8cc9e9c577237894fff07f9d985ab4360c1c83dd3730848:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -1989,6 +2033,13 @@
       "episode": "03",
       "message_id": "205",
       "published_at": 1792760627,
+      "release_date": "2026-10-10"
+    },
+    "archive:6ca1da72c693a7dcba883c78d758ea3258928a4fce074dc63bcbc93c0bf8e1b3": {
+      "title": "Zombie Sagashitemasu",
+      "episode": "02",
+      "message_id": "209",
+      "published_at": 1792761229,
       "release_date": "2026-10-10"
     }
   }
