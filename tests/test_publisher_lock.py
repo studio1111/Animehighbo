@@ -32,6 +32,10 @@ def github_state_response(identity, complete=True):
 
 
 class PublisherLockTests(unittest.TestCase):
+    def test_lock_path_is_always_repository_wide_even_if_legacy_env_is_set(self):
+        lock = load_publisher_lock(self)
+        self.assertEqual(lock.LOCK_PATH, "data/publisher.lock")
+
     def test_acquire_creates_lock_when_no_episode_owns_it(self):
         lock = load_publisher_lock(self)
         missing = Mock(status_code=404)
