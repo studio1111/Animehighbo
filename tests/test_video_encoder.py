@@ -88,6 +88,17 @@ class VideoEncoderTests(unittest.TestCase):
         self.assertIn("scale=-2:720:flags=lanczos", command[command.index("-filter_complex") + 1])
         self.assertIn("scale=-2:480:flags=lanczos", command[command.index("-filter_complex") + 1])
 
+    def test_multi_quality_encode_emits_periodic_progress_updates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            outputs = {q: root / f"{q}.mkv" for q in ("1080p", "720p", "480p")}
+            command = build_ffmpeg_multi_command(root / "source.mkv", outputs)
+
+        self.assertIn("-progress", command)
+        self.assertEqual(command[command.index("-progress") + 1], "pipe:1")
+        self.assertIn("-stats_period", command)
+        self.assertEqual(command[command.index("-stats_period") + 1], "30")
+
     def test_rejects_unsupported_output_height(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
