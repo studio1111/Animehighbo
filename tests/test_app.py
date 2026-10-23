@@ -773,3 +773,38 @@ class SubsPleaseConnectionParsingTests(unittest.TestCase):
             ("Bleach - Sennen Kessen Hen", "49"),
         )
 
+
+
+class PosterFallbackTests(unittest.TestCase):
+    def test_missing_poster_publishes_text_and_returns_anchor_message_id(self):
+        from unittest.mock import Mock, patch
+        import app
+
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"ok": True, "result": {"message_id": 731}}
+        with patch.object(app.requests, "post", return_value=response) as post:
+            message_id = app.telegram_send_anime_poster(
+                "token", "@channel", "Moonlit Saga", "07",
+                {"coverImage": {}, "title": {"english": "Moonlit Saga", "romaji": "Tsuki no Monogatari"}},
+            )
+        self.assertEqual(message_id, "731")
+        self.assertIn("/sendMessage", post.call_args.args[0])
+        self.assertIn("text", post.call_args.kwargs["data"])
+        self.assertNotIn("files", post.call_args.kwargs)
+
+    def test_unavailable_poster_download_falls_back_to_text(self):
+        from unittest.mock import Mock, patch
+        import app
+
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"ok": True, "result": {"message_id": 732}}
+        with patch.object(app, "download_poster", side_effect=OSError("catalog image unreachable")), \
+             patch.object(app.requests, "post", return_value=response) as post:
+            message_id = app.telegram_send_anime_poster(
+                "token", "@channel", "Moonlit Saga", "07",
+                {"coverImage": {"extraLarge": "https://cdn.example.org/poster.jpg"}},
+            )
+        self.assertEqual(message_id, "732")
+        self.assertIn("/sendMessage", post.call_args.args[0])

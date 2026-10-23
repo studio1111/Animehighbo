@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     concurrency:
-      group: animehighbo-publisher-series-${{ inputs.series_key }}
+      group: animehighbo-publisher-global-v1
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
@@ -193,9 +193,10 @@ jobs:
           ANIMEHIGHBO_EPISODE_ID: ${{ inputs.identity }}
           ANIMEHIGHBO_SERIES_KEY: ${{ inputs.series_key }}
         run: |
-          lock_hash=$(printf '%s' "$ANIMEHIGHBO_SERIES_KEY" | sha256sum | cut -d' ' -f1)
-          echo "ANIMEHIGHBO_PUBLISH_LOCK_PATH=data/publisher-locks/${lock_hash}.lock" >> "$GITHUB_ENV"
-          export ANIMEHIGHBO_PUBLISH_LOCK_PATH="data/publisher-locks/${lock_hash}.lock"
+          # A single repository-wide lock is required: per-series locks allow
+          # two different anime to interleave their poster and reply videos.
+          echo "ANIMEHIGHBO_PUBLISH_LOCK_PATH=data/publisher.lock" >> "$GITHUB_ENV"
+          export ANIMEHIGHBO_PUBLISH_LOCK_PATH="data/publisher.lock"
           python tools/publisher_lock.py acquire --identity "$ANIMEHIGHBO_EPISODE_ID"
       - name: Refresh publication state after acquiring the global lock
         run: |
