@@ -215,14 +215,17 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
             valid_dates = [item for item in dates if item is not None]
             if valid_dates and max(valid_dates) < cutoff:
                 break
+            if page_number % 10 == 0:
+                LOG.info("Scanned %d latest-release pages; found %d candidate show pages.", page_number, len(show_pages))
             time.sleep(0.2)
+        LOG.info("Latest-release scan complete: %d candidate show pages.", len(show_pages))
         for slug in REQUIRED_SHOW_SLUGS:
             page_url = _show_page_url({"page": slug})
             if page_url:
                 show_pages.setdefault(page_url, {"show": slug})
         manifest = []
         series = []
-        for page_url, sample in show_pages.items():
+        for show_index, (page_url, sample) in enumerate(show_pages.items(), 1):
             try:
                 show_title, episodes = _fetch_show_episodes(client, page_url)
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
@@ -232,7 +235,10 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
                     series.append((first_date, show_title.casefold(), show_title, selected))
             except (requests.RequestException, ValueError, KeyError) as exc:
                 LOG.warning("Skipping show page %s: %s", page_url, exc)
+            if show_index % 10 == 0:
+                LOG.info("Processed %d/%d candidate show pages; %d have eligible episodes.", show_index, len(show_pages), len(series))
             time.sleep(0.2)
+        LOG.info("Show catalogue scan complete: %d eligible series.", len(series))
         for _, _, show_title, selected in sorted(series):
             for row in selected:
                 row.pop("_episode", None)
