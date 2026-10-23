@@ -814,7 +814,10 @@ def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_typ
     if not isinstance(result, dict) or result.get("ok") is not True:
         description = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
         raise RuntimeError(f"Telegram sendPhoto failed: {description}")
-    return str(result.get("result", {}).get("message_id", ""))
+    message_id = (result.get("result") or {}).get("message_id")
+    if message_id is None:
+        raise RuntimeError("Telegram sendPhoto succeeded without a message ID.")
+    return str(message_id)
 
 def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id: str) -> int:
     """Publish episode links with downloaded posters, without downloading episode videos."""
