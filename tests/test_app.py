@@ -758,6 +758,10 @@ class PersianAnimeCaptionTests(unittest.TestCase):
             caption = build_episode_caption("Some Anime Episode 3", "3", metadata={})
         self.assertIn("<blockquote expandable>📝 —</blockquote>", caption)
         self.assertIn("@Animehighbo", caption)
+        self.assertIn("سال پخش:</b> —", caption)
+        self.assertIn("ژانر:</b> —", caption)
+        self.assertIn("امتیاز:</b> —", caption)
+        self.assertIn("رده‌بندی:</b> —", caption)
 
     def test_sequel_season_is_not_mislabeled_as_first_season(self):
         from unittest.mock import patch
@@ -818,6 +822,18 @@ class SubsPleaseConnectionParsingTests(unittest.TestCase):
 
 
 class PosterFallbackTests(unittest.TestCase):
+    @patch("app.requests.get")
+    def test_google_image_search_extracts_original_https_image_urls(self, get):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.url = "https://www.google.com/search?tbm=isch&q=Moonlit+Saga"
+        response.text = '<div>imgurl=https%3A%2F%2Fcdn.example.org%2Fmoonlit-poster.jpg</div>'
+        get.return_value = response
+        self.assertEqual(
+            app.search_poster_image_urls("Moonlit Saga"),
+            ["https://cdn.example.org/moonlit-poster.jpg"],
+        )
+
     def test_cli_main_configures_info_logging_before_running(self):
         with patch.object(app.logging, "basicConfig") as configure_logging, patch.object(
             app, "run", return_value=0
