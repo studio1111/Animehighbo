@@ -18,7 +18,7 @@ on:
       max_pages:
         description: "Maximum SubsPlease release pages to inspect for eligible anime"
         required: true
-        default: "250"
+        default: "100"
         type: string
 
 permissions:
@@ -44,7 +44,7 @@ jobs:
       - name: Generate archive manifest
         env:
           ARCHIVE_SINCE: ${{ inputs.since || '2026-10-01' }}
-          ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '250' }}
+          ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
         run: |
           python tools/archive_catalog.py \
             --since "$ARCHIVE_SINCE" \
