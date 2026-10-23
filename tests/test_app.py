@@ -382,6 +382,33 @@ class TorrentSourceConfigTests(unittest.TestCase):
         source["authorized_for_redistribution"] = False
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
+    def test_link_mode_does_not_duplicate_post_after_ambiguous_photo_timeout(self):
+        config = {
+            "mode": "links",
+            "feeds": [{"name": "Sample", "url": "https://media.example.org/feed.xml"}],
+            "dry_run": False,
+            "state_file": "unused-state.json",
+            "request_timeout_seconds": 30,
+            "poll_limit_per_feed": 30,
+        }
+        state = {"published": {}, "seen": {}, "posters": {}}
+        feed_response = Mock()
+        feed_response.text = "<rss/>"
+
+        with patch("app.requests.Session") as session_factory, \
+             patch("app.parse_episode_feed", return_value=[{
+                 "title": "Example Anime - 01",
+                 "url": "https://media.example.org/episode/1",
+                 "image_url": "https://media.example.org/poster.jpg",
+             }]), \
+             patch("app.download_poster", return_value=(b"image bytes", "image/jpeg")), \
+             patch("app.telegram_send_episode", side_effect=app.requests.Timeout("response lost")), \
+             patch("app.requests.post") as text_post:
+            session_factory.return_value.get.return_value = feed_response
+            with self.assertRaisesRegex(RuntimeError, "failure"):
+                app.run_link_mode(config, state, False, "token", "@channel")
+            text_post.assert_not_called()
+
     def test_link_mode_feed_failure_returns_nonzero_for_actions(self):
         config = {
             "mode": "links",
