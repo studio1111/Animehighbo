@@ -28,6 +28,6 @@
   "h265_bitrate_720": "900k",
   "h265_bitrate_480": "500k",
   "archive_mode": false,
-  "archive_cutoff_date": "2026-09-01",
+  "archive_cutoff_date": "2026-10-01",
   "archive_manifest": "data/archive_manifest.json"
 }
