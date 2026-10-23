@@ -208,7 +208,7 @@ def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> l
     """Find likely anime posters through Google Images, then Bing Images as fallback."""
     from urllib.parse import parse_qs, unquote, urlparse
 
-    query = re.sub(r"\\s+", " ", str(title or "")).strip()
+    query = re.sub(r"\s+", " ", str(title or "")).strip()
     if not query:
         return []
     candidates = []
@@ -230,13 +230,13 @@ def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> l
             # Google exposes original images as imgurl query values or JSON "ou" fields;
             # Bing uses murl. HTML is untrusted, so download_poster validates each candidate.
             extracted = []
-            for raw in re.findall(r'(?:imgurl=|["\\'](?:ou|murl)["\\']\\s*:\\s*["\\'])(https?[^&"\\'<> ]+)', document, re.I):
+            for raw in re.findall(r"""(?:imgurl=|["'](?:ou|murl)["']\s*:\s*["'])(https?[^&"'<> ]+)""", document, re.I):
                 extracted.append(raw)
-            for raw in re.findall(r'imgurl=([^&"\\']+)', document, re.I):
+            for raw in re.findall(r"""imgurl=([^&"']+)""", document, re.I):
                 extracted.append(unquote(raw))
             for raw in extracted:
-                raw = html.unescape(raw).replace(r"\\u0026", "&").replace(r"\\/", "/")
-                raw = raw.replace(r"\\u003d", "=").replace(r"\\u003a", ":")
+                raw = html.unescape(raw).replace("\\u0026", "&").replace("\\/", "/")
+                raw = raw.replace("\\u003d", "=").replace("\\u003a", ":")
                 parsed = urlparse(raw)
                 if parsed.scheme == "https" and parsed.hostname and parsed.hostname not in {
                     "google.com", "www.google.com", "bing.com", "www.bing.com"
@@ -703,12 +703,12 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     synopsis_open = "<blockquote expandable>📝 "
     synopsis_close = "</blockquote>"
     footer = "@Animehighbo"
-    synopsis = re.sub(r"\\s+", " ", str(synopsis or "")).strip() or "—"
+    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip() or "—"
 
     # Respect Telegram's caption limit while preserving the three titles, episode,
     # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
     while True:
-        caption = "\\n".join(lines + [synopsis_open + _safe_caption_text(synopsis) + synopsis_close, footer])
+        caption = "\n".join(lines + [synopsis_open + _safe_caption_text(synopsis) + synopsis_close, footer])
         if len(caption) <= 1000:
             return caption
         overflow = len(caption) - 1000
@@ -775,18 +775,27 @@ def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: st
     image_data = None
     image_type = ""
     attempted = set()
-    candidates = ([str(image_url)] if image_url else []) + search_poster_image_urls(title)
+    candidates = [str(image_url)] if image_url else []
     for candidate in candidates:
-        candidate = str(candidate or "").strip()
-        if not candidate or candidate in attempted:
-            continue
-        attempted.add(candidate)
         try:
             image_data, image_type = download_poster(candidate)
             image_url = candidate
             break
         except Exception as exc:
-            LOG.warning("Poster candidate failed for %r; trying another source: %s", title, exc)
+            LOG.warning("Catalog poster failed for %r; searching alternate sources: %s", title, exc)
+    if not image_data:
+        candidates = search_poster_image_urls(title)
+        for candidate in candidates:
+            candidate = str(candidate or "").strip()
+            if not candidate or candidate in attempted:
+                continue
+            attempted.add(candidate)
+            try:
+                image_data, image_type = download_poster(candidate)
+                image_url = candidate
+                break
+            except Exception as exc:
+                LOG.warning("Web poster candidate failed for %r; trying another source: %s", title, exc)
 
     if image_data:
         # A transport timeout can mean Telegram accepted the photo, so never send a
