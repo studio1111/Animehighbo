@@ -409,7 +409,7 @@ def main() -> int:
         entries = prioritize_locked_episode(entries, state, args.publisher_lock)
     # Upload date is a priority only, not a barrier: later dates may run as soon
     # as their own series is eligible, without waiting for the slowest earlier date.
-    # The per-series publisher lock still preserves each anime's episode order.
+    # The repository-wide publisher lock keeps each poster and its three replies contiguous.
     if entries:
         upload_date = min(_day(entry.get("release_date")) for entry in entries)
     # Do not redispatch work that already has a queued or running worker. The

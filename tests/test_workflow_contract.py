@@ -28,7 +28,7 @@ class WorkflowContractTests(unittest.TestCase):
 
     def test_per_series_publisher_lock_keeps_each_poster_and_three_files_contiguous(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
-        acquire = workflow.index("Acquire per-series Telegram publisher lock")
+        acquire = workflow.index("Acquire global Telegram publisher lock")
         refresh = workflow.index("Refresh publication state after acquiring the global lock")
         publish = workflow.index("Publish the episode poster and three reply videos")
         persist = workflow.index("Persist duplicate-prevention state without overwriting parallel workers")
@@ -68,9 +68,9 @@ class WorkflowContractTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
-        self.assertIn("group: animehighbo-publisher-global-v1", workflow)
+        self.assertNotIn("concurrency:", workflow.split("  publish:", 1)[1].split("  refill:", 1)[0])
         self.assertIn("ANIMEHIGHBO_PUBLISH_LOCK_PATH=data/publisher.lock", workflow)
-        self.assertNotIn("publisher-series-${{ inputs.series_key }}", workflow)
+        self.assertNotIn("publisher-series-" + "${{ inputs.series_key }}", workflow)
         self.assertIn("git fetch origin main", workflow)
         self.assertIn("if key not in current_section:", workflow)
         self.assertIn("git push origin HEAD:main", workflow)

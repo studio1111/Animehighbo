@@ -125,9 +125,6 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 360
-    concurrency:
-      group: animehighbo-publisher-global-v1
-      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -185,7 +182,7 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Acquire per-series Telegram publisher lock
+      - name: Acquire global Telegram publisher lock
         id: acquire_lock
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
