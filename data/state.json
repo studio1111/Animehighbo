@@ -2130,6 +2130,47 @@
       "source_quality": "1080p",
       "published_at": 1792768488,
       "release_date": "2026-10-11"
+    },
+    "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:1080p": {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "399e31eb938057ca3c00a7747a51bb5f8114d4c07cecee56f8d2871223f0dcdb",
+      "message_id": "262",
+      "published_at": 1792768560,
+      "bilingual_subtitles": true
+    },
+    "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:720p": {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b64dc7a0ac5d22c51d2bcd07f8b14ba1355fa4e3781e63bcc175afc25fccba8b",
+      "message_id": "263",
+      "published_at": 1792768566,
+      "bilingual_subtitles": true
+    },
+    "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:480p": {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b6fa61d3cc9d6915717caedeb65dbd3de9c82d1e43ce8678307f45e646cee5d0",
+      "message_id": "264",
+      "published_at": 1792768569,
+      "bilingual_subtitles": true
+    },
+    "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34": {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792768569,
+      "release_date": "2026-10-12"
     }
   },
   "seen": {
@@ -2288,7 +2329,10 @@
     "c9a6d63af79bf4b9e0ab6db7f1cd51267eba0863ebb1aad2e01aba6a4c78904f": "b783d7967e93f1a756aa3f5ea0b61c05c12cb03944a44e7c111a5f870792b9b7:480p",
     "b41c23b50c01128204a601dba13a977be7b726d953d1d39cb5ab5d8552ddac0b": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:1080p",
     "0c5b7b579e1533548688d46185f72bbaa6093dfb560613270eb31b6355f4240b": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:720p",
-    "ab847d6b728bd8f3769931a7cd30cd87f9e00bfa958525960848eaa08318ca82": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:480p"
+    "ab847d6b728bd8f3769931a7cd30cd87f9e00bfa958525960848eaa08318ca82": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:480p",
+    "399e31eb938057ca3c00a7747a51bb5f8114d4c07cecee56f8d2871223f0dcdb": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:1080p",
+    "b64dc7a0ac5d22c51d2bcd07f8b14ba1355fa4e3781e63bcc175afc25fccba8b": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:720p",
+    "b6fa61d3cc9d6915717caedeb65dbd3de9c82d1e43ce8678307f45e646cee5d0": "105e963dbe203e7498ce12524c31d4c361d1041be63ec1f7f051a20aacf8be34:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -2653,6 +2697,13 @@
       "message_id": "257",
       "published_at": 1792768470,
       "release_date": "2026-10-11"
+    },
+    "archive:255c533c0a5a206b9aa05f34965484aa72d64063256e4e27444e44f54cee2861": {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "episode": "02",
+      "message_id": "261",
+      "published_at": 1792768554,
+      "release_date": "2026-10-12"
     }
   }
 }
