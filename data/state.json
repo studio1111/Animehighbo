@@ -3852,6 +3852,47 @@
       "source_quality": "1080p",
       "published_at": 1792794719,
       "release_date": "2026-10-17"
+    },
+    "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:1080p": {
+      "title": "Romelia Senki",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "07d6cd77ff8a8d80dfe30e53549bfae8e8c436be781a9593e250f39aa187caed",
+      "message_id": "430",
+      "published_at": 1792796767,
+      "bilingual_subtitles": true
+    },
+    "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:720p": {
+      "title": "Romelia Senki",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "da30f160656571e3a7e6d0a7afe2194e73042a177c1d1f51c110bd53afe5f64f",
+      "message_id": "431",
+      "published_at": 1792796773,
+      "bilingual_subtitles": true
+    },
+    "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:480p": {
+      "title": "Romelia Senki",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f2ae4039402d0439d2e6949a1671ec160213bfbf78f75e17654f6c7b1dbcc6a4",
+      "message_id": "432",
+      "published_at": 1792796776,
+      "bilingual_subtitles": true
+    },
+    "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e": {
+      "title": "Romelia Senki",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792796776,
+      "release_date": "2026-10-17"
     }
   },
   "seen": {
@@ -4136,7 +4177,10 @@
     "d8a3f944ff896f1908d0564586431d69a9c6cfd3d457a42defa56722a89d5b26": "d1df2a249d23dad2205e8459bc3796637e7fa59d8bfa71114c071d819f0bf5a0:480p",
     "53364b2ada5fc611dc42a54e81aed863fb86e99a2253303eaecd7060f3abe0db": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:1080p",
     "f86b44aae38ab8edae189da13ea4edb5805c2f4d2469755250b6ddbe6779a36d": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:720p",
-    "cfdbf7a889efdc1906376135551ddfe2752b06535962c45621532e7ca674ee7f": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:480p"
+    "cfdbf7a889efdc1906376135551ddfe2752b06535962c45621532e7ca674ee7f": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:480p",
+    "07d6cd77ff8a8d80dfe30e53549bfae8e8c436be781a9593e250f39aa187caed": "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:1080p",
+    "da30f160656571e3a7e6d0a7afe2194e73042a177c1d1f51c110bd53afe5f64f": "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:720p",
+    "f2ae4039402d0439d2e6949a1671ec160213bfbf78f75e17654f6c7b1dbcc6a4": "35135dbfa8aaecdadf21a135d56cef8cfb967bb4b1a111d352caffcfb079313e:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -4794,6 +4838,13 @@
       "episode": "02",
       "message_id": "425",
       "published_at": 1792794702,
+      "release_date": "2026-10-17"
+    },
+    "archive:df5ac5f5e9e6b6c4bb4db9802d52cad0c5fdc1a20e5a86b0403d6a1cc909d44c": {
+      "title": "Romelia Senki",
+      "episode": "03",
+      "message_id": "429",
+      "published_at": 1792796755,
       "release_date": "2026-10-17"
     }
   }
