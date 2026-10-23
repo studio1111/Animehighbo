@@ -83,42 +83,41 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         )
         self.assertEqual([row["release_date"] for row in merged], ["2026-10-07", "2026-10-10"])
 
-    def test_old_series_without_episode_one_is_excluded_from_fresh_archive(self):
+    def test_ongoing_series_keeps_all_episodes_released_since_cutoff(self):
         rows = [
             {"title": "Long Runner - 100", "episode": "100", "release_date": "2026-08-28T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
-            {"title": "Long Runner - 101", "episode": "101", "release_date": "2026-09-04T10:00:00Z",
+            {"title": "Long Runner - 101", "episode": "101", "release_date": "2026-10-04T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:bbbb"}]},
-            {"title": "Long Runner - 102", "episode": "102", "release_date": "2026-09-11T10:00:00Z",
+            {"title": "Long Runner - 102", "episode": "102", "release_date": "2026-10-11T10:00:00Z",
              "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:cccc"}]},
         ]
-        selected = select_show_episodes("Long Runner", rows, date(2026, 9, 1))
-        self.assertEqual(selected, [], "Do not start an archive at an arbitrary late-season episode.")
+        selected = select_show_episodes("Long Runner", rows, date(2026, 10, 1))
+        self.assertEqual([row["episode"] for row in selected], [101, 102])
+        self.assertEqual([row["release_date"] for row in selected], ["2026-10-04", "2026-10-11"])
 
-
-    def test_old_season_is_excluded_when_episode_one_predates_cutoff(self):
+    def test_season_started_before_cutoff_includes_only_post_cutoff_episodes(self):
         rows = [
-            {"title": "Current Season - 01", "episode": "1", "release_date": "2026-08-28T10:00:00Z",
+            {"title": "Current Season - 01", "episode": "1", "release_date": "2026-09-28T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
-            {"title": "Current Season - 02", "episode": "2", "release_date": "2026-09-04T10:00:00Z",
+            {"title": "Current Season - 02", "episode": "2", "release_date": "2026-10-05T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:bbbb"}]},
-            {"title": "Current Season - 03", "episode": "3", "release_date": "2026-09-11T10:00:00Z",
+            {"title": "Current Season - 03", "episode": "3", "release_date": "2026-10-12T10:00:00Z",
              "downloads": [{"res": "720", "magnet": "magnet:?xt=urn:btih:cccc"}]},
         ]
-        self.assertEqual(
-            select_show_episodes("Current Season", rows, date(2026, 9, 1)),
-            [],
-            "Do not expand an older season just because later episodes appeared after the cutoff.",
-        )
+        selected = select_show_episodes("Current Season", rows, date(2026, 10, 1))
+        self.assertEqual([row["episode"] for row in selected], [2, 3])
 
-    def test_missing_episode_number_or_missing_1080p_and_720p_source_is_not_queued(self):
+    def test_missing_source_skips_only_that_episode_and_keeps_later_releases(self):
         rows = [
-            {"title": "Gap Show - 01", "episode": "1", "release_date": "2026-09-05T10:00:00Z",
+            {"title": "Gap Show - 01", "episode": "1", "release_date": "2026-10-05T10:00:00Z",
              "downloads": [{"res": "480", "magnet": "magnet:?xt=urn:btih:aaaa"}]},
-            {"title": "Gap Show - 03", "episode": "3", "release_date": "2026-09-19T10:00:00Z",
+            {"title": "Gap Show - 03", "episode": "3", "release_date": "2026-10-19T10:00:00Z",
              "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:cccc"}]},
         ]
-        self.assertEqual(select_show_episodes("Gap Show", rows, date(2026, 9, 1)), [])
+        selected = select_show_episodes("Gap Show", rows, date(2026, 10, 1))
+        self.assertEqual([row["episode"] for row in selected], [3])
+        self.assertEqual(selected[0]["release_date"], "2026-10-19")
 
 
 if __name__ == "__main__":
