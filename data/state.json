@@ -3073,6 +3073,47 @@
       "source_quality": "1080p",
       "published_at": 1792783825,
       "release_date": "2026-10-04"
+    },
+    "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:1080p": {
+      "title": "Meitantei Precure!",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bedc38c27c0213a9d6403de659d131ca94b1da2fa2487e7c6146c33cb9a9e056",
+      "message_id": "354",
+      "published_at": 1792784000,
+      "bilingual_subtitles": true
+    },
+    "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:720p": {
+      "title": "Meitantei Precure!",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7e0acf6d3e76843819260e6284e4e356b4c49d446b0888f7ff8bd3d75ef6a998",
+      "message_id": "355",
+      "published_at": 1792784006,
+      "bilingual_subtitles": true
+    },
+    "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:480p": {
+      "title": "Meitantei Precure!",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2ac48be6df0e227a0880fff467fc4c9d2a51a4aed5003d59821d4bab64a643f8",
+      "message_id": "356",
+      "published_at": 1792784011,
+      "bilingual_subtitles": true
+    },
+    "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6": {
+      "title": "Meitantei Precure!",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792784011,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -3300,7 +3341,10 @@
     "4dc602fa70e1eea72fd7a7448a64b67e7993ba780f338d146854b479fbe81a92": "d9530ddf4c2fdf5eb722070f9ce200e7e29e7198b80c5dee07f8e82073fe281e:480p",
     "85d31728e34c7601e4cbe13862b9731bfa348aec1e74881f2a555b26a9d0d079": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:1080p",
     "f2a999e9f4e5aead83fbd46918615938c1c6381a4de20231aa9f0d476a278626": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:720p",
-    "80297b9466bf6025ec98c26909709f9d046eac581c86ce4cd4ad69882fcd530c": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:480p"
+    "80297b9466bf6025ec98c26909709f9d046eac581c86ce4cd4ad69882fcd530c": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:480p",
+    "bedc38c27c0213a9d6403de659d131ca94b1da2fa2487e7c6146c33cb9a9e056": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:1080p",
+    "7e0acf6d3e76843819260e6284e4e356b4c49d446b0888f7ff8bd3d75ef6a998": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:720p",
+    "2ac48be6df0e227a0880fff467fc4c9d2a51a4aed5003d59821d4bab64a643f8": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -3825,6 +3869,13 @@
       "episode": "26",
       "message_id": "349",
       "published_at": 1792783808,
+      "release_date": "2026-10-04"
+    },
+    "archive:702ec7e80566ee9311e9128ee3d4992844eae1357dc6d40045a7d03e200668f7": {
+      "title": "Meitantei Precure!",
+      "episode": "36",
+      "message_id": "353",
+      "published_at": 1792783987,
       "release_date": "2026-10-04"
     }
   }
