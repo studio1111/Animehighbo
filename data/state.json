@@ -1720,6 +1720,47 @@
       "source_quality": "1080p",
       "published_at": 1792761758,
       "release_date": "2026-10-10"
+    },
+    "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:1080p": {
+      "title": "Shuiro no Kamen",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b2a35f071c68c1b9e907f33225d0e7203eb32e76a7e63959ad73cddcebc98626",
+      "message_id": "222",
+      "published_at": 1792762010,
+      "bilingual_subtitles": true
+    },
+    "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:720p": {
+      "title": "Shuiro no Kamen",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d8f91ecf0f27a57e3e70289e3c14ca3b4800479f0023a49bce88020faf6737b0",
+      "message_id": "223",
+      "published_at": 1792762016,
+      "bilingual_subtitles": true
+    },
+    "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:480p": {
+      "title": "Shuiro no Kamen",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "36255556e72e8a5841a7e649138ada50aeb17a1474866c2cf83d9c2423e87061",
+      "message_id": "224",
+      "published_at": 1792762020,
+      "bilingual_subtitles": true
+    },
+    "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e": {
+      "title": "Shuiro no Kamen",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792762020,
+      "release_date": "2026-10-10"
     }
   },
   "seen": {
@@ -1848,7 +1889,10 @@
     "58e054732cfe7ddb6427780c2f9aee64e1a6e73911d0fde719e1803c01425cf0": "b822e4b2abc680e7d698ffafaf5c39c600d498443e35dc1b80ac434d69829337:480p",
     "56dcb957296f84546cd0e3c2b82bdeeb0ea0f8057fd950806d46dcddfd829968": "bf21ceabb3feb6e70ca6295fc7829b157906fb6072d5990bba51392ee92c69c4:1080p",
     "1c81f196105aeebf1657eb40ba363a4dd62709489a6105031c1206c1023064e1": "bf21ceabb3feb6e70ca6295fc7829b157906fb6072d5990bba51392ee92c69c4:720p",
-    "7e992e3694e4659b96f31ea79cfd7963a748d679f0653606245ac50d2093494a": "bf21ceabb3feb6e70ca6295fc7829b157906fb6072d5990bba51392ee92c69c4:480p"
+    "7e992e3694e4659b96f31ea79cfd7963a748d679f0653606245ac50d2093494a": "bf21ceabb3feb6e70ca6295fc7829b157906fb6072d5990bba51392ee92c69c4:480p",
+    "b2a35f071c68c1b9e907f33225d0e7203eb32e76a7e63959ad73cddcebc98626": "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:1080p",
+    "d8f91ecf0f27a57e3e70289e3c14ca3b4800479f0023a49bce88020faf6737b0": "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:720p",
+    "36255556e72e8a5841a7e649138ada50aeb17a1474866c2cf83d9c2423e87061": "fb44acb48bb99265f505f2ecf1a0a6ee4ef5c0b97d93800c2f81baf2ad080a7e:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -2142,6 +2186,13 @@
       "episode": "03",
       "message_id": "217",
       "published_at": 1792761737,
+      "release_date": "2026-10-10"
+    },
+    "archive:a34539add9ef10f04b9ce8dcc96fd997f34dcd9c931b05ca6b0278600d7aa86d": {
+      "title": "Shuiro no Kamen",
+      "episode": "01",
+      "message_id": "221",
+      "published_at": 1792761999,
       "release_date": "2026-10-10"
     }
   }
