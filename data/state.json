@@ -1884,6 +1884,47 @@
       "source_quality": "1080p",
       "published_at": 1792764863,
       "release_date": "2026-10-11"
+    },
+    "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:1080p": {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "5a9b2fa20060bda6736086c61831b5a6d3c9965ff776e23d4bcea8d63ce10bad",
+      "message_id": "238",
+      "published_at": 1792765190,
+      "bilingual_subtitles": true
+    },
+    "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:720p": {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "db3f4367c78a8666efceb7fdb97d49c998ccc6eb547ac7b255e44666794eba46",
+      "message_id": "239",
+      "published_at": 1792765194,
+      "bilingual_subtitles": true
+    },
+    "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:480p": {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "329904190b98e1ba10fb0643812503333b3b0306307cb54cc6b8f5e4f02e572a",
+      "message_id": "240",
+      "published_at": 1792765197,
+      "bilingual_subtitles": true
+    },
+    "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e": {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792765197,
+      "release_date": "2026-10-11"
     }
   },
   "seen": {
@@ -2024,7 +2065,10 @@
     "b31575dcc347f77847d1d90ed603ab1308938aaf295557f4eeedaed5547bdc5f": "9533ba4d932de25ba9d4805d237fe2a4258087499ccc63a44a8ddc1daba38314:480p",
     "cb11c0b86997f4797b4bd9e6656319d29642f0f02ba6d9b30725e45ecb7fa632": "87ca78792e9f837985f0f46fd4e97e16d6a0e28afad4dc3ae7594459c5c46ce7:1080p",
     "4675f0be824d25361f43b65c2dbcd17c1c5b1fe63a32e4f8210d23fe45adec88": "87ca78792e9f837985f0f46fd4e97e16d6a0e28afad4dc3ae7594459c5c46ce7:720p",
-    "371d7578961dbc42987a2ac674c080acde8c5b23edf35b718118ff4b02f8b4b6": "87ca78792e9f837985f0f46fd4e97e16d6a0e28afad4dc3ae7594459c5c46ce7:480p"
+    "371d7578961dbc42987a2ac674c080acde8c5b23edf35b718118ff4b02f8b4b6": "87ca78792e9f837985f0f46fd4e97e16d6a0e28afad4dc3ae7594459c5c46ce7:480p",
+    "5a9b2fa20060bda6736086c61831b5a6d3c9965ff776e23d4bcea8d63ce10bad": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:1080p",
+    "db3f4367c78a8666efceb7fdb97d49c998ccc6eb547ac7b255e44666794eba46": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:720p",
+    "329904190b98e1ba10fb0643812503333b3b0306307cb54cc6b8f5e4f02e572a": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -2346,6 +2390,13 @@
       "episode": "02",
       "message_id": "233",
       "published_at": 1792764843,
+      "release_date": "2026-10-11"
+    },
+    "archive:6b31b05d4fb4f108b67debb72e7ac4752a56a6331867b777af02cea5bb092bb8": {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "episode": "02",
+      "message_id": "237",
+      "published_at": 1792765185,
       "release_date": "2026-10-11"
     }
   }
