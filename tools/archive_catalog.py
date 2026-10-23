@@ -119,7 +119,7 @@ def _request_json(session: requests.Session, params: dict) -> dict:
     response = session.get(
         f"{BASE_URL}/api/",
         params=params,
-        timeout=(10, 30),
+        timeout=(5, 15),
         allow_redirects=False,
     )
     response.raise_for_status()
@@ -169,7 +169,7 @@ def _show_title_from_html(document: str, fallback: str = "") -> str:
 
 
 def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str, list[dict]]:
-    response = session.get(page_url, timeout=(10, 30), allow_redirects=False)
+    response = session.get(page_url, timeout=(5, 15), allow_redirects=False)
     response.raise_for_status()
     match = re.search(r"\bsid\s*=\s*['\"]?(\d+)", response.text, re.I)
     if not match:
@@ -226,6 +226,7 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
         manifest = []
         series = []
         for show_index, (page_url, sample) in enumerate(show_pages.items(), 1):
+            LOG.info("Checking show page %d/%d: %s", show_index, len(show_pages), page_url)
             try:
                 show_title, episodes = _fetch_show_episodes(client, page_url)
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
