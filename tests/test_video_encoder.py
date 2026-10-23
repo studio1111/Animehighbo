@@ -2,9 +2,9 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from tools.video_encoder import build_ffmpeg_command, build_ffmpeg_multi_command, encode_h265
+from tools.video_encoder import build_ffmpeg_command, build_ffmpeg_multi_command, encode_h265, run_command
 
 
 def probe_json(codec="h264", duration="60.0"):
@@ -87,6 +87,39 @@ class VideoEncoderTests(unittest.TestCase):
         self.assertIn("scale=-2:1080:flags=lanczos", command[command.index("-filter_complex") + 1])
         self.assertIn("scale=-2:720:flags=lanczos", command[command.index("-filter_complex") + 1])
         self.assertIn("scale=-2:480:flags=lanczos", command[command.index("-filter_complex") + 1])
+
+    def test_multi_quality_encode_emits_periodic_progress_updates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            outputs = {q: root / f"{q}.mkv" for q in ("1080p", "720p", "480p")}
+            command = build_ffmpeg_multi_command(root / "source.mkv", outputs)
+
+        self.assertIn("-progress", command)
+        self.assertEqual(command[command.index("-progress") + 1], "pipe:1")
+        self.assertIn("-stats_period", command)
+        self.assertEqual(command[command.index("-stats_period") + 1], "30")
+
+    def test_ffmpeg_progress_is_streamed_to_logs(self):
+        process = Mock()
+        process.stdout = iter([
+            "frame=100\\n",
+            "out_time=00:00:30.000000\\n",
+            "speed=1.2x\\n",
+            "progress=continue\\n",
+            "out_time=00:01:00.000000\\n",
+            "speed=1.4x\\n",
+            "progress=end\\n",
+        ])
+        process.wait.return_value = 0
+
+        with patch("tools.video_encoder.subprocess.Popen", return_value=process), patch(
+            "tools.video_encoder.LOG.info"
+        ) as log_info:
+            run_command(["ffmpeg", "-progress", "pipe:1", "-stats_period", "30"])
+
+        self.assertGreaterEqual(log_info.call_count, 2)
+        self.assertIn("00:00:30.000000", str(log_info.call_args_list))
+        self.assertIn("00:01:00.000000", str(log_info.call_args_list))
 
     def test_rejects_unsupported_output_height(self):
         with tempfile.TemporaryDirectory() as temp:

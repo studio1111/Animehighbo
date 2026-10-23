@@ -1800,10 +1800,22 @@ def run() -> int:
     return 0
 
 
-if __name__ == "__main__":
+def main() -> int:
+    """Configure useful progress logs before running the long media pipeline."""
+    requested_level = os.getenv("LOG_LEVEL", "INFO").strip().upper()
+    level = getattr(logging, requested_level, logging.INFO)
+    if not isinstance(level, int):
+        level = logging.INFO
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
     try:
-        raise SystemExit(run())
-    except Exception as error:
-        logging.basicConfig(level=logging.INFO)
-        logging.error("%s", error)
-        raise SystemExit(1)
+        return int(run())
+    except Exception:
+        LOG.exception("Fatal error while running Animehighbo.")
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

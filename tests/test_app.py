@@ -1,3 +1,4 @@
+import app
 import json
 import os
 import tempfile
@@ -776,6 +777,16 @@ class SubsPleaseConnectionParsingTests(unittest.TestCase):
 
 
 class PosterFallbackTests(unittest.TestCase):
+    def test_cli_main_configures_info_logging_before_running(self):
+        with patch.object(app.logging, "basicConfig") as configure_logging, patch.object(
+            app, "run", return_value=0
+        ) as run:
+            self.assertEqual(app.main(), 0)
+
+        configure_logging.assert_called_once()
+        self.assertEqual(configure_logging.call_args.kwargs.get("level"), app.logging.INFO)
+        run.assert_called_once_with()
+
     def test_missing_poster_publishes_text_and_returns_anchor_message_id(self):
         from unittest.mock import Mock, patch
         import app
