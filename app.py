@@ -232,7 +232,7 @@ def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> l
             extracted = []
             for raw in re.findall(r"""(?:imgurl=|["'](?:ou|murl)["']\s*:\s*["'])(https?[^&"'<> ]+)""", document, re.I):
                 extracted.append(raw)
-            for raw in re.findall(r"""imgurl=([^&"']+)""", document, re.I):
+            for raw in re.findall(r"""imgurl=([^&"'<> ]+)""", document, re.I):
                 extracted.append(unquote(raw))
             for raw in extracted:
                 raw = html.unescape(raw).replace("\\u0026", "&").replace("\\/", "/")
