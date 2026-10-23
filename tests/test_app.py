@@ -382,6 +382,20 @@ class TorrentSourceConfigTests(unittest.TestCase):
         source["authorized_for_redistribution"] = False
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
+    def test_link_poster_rejects_success_response_without_message_id(self):
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"ok": True, "result": {}}
+
+        with patch("app.anime_catalog_metadata", return_value={}), \
+             patch("app.build_episode_caption", return_value="caption"), \
+             patch("app.requests.post", return_value=response):
+            with self.assertRaisesRegex(RuntimeError, "message ID"):
+                app.telegram_send_episode(
+                    "token", "@channel", b"image bytes", "image/jpeg",
+                    "Example Anime - 01", "01", "https://media.example.org/episode/1",
+                )
+
     def test_link_mode_does_not_duplicate_post_after_ambiguous_photo_timeout(self):
         config = {
             "mode": "links",
