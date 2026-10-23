@@ -69,11 +69,11 @@ def _preferred_download(row: dict) -> tuple[str, str] | None:
 
 
 def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) -> list[dict]:
-    """Select complete runs only for series whose episode 1 is on/after cutoff.
+    """Select every eligible episode released on/after cutoff, including ongoing shows.
 
-    Older seasons are skipped entirely rather than expanding into a large
-    historical backlog or starting at a late episode. Selected episodes must
-    be consecutive; a gap or out-of-window episode fails closed.
+    The archive is date-based: an anime season may have started before the cutoff.
+    Episodes without a valid 1080p/720p source are skipped individually so one
+    unavailable episode does not hide later releases from the same series.
     """
     normalized = []
     for row in episodes:
@@ -81,60 +81,38 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
             continue
         number = _episode_number(row)
         released = parse_release_date(row.get("release_date") or row.get("releaseDate") or "")
-        source = _preferred_download(row)
-        if number is None or released is None:
+        if number is None or released is None or released < cutoff:
             continue
-        quality, magnet = source if source else ("", "")
+        source = _preferred_download(row)
+        if not source:
+            LOG.warning("Skipping %s episode %s: no eligible 1080p/720p source.", show_title, number)
+            continue
+        quality, magnet = source
         normalized.append({
             "episode": number,
             "release_date": released,
             "quality": quality,
             "uri": magnet,
         })
-    if not normalized:
-        return []
-    normalized.sort(key=lambda item: (item["episode"], item["release_date"]))
-    # A clean archive must begin with episode 1 of the current show/season.
-    # Never queue only the last few episodes of an older season just because
-    # those releases happen to fall after the requested date.
-    episode_one = next((item for item in normalized if item["episode"] == 1), None)
-    if episode_one is None:
-        LOG.info("Skipping %s because episode 1 is not available in the source catalogue.", show_title)
-        return []
-    if episode_one["release_date"] < cutoff:
-        LOG.info(
-            "Skipping %s because episode 1 predates cutoff %s; refusing to queue a partial old season.",
-            show_title, cutoff.isoformat(),
-        )
-        return []
-    selected = [item for item in normalized if item["episode"] >= 1]
-    if any(item["release_date"] < cutoff for item in selected):
-        LOG.info("Skipping %s because its selected run crosses the archive cutoff.", show_title)
-        return []
-    expected_start = 1
-    if not selected:
-        return []
-    expected = list(range(expected_start, selected[-1]["episode"] + 1))
-    if [item["episode"] for item in selected] != expected:
-        LOG.warning("Skipping %s because its selected episode sequence has a gap.", show_title)
-        return []
-    if any(not item["uri"] or not item["quality"] for item in selected):
-        LOG.warning("Skipping %s because one or more selected episodes lack a 1080p/720p source.", show_title)
-        return []
-    result = []
-    for item in selected:
-        result.append({
-            "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
-            "episode": item["episode"],
-            "quality": item["quality"],
-            "uri": item["uri"],
-            "authorized_for_redistribution": True,
-            "release_date": item["release_date"].isoformat(),
-            "_episode": item["episode"],
-            "_release_date": item["release_date"].isoformat(),
-            "_quality": item["quality"],
-        })
-    return result
+    # Keep a single entry per episode, choosing the earliest dated valid source.
+    normalized.sort(key=lambda item: (item["episode"], item["release_date"], item["quality"]))
+    selected_by_episode = {}
+    for item in normalized:
+        selected_by_episode.setdefault(item["episode"], item)
+    selected = sorted(selected_by_episode.values(), key=lambda item: (
+        item["release_date"], item["episode"]
+    ))
+    return [{
+        "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
+        "episode": item["episode"],
+        "quality": item["quality"],
+        "uri": item["uri"],
+        "authorized_for_redistribution": True,
+        "release_date": item["release_date"].isoformat(),
+        "_episode": item["episode"],
+        "_release_date": item["release_date"].isoformat(),
+        "_quality": item["quality"],
+    } for item in selected]
 
 
 def _request_json(session: requests.Session, params: dict) -> dict:
@@ -315,7 +293,7 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--since", default="2026-09-01", help="Include releases from this date (YYYY-MM-DD).")
+    parser.add_argument("--since", default="2026-10-01", help="Include releases from this date (YYYY-MM-DD).")
     parser.add_argument("--max-pages", type=int, default=100)
     parser.add_argument("--output", default="data/archive_manifest.json")
     parser.add_argument(
