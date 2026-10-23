@@ -204,6 +204,51 @@ def page_metadata(page_url: str, timeout: int = 20) -> dict:
     }
 
 
+def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> list[str]:
+    """Find likely anime posters through Google Images, then Bing Images as fallback."""
+    from urllib.parse import parse_qs, unquote, urlparse
+
+    query = re.sub(r"\\s+", " ", str(title or "")).strip()
+    if not query:
+        return []
+    candidates = []
+    searches = (
+        ("https://www.google.com/search", {"tbm": "isch", "q": f"{query} anime poster"}),
+        ("https://www.bing.com/images/search", {"q": f"{query} anime poster"}),
+    )
+    for endpoint, params in searches:
+        try:
+            response = requests.get(
+                endpoint, params=params, timeout=timeout,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; AnimehighboPosterFinder/1.0)"},
+                allow_redirects=True,
+            )
+            response.raise_for_status()
+            if urlparse(response.url).scheme != "https":
+                continue
+            document = response.text[:4_000_000]
+            # Google exposes original images as imgurl query values or JSON "ou" fields;
+            # Bing uses murl. HTML is untrusted, so download_poster validates each candidate.
+            extracted = []
+            for raw in re.findall(r'(?:imgurl=|["\\'](?:ou|murl)["\\']\\s*:\\s*["\\'])(https?[^&"\\'<> ]+)', document, re.I):
+                extracted.append(raw)
+            for raw in re.findall(r'imgurl=([^&"\\']+)', document, re.I):
+                extracted.append(unquote(raw))
+            for raw in extracted:
+                raw = html.unescape(raw).replace(r"\\u0026", "&").replace(r"\\/", "/")
+                raw = raw.replace(r"\\u003d", "=").replace(r"\\u003a", ":")
+                parsed = urlparse(raw)
+                if parsed.scheme == "https" and parsed.hostname and parsed.hostname not in {
+                    "google.com", "www.google.com", "bing.com", "www.bing.com"
+                } and raw not in candidates:
+                    candidates.append(raw)
+                    if len(candidates) >= limit:
+                        return candidates
+        except Exception as exc:
+            LOG.warning("Image search failed at %s for %r: %s", endpoint, query, exc)
+    return candidates
+
+
 def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024 * 1024) -> tuple[bytes, str]:
     """Download a small HTTPS poster image suitable for Telegram sendPhoto."""
     parsed = urlparse(image_url)
@@ -613,78 +658,71 @@ def translate_anime_synopsis(description: str) -> str:
 
 
 def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build a detailed poster caption while always preserving a visible synopsis block."""
+    """Build a structured multilingual anime post, marking unavailable facts with an em dash."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
     persian_title = translate_title_to_persian(english_title)
+    japanese_title = str(titles.get("native") or "").strip() or anime_japanese_title(title, media)
     episode_number = episode or episode_details(title)[1]
     synopsis = translate_anime_synopsis(str(media.get("description") or ""))
-    details = []
+    if not str(media.get("description") or "").strip():
+        synopsis = "—"
+
     season = _season_label(title, media)
-    if season != "نامشخص":
-        details.append(season)
-    year = media.get("seasonYear")
-    if year:
-        details.append(f"سال پخش: {year}")
-    if media.get("episodes"):
-        details.append(f"تعداد قسمت‌ها: {media['episodes']}")
+    year = media.get("seasonYear") or "—"
+    episode_count = media.get("episodes") or "—"
     genres = media.get("genres") or []
-    if genres:
-        details.append("ژانر: " + "، ".join(str(item) for item in genres[:6]))
+    genres_text = "، ".join(str(item) for item in genres[:6] if item) or "—"
     anime_format = str(media.get("format") or "").strip()
-    if anime_format:
-        format_fa = {"TV": "سریالی", "MOVIE": "فیلم سینمایی", "OVA": "OVA", "ONA": "ONA", "SPECIAL": "قسمت ویژه"}.get(anime_format, anime_format)
-        details.append(f"قالب: {format_fa}")
+    format_fa = {"TV": "سریالی", "MOVIE": "فیلم سینمایی", "OVA": "OVA", "ONA": "ONA", "SPECIAL": "قسمت ویژه"}.get(anime_format, anime_format) or "—"
     status = str(media.get("status") or "").strip()
-    if status:
-        status_fa = {"FINISHED": "پایان‌یافته", "RELEASING": "در حال پخش", "NOT_YET_RELEASED": "هنوز پخش نشده", "CANCELLED": "لغوشده", "HIATUS": "متوقف‌شده"}.get(status, status)
-        details.append(f"وضعیت پخش: {status_fa}")
+    status_fa = {"FINISHED": "پایان‌یافته", "RELEASING": "در حال پخش", "NOT_YET_RELEASED": "هنوز پخش نشده", "CANCELLED": "لغوشده", "HIATUS": "متوقف‌شده"}.get(status, status) or "—"
     score = media.get("averageScore")
-    if score:
-        details.append(f"امتیاز: {float(score) / 10:.1f}/10")
+    score_text = f"{float(score) / 10:.1f}/10" if score not in (None, "", 0) else "—"
     studios = ((media.get("studios") or {}).get("nodes") or [])
-    if studios:
-        names = [str(item.get("name", "")) for item in studios[:3] if item.get("name")]
-        if names:
-            details.append("استودیو: " + "، ".join(names))
-    if media.get("isAdult") is True:
-        details.append("رده‌بندی: بزرگسال")
-    japanese_title = anime_japanese_title(title, media)
+    studio_names = [str(item.get("name", "")) for item in studios[:3] if isinstance(item, dict) and item.get("name")]
+    studio_text = "، ".join(studio_names) or "—"
+    rating_text = "بزرگسال" if media.get("isAdult") is True else "عمومی/نامشخص" if media.get("isAdult") is None else "عمومی"
+
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
-        f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title)}",
-        f"🇯🇵 <b>日本語 (Romaji):</b> {_safe_caption_text(japanese_title)}",
+        f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title or '—')}",
+        f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title or '—')}",
+        f"📺 <b>قسمت:</b> {_safe_caption_text(str(episode_number or '—'))}",
+        f"📚 <b>فصل:</b> {_safe_caption_text(season or '—')}",
+        f"📅 <b>سال پخش:</b> {_safe_caption_text(str(year))}",
+        f"🎞 <b>تعداد قسمت‌ها:</b> {_safe_caption_text(str(episode_count))}",
+        f"🏷 <b>ژانر:</b> {_safe_caption_text(genres_text)}",
+        f"🎬 <b>قالب:</b> {_safe_caption_text(format_fa)}",
+        f"📡 <b>وضعیت پخش:</b> {_safe_caption_text(status_fa)}",
+        f"⭐ <b>امتیاز:</b> {_safe_caption_text(score_text)}",
+        f"🏢 <b>استودیو:</b> {_safe_caption_text(studio_text)}",
+        f"🔞 <b>رده‌بندی:</b> {_safe_caption_text(rating_text)}",
     ]
-    if episode_number:
-        lines.append(f"📺 قسمت {_safe_caption_text(str(episode_number))}")
-    lines.extend(f"ℹ️ {_safe_caption_text(item)}" for item in details)
     synopsis_open = "<blockquote expandable>📝 "
     synopsis_close = "</blockquote>"
     footer = "@Animehighbo"
+    synopsis = re.sub(r"\\s+", " ", str(synopsis or "")).strip() or "—"
 
-    # Do not blindly slice the finished HTML: that used to cut off the synopsis
-    # block entirely on captions with long metadata. Shrink synopsis first, then
-    # drop lower-priority metadata while preserving balanced Telegram HTML tags.
-    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip()
+    # Respect Telegram's caption limit while preserving the three titles, episode,
+    # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
     while True:
-        synopsis_line = synopsis_open + _safe_caption_text(synopsis) + synopsis_close
-        caption = "\n".join(lines + [synopsis_line, footer])
+        caption = "\\n".join(lines + [synopsis_open + _safe_caption_text(synopsis) + synopsis_close, footer])
         if len(caption) <= 1000:
             return caption
         overflow = len(caption) - 1000
-        if len(synopsis) > 120:
-            synopsis = synopsis[:max(120, len(synopsis) - overflow - 8)].rstrip()
+        if len(synopsis) > 70:
+            synopsis = synopsis[:max(70, len(synopsis) - overflow - 8)].rstrip()
             continue
         if len(lines) > 4:
             lines.pop()
             continue
-        # Titles are exceptionally long only for malformed source names. Trim
-        # them conservatively as a last resort, never slicing the HTML structure.
-        if len(synopsis) > 40:
-            synopsis = synopsis[:max(40, len(synopsis) - overflow - 8)].rstrip()
+        if len(english_title) > 80:
+            english_title = english_title[:80].rstrip()
+            lines[0] = f"🎬 <b>English:</b> {_safe_caption_text(english_title)}"
             continue
-        raise ValueError("Episode poster caption cannot fit Telegram's caption limit without removing the synopsis.")
+        raise ValueError("Anime caption exceeds Telegram's limit even after safe metadata reduction.")
 
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
@@ -730,26 +768,29 @@ def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str
 
 def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
                                metadata: dict) -> str:
-    """Send a poster when available, otherwise publish the same caption as text.
-
-    Poster/catalog outages must not block an otherwise complete episode bundle.
-    The returned message id is always the anchor for the three quality replies.
-    """
+    """Send the best catalog/web poster, or publish a text-only post as a safe fallback."""
     caption = build_episode_caption(title, episode, metadata=metadata)
     cover = metadata.get("coverImage") or {}
     image_url = cover.get("extraLarge") or cover.get("large") or cover.get("medium") or ""
     image_data = None
     image_type = ""
-    if image_url:
+    attempted = set()
+    candidates = ([str(image_url)] if image_url else []) + search_poster_image_urls(title)
+    for candidate in candidates:
+        candidate = str(candidate or "").strip()
+        if not candidate or candidate in attempted:
+            continue
+        attempted.add(candidate)
         try:
-            image_data, image_type = download_poster(str(image_url))
+            image_data, image_type = download_poster(candidate)
+            image_url = candidate
+            break
         except Exception as exc:
-            LOG.warning("Poster download failed for %r; publishing text-only post: %s", title, exc)
+            LOG.warning("Poster candidate failed for %r; trying another source: %s", title, exc)
 
     if image_data:
-        # Do not fall back after a transport exception: Telegram may have accepted the
-        # photo while its response was lost, and sending text then could duplicate the
-        # anchor post. Explicit API rejection can safely use the text fallback.
+        # A transport timeout can mean Telegram accepted the photo, so never send a
+        # second anchor message after an ambiguous sendPhoto outcome.
         response = requests.post(
             telegram_api_endpoint(token, "sendPhoto"),
             data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
