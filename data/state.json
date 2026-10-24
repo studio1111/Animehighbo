@@ -5902,6 +5902,47 @@
       "source_quality": "1080p",
       "published_at": 1792843674,
       "release_date": "2026-10-16"
+    },
+    "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:1080p": {
+      "title": "Paw and Palaces",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "178c86625e17477b6dbc4763ebb49c8b5061f69cfc7a97464901722d49fa1c59",
+      "message_id": "630",
+      "published_at": 1792843723,
+      "bilingual_subtitles": true
+    },
+    "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:720p": {
+      "title": "Paw and Palaces",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d54148b2a5c43ad1634935698d696b5903145601c633832648f5340731ce6b9e",
+      "message_id": "631",
+      "published_at": 1792843728,
+      "bilingual_subtitles": true
+    },
+    "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:480p": {
+      "title": "Paw and Palaces",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "04833ad5ec7ef1cbfb4ca2fb05193179a33773755aca60baf9739ed2d0f08932",
+      "message_id": "632",
+      "published_at": 1792843733,
+      "bilingual_subtitles": true
+    },
+    "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423": {
+      "title": "Paw and Palaces",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792843733,
+      "release_date": "2026-10-14"
     }
   },
   "seen": {
@@ -6336,7 +6377,10 @@
     "9d0f253718819bfdb8ac4c52cce1e54c67a3d546ce153cd3ac4e0c3cc93c8222": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:480p",
     "ba4ba1cc0420b1aacd19cb962790a67f9e343ff6838eb10a7206a24006b076a4": "6b4e1a1016bec50f84b94c2652dc8d366dec0b4ee4db09867716809e03728921:1080p",
     "f17da0986b90f035dd8fd968389b90815d6092a61577bd3e797a34b81656eac5": "6b4e1a1016bec50f84b94c2652dc8d366dec0b4ee4db09867716809e03728921:720p",
-    "1e6fd68b52b699038931784d26d4aa3f77f40e465da52b7e0bdc316d3993863e": "6b4e1a1016bec50f84b94c2652dc8d366dec0b4ee4db09867716809e03728921:480p"
+    "1e6fd68b52b699038931784d26d4aa3f77f40e465da52b7e0bdc316d3993863e": "6b4e1a1016bec50f84b94c2652dc8d366dec0b4ee4db09867716809e03728921:480p",
+    "178c86625e17477b6dbc4763ebb49c8b5061f69cfc7a97464901722d49fa1c59": "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:1080p",
+    "d54148b2a5c43ad1634935698d696b5903145601c633832648f5340731ce6b9e": "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:720p",
+    "04833ad5ec7ef1cbfb4ca2fb05193179a33773755aca60baf9739ed2d0f08932": "dd74f6b7faaa1e4cde1583cfcdc6516f0846aad04fbea3b1f5ad8ddfca802423:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -7345,6 +7389,13 @@
       "message_id": "625",
       "published_at": 1792843659,
       "release_date": "2026-10-16"
+    },
+    "archive:9d547f084c35afa948bbcef82eb017e14347bd92ecd8d5dffb7d22f534d59ad1": {
+      "title": "Paw and Palaces",
+      "episode": "05",
+      "message_id": "629",
+      "published_at": 1792843714,
+      "release_date": "2026-10-14"
     }
   }
 }
