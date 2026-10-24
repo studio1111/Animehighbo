@@ -223,12 +223,13 @@ def select_next_upload_date(
     """
     if not isinstance(manifest, list) or not manifest:
         return None, []
-    cutoff = date.fromisoformat(cutoff_date) if cutoff_date else None
+    # The archive catalog already applies the cutoff and intentionally backfills up to
+    # three earlier episodes for short seasons. Re-applying a series-wide cutoff here
+    # would blacklist those curated backfill episodes and every later episode in that series.
     published = state.get("published", {}) if isinstance(state, dict) else {}
     if not isinstance(published, dict):
         published = {}
     normalized = []
-    pre_cutoff_series: set[str] = set()
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
             raise ValueError(f"Archive entry {index + 1} must be an object.")
@@ -279,10 +280,6 @@ def select_next_upload_date(
         })
         if series_key is None:
             continue
-        if cutoff and date.fromisoformat(day) < cutoff:
-            # The series began before this season; skip it whole instead of failing the queue.
-            pre_cutoff_series.add(series_key)
-            continue
         if _is_complete(published.get(identity, {})):
             continue
         normalized.append({
@@ -296,7 +293,6 @@ def select_next_upload_date(
             "series_key": series_key,
         })
 
-    normalized = [row for row in normalized if row["series_key"] not in pre_cutoff_series]
     if not normalized:
         return None, []
     counts: dict[tuple[str, int, int], int] = {}
