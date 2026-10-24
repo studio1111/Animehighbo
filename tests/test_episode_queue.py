@@ -110,7 +110,7 @@ class UploadDateQueueTests(unittest.TestCase):
         self.assertIsNone(upload_date)
         self.assertEqual(selected, [])
 
-    def test_series_started_before_cutoff_is_skipped_whole_without_blocking_others(self):
+    def test_curated_pre_cutoff_backfill_is_not_blocked_by_queue_cutoff(self):
         manifest = [
             row("Summer show - 01", 1, "2026-09-27"),
             row("Summer show - 02", 2, "2026-10-04"),
@@ -121,8 +121,23 @@ class UploadDateQueueTests(unittest.TestCase):
             manifest, {"published": {}}, cutoff_date="2026-10-01"
         )
 
+        self.assertEqual(upload_date, "2026-09-27")
+        self.assertEqual([item["title"] for item in selected], ["Summer show - 01"])
+
+        first_identity = hashlib.sha256(
+            ("archive:" + manifest[0]["uri"]).encode()
+        ).hexdigest()
+        state = {"published": {
+            first_identity: {"complete_qualities": ["1080p", "720p", "480p"]}
+        }}
+        upload_date, selected = select_next_upload_date(
+            manifest, state, cutoff_date="2026-10-01"
+        )
         self.assertEqual(upload_date, "2026-10-03")
-        self.assertEqual([item["title"] for item in selected], ["Fall show - 01"])
+        self.assertEqual(
+            {item["title"] for item in selected},
+            {"Summer show - 02", "Fall show - 01"},
+        )
 
     def test_later_episode_cannot_jump_ahead_even_if_its_upload_date_is_older(self):
         manifest = [
