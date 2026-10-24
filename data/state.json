@@ -6271,6 +6271,47 @@
       "source_quality": "1080p",
       "published_at": 1792861146,
       "release_date": "2026-09-30"
+    },
+    "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:1080p": {
+      "title": "Juuou Mujin Dandivine",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "fd3a329c6868c78a9cffe41572a4461467c95834c9c2964c8b329a1d746a470e",
+      "message_id": "666",
+      "published_at": 1792862307,
+      "bilingual_subtitles": true
+    },
+    "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:720p": {
+      "title": "Juuou Mujin Dandivine",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "035d8fdca69d2a096203cb64c9ff9005913413e8a8f3d77823bb9620a27affc3",
+      "message_id": "667",
+      "published_at": 1792862313,
+      "bilingual_subtitles": true
+    },
+    "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:480p": {
+      "title": "Juuou Mujin Dandivine",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "abbf0c427656b728cdc7eec49fde5e691211c4b8a1597afca6583762b8ff25d1",
+      "message_id": "668",
+      "published_at": 1792862317,
+      "bilingual_subtitles": true
+    },
+    "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee": {
+      "title": "Juuou Mujin Dandivine",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792862317,
+      "release_date": "2026-10-21"
     }
   },
   "seen": {
@@ -6732,7 +6773,10 @@
     "0d72cbbe3be4a644fdb02fe2faa08c72243b530ada69268605c618cb02983fe7": "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:480p",
     "fcc8b0b07c892364c8d60c8734ee80879605c72b892fa28312af4b4e4e781789": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:1080p",
     "b361f708bf526674da4ac837192ca439537c3264fdeefd600651342048bdb11a": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:720p",
-    "1f43243e7cc308e489a2a483c2aee3b7aa8fd75e01ec3af671e0a3bebf1b863d": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p"
+    "1f43243e7cc308e489a2a483c2aee3b7aa8fd75e01ec3af671e0a3bebf1b863d": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p",
+    "fd3a329c6868c78a9cffe41572a4461467c95834c9c2964c8b329a1d746a470e": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:1080p",
+    "035d8fdca69d2a096203cb64c9ff9005913413e8a8f3d77823bb9620a27affc3": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:720p",
+    "abbf0c427656b728cdc7eec49fde5e691211c4b8a1597afca6583762b8ff25d1": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -7804,6 +7848,13 @@
       "message_id": "661",
       "published_at": 1792861128,
       "release_date": "2026-09-30"
+    },
+    "archive:49681072f44beb1530be5b357a36bbdbe66e7aacb4977382a600325de30cf7dd": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "03",
+      "message_id": "665",
+      "published_at": 1792862296,
+      "release_date": "2026-10-21"
     }
   }
 }
