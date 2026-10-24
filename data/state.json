@@ -4754,6 +4754,47 @@
       "source_quality": "1080p",
       "published_at": 1792809544,
       "release_date": "2026-10-19"
+    },
+    "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:1080p": {
+      "title": "Battle Spirits Re – Zekkai no Kuu",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8ae34663c7c9f2fd21f8d0db46d30649100617c4bfdf28b0e3f5afa16dafd356",
+      "message_id": "518",
+      "published_at": 1792809828,
+      "bilingual_subtitles": true
+    },
+    "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:720p": {
+      "title": "Battle Spirits Re – Zekkai no Kuu",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7b42d9237390aec7afb28c8a395f3a6ff89bd651862b4918190a6cc5d4769da0",
+      "message_id": "519",
+      "published_at": 1792809833,
+      "bilingual_subtitles": true
+    },
+    "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:480p": {
+      "title": "Battle Spirits Re – Zekkai no Kuu",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "795083f353300762d0cd743601c04cda6a26835469f2fd73fcd9a2f4dd7ad985",
+      "message_id": "520",
+      "published_at": 1792809838,
+      "bilingual_subtitles": true
+    },
+    "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878": {
+      "title": "Battle Spirits Re – Zekkai no Kuu",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792809838,
+      "release_date": "2026-10-20"
     }
   },
   "seen": {
@@ -5104,7 +5145,10 @@
     "94ee491da1c6b9380a3acc9a08d42def962842fd9336969e696a5e6597ddbdf2": "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:480p",
     "8d9736537b5d4bf83a1e408f37aa16c5b2dcd475d7b903b6f8f3de8291d70124": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:1080p",
     "8f91bccb057176fbcbe585eb3d0988085db04ddb20acfe2fe66c23ec6c396585": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:720p",
-    "f6acd7c4280bf0945753939aceb034f1bb0ca6be400606296fca3140eba1b59a": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:480p"
+    "f6acd7c4280bf0945753939aceb034f1bb0ca6be400606296fca3140eba1b59a": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:480p",
+    "8ae34663c7c9f2fd21f8d0db46d30649100617c4bfdf28b0e3f5afa16dafd356": "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:1080p",
+    "7b42d9237390aec7afb28c8a395f3a6ff89bd651862b4918190a6cc5d4769da0": "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:720p",
+    "795083f353300762d0cd743601c04cda6a26835469f2fd73fcd9a2f4dd7ad985": "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -5917,6 +5961,13 @@
       "message_id": "513",
       "published_at": 1792809529,
       "release_date": "2026-10-19"
+    },
+    "archive:03daaacd4ff27b5eb8e422e8bd26e06ee59c4842d1784f25b94c90d54609fe3f": {
+      "title": "Battle Spirits Re – Zekkai no Kuu",
+      "episode": "03",
+      "message_id": "517",
+      "published_at": 1792809817,
+      "release_date": "2026-10-20"
     }
   }
 }
