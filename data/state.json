@@ -6189,6 +6189,47 @@
       "source_quality": "1080p",
       "published_at": 1792851083,
       "release_date": "2026-10-21"
+    },
+    "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:1080p": {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4808bbe9bd40f02a04b2f35bc67f68b5fbc57acd3c3171442614672e81735be2",
+      "message_id": "658",
+      "published_at": 1792860884,
+      "bilingual_subtitles": true
+    },
+    "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:720p": {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "95780d5d80bd25629119b617f229dbbbd0af9bfbda8968413d0059a09f06b77d",
+      "message_id": "659",
+      "published_at": 1792860892,
+      "bilingual_subtitles": true
+    },
+    "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:480p": {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0d72cbbe3be4a644fdb02fe2faa08c72243b530ada69268605c618cb02983fe7",
+      "message_id": "660",
+      "published_at": 1792860896,
+      "bilingual_subtitles": true
+    },
+    "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226": {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792860896,
+      "release_date": "2026-10-07"
     }
   },
   "seen": {
@@ -6644,7 +6685,10 @@
     "eda822112c83fcdc720e7794ced929f839e618b808d7b09b7abbbb600914ac05": "0541126178ace5ac24ba279880f2a6c35b451df633eef6065608da5b95178d87:480p",
     "2c277dda59caeec0a26ef8db12fb6ac5d92df43f7098c9414bdb26f4c40fb2be": "891dfc5e117443c6effe0dabb6ca66b5a05ac1c0c929fc5c442053b567f91618:1080p",
     "dda4d77b321feab2f37c1b2638c046686d35af551282dea5b60d73f4f8871ad4": "891dfc5e117443c6effe0dabb6ca66b5a05ac1c0c929fc5c442053b567f91618:720p",
-    "f39980b388fc8d63553368d0bf2f1fdb51f07b2f4f4101c3f69aa2be34d63cd2": "891dfc5e117443c6effe0dabb6ca66b5a05ac1c0c929fc5c442053b567f91618:480p"
+    "f39980b388fc8d63553368d0bf2f1fdb51f07b2f4f4101c3f69aa2be34d63cd2": "891dfc5e117443c6effe0dabb6ca66b5a05ac1c0c929fc5c442053b567f91618:480p",
+    "4808bbe9bd40f02a04b2f35bc67f68b5fbc57acd3c3171442614672e81735be2": "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:1080p",
+    "95780d5d80bd25629119b617f229dbbbd0af9bfbda8968413d0059a09f06b77d": "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:720p",
+    "0d72cbbe3be4a644fdb02fe2faa08c72243b530ada69268605c618cb02983fe7": "5a6a478a23182d30ed5ad5482d4d9678a60a97eb5e1947bd2ea600f45719c226:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -7702,6 +7746,13 @@
       "message_id": "653",
       "published_at": 1792851066,
       "release_date": "2026-10-21"
+    },
+    "archive:3dda3078b57649a383553cb500108e8574cd377b6c17104e61886778cfd8e6ef": {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "episode": "13",
+      "message_id": "657",
+      "published_at": 1792860876,
+      "release_date": "2026-10-07"
     }
   }
 }
