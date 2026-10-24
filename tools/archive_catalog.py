@@ -23,9 +23,17 @@ import requests
 LOG = logging.getLogger("animehighbo.archive_catalog")
 BASE_URL = "https://subsplease.org"
 USER_AGENT = "AnimehighboArchiveCatalog/1.0 (+authorized-media-only)"
-# These ongoing series are checked explicitly even if the latest-feed pagination
-# window does not surface their releases reliably.
-REQUIRED_SHOW_SLUGS = ("one-piece", "detective-conan")
+# Explicitly check long-running series and known Fall 2026 shows even when the
+# latest-feed pagination window does not surface a series page (for example when
+# its first/only release is in late September). A page that has no eligible
+# individual episode sources is safely ignored by the normal selection rules.
+REQUIRED_SHOW_SLUGS = (
+    "one-piece",
+    "detective-conan",
+    "kusuriya-no-hitorigoto",
+    "tensei-shitara-ken-deshita-s2",
+    "tokyo-revengers",
+)
 
 
 def parse_release_date(value: str) -> date | None:
