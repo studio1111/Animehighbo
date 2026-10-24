@@ -45,10 +45,12 @@ jobs:
         env:
           ARCHIVE_SINCE: ${{ inputs.since || '2026-10-01' }}
           ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
+          ARCHIVE_MAX_FILE_SIZE_MB: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB || vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB || '1800' }}
         run: |
           python tools/archive_catalog.py \
             --since "$ARCHIVE_SINCE" \
             --max-pages "$ARCHIVE_MAX_PAGES" \
+            --max-file-size-mb "$ARCHIVE_MAX_FILE_SIZE_MB" \
             --output data/archive_manifest.json \
             --confirm-redistribution-rights
       - name: Validate manifest and run tests
