@@ -4836,6 +4836,47 @@
       "source_quality": "1080p",
       "published_at": 1792810906,
       "release_date": "2026-10-20"
+    },
+    "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:1080p": {
+      "title": "Choujun! Choujou-senpai",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "aee2f9f6a15f5879b64d24dbaee6c0aa5b4c95b6a257d3665c8d13394994fd11",
+      "message_id": "526",
+      "published_at": 1792811535,
+      "bilingual_subtitles": true
+    },
+    "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:720p": {
+      "title": "Choujun! Choujou-senpai",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "601523f41352a97895fafcf463d96e56bdb5ae1bcf4f1644ef91c205fdec37c0",
+      "message_id": "527",
+      "published_at": 1792811540,
+      "bilingual_subtitles": true
+    },
+    "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:480p": {
+      "title": "Choujun! Choujou-senpai",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6bd5a283e8c585ffca78093c177e3f2be0d5fcb90fe7be76be1ac3edd066399b",
+      "message_id": "528",
+      "published_at": 1792811543,
+      "bilingual_subtitles": true
+    },
+    "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764": {
+      "title": "Choujun! Choujou-senpai",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792811543,
+      "release_date": "2026-10-20"
     }
   },
   "seen": {
@@ -5192,7 +5233,10 @@
     "795083f353300762d0cd743601c04cda6a26835469f2fd73fcd9a2f4dd7ad985": "8a6be087b855ce403709ee96c2cbf0c4cea3baab2a55b58b2a72e9c5a67dc878:480p",
     "1f84e215c8d325cc81e5accc9303fdba2b069c5f505b1419591d6ff88d35ceda": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:1080p",
     "416e9fbf6139394495c17472e78af5d7041d4a598d0669dd01183153801c11d9": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:720p",
-    "0a80e4deafb896e3392115172a20ce940f497c71691a872c1dbb328fd12d4036": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:480p"
+    "0a80e4deafb896e3392115172a20ce940f497c71691a872c1dbb328fd12d4036": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:480p",
+    "aee2f9f6a15f5879b64d24dbaee6c0aa5b4c95b6a257d3665c8d13394994fd11": "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:1080p",
+    "601523f41352a97895fafcf463d96e56bdb5ae1bcf4f1644ef91c205fdec37c0": "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:720p",
+    "6bd5a283e8c585ffca78093c177e3f2be0d5fcb90fe7be76be1ac3edd066399b": "2d511a976a54854f5256b8851632f497049934a57c161e776affee8f3e7b8764:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -6018,6 +6062,13 @@
       "episode": "03",
       "message_id": "521",
       "published_at": 1792810890,
+      "release_date": "2026-10-20"
+    },
+    "archive:2a39b0bfdab4d1f0eb7cfb4727cc0522ab00f574b23c6a92492437fcfecfe635": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "03",
+      "message_id": "525",
+      "published_at": 1792811529,
       "release_date": "2026-10-20"
     }
   }
