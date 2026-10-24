@@ -4221,6 +4221,47 @@
       "source_quality": "1080p",
       "published_at": 1792801583,
       "release_date": "2026-10-18"
+    },
+    "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:1080p": {
+      "title": "Dragon Ball Super – Beerus",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6ec7ed71dfe18d1727e03d2930f29d117c5a6c8bf883209cab752a0e0c6c5add",
+      "message_id": "466",
+      "published_at": 1792802809,
+      "bilingual_subtitles": true
+    },
+    "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:720p": {
+      "title": "Dragon Ball Super – Beerus",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a454e597338052b1a82ca281a0d3c075e90396ed195df4f8efbf372c91e5bb58",
+      "message_id": "467",
+      "published_at": 1792802816,
+      "bilingual_subtitles": true
+    },
+    "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:480p": {
+      "title": "Dragon Ball Super – Beerus",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4113d3bca8615b4fe935835c1d8844e6a51d34d0e1fd489cee23b06923896cc3",
+      "message_id": "468",
+      "published_at": 1792802821,
+      "bilingual_subtitles": true
+    },
+    "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810": {
+      "title": "Dragon Ball Super – Beerus",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792802821,
+      "release_date": "2026-10-18"
     }
   },
   "seen": {
@@ -4532,7 +4573,10 @@
     "f3da63133f0689bec7d2c898c4af5e989ea537cfcd1f819e54cc6abb9f947d84": "c3f4265e04626e3117b9897fefb7ea8553204b37de163b77d11bfd8a8109d9c4:480p",
     "8771dab1d1f0fa59931ca58d2bc09cd00fc8320db70b7a6b70c36f30502e6a37": "481cba61a965e9bf3663ec7fe8acab9ebbeaa7b8a30f7075cee4e9f8522ac41c:1080p",
     "72b2f47d4dbd0c9ba620177865abd5ebb64da85924983f4b62ec3d4c3b2d2911": "481cba61a965e9bf3663ec7fe8acab9ebbeaa7b8a30f7075cee4e9f8522ac41c:720p",
-    "324e1aa88aaf8f184037dc9a9e747ceec06418f52e4c689e28a6c702f2a10740": "481cba61a965e9bf3663ec7fe8acab9ebbeaa7b8a30f7075cee4e9f8522ac41c:480p"
+    "324e1aa88aaf8f184037dc9a9e747ceec06418f52e4c689e28a6c702f2a10740": "481cba61a965e9bf3663ec7fe8acab9ebbeaa7b8a30f7075cee4e9f8522ac41c:480p",
+    "6ec7ed71dfe18d1727e03d2930f29d117c5a6c8bf883209cab752a0e0c6c5add": "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:1080p",
+    "a454e597338052b1a82ca281a0d3c075e90396ed195df4f8efbf372c91e5bb58": "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:720p",
+    "4113d3bca8615b4fe935835c1d8844e6a51d34d0e1fd489cee23b06923896cc3": "8c6a6e8af65de452003088dac83ce82c46edc3c8eea4b7cebfd51c61c521f810:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -5253,6 +5297,13 @@
       "episode": "03",
       "message_id": "461",
       "published_at": 1792801565,
+      "release_date": "2026-10-18"
+    },
+    "archive:c1a6f7c3bedc37a5bb661bf00ac7ddebf0dd07177c4d26b233d3e011e845f8f5": {
+      "title": "Dragon Ball Super – Beerus",
+      "episode": "02",
+      "message_id": "465",
+      "published_at": 1792802797,
       "release_date": "2026-10-18"
     }
   }
