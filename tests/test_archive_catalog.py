@@ -8,6 +8,9 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
     def test_required_long_running_shows_are_always_checked(self):
         self.assertIn("one-piece", REQUIRED_SHOW_SLUGS)
         self.assertIn("detective-conan", REQUIRED_SHOW_SLUGS)
+        self.assertIn("kusuriya-no-hitorigoto", REQUIRED_SHOW_SLUGS)
+        self.assertIn("tensei-shitara-ken-deshita-s2", REQUIRED_SHOW_SLUGS)
+        self.assertIn("tokyo-revengers", REQUIRED_SHOW_SLUGS)
 
     def test_subsplease_show_slug_is_resolved_under_shows_path(self):
         self.assertEqual(
