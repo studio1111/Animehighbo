@@ -53,7 +53,14 @@ def _episode_number(row: dict) -> int | None:
     return number if number > 0 else None
 
 
-def _preferred_download(row: dict) -> tuple[str, str] | None:
+def _preferred_download(row: dict, max_file_size_mb: int = 1800) -> tuple[str, str] | None:
+    """Prefer the best available source that fits the configured download cap.
+
+    SubsPlease magnet links expose the payload size in the optional ``xl`` query
+    parameter. Avoid selecting a 1080p torrent that is known to exceed the worker
+    limit when a smaller 720p source is available. Unknown sizes remain eligible;
+    the downloader still enforces the hard limit while downloading.
+    """
     downloads = row.get("downloads")
     if not isinstance(downloads, list):
         return None
@@ -61,14 +68,25 @@ def _preferred_download(row: dict) -> tuple[str, str] | None:
         str(item.get("res", "")).lower().replace("p", ""): str(item.get("magnet", "")).strip()
         for item in downloads if isinstance(item, dict)
     }
+    max_bytes = max(1, int(max_file_size_mb)) * 1024 * 1024
     for resolution in ("1080", "720"):
         magnet = by_resolution.get(resolution, "")
-        if magnet.startswith("magnet:?xt=urn:btih:"):
-            return f"{resolution}p", magnet
+        if not magnet.startswith("magnet:?xt=urn:btih:"):
+            continue
+        declared_size = re.search(r"(?:[?&])xl=(\d+)(?:&|$)", magnet)
+        if declared_size and int(declared_size.group(1)) > max_bytes:
+            LOG.warning(
+                "Skipping %sp source with declared size %.1f MiB above the %d MiB cap.",
+                resolution, int(declared_size.group(1)) / (1024 * 1024), max_file_size_mb,
+            )
+            continue
+        return f"{resolution}p", magnet
     return None
 
 
-def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) -> list[dict]:
+def select_show_episodes(
+    show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800
+) -> list[dict]:
     """Select all post-cutoff episodes and backfill up to three earlier episodes.
 
     If a series has one, two, or three episodes before the cutoff, include those
@@ -95,7 +113,7 @@ def select_show_episodes(show_title: str, episodes: list[dict], cutoff: date) ->
     for row, number, released in parsed_rows:
         if released < cutoff and not include_prior:
             continue
-        source = _preferred_download(row)
+        source = _preferred_download(row, max_file_size_mb)
         if not source:
             LOG.warning("Skipping %s episode %s: no eligible 1080p/720p source.", show_title, number)
             continue
@@ -202,7 +220,10 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
     return show_title, episodes
 
 
-def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests.Session | None = None) -> list[dict]:
+def build_archive_manifest(
+    cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
+    max_file_size_mb: int = 1800,
+) -> list[dict]:
     """Discover shows released since cutoff, then create an ordered one-file-per-episode manifest."""
     if max_pages < 1 or max_pages > 500:
         raise ValueError("max_pages must be between 1 and 500.")
@@ -242,7 +263,7 @@ def build_archive_manifest(cutoff: date, max_pages: int = 100, session: requests
             try:
                 show_title, episodes = _fetch_show_episodes(client, page_url)
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
-                selected = select_show_episodes(show_title, episodes, cutoff)
+                selected = select_show_episodes(show_title, episodes, cutoff, max_file_size_mb)
                 if selected:
                     first_date = min(row["_release_date"] for row in selected)
                     series.append((first_date, show_title.casefold(), show_title, selected))
@@ -280,6 +301,15 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
     """Keep authorized, dated entries already curated when the source API omits them."""
     merged = list(manifest)
     seen_uris = {str(row.get("uri") or row.get("url") or "").strip() for row in merged}
+
+    def episode_key(row: dict) -> tuple[str, int | None]:
+        title = str(row.get("title") or "").strip()
+        title = re.sub(r"\s+\((?:1080|720|480)p\)$", "", title, flags=re.I)
+        number = _episode_number(row)
+        title = re.sub(r"\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?$", "", title, flags=re.I)
+        return re.sub(r"\s+", " ", title).strip().casefold(), number
+
+    generated_episode_keys = {episode_key(row) for row in merged if isinstance(row, dict)}
     for index, row in enumerate(existing_rows):
         if not isinstance(row, dict) or row.get("authorized_for_redistribution") is not True:
             continue
@@ -289,6 +319,7 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
         if (
             not title or not uri or uri in seen_uris or "[batch]" in title.casefold()
             or _episode_number(row) is None or released is None or released < cutoff
+            or episode_key(row) in generated_episode_keys
         ):
             continue
         parsed = urlparse(uri)
@@ -314,6 +345,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--since", default="2026-10-01", help="Include releases from this date (YYYY-MM-DD).")
     parser.add_argument("--max-pages", type=int, default=100)
+    parser.add_argument("--max-file-size-mb", type=int, default=1800,
+                        help="Skip sources whose declared payload exceeds this worker download limit.")
     parser.add_argument("--output", default="data/archive_manifest.json")
     parser.add_argument(
         "--confirm-redistribution-rights",
@@ -328,7 +361,9 @@ def main() -> int:
     except ValueError:
         parser.error("--since must be a valid YYYY-MM-DD date.")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    manifest = build_archive_manifest(cutoff, args.max_pages)
+    if args.max_file_size_mb < 1:
+        parser.error("--max-file-size-mb must be a positive integer.")
+    manifest = build_archive_manifest(cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb)
     if not manifest:
         LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
         return 1
