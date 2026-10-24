@@ -149,5 +149,53 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(selected[0]["release_date"], "2026-10-19")
 
 
+    def test_oversized_1080p_source_falls_back_to_720p_within_limit(self):
+        rows = [{
+            "title": "Sasaki to Pii-chan S2 - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [
+                {"res": "1080", "magnet": "magnet:?xt=urn:btih:large1080&xl=2887386822"},
+                {"res": "720", "magnet": "magnet:?xt=urn:btih:small720&xl=1200000000"},
+            ],
+        }]
+        selected = select_show_episodes("Sasaki to Pii-chan S2", rows, date(2026, 10, 1), 1800)
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(selected[0]["quality"], "720p")
+        self.assertIn("small720", selected[0]["uri"])
+
+    def test_oversized_sources_are_skipped_when_no_lower_quality_fits(self):
+        rows = [{
+            "title": "Huge Saga - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [
+                {"res": "1080", "magnet": "magnet:?xt=urn:btih:large1080&xl=2887386822"},
+                {"res": "720", "magnet": "magnet:?xt=urn:btih:large720&xl=2200000000"},
+            ],
+        }]
+        self.assertEqual(select_show_episodes("Huge Saga", rows, date(2026, 10, 1), 1800), [])
+
+    def test_generated_lower_quality_replaces_stale_oversized_source_for_same_episode(self):
+        generated = [{
+            "title": "Sasaki to Pii-chan S2 - 01 (720p)",
+            "episode": 1,
+            "quality": "720p",
+            "uri": "magnet:?xt=urn:btih:small720",
+            "release_date": "2026-10-07",
+            "authorized_for_redistribution": True,
+        }]
+        existing = [{
+            "title": "Sasaki to Pii-chan S2 - 01 (1080p)",
+            "episode": 1,
+            "quality": "1080p",
+            "uri": "magnet:?xt=urn:btih:large1080",
+            "release_date": "2026-10-07",
+            "authorized_for_redistribution": True,
+        }]
+        merged = merge_existing_manifest(generated, existing, date(2026, 10, 1))
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["quality"], "720p")
+
 if __name__ == "__main__":
     unittest.main()
