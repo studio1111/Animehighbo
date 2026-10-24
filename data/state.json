@@ -5410,6 +5410,47 @@
       "source_quality": "1080p",
       "published_at": 1792836910,
       "release_date": "2026-10-02"
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:1080p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "3147f82ab012240c447feb2725640c1cde875c9303b66d5b979b9cf1a086d2ae",
+      "message_id": "582",
+      "published_at": 1792837043,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:720p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f92f4025f3b533da9b377adc532eab6d05b6b8fb195a890012730f39929a1d10",
+      "message_id": "583",
+      "published_at": 1792837049,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "065b409ff3e5358290bc3c1bbbebc82b1d8e9c297ff8bffc3c5216d950ce60b0",
+      "message_id": "584",
+      "published_at": 1792837053,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792837053,
+      "release_date": "2026-09-30"
     }
   },
   "seen": {
@@ -5808,7 +5849,10 @@
     "b5b291154cfbe075eccb12fa6f28a79a7e90f4437ec3722ac91c01b722843037": "3bf7668d3cf59d288fe9c9016f2796a442312f3f9e47dacd7ce96a02d26c5926:480p",
     "0966ae0c0a220633a60c481016dd39acffc4220b971e93f809964cf56af13f09": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:1080p",
     "de19260dcc95aa2ecd1fa1407590a4ed435da8f03e6c561c2d2fb698e399d581": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:720p",
-    "7c2cf53a83947456c3f5395914795e9bc52c389ecea85d3b3812210eca1a78ab": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p"
+    "7c2cf53a83947456c3f5395914795e9bc52c389ecea85d3b3812210eca1a78ab": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p",
+    "3147f82ab012240c447feb2725640c1cde875c9303b66d5b979b9cf1a086d2ae": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:1080p",
+    "f92f4025f3b533da9b377adc532eab6d05b6b8fb195a890012730f39929a1d10": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:720p",
+    "065b409ff3e5358290bc3c1bbbebc82b1d8e9c297ff8bffc3c5216d950ce60b0": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -6733,6 +6777,13 @@
       "message_id": "577",
       "published_at": 1792836894,
       "release_date": "2026-10-02"
+    },
+    "archive:adab36fac3328db643e4041c43c1712a8fbc05390e1ecfcebafc4ee0e48db28a": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "episode": "01",
+      "message_id": "581",
+      "published_at": 1792837030,
+      "release_date": "2026-09-30"
     }
   }
 }
