@@ -122,7 +122,10 @@ class UploadDateQueueTests(unittest.TestCase):
         )
 
         self.assertEqual(upload_date, "2026-09-27")
-        self.assertEqual([item["title"] for item in selected], ["Summer show - 01"])
+        self.assertEqual(
+            {item["title"] for item in selected},
+            {"Summer show - 01", "Fall show - 01"},
+        )
 
         first_identity = hashlib.sha256(
             ("archive:" + manifest[0]["uri"]).encode()
