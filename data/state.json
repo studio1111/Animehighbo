@@ -5123,6 +5123,47 @@
       "source_quality": "1080p",
       "published_at": 1792815222,
       "release_date": "2026-10-21"
+    },
+    "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:1080p": {
+      "title": "Tempal – Item no Chikara",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "88830e6d795b32ba90869fbf26d41232b9b5f40eb56791cc3afd99431d44b798",
+      "message_id": "554",
+      "published_at": 1792832525,
+      "bilingual_subtitles": true
+    },
+    "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:720p": {
+      "title": "Tempal – Item no Chikara",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "87ef357782814bfd60a400ed0ea2b4e3f4378802ee86db5d98a6071ad64fbe9c",
+      "message_id": "555",
+      "published_at": 1792832532,
+      "bilingual_subtitles": true
+    },
+    "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:480p": {
+      "title": "Tempal – Item no Chikara",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "173f18cca3e82a971d8f51e19aeb51caf1ab3d8ba60e591166e8573f78339e96",
+      "message_id": "556",
+      "published_at": 1792832536,
+      "bilingual_subtitles": true
+    },
+    "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d": {
+      "title": "Tempal – Item no Chikara",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792832536,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -5500,7 +5541,10 @@
     "fb312220cdf49ec4f79548b394984c7b24c9028ccd8951b763de0c5b60eb0a8e": "00b26b9b74239e803f9d75104a6de8469f61270d3d86f838513a56c8fa9d41a2:480p",
     "9f2cd60338eac59b38d471c84a933fa25bae1e9c8738c44b548c5683adbc1cb3": "7e2e3256337bdd5afa835b24bc7845cb3f9ba353f29fca6d038e189e2389aff3:1080p",
     "f8701245b0952f545d539c6a557dd46fd0416b62b75bc4c3cfa2c2e05b48e0bf": "7e2e3256337bdd5afa835b24bc7845cb3f9ba353f29fca6d038e189e2389aff3:720p",
-    "454d783fb7ae681da165e6abd311cd126d3d6b8c01cf79a671b8792f1c5d0a30": "7e2e3256337bdd5afa835b24bc7845cb3f9ba353f29fca6d038e189e2389aff3:480p"
+    "454d783fb7ae681da165e6abd311cd126d3d6b8c01cf79a671b8792f1c5d0a30": "7e2e3256337bdd5afa835b24bc7845cb3f9ba353f29fca6d038e189e2389aff3:480p",
+    "88830e6d795b32ba90869fbf26d41232b9b5f40eb56791cc3afd99431d44b798": "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:1080p",
+    "87ef357782814bfd60a400ed0ea2b4e3f4378802ee86db5d98a6071ad64fbe9c": "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:720p",
+    "173f18cca3e82a971d8f51e19aeb51caf1ab3d8ba60e591166e8573f78339e96": "d916028c3090e8820936f7b99b1998330390aabe422dfbf56bc6fced05fed96d:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -6376,6 +6420,13 @@
       "message_id": "549",
       "published_at": 1792815202,
       "release_date": "2026-10-21"
+    },
+    "archive:c2f32a397c08bdb2d6290ad2060aebc7f4bcf76e889721c8ff7250705aa2c774": {
+      "title": "Tempal – Item no Chikara",
+      "episode": "02",
+      "message_id": "553",
+      "published_at": 1792832517,
+      "release_date": "2026-10-04"
     }
   }
 }
