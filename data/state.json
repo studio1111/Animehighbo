@@ -6312,6 +6312,47 @@
       "source_quality": "1080p",
       "published_at": 1792862317,
       "release_date": "2026-10-21"
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:1080p": {
+      "title": "Toukutsu Ou",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "488ef1f87981d990442fffba5ad47c1d02d88b19594f773c60c44dbef69f49fa",
+      "message_id": "670",
+      "published_at": 1792863084,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:720p": {
+      "title": "Toukutsu Ou",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f9320272208cc13289144f5a133f9295c5e85b32b014c3784b36e5106a572e75",
+      "message_id": "671",
+      "published_at": 1792863091,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p": {
+      "title": "Toukutsu Ou",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "c18cd346569ffc399db71aa916631ac17791432d911ce9470a9aa86da0bb4e1b",
+      "message_id": "672",
+      "published_at": 1792863096,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d": {
+      "title": "Toukutsu Ou",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792863096,
+      "release_date": "2026-10-01"
     }
   },
   "seen": {
@@ -6776,7 +6817,10 @@
     "1f43243e7cc308e489a2a483c2aee3b7aa8fd75e01ec3af671e0a3bebf1b863d": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p",
     "fd3a329c6868c78a9cffe41572a4461467c95834c9c2964c8b329a1d746a470e": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:1080p",
     "035d8fdca69d2a096203cb64c9ff9005913413e8a8f3d77823bb9620a27affc3": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:720p",
-    "abbf0c427656b728cdc7eec49fde5e691211c4b8a1597afca6583762b8ff25d1": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:480p"
+    "abbf0c427656b728cdc7eec49fde5e691211c4b8a1597afca6583762b8ff25d1": "5582b8f9d0bf2608f8ee2c59bf845c14ebce0a8746bb3416c038de4e9ebda7ee:480p",
+    "488ef1f87981d990442fffba5ad47c1d02d88b19594f773c60c44dbef69f49fa": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:1080p",
+    "f9320272208cc13289144f5a133f9295c5e85b32b014c3784b36e5106a572e75": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:720p",
+    "c18cd346569ffc399db71aa916631ac17791432d911ce9470a9aa86da0bb4e1b": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -7855,6 +7899,13 @@
       "message_id": "665",
       "published_at": 1792862296,
       "release_date": "2026-10-21"
+    },
+    "archive:92faff9f542396aa9c54afde4315989ca329b97875ae08a17030f4bba603bd3a": {
+      "title": "Toukutsu Ou",
+      "episode": "12",
+      "message_id": "669",
+      "published_at": 1792863071,
+      "release_date": "2026-10-01"
     }
   }
 }
