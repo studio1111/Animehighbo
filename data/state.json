@@ -5000,6 +5000,47 @@
       "source_quality": "1080p",
       "published_at": 1792813744,
       "release_date": "2026-10-20"
+    },
+    "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:1080p": {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8ea25456c30e25f28e0652ef04416394d33b0e81b732a1d9bdbea219c002fa58",
+      "message_id": "542",
+      "published_at": 1792814379,
+      "bilingual_subtitles": true
+    },
+    "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:720p": {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "512064217a85a4da98a748428b3547159d3629b962347b3b90aacb42e2629ed8",
+      "message_id": "543",
+      "published_at": 1792814384,
+      "bilingual_subtitles": true
+    },
+    "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:480p": {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "11a97b76cabbbb84f33980c96fa6f9fedae95561e2df51af7fef8dca3c05aed9",
+      "message_id": "544",
+      "published_at": 1792814389,
+      "bilingual_subtitles": true
+    },
+    "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb": {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1792814389,
+      "release_date": "2026-10-20"
     }
   },
   "seen": {
@@ -5368,7 +5409,10 @@
     "6286212c9f3cc3a748b1ca4f095eeaa3192a8539ba5821612070fc74c5dfb442": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:480p",
     "2052e9cf73f66522b8cce40734a3c9d2be9a8bbb563e558650ae330d0b9d0628": "aad5181801cad17553f15c13449d8701ab75577c5f1b8c00bfca7fac2b291657:1080p",
     "7dc9a1b757584aba10a64290a0e38abe2f554797d978e77f14f5a1e22e2c427a": "aad5181801cad17553f15c13449d8701ab75577c5f1b8c00bfca7fac2b291657:720p",
-    "b671d237be69d406f36df7979b7d552b6fd328cfabab783334a6df522b3bb6b4": "aad5181801cad17553f15c13449d8701ab75577c5f1b8c00bfca7fac2b291657:480p"
+    "b671d237be69d406f36df7979b7d552b6fd328cfabab783334a6df522b3bb6b4": "aad5181801cad17553f15c13449d8701ab75577c5f1b8c00bfca7fac2b291657:480p",
+    "8ea25456c30e25f28e0652ef04416394d33b0e81b732a1d9bdbea219c002fa58": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:1080p",
+    "512064217a85a4da98a748428b3547159d3629b962347b3b90aacb42e2629ed8": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:720p",
+    "11a97b76cabbbb84f33980c96fa6f9fedae95561e2df51af7fef8dca3c05aed9": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
@@ -6222,6 +6266,13 @@
       "episode": "03",
       "message_id": "537",
       "published_at": 1792813725,
+      "release_date": "2026-10-20"
+    },
+    "archive:9cd0bf7225fd66002cf793c44b206404edb9993aff344b3ff8142f238e413b93": {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "episode": "16",
+      "message_id": "541",
+      "published_at": 1792814372,
       "release_date": "2026-10-20"
     }
   }
