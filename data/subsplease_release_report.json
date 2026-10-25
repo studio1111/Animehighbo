@@ -5,169 +5,190 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 41,
-    "matched_in_manifest": 21,
-    "review_required": 20
+    "matched_in_authorized_manifest": 0,
+    "found_in_candidate_report": 23,
+    "review_required": 41
   },
-  "policy": "This report contains metadata only. A manifest match is not proof of redistribution rights; no media URLs are stored or published.",
+  "policy": "This report contains metadata only. Only entries with an evidence-backed rights-review record count as authorized-manifest matches; candidate or RSS matches are not permission to redistribute. No media URLs are stored or published.",
   "releases": [
     {
       "title": "Bleach - Sennen Kessen Hen",
       "episode": 49,
       "release_date": "2026-10-19",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Battle Spirits Re - Zekkai no Kuu",
       "episode": 3,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Chii Fuyo",
       "episode": 3,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Chitose-kun wa Ramune Bin no Naka",
       "episode": 15,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Choujun! Choujou-senpai",
       "episode": 3,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Dark Machine - The Animation",
       "episode": 2,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Kyouran Reijou Nia Liston",
       "episode": 3,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
       "episode": 3,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Sora wa Akai Kawa no Hotori",
       "episode": 16,
       "release_date": "2026-10-20",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Juuou Mujin Dandivine",
       "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "episode": 15,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Magic Knight Rayearth (2026)",
       "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Paw and Palaces",
       "episode": 6,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Sasaki to Pii-chan S2",
       "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Sekai Saikyou no Majo, Hajimemashita",
       "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Tantei wa Mou, Shindeiru. S2",
       "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Tensei Shitara Ken Deshita S2",
       "episode": 4,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "The Prince of Tennis II - U-17 World Cup Final Member Selection Match",
       "episode": 4,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "FX Senshi Kurumi-chan",
       "episode": 4,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
       "episode": 3,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
       "review_required": true
     },
     {
@@ -175,7 +196,8 @@
       "episode": 12,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -183,15 +205,17 @@
       "episode": 3,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
       "episode": 17,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
       "review_required": true
     },
     {
@@ -199,7 +223,8 @@
       "episode": 3,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -207,7 +232,8 @@
       "episode": 4,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -215,15 +241,17 @@
       "episode": 52,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": true,
-      "review_required": false
+      "in_authorized_manifest": false,
+      "in_candidate_report": true,
+      "review_required": true
     },
     {
       "title": "Rilakkuma",
       "episode": 29,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -231,7 +259,8 @@
       "episode": 3,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -239,7 +268,8 @@
       "episode": 4,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -247,7 +277,8 @@
       "episode": 16,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -255,7 +286,8 @@
       "episode": 174,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -263,7 +295,8 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -271,7 +304,8 @@
       "episode": 3,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -279,7 +313,8 @@
       "episode": 5,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -287,7 +322,8 @@
       "episode": 39,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -295,7 +331,8 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -303,7 +340,8 @@
       "episode": 3,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -311,7 +349,8 @@
       "episode": 5,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -319,7 +358,8 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -327,7 +367,8 @@
       "episode": 17,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     },
     {
@@ -335,7 +376,8 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_manifest": false,
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
       "review_required": true
     }
   ]
