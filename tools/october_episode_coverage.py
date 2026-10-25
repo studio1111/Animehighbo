@@ -27,7 +27,7 @@ def normalize_series(value: object) -> str:
 def _title_aliases(row: dict, *, seasonal: bool = False) -> set[str]:
     if seasonal:
         title = row.get("title") or {}
-        values = [title.get("english"), title.get("romaji"), title.get("native")]
+        values = [row.get("title_english"), row.get("title_romaji"), row.get("title_native"), title.get("english"), title.get("romaji"), title.get("native")]
         values.extend(row.get("synonyms") or [])
     else:
         values = [row.get("series_title"), row.get("title")]
@@ -78,11 +78,12 @@ def build_coverage_report(
     }
     seasonal_entries = []
     matched_source_keys: dict[str, set[str]] = {name: set() for name in source_groups}
-    seasonal_alias_index: dict[str, int] = {}
+    seasonal_alias_index: dict[str, str] = {}
     for row in seasonal_rows:
         aliases = _title_aliases(row, seasonal=True)
+        canonical = next(iter(sorted(aliases)), f"anilist:{row.get('anilist_id')}")
         for alias in aliases:
-            seasonal_alias_index.setdefault(alias, len(seasonal_entries))
+            seasonal_alias_index.setdefault(alias, canonical)
         seasonal_entries.append({
             "anilist_id": row.get("anilist_id"),
             "title_english": row.get("title_english"),
@@ -110,12 +111,9 @@ def build_coverage_report(
             aliases = _title_aliases(row)
             if not aliases:
                 continue
-            matched = next((alias for alias in aliases if alias in seasonal_alias_index), None)
+            matched = next((seasonal_alias_index[alias] for alias in aliases if alias in seasonal_alias_index), None)
             if matched is not None:
-                entry = seasonal_entries[seasonal_alias_index[matched]]
-                canonical = next((key for key, value in union.items() if value is entry), matched)
-                union[canonical]["_aliases"].update(aliases)
-                matched_source_keys[source_name].add(_episode_identity(row)[0])
+                union[matched]["_aliases"].update(aliases)
             else:
                 canonical = sorted(aliases)[0]
                 if canonical not in union:
@@ -167,9 +165,7 @@ def build_coverage_report(
         entry["rights_verified_episode_count"] = sum(
             1 for row in manifest_rows
             if _title_aliases(row) & aliases
-            and row.get("authorized_for_redistribution") is True
-            and row.get("authorization_evidence")
-            and row.get("authorization_reviewed_at")
+            and has_redistribution_authorization(row, today=today)
         )
 
     titles = sorted(union.values(), key=lambda row: (
