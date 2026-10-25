@@ -33,18 +33,35 @@ class ManualPublicationApprovalTests(unittest.TestCase):
         self.assertEqual([row["title"] for row in allowed], ["Approved Saga - 01 (1080p)"])
         self.assertEqual(counts, {"approved": 1, "pending": 1, "denied": 1, "ambiguous": 0})
 
-    def test_unknown_or_ambiguous_titles_fail_closed(self):
+    def test_ambiguous_titles_are_allowed_by_default_and_can_be_denied_manually(self):
         manifest = [
             {"title": "No Episode Pattern"},
             {"title": "Not Approved - 01 (1080p)", "episode": 1},
         ]
         allowed, counts = filter_by_publication_approval(manifest, {
+            "default_decision": "allow",
             "approved_series": [],
             "denied_series": [],
         })
-        self.assertEqual(allowed, [])
-        self.assertEqual(counts["pending"], 1)
-        self.assertEqual(counts["ambiguous"], 1)
+        self.assertEqual([row["title"] for row in allowed], [
+            "No Episode Pattern",
+            "Not Approved - 01 (1080p)",
+        ])
+        self.assertEqual(counts, {"approved": 2, "pending": 0, "denied": 0, "ambiguous": 0})
+
+        denied, counts = filter_by_publication_approval(manifest, {
+            "default_decision": "allow",
+            "approved_series": [],
+            "denied_series": ["No Episode Pattern"],
+        })
+        self.assertEqual([row["title"] for row in denied], ["Not Approved - 01 (1080p)"])
+        self.assertEqual(counts["denied"], 1)
+
+    def test_ambiguous_release_title_gets_fallback_series_identity_for_queueing(self):
+        manifest = [row("Unparsed Release Name", 1, "2026-10-05")]
+        upload_date, selected = select_next_upload_date(manifest, {"published": {}})
+        self.assertEqual(upload_date, "2026-10-05")
+        self.assertEqual([item["title"] for item in selected], ["Unparsed Release Name"])
 
     def test_invalid_policy_shape_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "JSON lists"):
