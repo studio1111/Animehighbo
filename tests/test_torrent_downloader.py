@@ -48,9 +48,6 @@ class TorrentSourceValidationTests(unittest.TestCase):
                     "Licensed Sample 01 1080p",
                     {"download_dir": str(root / "downloads"), "allowed_torrent_hosts": [],
                      "max_file_size_mb": 5, "torrent_timeout_seconds": 10},
-                    authorized_for_redistribution=True,
-                    authorization_evidence="https://rights.example.org/licenses/animehighbo",
-                    authorization_reviewed_at="2026-10-24",
                 )
 
             self.assertIn("--bt-stop-timeout=900", captured["command"])
@@ -76,8 +73,6 @@ class TorrentSourceValidationTests(unittest.TestCase):
                     "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
                     "Future Review 01 1080p",
                     {"download_dir": "downloads", "allowed_torrent_hosts": []},
-                    authorization_evidence="https://rights.example.org/licenses/animehighbo",
-                    authorization_reviewed_at="2999-01-01",
                 )
             which.assert_called_once()
 
