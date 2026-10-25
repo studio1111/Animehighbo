@@ -48,7 +48,6 @@ def download_authorized_torrent(
     source: str,
     title: str,
     config: dict,
-    *,
 ) -> Path:
     """Download one configured torrent source; source/host validation remains enabled."""
     source = validate_torrent_source(source, config.get("allowed_torrent_hosts", []))
