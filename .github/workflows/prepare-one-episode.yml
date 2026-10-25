@@ -121,7 +121,6 @@ jobs:
           retention-days: 7
 
   publish:
-    if: false
     name: Publish this completed episode to Telegram
     needs: prepare
     runs-on: ubuntu-latest
