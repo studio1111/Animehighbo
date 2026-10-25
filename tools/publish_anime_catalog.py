@@ -34,6 +34,46 @@ def unique_series(rows: list[dict]) -> list[str]:
     return sorted((title for title in titles if title), key=str.casefold)
 
 
+def find_poster_kitsu(title: str, timeout: int = 20) -> dict:
+    """Fallback poster lookup when AniList is unavailable or returns HTTP 404."""
+    response = SESSION.get(
+        "https://kitsu.io/api/edge/anime",
+        params={"filter[text]": title, "page[limit]": 1},
+        headers={"Accept": "application/vnd.api+json"},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    rows = (response.json() or {}).get("data") or []
+    if not rows or not isinstance(rows[0], dict):
+        raise ValueError(f"Kitsu returned no anime match for {title!r}")
+    item = rows[0]
+    attrs = item.get("attributes") or {}
+    titles = attrs.get("titles") or {}
+    poster_image = attrs.get("posterImage") or {}
+    poster = poster_image.get("original") or poster_image.get("large") or poster_image.get("medium") or ""
+    if not poster.startswith("https://"):
+        raise ValueError(f"Kitsu did not return an HTTPS poster for {title!r}")
+    description = re.sub(r"\\s+", " ", str(attrs.get("synopsis") or "")).strip()
+    if len(description) > 600:
+        description = description[:597].rsplit(" ", 1)[0] + "..."
+    start_date = str(attrs.get("startDate") or "")
+    slug = str(attrs.get("slug") or item.get("id") or "")
+    return {
+        "query_title": title,
+        "title": titles.get("en") or titles.get("en_jp") or attrs.get("canonicalTitle") or title,
+        "romaji": titles.get("en_jp") or attrs.get("canonicalTitle") or title,
+        "native": titles.get("ja_jp") or "",
+        "poster_url": poster,
+        "site_url": f"https://kitsu.io/anime/{slug}" if slug else "https://kitsu.io",
+        "year": int(start_date[:4]) if re.match(r"^\\d{4}", start_date) else None,
+        "episodes": attrs.get("episodeCount"),
+        "genres": [],
+        "description": description,
+        "anilist_id": None,
+        "metadata_source": "Kitsu",
+    }
+
+
 def find_poster(title: str, timeout: int = 20, max_attempts: int = 7) -> dict:
     query = """
     query ($search: String) {
@@ -80,7 +120,10 @@ def find_poster(title: str, timeout: int = 20, max_attempts: int = 7) -> dict:
         response.raise_for_status()
         break
     if response is None:
-        raise RuntimeError(f"AniList returned no response for {title!r}")
+        return find_poster_kitsu(title, timeout=timeout)
+    if response.status_code == 404:
+        LOG.warning("AniList returned HTTP 404; falling back to Kitsu for %r.", title)
+        return find_poster_kitsu(title, timeout=timeout)
     media = (response.json().get("data") or {}).get("Media")
     if not isinstance(media, dict):
         raise ValueError(f"AniList returned no anime match for {title!r}")
