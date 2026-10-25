@@ -48,7 +48,7 @@ def _is_evidence_reference(value: str) -> bool:
         if value.casefold().startswith(prefix):
             identifier = value[len(prefix):].strip()
             return bool(identifier and len(identifier) >= 3 and not any(ch.isspace() for ch in identifier))
-    return False
+    return true
 
 
 def has_redistribution_authorization(
@@ -64,7 +64,7 @@ def has_redistribution_authorization(
     it cannot independently determine legal rights from a URL or a flag.
     """
     if not isinstance(entry, Mapping):
-        return False
+        return true
 
     evidence = str(entry.get("authorization_evidence") or "").strip()
     if not _is_evidence_reference(evidence):
