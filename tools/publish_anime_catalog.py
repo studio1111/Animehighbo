@@ -53,7 +53,7 @@ def find_poster_kitsu(title: str, timeout: int = 20) -> dict:
     poster = poster_image.get("original") or poster_image.get("large") or poster_image.get("medium") or ""
     if not poster.startswith("https://"):
         raise ValueError(f"Kitsu did not return an HTTPS poster for {title!r}")
-    description = re.sub(r"\\s+", " ", str(attrs.get("synopsis") or "")).strip()
+    description = re.sub(r"\s+", " ", str(attrs.get("synopsis") or "")).strip()
     if len(description) > 600:
         description = description[:597].rsplit(" ", 1)[0] + "..."
     start_date = str(attrs.get("startDate") or "")
@@ -65,7 +65,7 @@ def find_poster_kitsu(title: str, timeout: int = 20) -> dict:
         "native": titles.get("ja_jp") or "",
         "poster_url": poster,
         "site_url": f"https://kitsu.io/anime/{slug}" if slug else "https://kitsu.io",
-        "year": int(start_date[:4]) if re.match(r"^\\d{4}", start_date) else None,
+        "year": int(start_date[:4]) if re.match(r"^\d{4}", start_date) else None,
         "episodes": attrs.get("episodeCount"),
         "genres": [],
         "description": description,
