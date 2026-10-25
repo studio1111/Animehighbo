@@ -1,0 +1,94 @@
+name: Telegram workflow failure alerts
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+      - Animehighbo episode dispatcher
+      - Animehighbo single-episode worker
+      - Monitor SubsPlease release metadata coverage
+      - Refresh seasonal anime coverage report
+      - Sync RSS input to config
+      - Build authorized episode archive catalog
+      - One-time licensed Morevna Telegram test
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: telegram-workflow-alert-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    if: >-
+      github.event.workflow_run.head_branch == 'main' &&
+      (github.event.workflow_run.conclusion == 'failure' ||
+       github.event.workflow_run.conclusion == 'timed_out')
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Send actionable failure alert to the reporting group
+        env:
+          TELEGRAM_ALERT_BOT_TOKEN: ${{ secrets.TELEGRAM_ALERT_BOT_TOKEN }}
+          TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          EVENT_URL: ${{ github.event.workflow_run.html_url }}
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "$TELEGRAM_ALERT_BOT_TOKEN" ] || [ -z "$TELEGRAM_ALERT_CHAT_ID" ]; then
+            echo "::error::Telegram reporting bot credentials are missing."
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          token = os.environ["TELEGRAM_ALERT_BOT_TOKEN"]
+          chat_id = os.environ["TELEGRAM_ALERT_CHAT_ID"]
+          workflow = os.environ["WORKFLOW_NAME"]
+          run_id = os.environ["RUN_ID"]
+          run_number = os.environ["RUN_NUMBER"]
+          conclusion = os.environ["CONCLUSION"]
+          branch = os.environ["BRANCH"]
+          url = os.environ["EVENT_URL"]
+          sha = os.environ["COMMIT_SHA"][:12]
+
+          text = (
+              "🚨 Animehighbo workflow failed\n"
+              f"Workflow: {workflow}\n"
+              f"Run: #{run_number} (ID {run_id})\n"
+              f"Result: {conclusion}\n"
+              f"Branch: {branch}\n"
+              f"Commit: {sha}\n"
+              f"Details: {url}"
+          )
+          payload = json.dumps({
+              "chat_id": chat_id,
+              "text": text,
+              "disable_web_page_preview": True,
+          }).encode("utf-8")
+          request = urllib.request.Request(
+              f"https://api.telegram.org/bot{token}/sendMessage",
+              data=payload,
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  result = json.loads(response.read().decode("utf-8"))
+          except (urllib.error.URLError, TimeoutError) as exc:
+              raise SystemExit(f"Telegram alert request failed: {exc}") from exc
+          if not result.get("ok"):
+              raise SystemExit("Telegram rejected the workflow failure alert.")
+          print(f"Failure alert sent for workflow run {run_id}.")
+          PY
