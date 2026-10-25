@@ -21,15 +21,6 @@
       "review_required": true
     },
     {
-      "title": "Sora wa Akai Kawa no Hotori",
-      "episode": 16,
-      "release_date": "2026-10-20",
-      "feed_quality": "720p",
-      "in_authorized_manifest": false,
-      "in_candidate_report": true,
-      "review_required": true
-    },
-    {
       "title": "Juuou Mujin Dandivine",
       "episode": 3,
       "release_date": "2026-10-21",
@@ -287,7 +278,7 @@
       "release_date": "2026-10-24",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
-      "in_candidate_report": false,
+      "in_candidate_report": true,
       "review_required": true
     },
     {
@@ -338,6 +329,15 @@
     {
       "title": "Dark Summoner to Dekiteiru",
       "episode": 4,
+      "release_date": "2026-10-25",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": 3,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
