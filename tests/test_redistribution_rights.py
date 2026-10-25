@@ -20,6 +20,23 @@ class RedistributionRightsTests(unittest.TestCase):
         }
         self.assertFalse(has_redistribution_authorization(entry, today=date(2026, 10, 25)))
 
+    def test_rejects_untyped_or_malformed_evidence_references(self):
+        for evidence in ("made-up", "approved", "http://rights.example.org/license",
+                         "https://user:secret@rights.example.org/license"):
+            with self.subTest(evidence=evidence):
+                self.assertFalse(has_redistribution_authorization({
+                    "authorized_for_redistribution": True,
+                    "authorization_evidence": evidence,
+                    "authorization_reviewed_at": "2026-10-24",
+                }, today=date(2026, 10, 25)))
+
+    def test_accepts_a_typed_internal_rights_record_id(self):
+        self.assertTrue(has_redistribution_authorization({
+            "authorized_for_redistribution": True,
+            "authorization_evidence": "rights-record:ABC123",
+            "authorization_reviewed_at": "2026-10-24",
+        }, today=date(2026, 10, 25)))
+
     def test_rejects_missing_or_invalid_review_date(self):
         for reviewed_at in ("", "yesterday", "2026-02-31"):
             with self.subTest(reviewed_at=reviewed_at):
