@@ -40,6 +40,9 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             "title": f"Series {name}",
             "episode": "1",
             "release_date": "2026-10-20",
+            "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
             "files": files,
         }
         (bundle / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
