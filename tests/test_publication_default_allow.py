@@ -1,4 +1,4 @@
-from tools.episode_queue import filter_by_publication_approval
+from tools.episode_queue import filter_by_manual_exclusions
 
 
 def test_default_allow_queues_identifiable_titles_except_manual_denylist():
@@ -9,33 +9,23 @@ def test_default_allow_queues_identifiable_titles_except_manual_denylist():
         {"title": "Unclear title without episode metadata"},
     ]
 
-    allowed, counts = filter_by_publication_approval(manifest, {
-        "policy_version": 1,
-        "default_decision": "allow",
-        "approved_series": [],
-        "denied_series": ["Blocked Saga"],
-    })
+    allowed, counts = filter_by_manual_exclusions(manifest, ["Blocked Saga"])
 
     assert [item["title"] for item in allowed] == [
         "Allowed Saga - 01 (1080p)",
         "Allowed Saga - 03 (480p)",
     ]
     assert counts == {
-        "approved": 2,
-        "pending": 0,
-        "denied": 1,
-        "ambiguous": 1,
+        "eligible": 2,
+        "excluded": 1,
+        "invalid": 1,
     }
 
 
-def test_manual_deny_overrides_legacy_approval():
+def test_manual_exclusion_removes_matching_series():
     manifest = [{"title": "Blocked Saga - 01 (1080p)", "episode": 1}]
 
-    allowed, counts = filter_by_publication_approval(manifest, {
-        "default_decision": "allow",
-        "approved_series": ["Blocked Saga"],
-        "denied_series": ["Blocked Saga"],
-    })
+    allowed, counts = filter_by_manual_exclusions(manifest, ["Blocked Saga"])
 
     assert allowed == []
-    assert counts["denied"] == 1
+    assert counts["excluded"] == 1
