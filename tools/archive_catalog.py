@@ -321,12 +321,16 @@ def build_archive_manifest(
             str(row.get("title", "")).casefold(),
             int(row.get("episode", 0) or 0),
         ))
-        # Duplicate magnet URIs can arise from alternate episode labels; fail closed.
+        # Authorized manifests carry source URIs, so exact-source duplicates can
+        # be rejected. Candidate reports deliberately omit media/magnet URLs.
         seen = set()
         for row in manifest:
-            if row["uri"] in seen:
+            uri = str(row.get("uri") or "").strip()
+            if not uri:
+                continue
+            if uri in seen:
                 raise ValueError(f"Duplicate source URI found while building archive: {row['title']}")
-            seen.add(row["uri"])
+            seen.add(uri)
         return manifest
     finally:
         if own_session:
