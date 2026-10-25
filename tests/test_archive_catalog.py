@@ -1,8 +1,9 @@
 import json
 import unittest
 from datetime import date
+from unittest.mock import Mock, patch
 
-from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, merge_existing_manifest, select_show_episodes
+from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, build_archive_manifest, merge_existing_manifest, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
@@ -237,6 +238,30 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
         self.assertTrue(selected[0]["authorization_evidence"])
         self.assertIn("authorizedcandidate", selected[0]["uri"])
+
+    def test_builder_returns_metadata_only_candidates_without_source_uris(self):
+        session = Mock()
+        session.headers = {}
+        latest_page = {
+            "one": {"release_date": "2026-10-07T10:00:00Z", "page": "candidate-saga"}
+        }
+        episode_rows = [{
+            "title": "Candidate Saga - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:secret"}],
+        }]
+        with patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]), \\
+             patch("tools.archive_catalog._fetch_show_episodes", return_value=("Candidate Saga", episode_rows)), \\
+             patch("tools.archive_catalog.time.sleep"):
+            candidates = build_archive_manifest(
+                date(2026, 10, 1), max_pages=5, session=session
+            )
+        self.assertEqual(len(candidates), 1)
+        self.assertFalse(candidates[0]["authorized_for_redistribution"])
+        self.assertTrue(candidates[0]["review_required"])
+        self.assertNotIn("uri", candidates[0])
+        self.assertNotIn("magnet", json.dumps(candidates).lower())
 
     def test_discovered_episodes_are_unapproved_candidates_by_default(self):
         rows = [{
