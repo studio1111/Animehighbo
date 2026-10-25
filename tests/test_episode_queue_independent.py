@@ -1,4 +1,5 @@
 import unittest
+from datetime import date
 
 from tools.episode_queue import eligible_prepared_episodes, episode_identity, series_identity, limit_to_available_slots
 
@@ -11,6 +12,9 @@ def episode(title, number, identity, season=1, status="prepared"):
         "series_title": title.split(" - ")[0],
         "identity": identity,
         "status": status,
+        "authorized_for_redistribution": True,
+        "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+        "authorization_reviewed_at": date.today().isoformat(),
     }
 
 

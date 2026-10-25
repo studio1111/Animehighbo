@@ -19,6 +19,8 @@ from urllib.parse import unquote, urlparse
 
 import requests
 
+from tools.redistribution_rights import has_redistribution_authorization
+
 LOG = logging.getLogger("animehighbo")
 VIDEO_EXTENSIONS = {".mkv", ".mp4", ".webm", ".mov"}
 USER_AGENT = "AnimehighboPublisher/1.0 (+authorized-media-only)"
@@ -986,9 +988,9 @@ def torrent_source_uri(source: dict) -> str:
 
 
 def has_authorized_torrent_source(config: dict) -> bool:
-    """Return whether the configuration contains an explicitly authorized source."""
+    """Return whether at least one static torrent source has evidence-backed rights."""
     for source in config.get("torrent_sources", []):
-        if not isinstance(source, dict) or source.get("authorized_for_redistribution") is not True:
+        if not has_redistribution_authorization(source):
             continue
         try:
             if torrent_source_uri(source):
@@ -999,23 +1001,39 @@ def has_authorized_torrent_source(config: dict) -> bool:
 
 
 def has_file_media_source(config: dict) -> bool:
-    """Require an allow-listed direct-media feed, opt-in torrent RSS feed, or static torrent."""
+    """Return whether a configured source can be inspected for evidence-backed rights.
+
+    Archive mode is allowed to enter its loader even when legacy records have no
+    evidence, so the job fails with an actionable authorization error instead of
+    silently reporting an empty queue.
+    """
+    if config.get("archive_mode", False):
+        manifest_path = Path(str(config.get("archive_manifest", "data/archive_manifest.json")))
+        return manifest_path.is_file()
+
+    allowed_download_hosts = {
+        str(host).strip().lower().rstrip(".")
+        for host in config.get("allowed_download_hosts", [])
+        if str(host).strip()
+    }
     torrent_feed_hosts = {
         str(host).strip().lower().rstrip(".")
         for host in config.get("torrent_feed_hosts", [])
         if str(host).strip()
     }
-    torrent_feed_configured = any(
-        urlparse(str(feed.get("url", ""))).scheme == "https"
-        and (urlparse(str(feed.get("url", ""))).hostname or "").lower().rstrip(".") in torrent_feed_hosts
-        for feed in config.get("feeds", [])
-        if isinstance(feed, dict)
-    )
-    return bool(
-        (config.get("feeds") and config.get("allowed_download_hosts"))
-        or torrent_feed_configured
-        or has_authorized_torrent_source(config)
-    )
+    for feed in config.get("feeds", []):
+        if not isinstance(feed, dict) or not has_redistribution_authorization(feed):
+            continue
+        parsed = urlparse(str(feed.get("url", "")))
+        host = (parsed.hostname or "").lower().rstrip(".")
+        if parsed.scheme != "https" or not host:
+            continue
+        # RSS host and media host may be different. The RSS source itself must
+        # have reviewed rights metadata; any enclosure is separately checked
+        # against allowed_download_hosts before a download.
+        if host in torrent_feed_hosts or allowed_download_hosts:
+            return True
+    return has_authorized_torrent_source(config)
 
 
 def allowed_media_url(url: str, allowed_hosts: list[str]) -> bool:
@@ -1075,7 +1093,24 @@ def safe_filename(title: str, url: str) -> str:
     return stem + suffix
 
 
-def download_media(url: str, title: str, config: dict) -> Path:
+def download_media(
+    url: str,
+    title: str,
+    config: dict,
+    *,
+    authorized_for_redistribution: bool = False,
+    authorization_evidence: str = "",
+    authorization_reviewed_at: str = "",
+) -> Path:
+    rights_record = {
+        "authorized_for_redistribution": authorized_for_redistribution,
+        "authorization_evidence": authorization_evidence,
+        "authorization_reviewed_at": authorization_reviewed_at,
+    }
+    if not has_redistribution_authorization(rights_record):
+        raise PermissionError(
+            "Direct media download is disabled without evidence-backed redistribution authorization."
+        )
     if not allowed_media_url(url, config["allowed_download_hosts"]):
         raise ValueError(f"Rejected non-allow-listed or non-direct media URL: {url}")
     target_dir = Path(config["download_dir"])
@@ -1205,9 +1240,11 @@ def load_archive_manifest(path: str) -> list[dict]:
             raise ValueError(
                 f"Archive entry {index + 1} HTTPS media URL must end in a supported video extension or .torrent."
             )
-        if item.get("authorized_for_redistribution") is not True:
+        if not has_redistribution_authorization(item):
             raise PermissionError(
-                f"Archive entry {index + 1} must explicitly set authorized_for_redistribution=true."
+                f"Archive entry {index + 1} is blocked: it requires authorized_for_redistribution=true, "
+                "authorization_evidence, and a valid non-future authorization_reviewed_at date. "
+                "Legacy boolean flags are not sufficient."
             )
         if "[batch]" in title.casefold():
             raise ValueError(f"Archive entry {index + 1} must contain a single episode, not a batch.")
@@ -1225,6 +1262,8 @@ def load_archive_manifest(path: str) -> list[dict]:
             "identity": identity,
             "torrent_source": is_torrent_source,
             "authorized_for_redistribution": True,
+            "authorization_evidence": str(item.get("authorization_evidence") or "").strip(),
+            "authorization_reviewed_at": str(item.get("authorization_reviewed_at") or "").strip(),
             "release_date": str(item.get("release_date") or "").strip(),
             "archive_order": index,
         })
@@ -1252,6 +1291,11 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             if not isinstance(manifest, dict) or manifest.get("schema_version") != 1:
                 raise ValueError(f"Prepared episode manifest has an unsupported schema version: {manifest_path}")
+            if not has_redistribution_authorization(manifest):
+                raise PermissionError(
+                    f"Prepared episode bundle {manifest_path.parent.name} has no evidence-backed redistribution "
+                    "authorization. Refusing Telegram publication."
+                )
             day = str(manifest.get("release_date") or "").strip()
             if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
                 raise ValueError(f"Prepared episode has no valid source upload date: {manifest_path}")
@@ -1485,6 +1529,13 @@ def run() -> int:
     for feed in ([] if archive_mode else config["feeds"]):
         feed_url = str(feed.get("url", "")).strip()
         feed_name = str(feed.get("name", "Authorized feed")).strip()
+        if not has_redistribution_authorization(feed):
+            LOG.warning(
+                "Skipping feed %s: it lacks evidence-backed redistribution rights "
+                "(authorization_evidence and authorization_reviewed_at).",
+                feed_name,
+            )
+            continue
         parsed_feed_url = urlparse(feed_url)
         if parsed_feed_url.scheme != "https" or not parsed_feed_url.hostname:
             LOG.error("Skipping feed with invalid HTTPS URL: %s", feed_name)
@@ -1514,7 +1565,13 @@ def run() -> int:
         for entry in ordered_entries:
             entry_url = str(entry.get("url", "")).strip()
             if allowed_media_url(entry_url, config["allowed_download_hosts"]):
-                pending.append({**entry, "feed": feed_name})
+                pending.append({
+                    **entry,
+                    "feed": feed_name,
+                    "authorized_for_redistribution": True,
+                    "authorization_evidence": feed["authorization_evidence"],
+                    "authorization_reviewed_at": feed["authorization_reviewed_at"],
+                })
                 continue
             if is_torrent_feed and urlparse(entry_url).scheme.lower() == "magnet":
                 if "[batch]" in str(entry.get("title", "")).lower():
@@ -1532,16 +1589,23 @@ def run() -> int:
                     continue
                 identity = hashlib.sha256(("torrent:" + entry_url).encode("utf-8")).hexdigest()
                 pending.append({
-                    **entry, "feed": feed_name, "identity": identity,
-                    "torrent_source": True, "authorized_for_redistribution": True,
+                    **entry,
+                    "feed": feed_name,
+                    "identity": identity,
+                    "torrent_source": True,
+                    "authorized_for_redistribution": True,
+                    "authorization_evidence": feed["authorization_evidence"],
+                    "authorization_reviewed_at": feed["authorization_reviewed_at"],
                 })
             else:
                 LOG.info("Skipping non-direct, non-magnet, or non-allow-listed entry: %s", entry["title"])
 
     # Static one-off torrent sources are ignored in archive mode so they cannot jump the queue.
     for source in ([] if archive_mode else config.get("torrent_sources", [])):
-        if not isinstance(source, dict) or source.get("authorized_for_redistribution") is not True:
-            LOG.warning("Skipping torrent source without explicit redistribution authorization.")
+        if not has_redistribution_authorization(source):
+            LOG.warning(
+                "Skipping torrent source without evidence-backed redistribution authorization."
+            )
             continue
         title = str(source.get("title", "")).strip()
         try:
@@ -1556,8 +1620,11 @@ def run() -> int:
         if identity not in state["published"] or not _episode_record_complete(state["published"][identity]):
             pending.append({
                 "title": title, "url": uri, "feed": "authorized torrent",
-                "identity": identity, "torrent_source": True,
+                "identity": identity,
+                "torrent_source": True,
                 "authorized_for_redistribution": True,
+                "authorization_evidence": source["authorization_evidence"],
+                "authorization_reviewed_at": source["authorization_reviewed_at"],
             })
 
     requested_identity = os.getenv("ANIMEHIGHBO_EPISODE_ID", "").strip()
@@ -1632,9 +1699,18 @@ def run() -> int:
                         media_path = download_authorized_torrent(
                             entry["url"], entry["title"], config,
                             authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
+                            authorization_evidence=str(entry.get("authorization_evidence") or ""),
+                            authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
                         )
                     else:
-                        media_path = download_media(entry["url"], entry["title"], config)
+                        media_path = download_media(
+                            entry["url"],
+                            entry["title"],
+                            config,
+                            authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
+                            authorization_evidence=str(entry.get("authorization_evidence") or ""),
+                            authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
+                        )
                     publish_path = media_path
                     if config.get("bilingual_subtitles", False):
                         from tools.bilingual_subtitles import process as process_bilingual_subtitles
@@ -1766,6 +1842,9 @@ def run() -> int:
                             "episode": group["episode"],
                             "release_date": str(selected_source.get("release_date") or group.get("release_date") or ""),
                             "feed": selected_source.get("feed", "episode archive manifest"),
+                            "authorized_for_redistribution": selected_source.get("authorized_for_redistribution") is True,
+                            "authorization_evidence": str(selected_source.get("authorization_evidence") or ""),
+                            "authorization_reviewed_at": str(selected_source.get("authorization_reviewed_at") or ""),
                             "source_quality": source_quality,
                             "files": sorted(file_rows, key=lambda row: _quality_rank(row["quality"])),
                         }

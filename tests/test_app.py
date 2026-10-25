@@ -164,6 +164,9 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "episode": "01",
             "release_date": day,
             "source_quality": "1080p",
+            "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
             "files": files,
         }), encoding="utf-8")
 
@@ -270,11 +273,15 @@ class ArchiveManifestTests(unittest.TestCase):
                     "title": "Moonlit Saga - 01 (1080p)",
                     "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                     "authorized_for_redistribution": True,
+                    "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                    "authorization_reviewed_at": "2026-10-24",
                 },
                 {
                     "title": "Moonlit Saga - 02 (1080p)",
                     "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
                     "authorized_for_redistribution": True,
+                    "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                    "authorization_reviewed_at": "2026-10-24",
                 },
             ]), encoding="utf-8")
             entries = load_archive_manifest(str(path))
@@ -291,6 +298,8 @@ class ArchiveManifestTests(unittest.TestCase):
                 "title": "Moonlit Saga - 01 (1080p)",
                 "url": "https://media.example.org/moonlit-01.mkv",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }]), encoding="utf-8")
             entries = load_archive_manifest(str(path))
         self.assertFalse(entries[0]["torrent_source"])
@@ -308,11 +317,11 @@ class ArchiveManifestTests(unittest.TestCase):
 
     def test_manifest_rejects_batches_missing_episode_numbers_and_duplicate_sources(self):
         cases = [
-            ([{"title": "[Batch] Moonlit Saga (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "single episode"),
-            ([{"title": "Moonlit Saga Complete", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "no detectable episode"),
+            ([{"title": "[Batch] Moonlit Saga (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"}], "single episode"),
+            ([{"title": "Moonlit Saga Complete", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"}], "no detectable episode"),
             ([
-                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
-                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
+                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"},
+                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"},
             ], "Duplicate archive source"),
         ]
         for entries, message in cases:
@@ -357,26 +366,57 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "allowed_download_hosts": [],
             "torrent_sources": [],
         }))
-        self.assertTrue(has_file_media_source({
+        self.assertFalse(has_file_media_source({
             "feeds": [{"url": "https://media.example.org/feed.xml"}],
             "allowed_download_hosts": ["media.example.org"],
             "torrent_sources": [],
         }))
         self.assertTrue(has_file_media_source({
+            "feeds": [{
+                "url": "https://media.example.org/feed.xml",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
+            "allowed_download_hosts": ["media.example.org"],
+            "torrent_sources": [],
+        }))
+        self.assertFalse(has_file_media_source({
             "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
             "allowed_download_hosts": [],
             "allowed_torrent_hosts": [],
             "torrent_feed_hosts": ["subsplease.org"],
             "torrent_sources": [],
         }))
+        self.assertTrue(has_file_media_source({
+            "feeds": [{
+                "url": "https://subsplease.org/rss/?r=1080",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
+            "allowed_download_hosts": [],
+            "allowed_torrent_hosts": [],
+            "torrent_feed_hosts": ["subsplease.org"],
+            "torrent_sources": [],
+        }))
+        self.assertTrue(has_file_media_source({
+            "archive_mode": True,
+            "archive_manifest": "data/archive_manifest.json",
+        }))
 
-    def test_only_explicit_true_authorizes_a_torrent_source(self):
+    def test_only_evidence_backed_rights_authorize_a_torrent_source(self):
         source = {
             "title": "Open Sample - 01 (1080p)",
             "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }
         self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorization_evidence"] = ""
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorization_evidence"] = "https://rights.example.org/licenses/animehighbo"
         source["authorized_for_redistribution"] = "true"
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
         source["authorized_for_redistribution"] = False
@@ -449,7 +489,13 @@ class TorrentSourceConfigTests(unittest.TestCase):
     def test_rss_feed_failure_returns_nonzero_for_actions(self):
         config = {
             "mode": "files",
-            "feeds": [{"name": "Authorized sample", "url": "https://media.example.org/feed.xml"}],
+            "feeds": [{
+                "name": "Authorized sample",
+                "url": "https://media.example.org/feed.xml",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
             "dry_run": False,
             "state_file": "unused-state.json",
             "request_timeout_seconds": 30,
@@ -501,6 +547,8 @@ class TorrentSourceConfigTests(unittest.TestCase):
                 "title": "Licensed Sample - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }],
         }
         state = {"published": {}, "seen": {}, "posters": {}}
@@ -531,6 +579,8 @@ class TorrentSourceConfigTests(unittest.TestCase):
                 "title": "Open Sample - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }],
         }
         state = {"published": {}, "seen": {}, "posters": {}}
@@ -877,3 +927,30 @@ class PosterFallbackTests(unittest.TestCase):
             )
         self.assertEqual(message_id, "732")
         self.assertIn("/sendMessage", post.call_args.args[0])
+
+
+class DirectMediaRightsGateTests(unittest.TestCase):
+    def test_direct_media_download_rejects_legacy_boolean_before_network(self):
+        with patch("app.requests.get") as get:
+            with self.assertRaisesRegex(PermissionError, "evidence-backed redistribution authorization"):
+                app.download_media(
+                    "https://media.example.org/sample.mkv",
+                    "Sample Episode 01",
+                    {"allowed_download_hosts": ["media.example.org"], "download_dir": "downloads",
+                     "max_file_size_mb": 10, "request_timeout_seconds": 5},
+                    authorized_for_redistribution=True,
+                )
+            get.assert_not_called()
+
+
+class ArchiveManifestRightsGateTests(unittest.TestCase):
+    def test_legacy_true_flag_without_rights_evidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "legacy.json"
+            path.write_text(json.dumps([{
+                "title": "Legacy Saga - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "authorized_for_redistribution": True,
+            }]), encoding="utf-8")
+            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
+                load_archive_manifest(str(path))

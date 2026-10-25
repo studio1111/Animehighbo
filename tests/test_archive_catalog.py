@@ -1,7 +1,9 @@
+import json
 import unittest
 from datetime import date
+from unittest.mock import Mock, patch
 
-from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, merge_existing_manifest, select_show_episodes
+from tools.archive_catalog import REQUIRED_SHOW_SLUGS, _show_page_url, _show_title_from_html, build_archive_manifest, merge_existing_manifest, select_show_episodes
 
 
 class ArchiveCatalogSelectionTests(unittest.TestCase):
@@ -41,6 +43,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             [row["release_date"] for row in selected],
             ["2026-09-05", "2026-09-12", "2026-09-19"],
         )
+        self.assertTrue(all("uri" not in row for row in selected))
+        self.assertTrue(all("magnet" not in json.dumps(row).lower() for row in selected))
 
     def test_preserves_curated_authorized_entries_missing_from_catalog_api(self):
         generated = [{
@@ -50,6 +54,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:new",
             "release_date": "2026-10-10",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [
             {
@@ -59,6 +65,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "uri": "magnet:?xt=urn:btih:curated",
                 "release_date": "2026-10-07",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Old Saga - 01 (1080p)",
@@ -67,6 +75,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "uri": "magnet:?xt=urn:btih:old",
                 "release_date": "2026-08-07",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Unapproved Saga - 01 (1080p)",
@@ -165,7 +175,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         selected = select_show_episodes("Sasaki to Pii-chan S2", rows, date(2026, 10, 1), 1800)
         self.assertEqual(len(selected), 1)
         self.assertEqual(selected[0]["quality"], "720p")
-        self.assertIn("small720", selected[0]["uri"])
+        self.assertNotIn("uri", selected[0])
 
     def test_oversized_sources_are_skipped_when_no_lower_quality_fits(self):
         rows = [{
@@ -187,6 +197,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:small720",
             "release_date": "2026-10-07",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [{
             "title": "Sasaki to Pii-chan S2 - 01 (1080p)",
@@ -195,10 +207,78 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:large1080",
             "release_date": "2026-10-07",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         merged = merge_existing_manifest(generated, existing, date(2026, 10, 1))
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0]["quality"], "720p")
+
+
+    def test_authorized_catalog_entry_requires_evidence_and_review_date(self):
+        rows = [{
+            "title": "Licensed Candidate - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:authorizedcandidate"}],
+        }]
+        with self.assertRaisesRegex(ValueError, "authorization_evidence"):
+            select_show_episodes(
+                "Licensed Candidate", rows, date(2026, 10, 1),
+                authorized_for_redistribution=True,
+            )
+
+        selected = select_show_episodes(
+            "Licensed Candidate", rows, date(2026, 10, 1),
+            authorized_for_redistribution=True,
+            authorization_evidence="https://rights.example.org/licenses/animehighbo",
+            authorization_reviewed_at="2026-10-24",
+        )
+        self.assertTrue(selected[0]["authorized_for_redistribution"])
+        self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
+        self.assertTrue(selected[0]["authorization_evidence"])
+        self.assertIn("authorizedcandidate", selected[0]["uri"])
+
+    def test_builder_returns_metadata_only_candidates_without_source_uris(self):
+        session = Mock()
+        session.headers = {}
+        latest_page = {
+            "one": {"release_date": "2026-10-07T10:00:00Z", "page": "candidate-saga"}
+        }
+        episode_rows = [{
+            "title": "Candidate Saga - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:secret"}],
+        }]
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
+            patch("tools.archive_catalog._fetch_show_episodes", return_value=("Candidate Saga", episode_rows)),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
+            candidates = build_archive_manifest(
+                date(2026, 10, 1), max_pages=5, session=session
+            )
+        self.assertEqual(len(candidates), 1)
+        self.assertFalse(candidates[0]["authorized_for_redistribution"])
+        self.assertTrue(candidates[0]["review_required"])
+        self.assertNotIn("uri", candidates[0])
+        self.assertNotIn("magnet", json.dumps(candidates).lower())
+
+    def test_discovered_episodes_are_unapproved_candidates_by_default(self):
+        rows = [{
+            "title": "Candidate Saga - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:candidate"}],
+        }]
+
+        selected = select_show_episodes("Candidate Saga", rows, date(2026, 10, 1))
+
+        self.assertEqual(len(selected), 1)
+        self.assertIs(selected[0].get("authorized_for_redistribution"), False)
+        self.assertTrue(selected[0].get("review_required"))
 
 if __name__ == "__main__":
     unittest.main()
