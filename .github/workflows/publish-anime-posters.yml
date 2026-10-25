@@ -8,6 +8,7 @@ on:
       - '.github/workflows/publish-anime-posters.yml'
       - 'data/archive_manifest.json'
       - 'data/archive_candidates.json'
+      - 'data/seasonal_discovery_report.json'
   schedule:
     - cron: '23 */3 * * *'
   workflow_dispatch:
