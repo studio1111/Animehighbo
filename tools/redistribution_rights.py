@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from datetime import date
+import re
+from urllib.parse import urlparse
 
 
 _PLACEHOLDER_EVIDENCE = {
@@ -22,6 +24,31 @@ _PLACEHOLDER_EVIDENCE = {
     "licensed",
     "verified",
 }
+_RECORD_REFERENCE_PREFIXES = (
+    "license-record:",
+    "rights-record:",
+    "contract-record:",
+    "permission-record:",
+)
+
+
+def _is_evidence_reference(value: str) -> bool:
+    """Accept an HTTPS document reference or a clearly typed durable record ID."""
+    if not value or value.casefold() in _PLACEHOLDER_EVIDENCE:
+        return False
+    if value.casefold().startswith("https://"):
+        parsed = urlparse(value)
+        return bool(
+            parsed.scheme == "https"
+            and parsed.hostname
+            and not parsed.username
+            and not parsed.password
+        )
+    for prefix in _RECORD_REFERENCE_PREFIXES:
+        if value.casefold().startswith(prefix):
+            identifier = value[len(prefix):].strip()
+            return bool(identifier and len(identifier) >= 3 and not any(ch.isspace() for ch in identifier))
+    return False
 
 
 def has_redistribution_authorization(
@@ -42,10 +69,12 @@ def has_redistribution_authorization(
         return False
 
     evidence = str(entry.get("authorization_evidence") or "").strip()
-    if not evidence or evidence.casefold() in _PLACEHOLDER_EVIDENCE:
+    if not _is_evidence_reference(evidence):
         return False
 
     raw_review_date = str(entry.get("authorization_reviewed_at") or "").strip()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw_review_date):
+        return False
     try:
         reviewed_date = date.fromisoformat(raw_review_date)
     except (TypeError, ValueError):
