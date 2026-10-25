@@ -377,6 +377,30 @@ def select_next_upload_date(
     return oldest_upload_date, eligible
 
 
+def empty_queue_reason(
+    eligible_count: int,
+    active_count: int,
+    max_workers: int = 5,
+    cooldown_until: str | None = None,
+) -> str:
+    """Explain why the dispatcher has no new worker to launch."""
+    if cooldown_until:
+        return (
+            "Automatic dispatch is paused by the recorded translation quota cooldown "
+            f"until {cooldown_until}."
+        )
+    if eligible_count <= 0:
+        return (
+            "No incomplete episode is eligible after completion, series-order, lock, "
+            "and retry-backoff checks."
+        )
+    if max_workers > 0 and active_count >= max_workers:
+        return (
+            f"Global worker capacity is full ({active_count}/{max_workers}); "
+            "the scheduled dispatcher will retry."
+        )
+    return "All currently eligible episodes are already queued or running."
+
 def limit_to_available_slots(
     entries: list[dict],
     active_identities: set[str],
@@ -543,7 +567,54 @@ def main() -> int:
         raise RuntimeError("Could not safely determine active episode workers; refusing to dispatch.") from exc
     # The cap applies to all queued/running workers across dispatcher runs, not
     # merely to the number launched by this invocation.
+    eligible_before_slots = len(entries)
     entries = limit_to_available_slots(entries, active_identities, max_workers=5)
+    print(
+        f"Queue plan: catalog_rows={len(manifest)}, "
+        f"manually_excluded={exclusion_counts['excluded']}, "
+        f"invalid_rows={exclusion_counts['invalid']}, "
+        f"eligible_after_order_and_backoff={eligible_before_slots}, "
+        f"active_workers={len(active_identities)}, selected_workers={len(entries)}."
+    )
+    if not entries:
+        print(
+            "No worker dispatched: "
+            + empty_queue_reason(
+                eligible_count=eligible_before_slots,
+                active_count=len(active_identities),
+                max_workers=5,
+                cooldown_until=cooldown_until,
+            )
+        )
+    catalog_dates = [
+        _day(row.get("release_date"))
+        for row in manifest
+        if isinstance(row, dict) and row.get("release_date")
+    ]
+    if catalog_dates:
+        print(
+            f"Archive manifest coverage: {len(manifest)} rows; "
+            f"latest source release date {max(catalog_dates)}."
+        )
+    candidate_path = Path("data/archive_candidates.json")
+    if candidate_path.exists():
+        try:
+            candidates = json.loads(candidate_path.read_text(encoding="utf-8"))
+            if isinstance(candidates, list):
+                candidate_dates = [
+                    _day(row.get("release_date"))
+                    for row in candidates
+                    if isinstance(row, dict) and row.get("release_date")
+                ]
+                latest_candidate_date = max(candidate_dates) if candidate_dates else "unknown"
+                print(
+                    f"Metadata discovery report: {len(candidates)} candidate row(s), "
+                    f"latest source date {latest_candidate_date}; candidates are not "
+                    "automatically publishable and are not added to the queue unless "
+                    "they are in the authorized archive manifest."
+                )
+        except (OSError, ValueError, TypeError) as exc:
+            print(f"Could not summarize metadata discovery report: {exc}")
     batch_key = f"priority-from-{upload_date}" if upload_date else ""
     matrix = {"include": entries}
     has_work = "true" if entries else "false"
