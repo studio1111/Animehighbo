@@ -35,6 +35,20 @@
     "release_date": "2026-10-01"
   },
   {
+    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
+    "episode": 49,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-02"
+  },
+  {
+    "title": "Link Click S3 - 09 (1080p)",
+    "episode": 9,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-02"
+  },
+  {
     "title": "Nige Jouzu no Wakagimi S2 - 12 (1080p)",
     "episode": 12,
     "quality": "1080p",
@@ -51,13 +65,6 @@
   {
     "title": "Honzuki no Gekokujou S4 - 24 (1080p)",
     "episode": 24,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-03"
-  },
-  {
-    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
-    "episode": 49,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -86,13 +93,6 @@
   {
     "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 26 (1080p)",
     "episode": 26,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-04"
-  },
-  {
-    "title": "Yowaki Max - 01 (1080p)",
-    "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-04"
@@ -259,15 +259,22 @@
     "release_date": "2026-10-08"
   },
   {
-    "title": "Detective Conan - 1216 (1080p)",
-    "episode": 1216,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-10"
-  },
-  {
     "title": "Kusuriya no Hitorigoto - 50 (1080p)",
     "episode": 50,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
+    "title": "Link Click S3 - 10 (1080p)",
+    "episode": 10,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
+    "title": "Detective Conan - 1216 (1080p)",
+    "episode": 1216,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -329,22 +336,8 @@
     "release_date": "2026-10-11"
   },
   {
-    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
     "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 27 (1080p)",
     "episode": 27,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
-    "title": "Yowaki Max - 02 (1080p)",
-    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-11"
@@ -518,15 +511,22 @@
     "release_date": "2026-10-15"
   },
   {
-    "title": "Detective Conan - 1217 (1080p)",
-    "episode": 1217,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-17"
-  },
-  {
     "title": "Kusuriya no Hitorigoto - 51 (1080p)",
     "episode": 51,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
+    "title": "Link Click S3 - 11 (1080p)",
+    "episode": 11,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
+    "title": "Detective Conan - 1217 (1080p)",
+    "episode": 1217,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
@@ -560,32 +560,11 @@
     "release_date": "2026-10-18"
   },
   {
-    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-18"
-  },
-  {
     "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 28 (1080p)",
     "episode": 28,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-18"
-  },
-  {
-    "title": "Yowaki Max - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-18"
-  },
-  {
-    "title": "Bleach – Sennen Kessen Hen - 49 (1080p)",
-    "episode": 49,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-19"
   },
   {
     "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu. - 03 (1080p)",
@@ -611,6 +590,13 @@
   {
     "title": "Battle Spirits Re – Zekkai no Kuu - 03 (1080p)",
     "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-20"
+  },
+  {
+    "title": "Bleach – Sennen Kessen Hen - 49 (1080p)",
+    "episode": 49,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-20"
@@ -760,6 +746,13 @@
     "episode": 52,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-24"
+    "release_date": "2026-10-23"
+  },
+  {
+    "title": "Link Click S3 - 12 (1080p)",
+    "episode": 12,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
   }
 ]
