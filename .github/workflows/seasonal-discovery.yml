@@ -4,10 +4,16 @@ on:
   schedule:
     - cron: "23 */12 * * *"
   workflow_dispatch:
+  pull_request:
   push:
     branches: [main]
     paths:
       - "tools/seasonal_discovery.py"
+      - "tests/test_seasonal_discovery.py"
+      - "data/archive_manifest.json"
+      - "data/archive_candidates.json"
+      - "data/subsplease_release_report.json"
+      - "tools/october_episode_coverage.py"
       - ".github/workflows/seasonal-discovery.yml"
 
 permissions:
@@ -30,16 +36,19 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Discover current and upcoming seasons
         run: python tools/seasonal_discovery.py
+      - name: Build October episode coverage report
+        run: python tools/october_episode_coverage.py
       - name: Run tests
-        run: python -m unittest discover -s tests -p 'test_seasonal_discovery.py' -v
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
       - name: Commit report when changed
+        if: github.event_name != 'pull_request'
         run: |
-          if [ -z "$(git status --porcelain -- data/seasonal_discovery_report.json)" ]; then
+          if [ -z "$(git status --porcelain -- data/seasonal_discovery_report.json data/october_episode_coverage_report.json)" ]; then
             echo "Seasonal discovery report is unchanged."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/seasonal_discovery_report.json
-          git commit -m "chore: refresh seasonal anime coverage report"
+          git add data/seasonal_discovery_report.json data/october_episode_coverage_report.json
+          git commit -m "chore: refresh seasonal and October episode coverage reports"
           git push
