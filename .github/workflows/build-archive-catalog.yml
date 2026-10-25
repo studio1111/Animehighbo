@@ -86,7 +86,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet -- data/archive_candidates.json; then
+          # git diff does not see an untracked first-run report; use status so
+          # the initial generated candidate file is committed as well.
+          if [ -z "$(git status --porcelain -- data/archive_candidates.json)" ]; then
             echo "Candidate report is unchanged."
             exit 0
           fi
