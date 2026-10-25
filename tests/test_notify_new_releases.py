@@ -26,7 +26,7 @@ class NewReleaseNotificationTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
 
     def test_notification_requires_separate_alert_destination(self):
-        with self.assertRaisesRegex(RuntimeError, "TELEGRAM_ALERT_CHAT_ID"):
+        with self.assertRaisesRegex(RuntimeError, "TELEGRAM_ALERT_BOT_TOKEN or TELEGRAM_ALERT_CHAT_ID"):
             notify([{"title": "Blue Box", "episode": 3}], "token", "")
 
     def test_notification_sends_to_alert_destination(self):
