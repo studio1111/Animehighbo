@@ -1195,22 +1195,42 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     message = result.get("result", {})
     return str(message.get("message_id", ""))
 
+def _archive_series_key(title: str) -> str:
+    """Normalize a series title so exclusions apply consistently to every episode."""
+    series_title, _ = episode_details(str(title or "").strip())
+    return re.sub(r"[^a-z0-9]+", "", series_title.casefold())
+
+
 def load_archive_manifest(path: str) -> list[dict]:
-    """Load a strictly ordered backfill queue of episode entries."""
+    """Load the ordered queue, skipping only series explicitly listed for exclusion."""
     manifest_path = Path(path)
     if not manifest_path.exists():
         raise FileNotFoundError(f"Archive manifest not found: {manifest_path}")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
         raise ValueError("Archive manifest must be a JSON list.")
+
+    # Keep opt-outs separate from the publishing manifest. Missing file means no exclusions.
+    exclusions_path = manifest_path.with_name("archive_exclusions.json")
+    exclusions = []
+    if exclusions_path.exists():
+        exclusions = json.loads(exclusions_path.read_text(encoding="utf-8"))
+        if not isinstance(exclusions, list) or any(not isinstance(value, str) for value in exclusions):
+            raise ValueError("Archive exclusions must be a JSON list of series-title strings.")
+    excluded_keys = {_archive_series_key(value) for value in exclusions if value.strip()}
     result = []
     seen_sources = set()
     for index, item in enumerate(manifest):
         if not isinstance(item, dict):
             raise ValueError(f"Archive entry {index + 1} must be an object.")
         title = str(item.get("title", "")).strip()
+        if not title:
+            raise ValueError(f"Archive entry {index + 1} requires a title.")
+        if _archive_series_key(title) in excluded_keys:
+            LOG.info("Skipping archive title excluded by manual opt-out: %s", title)
+            continue
         uri = torrent_source_uri(item)
-        if not title or not uri:
+        if not uri:
             raise ValueError(f"Archive entry {index + 1} requires title and url/uri.")
         parsed_uri = urlparse(uri)
         uri_path = unquote(parsed_uri.path).lower()
