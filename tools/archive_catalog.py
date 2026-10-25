@@ -20,6 +20,11 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
+try:
+    from tools.redistribution_rights import has_redistribution_authorization
+except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
+    from redistribution_rights import has_redistribution_authorization
+
 LOG = logging.getLogger("animehighbo.archive_catalog")
 BASE_URL = "https://subsplease.org"
 USER_AGENT = "AnimehighboArchiveCatalog/1.0 (+authorized-media-only)"
@@ -95,6 +100,8 @@ def _preferred_download(row: dict, max_file_size_mb: int = 1800) -> tuple[str, s
 def select_show_episodes(
     show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800,
     authorized_for_redistribution: bool = False,
+    authorization_evidence: str = "",
+    authorization_reviewed_at: str = "",
 ) -> list[dict]:
     """Select all post-cutoff episodes and backfill up to three earlier episodes.
 
@@ -103,6 +110,16 @@ def select_show_episodes(
     keep the archive focused on releases on/after the cutoff. Source eligibility
     is checked per episode, so one unavailable episode does not hide later ones.
     """
+    if authorized_for_redistribution and not has_redistribution_authorization({
+        "authorized_for_redistribution": True,
+        "authorization_evidence": authorization_evidence,
+        "authorization_reviewed_at": authorization_reviewed_at,
+    }):
+        raise ValueError(
+            "Authorized catalog entries require authorization_evidence and a valid "
+            "authorization_reviewed_at date."
+        )
+
     parsed_rows = []
     for row in episodes:
         if not isinstance(row, dict):
@@ -148,6 +165,10 @@ def select_show_episodes(
         "uri": item["uri"],
         "authorized_for_redistribution": bool(authorized_for_redistribution),
         "review_required": not authorized_for_redistribution,
+        **({
+            "authorization_evidence": authorization_evidence.strip(),
+            "authorization_reviewed_at": authorization_reviewed_at.strip(),
+        } if authorized_for_redistribution else {}),
         "release_date": item["release_date"].isoformat(),
         "_episode": item["episode"],
         "_release_date": item["release_date"].isoformat(),
@@ -233,6 +254,7 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
 def build_archive_manifest(
     cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
     max_file_size_mb: int = 1800, authorized_for_redistribution: bool = False,
+    authorization_evidence: str = "", authorization_reviewed_at: str = "",
 ) -> list[dict]:
     """Discover shows released since cutoff, then create an ordered one-file-per-episode manifest."""
     if max_pages < 1 or max_pages > 500:
@@ -276,6 +298,8 @@ def build_archive_manifest(
                 selected = select_show_episodes(
                     show_title, episodes, cutoff, max_file_size_mb,
                     authorized_for_redistribution=authorized_for_redistribution,
+                    authorization_evidence=authorization_evidence,
+                    authorization_reviewed_at=authorization_reviewed_at,
                 )
                 if selected:
                     first_date = min(row["_release_date"] for row in selected)
@@ -312,7 +336,10 @@ def build_archive_manifest(
 
 def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cutoff: date) -> list[dict]:
     """Keep authorized, dated entries already curated when the source API omits them."""
-    merged = list(manifest)
+    merged = [
+        dict(row) for row in manifest
+        if isinstance(row, dict) and has_redistribution_authorization(row)
+    ]
     seen_uris = {str(row.get("uri") or row.get("url") or "").strip() for row in merged}
 
     def episode_key(row: dict) -> tuple[str, int | None]:
@@ -324,7 +351,7 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
 
     generated_episode_keys = {episode_key(row) for row in merged if isinstance(row, dict)}
     for index, row in enumerate(existing_rows):
-        if not isinstance(row, dict) or row.get("authorized_for_redistribution") is not True:
+        if not isinstance(row, dict) or not has_redistribution_authorization(row):
             continue
         title = str(row.get("title") or "").strip()
         uri = str(row.get("uri") or row.get("url") or "").strip()
@@ -367,15 +394,35 @@ def main() -> int:
     parser.add_argument(
         "--confirm-redistribution-rights",
         action="store_true",
-        help="Confirm that you have rights to download, process, and republish every selected release.",
+        help="Assert rights for the selected releases only after a per-item rights review.",
+    )
+    parser.add_argument(
+        "--authorization-evidence",
+        default="",
+        help="URL or durable reference to the written license/permission record covering every selected item.",
+    )
+    parser.add_argument(
+        "--authorization-reviewed-at",
+        default="",
+        help="ISO review date (YYYY-MM-DD) for the rights evidence.",
     )
     args = parser.parse_args()
     destination = Path(args.output)
     has_authorization_confirmation = bool(args.confirm_redistribution_rights)
+    rights_record = {
+        "authorized_for_redistribution": has_authorization_confirmation,
+        "authorization_evidence": args.authorization_evidence,
+        "authorization_reviewed_at": args.authorization_reviewed_at,
+    }
+    if has_authorization_confirmation and not has_redistribution_authorization(rights_record):
+        parser.error(
+            "--confirm-redistribution-rights also requires --authorization-evidence and "
+            "--authorization-reviewed-at with a valid, non-future ISO date."
+        )
     if destination.name == "archive_manifest.json" and not has_authorization_confirmation:
         parser.error(
             "Refusing to write discovered releases into the publishing manifest without "
-            "--confirm-redistribution-rights. Use data/archive_candidates.json for discovery."
+            "per-item rights review. Use data/archive_candidates.json for discovery."
         )
     if destination.name == "archive_candidates.json" and has_authorization_confirmation:
         parser.error(
@@ -392,6 +439,8 @@ def main() -> int:
     manifest = build_archive_manifest(
         cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb,
         authorized_for_redistribution=has_authorization_confirmation,
+        authorization_evidence=args.authorization_evidence,
+        authorization_reviewed_at=args.authorization_reviewed_at,
     )
     if not manifest:
         LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
