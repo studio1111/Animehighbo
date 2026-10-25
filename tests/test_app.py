@@ -164,6 +164,9 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "episode": "01",
             "release_date": day,
             "source_quality": "1080p",
+            "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
             "files": files,
         }), encoding="utf-8")
 
@@ -314,11 +317,11 @@ class ArchiveManifestTests(unittest.TestCase):
 
     def test_manifest_rejects_batches_missing_episode_numbers_and_duplicate_sources(self):
         cases = [
-            ([{"title": "[Batch] Moonlit Saga (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "single episode"),
-            ([{"title": "Moonlit Saga Complete", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True}], "no detectable episode"),
+            ([{"title": "[Batch] Moonlit Saga (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"}], "single episode"),
+            ([{"title": "Moonlit Saga Complete", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"}], "no detectable episode"),
             ([
-                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
-                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True},
+                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"},
+                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "authorized_for_redistribution": True, "authorization_evidence": "https://rights.example.org/licenses/animehighbo", "authorization_reviewed_at": "2026-10-24"},
             ], "Duplicate archive source"),
         ]
         for entries, message in cases:
@@ -399,7 +402,7 @@ class TorrentSourceConfigTests(unittest.TestCase):
         }))
         self.assertTrue(has_file_media_source({
             "archive_mode": True,
-            "archive_manifest": "archive.json",
+            "archive_manifest": "data/archive_manifest.json",
         }))
 
     def test_only_evidence_backed_rights_authorize_a_torrent_source(self):
