@@ -19,6 +19,7 @@ on:
       - 'app.py'
       - 'config.json'
       - 'data/archive_manifest.json'
+      - 'data/anime_publication_approvals.json'
       - 'tools/episode_queue.py'
       - 'tools/bilingual_subtitles.py'
       - 'tools/torrent_downloader.py'
