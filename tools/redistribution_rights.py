@@ -1,8 +1,8 @@
 """Fail-closed validation for per-entry redistribution rights evidence.
 
-A boolean flag alone is not a durable rights record. Every item entering a media
-download/publication path must also carry a reference to the permission/license
-record and the date that record was reviewed.
+The legacy authorized_for_redistribution boolean is intentionally not used:
+a bare flag is neither proof of permission nor a substitute for an auditable
+rights record. Publication still requires evidence and a review date.
 """
 from __future__ import annotations
 
@@ -59,13 +59,11 @@ def has_redistribution_authorization(
     """Return True only for an explicit, evidence-backed rights-review record.
 
     authorization_evidence should point to a written license, rights-holder
-    permission, contract, or an auditable internal record. This function validates
-    the presence and date of that record; it cannot independently determine legal
-    rights from a URL or a flag.
+    permission, contract, or an auditable internal record. The legacy boolean
+    flag is ignored. This function validates the presence and date of the record;
+    it cannot independently determine legal rights from a URL or a flag.
     """
     if not isinstance(entry, Mapping):
-        return False
-    if entry.get("authorized_for_redistribution") is not True:
         return False
 
     evidence = str(entry.get("authorization_evidence") or "").strip()
