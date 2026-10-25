@@ -921,3 +921,30 @@ class PosterFallbackTests(unittest.TestCase):
             )
         self.assertEqual(message_id, "732")
         self.assertIn("/sendMessage", post.call_args.args[0])
+
+
+class DirectMediaRightsGateTests(unittest.TestCase):
+    def test_direct_media_download_rejects_legacy_boolean_before_network(self):
+        with patch("app.requests.get") as get:
+            with self.assertRaisesRegex(PermissionError, "evidence-backed redistribution authorization"):
+                app.download_media(
+                    "https://media.example.org/sample.mkv",
+                    "Sample Episode 01",
+                    {"allowed_download_hosts": ["media.example.org"], "download_dir": "downloads",
+                     "max_file_size_mb": 10, "request_timeout_seconds": 5},
+                    authorized_for_redistribution=True,
+                )
+            get.assert_not_called()
+
+
+class ArchiveManifestRightsGateTests(unittest.TestCase):
+    def test_legacy_true_flag_without_rights_evidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "legacy.json"
+            path.write_text(json.dumps([{
+                "title": "Legacy Saga - 01 (1080p)",
+                "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "authorized_for_redistribution": True,
+            }]), encoding="utf-8")
+            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
+                load_archive_manifest(str(path))
