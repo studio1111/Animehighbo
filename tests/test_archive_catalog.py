@@ -53,7 +53,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "quality": "1080p",
             "uri": "magnet:?xt=urn:btih:new",
             "release_date": "2026-10-10",
-            "authorized_for_redistribution": True,
             "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
             "authorization_reviewed_at": "2026-10-24",
         }]
@@ -64,7 +63,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "quality": "1080p",
                 "uri": "magnet:?xt=urn:btih:curated",
                 "release_date": "2026-10-07",
-                "authorized_for_redistribution": True,
                 "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
                 "authorization_reviewed_at": "2026-10-24",
             },
@@ -74,7 +72,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "quality": "1080p",
                 "uri": "magnet:?xt=urn:btih:old",
                 "release_date": "2026-08-07",
-                "authorized_for_redistribution": True,
                 "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
                 "authorization_reviewed_at": "2026-10-24",
             },
@@ -84,7 +81,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "quality": "1080p",
                 "uri": "magnet:?xt=urn:btih:unapproved",
                 "release_date": "2026-10-08",
-                "authorized_for_redistribution": False,
             },
         ]
 
@@ -196,7 +192,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "quality": "720p",
             "uri": "magnet:?xt=urn:btih:small720",
             "release_date": "2026-10-07",
-            "authorized_for_redistribution": True,
             "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
             "authorization_reviewed_at": "2026-10-24",
         }]
@@ -206,7 +201,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "quality": "1080p",
             "uri": "magnet:?xt=urn:btih:large1080",
             "release_date": "2026-10-07",
-            "authorized_for_redistribution": True,
             "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
             "authorization_reviewed_at": "2026-10-24",
         }]
@@ -222,19 +216,18 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "release_date": "2026-10-07T10:00:00Z",
             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:authorizedcandidate"}],
         }]
-        with self.assertRaisesRegex(ValueError, "authorization_evidence"):
-            select_show_episodes(
-                "Licensed Candidate", rows, date(2026, 10, 1),
-                authorized_for_redistribution=True,
-            )
+        without_evidence = select_show_episodes("Licensed Candidate", rows, date(2026, 10, 1))
+        self.assertTrue(without_evidence[0]["review_required"])
+        self.assertNotIn("uri", without_evidence[0])
+        self.assertNotIn("authorized_for_redistribution", without_evidence[0])
 
         selected = select_show_episodes(
             "Licensed Candidate", rows, date(2026, 10, 1),
-            authorized_for_redistribution=True,
             authorization_evidence="https://rights.example.org/licenses/animehighbo",
             authorization_reviewed_at="2026-10-24",
         )
-        self.assertTrue(selected[0]["authorized_for_redistribution"])
+        self.assertFalse(selected[0]["review_required"])
+        self.assertNotIn("authorized_for_redistribution", selected[0])
         self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
         self.assertTrue(selected[0]["authorization_evidence"])
         self.assertIn("authorizedcandidate", selected[0]["uri"])
@@ -261,7 +254,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 date(2026, 10, 1), max_pages=5, session=session
             )
         self.assertEqual(len(candidates), 1)
-        self.assertFalse(candidates[0]["authorized_for_redistribution"])
+        self.assertNotIn("authorized_for_redistribution", candidates[0])
         self.assertTrue(candidates[0]["review_required"])
         self.assertNotIn("uri", candidates[0])
         self.assertNotIn("magnet", json.dumps(candidates).lower())
@@ -277,7 +270,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         selected = select_show_episodes("Candidate Saga", rows, date(2026, 10, 1))
 
         self.assertEqual(len(selected), 1)
-        self.assertIs(selected[0].get("authorized_for_redistribution"), False)
+        self.assertNotIn("authorized_for_redistribution", selected[0])
         self.assertTrue(selected[0].get("review_required"))
 
 if __name__ == "__main__":

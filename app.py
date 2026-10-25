@@ -1242,9 +1242,9 @@ def load_archive_manifest(path: str) -> list[dict]:
             )
         if not has_redistribution_authorization(item):
             raise PermissionError(
-                f"Archive entry {index + 1} is blocked: it requires authorized_for_redistribution=true, "
-                "authorization_evidence, and a valid non-future authorization_reviewed_at date. "
-                "Legacy boolean flags are not sufficient."
+                f"Archive entry {index + 1} is blocked: it requires authorization_evidence "
+                "and a valid non-future authorization_reviewed_at date. "
+                "Legacy boolean flags are ignored."
             )
         if "[batch]" in title.casefold():
             raise ValueError(f"Archive entry {index + 1} must contain a single episode, not a batch.")

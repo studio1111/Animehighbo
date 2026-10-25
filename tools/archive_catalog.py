@@ -1,9 +1,8 @@
-"""Discover chronological episode candidates from the SubsPlease show catalogue.
+"""Discover episode candidates from the SubsPlease catalogue.
 
-The default path produces metadata-only review candidates with redistribution
-authorization disabled. Publishing-manifest output is reserved for reviewed rights
-records supplied explicitly for the selected releases; discovery itself never grants
-rights and never downloads or publishes media.
+Discovery alone produces metadata-only review candidates. A publishing manifest
+requires a valid evidence reference and review date; a boolean flag is not used.
+Discovery never grants rights and never downloads or publishes media.
 """
 from __future__ import annotations
 
@@ -99,25 +98,18 @@ def _preferred_download(row: dict, max_file_size_mb: int = 1800) -> tuple[str, s
 
 def select_show_episodes(
     show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800,
-    authorized_for_redistribution: bool = False,
     authorization_evidence: str = "",
     authorization_reviewed_at: str = "",
 ) -> list[dict]:
-    """Select episode candidates and include at most three earlier backfill entries.
+    """Select episodes and include at most three earlier backfill entries.
 
-    Automatic discovery emits review-required, unauthorized candidates. A caller
-    may request authorized output only after supplying an auditable rights reference
-    and a valid review date for those selected releases.
+    A source URI is included only when the supplied evidence reference and review
+    date pass the rights validator. Otherwise the result is metadata-only.
     """
-    if authorized_for_redistribution and not has_redistribution_authorization({
-        "authorized_for_redistribution": True,
+    rights_authorized = has_redistribution_authorization({
         "authorization_evidence": authorization_evidence,
         "authorization_reviewed_at": authorization_reviewed_at,
-    }):
-        raise ValueError(
-            "Authorized catalog entries require authorization_evidence and a valid "
-            "authorization_reviewed_at date."
-        )
+    })
 
     parsed_rows = []
     for row in episodes:
@@ -161,13 +153,12 @@ def select_show_episodes(
         "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
         "episode": item["episode"],
         "quality": item["quality"],
-        **({"uri": item["uri"]} if authorized_for_redistribution else {}),
-        "authorized_for_redistribution": bool(authorized_for_redistribution),
-        "review_required": not authorized_for_redistribution,
+        **({"uri": item["uri"]} if rights_authorized else {}),
+        "review_required": not rights_authorized,
         **({
             "authorization_evidence": authorization_evidence.strip(),
             "authorization_reviewed_at": authorization_reviewed_at.strip(),
-        } if authorized_for_redistribution else {}),
+        } if rights_authorized else {}),
         "release_date": item["release_date"].isoformat(),
         "_episode": item["episode"],
         "_release_date": item["release_date"].isoformat(),
@@ -252,7 +243,7 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
 
 def build_archive_manifest(
     cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
-    max_file_size_mb: int = 1800, authorized_for_redistribution: bool = False,
+    max_file_size_mb: int = 1800,
     authorization_evidence: str = "", authorization_reviewed_at: str = "",
 ) -> list[dict]:
     """Discover shows released since cutoff into an ordered list of episode candidates."""
@@ -296,7 +287,6 @@ def build_archive_manifest(
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
                 selected = select_show_episodes(
                     show_title, episodes, cutoff, max_file_size_mb,
-                    authorized_for_redistribution=authorized_for_redistribution,
                     authorization_evidence=authorization_evidence,
                     authorization_reviewed_at=authorization_reviewed_at,
                 )
@@ -372,7 +362,6 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
         preserved["title"] = title
         preserved["uri"] = uri
         preserved["release_date"] = released.isoformat()
-        preserved["authorized_for_redistribution"] = True
         merged.append(preserved)
         seen_uris.add(uri)
 
@@ -395,11 +384,6 @@ def main() -> int:
         help="Output path. Automatic discovery writes review-required candidates, never the authorized manifest.",
     )
     parser.add_argument(
-        "--confirm-redistribution-rights",
-        action="store_true",
-        help="Assert rights for the selected releases only after a per-item rights review.",
-    )
-    parser.add_argument(
         "--authorization-evidence",
         default="",
         help="URL or durable reference to the written license/permission record covering every selected item.",
@@ -411,26 +395,29 @@ def main() -> int:
     )
     args = parser.parse_args()
     destination = Path(args.output)
-    has_authorization_confirmation = bool(args.confirm_redistribution_rights)
     rights_record = {
-        "authorized_for_redistribution": has_authorization_confirmation,
         "authorization_evidence": args.authorization_evidence,
         "authorization_reviewed_at": args.authorization_reviewed_at,
     }
-    if has_authorization_confirmation and not has_redistribution_authorization(rights_record):
+    has_authorization_evidence = bool(
+        str(args.authorization_evidence or "").strip()
+        or str(args.authorization_reviewed_at or "").strip()
+    )
+    rights_authorized = has_redistribution_authorization(rights_record)
+    if has_authorization_evidence and not rights_authorized:
         parser.error(
-            "--confirm-redistribution-rights also requires --authorization-evidence and "
-            "--authorization-reviewed-at with a valid, non-future ISO date."
+            "--authorization-evidence and --authorization-reviewed-at must identify "
+            "a valid evidence record with a non-future ISO review date."
         )
-    if destination.name == "archive_manifest.json" and not has_authorization_confirmation:
+    if destination.name == "archive_manifest.json" and not rights_authorized:
         parser.error(
             "Refusing to write discovered releases into the publishing manifest without "
-            "per-item rights review. Use data/archive_candidates.json for discovery."
+            "valid per-item rights evidence. Use data/archive_candidates.json for discovery."
         )
-    if destination.name == "archive_candidates.json" and has_authorization_confirmation:
+    if destination.name == "archive_candidates.json" and rights_authorized:
         parser.error(
-            "Refusing to label review candidates as authorized. Use an explicitly curated "
-            "archive manifest path for releases whose rights you have verified."
+            "Refusing to write evidence-backed publishing entries to the review-candidate "
+            "file. Use an explicitly curated archive manifest path instead."
         )
     try:
         cutoff = date.fromisoformat(args.since)
@@ -441,14 +428,13 @@ def main() -> int:
         parser.error("--max-file-size-mb must be a positive integer.")
     manifest = build_archive_manifest(
         cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb,
-        authorized_for_redistribution=has_authorization_confirmation,
         authorization_evidence=args.authorization_evidence,
         authorization_reviewed_at=args.authorization_reviewed_at,
     )
     if not manifest:
         LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
         return 1
-    if has_authorization_confirmation and destination.exists():
+    if rights_authorized and destination.exists():
         try:
             existing_rows = json.loads(destination.read_text(encoding="utf-8"))
             if not isinstance(existing_rows, list):
@@ -462,7 +448,7 @@ def main() -> int:
     LOG.info(
         "Wrote %d ordered %s entries to %s.",
         len(manifest),
-        "authorized" if has_authorization_confirmation else "review-required candidate",
+        "evidence-backed" if rights_authorized else "review-required candidate",
         destination,
     )
     return 0
