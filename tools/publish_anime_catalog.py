@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import time
+import random
 from pathlib import Path
 
 import requests
@@ -33,7 +34,7 @@ def unique_series(rows: list[dict]) -> list[str]:
     return sorted((title for title in titles if title), key=str.casefold)
 
 
-def find_poster(title: str, timeout: int = 20) -> dict:
+def find_poster(title: str, timeout: int = 20, max_attempts: int = 7) -> dict:
     query = """
     query ($search: String) {
       Media(search: $search, type: ANIME, sort: SEARCH_MATCH) {
@@ -48,11 +49,38 @@ def find_poster(title: str, timeout: int = 20) -> dict:
       }
     }
     """
-    response = SESSION.post(
-        ANILIST_URL, json={"query": query, "variables": {"search": title}},
-        timeout=timeout,
-    )
-    response.raise_for_status()
+    response = None
+    for attempt in range(max_attempts):
+        try:
+            response = SESSION.post(
+                ANILIST_URL, json={"query": query, "variables": {"search": title}},
+                timeout=timeout,
+            )
+        except requests.RequestException:
+            if attempt + 1 >= max_attempts:
+                raise
+            delay = min(90, 5 * (2 ** attempt)) + random.uniform(0.2, 1.8)
+            LOG.warning("AniList request failed for %r; retrying in %.1fs (%d/%d).",
+                        title, delay, attempt + 1, max_attempts)
+            time.sleep(delay)
+            continue
+        if response.status_code == 429 or 500 <= response.status_code < 600:
+            if attempt + 1 >= max_attempts:
+                response.raise_for_status()
+            retry_after = response.headers.get("Retry-After", "")
+            try:
+                delay = max(1.0, float(retry_after))
+            except (TypeError, ValueError):
+                delay = min(90, 8 * (2 ** attempt))
+            delay += random.uniform(0.2, 1.8)
+            LOG.warning("AniList returned HTTP %s for %r; retrying in %.1fs (%d/%d).",
+                        response.status_code, title, delay, attempt + 1, max_attempts)
+            time.sleep(delay)
+            continue
+        response.raise_for_status()
+        break
+    if response is None:
+        raise RuntimeError(f"AniList returned no response for {title!r}")
     media = (response.json().get("data") or {}).get("Media")
     if not isinstance(media, dict):
         raise ValueError(f"AniList returned no anime match for {title!r}")
@@ -129,13 +157,22 @@ def main() -> int:
         raise SystemExit("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID in repository secrets.")
     manifest_path = Path(os.environ.get("ANIME_MANIFEST", "data/archive_manifest.json"))
     candidates_path = Path(os.environ.get("ANIME_CANDIDATES", "data/archive_candidates.json"))
+    seasonal_path = Path(os.environ.get("ANIME_SEASONAL_REPORT", "data/seasonal_discovery_report.json"))
     state_path = Path(os.environ.get("ANIME_POSTER_STATE", "data/anime_poster_state.json"))
     rows = []
-    for path in (manifest_path, candidates_path):
+    for path in (manifest_path, candidates_path, seasonal_path):
         if path.exists():
             data = json.loads(path.read_text(encoding="utf-8"))
             if isinstance(data, list):
                 rows.extend(data)
+            elif isinstance(data, dict) and isinstance(data.get("entries"), list):
+                for item in data["entries"]:
+                    if not isinstance(item, dict):
+                        continue
+                    title = item.get("title_english") or item.get("title_romaji") or item.get("title_native")
+                    if title:
+                        rows.append({"title": title, "season_year": item.get("season_year"),
+                                     "season": item.get("season"), "anilist_id": item.get("anilist_id")})
     if not rows:
         raise SystemExit("No anime entries were found in the manifest or discovery candidates.")
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"published": {}}
@@ -158,7 +195,7 @@ def main() -> int:
             state_path.parent.mkdir(parents=True, exist_ok=True)
             state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             LOG.info("Published poster %s (%s)", title, message_id)
-            time.sleep(1.5)
+            time.sleep(4.0)
         except Exception as exc:
             failed.append(title)
             LOG.exception("Could not publish poster for %r: %s", title, exc)
