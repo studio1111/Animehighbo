@@ -1,0 +1,86 @@
+name: Manage anime publication approval
+
+on:
+  workflow_dispatch:
+    inputs:
+      series_title:
+        description: Exact series title, without episode number or quality suffix
+        required: true
+        type: string
+      decision:
+        description: Manual publication decision
+        required: true
+        type: choice
+        options:
+          - approve
+          - deny
+          - pending
+
+permissions:
+  contents: write
+
+concurrency:
+  group: anime-publication-approval-policy
+  cancel-in-progress: false
+
+jobs:
+  update-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply manual decision
+        env:
+          SERIES_TITLE: ${{ inputs.series_title }}
+          DECISION: ${{ inputs.decision }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          title = re.sub(r"\\s+", " ", os.environ["SERIES_TITLE"]).strip()
+          decision = os.environ["DECISION"].strip().lower()
+          if not title or decision not in {"approve", "deny", "pending"}:
+              raise SystemExit("Invalid series title or decision.")
+
+          path = Path("data/anime_publication_approvals.json")
+          policy = json.loads(path.read_text(encoding="utf-8"))
+          for key in ("approved_series", "denied_series"):
+              values = policy.get(key)
+              if not isinstance(values, list):
+                  raise SystemExit(f"Invalid policy: {key} must be a list.")
+              policy[key] = [
+                  value for value in values
+                  if not (isinstance(value, str) and value.casefold() == title.casefold())
+              ]
+
+          if decision == "approve":
+              policy["approved_series"].append(title)
+          elif decision == "deny":
+              policy["denied_series"].append(title)
+
+          for key in ("approved_series", "denied_series"):
+              policy[key] = sorted(set(policy[key]), key=str.casefold)
+          path.write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          print(f"Manual decision saved: {title} -> {decision}")
+          PY
+      - name: Commit policy update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERIES_TITLE: ${{ inputs.series_title }}
+          DECISION: ${{ inputs.decision }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/anime_publication_approvals.json
+          if git diff --cached --quiet; then
+            echo "No policy changes needed."
+            exit 0
+          fi
+          git commit -m "Set anime publication decision: $DECISION"
+          git push origin HEAD:main
+          echo "Policy updated. The dispatcher will re-evaluate eligible episodes."
