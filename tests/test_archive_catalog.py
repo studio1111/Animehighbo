@@ -50,6 +50,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:new",
             "release_date": "2026-10-10",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [
             {
@@ -59,6 +61,10 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "uri": "magnet:?xt=urn:btih:curated",
                 "release_date": "2026-10-07",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Old Saga - 01 (1080p)",
@@ -67,6 +73,10 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "uri": "magnet:?xt=urn:btih:old",
                 "release_date": "2026-08-07",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Unapproved Saga - 01 (1080p)",
@@ -187,6 +197,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:small720",
             "release_date": "2026-10-07",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [{
             "title": "Sasaki to Pii-chan S2 - 01 (1080p)",
@@ -195,6 +207,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "uri": "magnet:?xt=urn:btih:large1080",
             "release_date": "2026-10-07",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         merged = merge_existing_manifest(generated, existing, date(2026, 10, 1))
         self.assertEqual(len(merged), 1)
