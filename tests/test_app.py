@@ -270,11 +270,15 @@ class ArchiveManifestTests(unittest.TestCase):
                     "title": "Moonlit Saga - 01 (1080p)",
                     "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                     "authorized_for_redistribution": True,
+                    "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                    "authorization_reviewed_at": "2026-10-24",
                 },
                 {
                     "title": "Moonlit Saga - 02 (1080p)",
                     "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
                     "authorized_for_redistribution": True,
+                    "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                    "authorization_reviewed_at": "2026-10-24",
                 },
             ]), encoding="utf-8")
             entries = load_archive_manifest(str(path))
@@ -291,6 +295,8 @@ class ArchiveManifestTests(unittest.TestCase):
                 "title": "Moonlit Saga - 01 (1080p)",
                 "url": "https://media.example.org/moonlit-01.mkv",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }]), encoding="utf-8")
             entries = load_archive_manifest(str(path))
         self.assertFalse(entries[0]["torrent_source"])
@@ -357,26 +363,57 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "allowed_download_hosts": [],
             "torrent_sources": [],
         }))
-        self.assertTrue(has_file_media_source({
+        self.assertFalse(has_file_media_source({
             "feeds": [{"url": "https://media.example.org/feed.xml"}],
             "allowed_download_hosts": ["media.example.org"],
             "torrent_sources": [],
         }))
         self.assertTrue(has_file_media_source({
+            "feeds": [{
+                "url": "https://media.example.org/feed.xml",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
+            "allowed_download_hosts": ["media.example.org"],
+            "torrent_sources": [],
+        }))
+        self.assertFalse(has_file_media_source({
             "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
             "allowed_download_hosts": [],
             "allowed_torrent_hosts": [],
             "torrent_feed_hosts": ["subsplease.org"],
             "torrent_sources": [],
         }))
+        self.assertTrue(has_file_media_source({
+            "feeds": [{
+                "url": "https://subsplease.org/rss/?r=1080",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
+            "allowed_download_hosts": [],
+            "allowed_torrent_hosts": [],
+            "torrent_feed_hosts": ["subsplease.org"],
+            "torrent_sources": [],
+        }))
+        self.assertTrue(has_file_media_source({
+            "archive_mode": True,
+            "archive_manifest": "archive.json",
+        }))
 
-    def test_only_explicit_true_authorizes_a_torrent_source(self):
+    def test_only_evidence_backed_rights_authorize_a_torrent_source(self):
         source = {
             "title": "Open Sample - 01 (1080p)",
             "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }
         self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorization_evidence"] = ""
+        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source["authorization_evidence"] = "https://rights.example.org/licenses/animehighbo"
         source["authorized_for_redistribution"] = "true"
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
         source["authorized_for_redistribution"] = False
@@ -501,6 +538,8 @@ class TorrentSourceConfigTests(unittest.TestCase):
                 "title": "Licensed Sample - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }],
         }
         state = {"published": {}, "seen": {}, "posters": {}}
@@ -531,6 +570,8 @@ class TorrentSourceConfigTests(unittest.TestCase):
                 "title": "Open Sample - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
                 "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
             }],
         }
         state = {"published": {}, "seen": {}, "posters": {}}
