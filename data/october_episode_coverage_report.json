@@ -1,0 +1,5491 @@
+{
+  "generated_on": "2026-10-25",
+  "cutoff_date": "2026-10-01",
+  "through_date": "2026-10-25",
+  "sources": {
+    "seasonal_titles": "AniList seasonal discovery report",
+    "manifest": "archive_manifest.json",
+    "candidates": "archive_candidates.json",
+    "rss": "subsplease_release_report.json"
+  },
+  "metadata_only": true,
+  "summary": {
+    "titles_total": 134,
+    "seasonal_titles": 100,
+    "source_only_titles": 34,
+    "titles_with_manifest_episodes": 58,
+    "titles_with_candidate_episodes": 38,
+    "titles_with_rss_episodes": 41,
+    "distinct_manifest_episodes": 165,
+    "distinct_candidate_episodes": 107,
+    "distinct_rss_episodes": 41,
+    "titles_needing_review": 129,
+    "rights_verified_episode_count": 0
+  },
+  "limitations": [
+    "AniList identifies seasonal titles, not a complete episode schedule or every episode aired in the date window.",
+    "RSS is a partial release feed; absence from RSS does not prove an episode was not released.",
+    "Title matching is normalized exact-alias matching; alternate spellings may remain unmatched.",
+    "Raw rows are deduplicated by normalized title and episode number, so multiple quality encodes do not inflate episode counts.",
+    "Candidate and RSS matches are metadata-only and do not grant redistribution permission.",
+    "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles.",
+    "A rights-evidence reference and review date must still be verified by a human rights reviewer."
+  ],
+  "policy": "Never dispatch or publish from this report. Only the existing fail-closed rights gate can authorize media processing.",
+  "titles": [
+    {
+      "anilist_id": 199007,
+      "title_english": "#I'm Looking For a Zombie",
+      "title_romaji": "#Zombie Sagashitemasu",
+      "title_native": "#ゾンビさがしてます",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199007",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 186742,
+      "title_english": "A Certain Dark Item",
+      "title_romaji": "Toaru Anbu no ITEM",
+      "title_native": "とある暗部の少女共棲",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/186742",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-09",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-16",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 172192,
+      "title_english": "A Returner's Magic Should be Special Season 2",
+      "title_romaji": "Kikansha no Mahou wa Tokubetsu desu 2nd Season",
+      "title_native": "帰還者の魔法は特別です 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/172192",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 187402,
+      "title_english": "A Tale of the Secret Saint",
+      "title_romaji": "Tensei shita Dai Seijo wa, Seijo de Aru Koto wo Hita Kakusu",
+      "title_native": "転生した大聖女は、聖女であることをひた隠す",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/187402",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 204389,
+      "title_english": "A Wild Last Boss Appeared! Season 2",
+      "title_romaji": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "title_native": "野生のラスボスが現れた！ 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/204389",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213658,
+      "title_english": "Ace of the Diamond act II -Second Season-",
+      "title_romaji": "Diamond no Ace act II: Second Season Part 2",
+      "title_native": "ダイヤのA actⅡ -Second Season- 第2クール",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/213658",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 191788,
+      "title_english": "Aoashi Season 2",
+      "title_romaji": "Aoashi 2nd Season",
+      "title_native": "アオアシ 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/191788",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 185756,
+      "title_english": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
+      "title_romaji": "Tensei Kizoku, Kantei Skill de Nariagaru 3rd Season",
+      "title_native": "転生貴族、鑑定スキルで成り上がる 第3期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/185756",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 197543,
+      "title_english": null,
+      "title_romaji": "BanG Dream! Ave Mujica: prima aurora",
+      "title_native": "BanG Dream! Ave Mujica prima aurora",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/197543",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 187990,
+      "title_english": "Battle Spirits [Re] Zekkai No Ku",
+      "title_romaji": "Battle Spirits [Re] Zekkai no Kuu",
+      "title_native": "Battle Spirits [Re] 絶界の空",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/187990",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 195604,
+      "title_english": "Black Clover Season 2",
+      "title_romaji": "Black Clover 2nd Season",
+      "title_native": "ブラッククローバー 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/195604",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 189123,
+      "title_english": "Blue Box Season 2",
+      "title_romaji": "Ao no Hako Season 2",
+      "title_native": "アオのハコ Season２",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/189123",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 214536,
+      "title_english": "CARDFIGHT!! VANGUARD Divinez: Parallactic Fate",
+      "title_romaji": "Cardfight!! Vanguard Divinez Unmei Seisen-hen",
+      "title_native": "カードファイト!! ヴァンガード Divinez 運命星戦編",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/214536",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 198727,
+      "title_english": "Chitose Is in the Ramune Bottle 2nd Cour",
+      "title_romaji": "Chitose-kun wa Ramune Bin no Naka Part 2",
+      "title_native": "千歳くんはラムネ瓶のなか 2クール",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/198727",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 195539,
+      "title_english": "Cyberpunk: Edgerunners 2",
+      "title_romaji": "Cyberpunk: Edgerunners 2",
+      "title_native": "サイバーパンク: エッジランナーズ2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/195539",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213068,
+      "title_english": "Dandivine",
+      "title_romaji": "Juuоu Mujin Dandivine",
+      "title_native": "獣王武神ダンデヴァイン",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/213068",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 179876,
+      "title_english": "DARK MACHINE THE ANIMATION",
+      "title_romaji": "DARK MACHINE: The Animation",
+      "title_native": "DARK MACHINE -The Animation-",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/179876",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 207217,
+      "title_english": "Delivery Kitten Unyan (2026)",
+      "title_romaji": "Koneko no Haitatsuin Uunyan (2026)",
+      "title_native": "子猫の配達員うーにゃん (2026)",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/207217",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 203275,
+      "title_english": "Devils' Crest",
+      "title_romaji": "Demons' Crest",
+      "title_native": "デモンズ・クレスト",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/203275",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 206814,
+      "title_english": "Dragon Ball Super: Beerus",
+      "title_romaji": "Dragon Ball Super: Beerus",
+      "title_native": "ドラゴンボール超 ビルス",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206814",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 208367,
+      "title_english": null,
+      "title_romaji": "Duel Masters LOST: Danzai no Shounen",
+      "title_native": "Duel Masters LOST ～断罪の少年～",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/208367",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 191656,
+      "title_english": "Even the Student Council Has Its Holes!",
+      "title_romaji": "Seitokai ni mo Ana wa Aru!",
+      "title_native": "生徒会にも穴はある！",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/191656",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 200455,
+      "title_english": "Even Though I'm a Super Timid Noble Girl, I Accepted the Bet From My Cunning Fiancé",
+      "title_romaji": "Yowaki MAX Reijou Nano ni, Ratsuwan Konyakusha-sama no Kake ni Notte Shimatta",
+      "title_native": "弱気MAX令嬢なのに、辣腕婚約者様の賭けに乗ってしまった",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/200455",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 205909,
+      "title_english": "Firefly Wedding",
+      "title_romaji": "Hotaru no Yomeiri",
+      "title_native": "ホタルの嫁入り",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/205909",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-09",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-16",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213457,
+      "title_english": "Fool Night",
+      "title_romaji": "Fool Night",
+      "title_native": "フールナイト",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/213457",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209463,
+      "title_english": "From Far Away",
+      "title_romaji": "Kanata Kara",
+      "title_native": "彼方から",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209463",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 205896,
+      "title_english": "Full Clearing Another World under a Goddess with Zero Believers",
+      "title_romaji": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "title_native": "信者ゼロの女神サマと始める異世界攻略",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/205896",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 206401,
+      "title_english": "FX Fighter Kurumi-chan",
+      "title_romaji": "FX Senshi Kurumi-chan",
+      "title_native": "FX戦士くるみちゃん",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206401",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-22",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 217282,
+      "title_english": null,
+      "title_romaji": "GelPiyo 2",
+      "title_native": "ゲルぴよ 2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217282",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 187316,
+      "title_english": null,
+      "title_romaji": "Gensou Suikoden",
+      "title_native": "幻想水滸伝",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/187316",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 188034,
+      "title_english": null,
+      "title_romaji": "Girls und Panzer: Motto Love Love Sakusen desu!",
+      "title_native": "ガールズ＆パンツァー もっとらぶらぶ作戦です！",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/188034",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 202390,
+      "title_english": null,
+      "title_romaji": "Girls und Panzer: Saishuushou 5",
+      "title_native": "ガールズ＆パンツァー 最終章 第5話",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/202390",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 178972,
+      "title_english": null,
+      "title_romaji": "GROTESQQQUE",
+      "title_native": "GROTESQQQUE-グロテスク-",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/178972",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 207191,
+      "title_english": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
+      "title_romaji": "Doumo, Suki na Hito ni Horegusuri wo Irai Sareta Majo desu.",
+      "title_native": "どうも、好きな人に惚れ薬を依頼された魔女です。",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/207191",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 203473,
+      "title_english": "HORROR COLLECTOR",
+      "title_romaji": "Kyoufu Collector",
+      "title_native": "恐怖コレクター",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/203473",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 199426,
+      "title_english": "HOTEL INHUMANS Season 2",
+      "title_romaji": "Hotel Inhumans 2nd Season",
+      "title_native": "ホテル・インヒューマンズ 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199426",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 208025,
+      "title_english": "I'm Dating a Dark Summoner",
+      "title_romaji": "Dark Summoner to Dekiteiru",
+      "title_native": "ダークサモナーとデキている",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/208025",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 218217,
+      "title_english": null,
+      "title_romaji": "JK Dark Summoner to Deki......Dei Nai!?",
+      "title_native": "JKダークサモナーとデキ。。。。。。でいない!?",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218217",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 216557,
+      "title_english": "KERORO☆",
+      "title_romaji": "Keroro Gunsou☆",
+      "title_native": "ケロロ軍曹☆",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/216557",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 160275,
+      "title_english": null,
+      "title_romaji": "Made in Abyss: Mezameru Shinpi",
+      "title_native": "メイドインアビス 目覚める神秘",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/160275",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209642,
+      "title_english": null,
+      "title_romaji": "Maebashi Witches: Majo Minarai no Emoemories",
+      "title_native": "劇場版 前橋ウィッチーズ ～魔女見習いのエモエモリーズ～",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/209642",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 178868,
+      "title_english": "Magic Knight Rayearth (2026)",
+      "title_romaji": "Magic Knight Rayearth (2026)",
+      "title_native": "魔法騎士レイアース (2026)",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/178868",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 202250,
+      "title_english": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
+      "title_romaji": "Kashita Maryoku wa [Revo Barai] de Kyousei Choushuu",
+      "title_native": "貸した魔力は【リボ払い】で強制徴収",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/202250",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 169581,
+      "title_english": "Magical Explorer",
+      "title_romaji": "Magical★Explorer: Eroge no Yuujin Chara ni Tensei Shitakedo, Game Chishiki Tsukatte Jiyuu ni Ikiru",
+      "title_native": "マジカル★エクスプローラー　エロゲの友人キャラに転生したけど、ゲーム知識使って自由に生きる",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/169581",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 5,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 160803,
+      "title_english": "MAGICAL GIRL RAISING PROJECT restart",
+      "title_romaji": "Mahou Shoujo Ikusei Keikaku: restart",
+      "title_native": "魔法少女育成計画 restart",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/160803",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209032,
+      "title_english": "Magical Sisters LuluttoLilly Part 2",
+      "title_romaji": "Mahou no Shimai LuluttoLilly Part 2",
+      "title_native": "魔法の姉妹ルルットリリィ 第2クール",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209032",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 218532,
+      "title_english": null,
+      "title_romaji": "Maomao no Hitorigoto 3rd Season",
+      "title_native": "猫猫のひとりごと 第3期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218532",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 217577,
+      "title_english": null,
+      "title_romaji": "Mazenchu",
+      "title_native": "マゼンチュ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217577",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213657,
+      "title_english": "Mission: Yozakura Family Season 2 Part 2",
+      "title_romaji": "Yozakura-san Chi no Daisakusen 2nd Season Part 2",
+      "title_native": "夜桜さんちの大作戦 第2期 第2クール",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/213657",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 211877,
+      "title_english": "My Girlfriend's Friend",
+      "title_romaji": "Kanojo no Tomodachi",
+      "title_native": "彼女の友達",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/211877",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 217782,
+      "title_english": "My Girlfriend's Friend Mini Anime",
+      "title_romaji": "Kanojo no Tomodachi Mini Anime Gekijou",
+      "title_native": "彼女の友達 ミニアニメ劇場",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217782",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 190054,
+      "title_english": "My Happy Marriage Special Episodes",
+      "title_romaji": "Watashi no Shiawase na Kekkon Tokubetsu-hen",
+      "title_native": "わたしの幸せな結婚 特別篇",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "SPECIAL",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/190054",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 214968,
+      "title_english": null,
+      "title_romaji": "Nezumi-kun no Chokki (TV) 2nd Season",
+      "title_native": "ねずみくんのチョッキ (TV) 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/214968",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 206949,
+      "title_english": "Nia Liston: The Merciless Maiden",
+      "title_romaji": "Kyouran Reijou Nia Liston",
+      "title_native": "凶乱令嬢ニア・リストン",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206949",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 205289,
+      "title_english": null,
+      "title_romaji": "Norman the Snowman: Kodomo-tachi no Hitotsuboshi",
+      "title_native": "ノーマン・ザ・スノーマン ~こどもたちのひとつ星~",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/205289",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 206774,
+      "title_english": "Now That I Can Control Reality With A Mouse Cursor, I'm Gonna Click Away On The Girls!",
+      "title_romaji": "Mouse Cursor de Genjitsu wo Sousa Dekiru You ni Natta node, Onnanoko wo Ippai Click Shimasu",
+      "title_native": "マウスカーソルで現実を操作できるようになったので、女の子をいっぱいクリックしまーす",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206774",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 212888,
+      "title_english": "Overgeared",
+      "title_romaji": "Tempal: Item no Chikara",
+      "title_native": "テムパル～アイテムの力～",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/212888",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 194207,
+      "title_english": null,
+      "title_romaji": "Pan Dorobou",
+      "title_native": "パンどろぼう",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/194207",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 217624,
+      "title_english": null,
+      "title_romaji": "PetitCure: Precure Fairies Season 4",
+      "title_native": "ぷちきゅあ～Precure Fairies～ シーズン4",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217624",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 217787,
+      "title_english": null,
+      "title_romaji": "Pop Pap Polters",
+      "title_native": "ポップパップポルターズ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217787",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 204011,
+      "title_english": "PSYREN",
+      "title_romaji": "PSYЯEN",
+      "title_native": "PSYREN -サイレン-",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/204011",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 216860,
+      "title_english": null,
+      "title_romaji": "Punirunes Puni 4",
+      "title_native": "ぷにるんず ぷに４",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/216860",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 218011,
+      "title_english": "Raccoon Dog & Fox",
+      "title_romaji": "Tanuki to Kitsune (TV)",
+      "title_native": "タヌキとキツネ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218011",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 157330,
+      "title_english": null,
+      "title_romaji": "Rakuen Tsuihou: Kokoro no Resonance",
+      "title_native": "楽園追放 心のレゾナンス",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/157330",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209872,
+      "title_english": "Ranma1/2 (2024) Season 3",
+      "title_romaji": "Ranma 1/2 (2024) 3rd Season",
+      "title_native": "らんま1/2 (2024) 第3期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209872",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 199340,
+      "title_english": "Rascal Does Not Dream of a Dear Friend",
+      "title_romaji": "Seishun Buta Yarou wa Dear Friend no Yume wo Minai",
+      "title_native": "青春ブタ野郎はディアフレンドの夢を見ない",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/199340",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 186541,
+      "title_english": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
+      "title_romaji": "Mezametara Saikyou Soubi to Uchuusen-mochi datta node, Ikkodate Mezashite Youhei to shite Jiyuu ni Ikitai",
+      "title_native": "目覚めたら最強装備と宇宙船持ちだったので、一戸建て目指して傭兵として自由に生きたい",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/186541",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 159042,
+      "title_english": "Reincarnated as a Sword Season 2",
+      "title_romaji": "Tensei Shitara Ken Deshita 2nd Season",
+      "title_native": "転生したら剣でした 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/159042",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 180894,
+      "title_english": "Romelia War Chronicle",
+      "title_romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
+      "title_native": "ロメリア戦記 〜魔王を倒した後も人類やばそうだから軍隊組織した〜",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/180894",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 176314,
+      "title_english": "Sasaki and Peeps Season 2",
+      "title_romaji": "Sasaki to Pii-chan Season 2",
+      "title_native": "佐々木とピーちゃん シーズン２",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/176314",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209709,
+      "title_english": null,
+      "title_romaji": "Sirotan",
+      "title_native": "しろたん",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209709",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209219,
+      "title_english": "So What's Wrong with Getting Reborn as a Goblin?",
+      "title_romaji": "Tensei Goblin Dakedo Shitsumon Aru?",
+      "title_native": "転生ゴブリンだけど質問ある？",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209219",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-05",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-12",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 206163,
+      "title_english": null,
+      "title_romaji": "Soukou Kihei Votoms: Haiiro no Hexe",
+      "title_native": "装甲騎兵ボトムズ 灰色の魔女",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/206163",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 210482,
+      "title_english": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
+      "title_romaji": "JoJo no Kimyou na Bouken: Steel Ball Run - 2nd & 3rd STAGE",
+      "title_native": "ジョジョの奇妙な冒険 スティール・ボール・ラン 2nd＆3rd STAGE",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/210482",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 200294,
+      "title_english": "Super Psychic Policeman Chojo",
+      "title_romaji": "Choujun! Choujou Senpai",
+      "title_native": "超巡！超条先輩",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/200294",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 212539,
+      "title_english": null,
+      "title_romaji": "Takopii no Genzai: Arigatou, Mata Ashita",
+      "title_native": "タコピーの原罪 -ありがとう、また明日-",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/212539",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209499,
+      "title_english": "TANK CHAIR",
+      "title_romaji": "TANK CHAIR: Sensha Isu",
+      "title_native": "TANK CHAIR-戦車椅子-",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209499",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 199594,
+      "title_english": "TETSURYO! Meet With Tetsudou Musume",
+      "title_romaji": "Tetsuryou! meet with Tetsudou Musume",
+      "title_native": "てつりょー！meet with 鉄道むすめ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199594",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 195516,
+      "title_english": "The Apothecary Diaries Season 3",
+      "title_romaji": "Kusuriya no Hitorigoto 3rd Season",
+      "title_native": "薬屋のひとりごと 第3期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/195516",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 200929,
+      "title_english": "The Apothecary Diaries: The Late Lady’s Treasure",
+      "title_romaji": "Kusuriya no Hitorigoto: Bouhi no Hihou",
+      "title_native": "薬屋のひとりごと 亡妃の秘宝",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/200929",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209502,
+      "title_english": "The Cold Sato-san is Only Sweet to Me",
+      "title_romaji": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "title_native": "塩対応の佐藤さんが俺にだけ甘い",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209502",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 152677,
+      "title_english": "The Detective Is Already Dead Season 2",
+      "title_romaji": "Tantei wa mou, Shindeiru. Season 2",
+      "title_native": "探偵はもう、死んでいる。Season2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/152677",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 212503,
+      "title_english": "The Iceblade Sorcerer Shall Rule the World II",
+      "title_romaji": "Hyouken no Majutsushi ga Sekai wo Suberu II",
+      "title_native": "冰剣の魔術師が世界を統べるⅡ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/212503",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 207329,
+      "title_english": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
+      "title_romaji": "Tsuihou Sareta Cheat Fuyo Majutsushi wa Kimama na Second Life wo Ouka Suru.: Ore wa Buki dake ja Naku, Arayuru Mono ni \"Kyouka Point\" wo Fuyo Dekiru shi, Ore no Ishi de Itsudemo Kouka wo Kaijo Dekiru kedo, Nokotta Hitotachi Daijoubu?",
+      "title_native": "追放されたチート付与魔術師は気ままなセカンドライフを謳歌する。　～俺は武器だけじゃなく、あらゆるものに『強化ポイント』を付与できるし、俺の意思でいつでも効果を解除できるけど、残った人たち大丈夫？～",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/207329",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 199068,
+      "title_english": "The Prince of Tennis II U-17 WORLD CUP: Final Member Selection Match",
+      "title_romaji": "Shin Tennis no Ouji-sama: U-17 WORLD CUP Kesshou Member Ketteisen",
+      "title_native": "新テニスの王子様 U-17 WORLD CUP 決勝メンバー決定戦",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199068",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213805,
+      "title_english": "The Ramparts of Ice Season 2",
+      "title_romaji": "Koori no Jouheki 2nd Season",
+      "title_native": "氷の城壁 第2期",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/213805",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 212799,
+      "title_english": "The Seven Knights of the Marronnier Kingdom",
+      "title_romaji": "Marronnier Oukoku no Shichinin no Kishi",
+      "title_native": "マロニエ王国の七人の騎士",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/212799",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 195571,
+      "title_english": "The Vermilion Mask",
+      "title_romaji": "Shuiro no Kamen",
+      "title_native": "朱色の仮面",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/195571",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 211778,
+      "title_english": "The World's Strongest Witch",
+      "title_romaji": "Sekai Saikyou no Majo, Hajimemashita",
+      "title_native": "世界最強の魔女、始めました",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/211778",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 207327,
+      "title_english": "To You in the Beyond",
+      "title_romaji": "Doko yori mo Tooi Basho ni Iru Kimi e",
+      "title_native": "どこよりも遠い場所にいる君へ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/207327",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 178083,
+      "title_english": "Tokyo Revengers: War of the Three Titans Arc",
+      "title_romaji": "Tokyo Revengers: Santen Sensou-hen",
+      "title_native": "東京リベンジャーズ 三天戦争編",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/178083",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 204650,
+      "title_english": "TOUGEN ANKI: Nikko Kegon Falls Arc",
+      "title_romaji": "Tougen Anki: Nikko・Kegon no Taki-hen",
+      "title_native": "桃源暗鬼 日光・華厳の滝編",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/204650",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-02",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-09",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-16",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 215835,
+      "title_english": null,
+      "title_romaji": "Umayuru: Full Gate!",
+      "title_native": "うまゆるふるげ〜と!",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/215835",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 202079,
+      "title_english": "Uncle's Obsession with Cute Things",
+      "title_romaji": "Oji-san wa Kawaii Mono ga Osuki.",
+      "title_native": "おじさんはカワイイものがお好き。",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/202079",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 209562,
+      "title_english": "VERTEX FORCE",
+      "title_romaji": "Vertex Force",
+      "title_native": "バーテックスフォース",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/209562",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 216895,
+      "title_english": "Welsh & Shedar",
+      "title_romaji": "Aoki Denshou: Welsh & Shedar",
+      "title_native": "蒼き伝承 ウェルシュ&シェーダー",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/216895",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 143103,
+      "title_english": "Witch on the Holy Night",
+      "title_romaji": "Mahoutsukai no Yoru",
+      "title_native": "魔法使いの夜",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/143103",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 212144,
+      "title_english": "With Vengeance, Sincerely, Your Broken Saintess Season 2",
+      "title_romaji": "Kizu darake Seijo yori Houfuku wo Komete Season2",
+      "title_native": "傷だらけ聖女より報復をこめて Season2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/212144",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 213298,
+      "title_english": null,
+      "title_romaji": "Yuruyuru Zukan",
+      "title_native": "ゆるゆる図鑑",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/213298",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": 214593,
+      "title_english": null,
+      "title_romaji": "Yuusanchi! from Yuuhachi",
+      "title_native": "ゆうさんち！from 遊ハち",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/214593",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Ace of Diamond Act II S2 - 14 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": false,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Ao Ashi S2 - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": false,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Black Clover - 171 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 171,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 172,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 173,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 174,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Bleach – Sennen Kessen Hen - 49 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 49,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 49,
+              "release_date": "2026-10-19",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 49,
+              "release_date": "2026-10-19",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Chii Fuyo - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Chitose-kun wa Ramune Bin no Naka - 14 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 15,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Detective Conan - 1215 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1215,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 1216,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 1217,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1215,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 1216,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 1217,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Honzuki no Gekokujou S4 - 24 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 24,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 24,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Hotel Inhumans S2 - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Hyouken no Majutsushi ga Sekai wo Suberu S2 - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Juuou Mujin Dandivine - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Keroro Gunsou (2026) - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Kikansha no Mahou wa Tokubetsu desu - 13 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 13,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 14,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 13,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 14,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 15,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Kusuriya no Hitorigoto - 49 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 49,
+              "release_date": "2026-10-02",
+              "quality": "1080p"
+            },
+            {
+              "episode": 50,
+              "release_date": "2026-10-09",
+              "quality": "1080p"
+            },
+            {
+              "episode": 51,
+              "release_date": "2026-10-16",
+              "quality": "1080p"
+            },
+            {
+              "episode": 52,
+              "release_date": "2026-10-23",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 49,
+              "release_date": "2026-10-02",
+              "quality": "1080p"
+            },
+            {
+              "episode": 50,
+              "release_date": "2026-10-09",
+              "quality": "1080p"
+            },
+            {
+              "episode": 51,
+              "release_date": "2026-10-16",
+              "quality": "1080p"
+            },
+            {
+              "episode": 52,
+              "release_date": "2026-10-23",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 52,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Link Click S3",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 12,
+              "release_date": "2026-10-22",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Meitantei Precure! - 36 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 36,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 37,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 38,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 39,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Nige Jouzu no Wakagimi S2 - 12 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 12,
+              "release_date": "2026-10-02",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 12,
+              "release_date": "2026-10-02",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Ojisan wa Kawaii Mono ga Osuki. - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": false,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Paw and Palaces - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 6,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 5,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 6,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 6,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 5,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 6,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 6,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Rilakkuma",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 29,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Romelia Senki - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Saikyosoubi - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": false,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Sasaki to Pii-chan S2 - 01 (720p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "720p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "720p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Seihantai na Kimi to Boku - 25 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 25,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 25,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Sora wa Akai Kawa no Hotori - 14 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-06",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-13",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-20",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 16,
+              "release_date": "2026-10-20",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Tantei wa Mou, Shindeiru. S2 - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Tensei Kizoku, Kantei Skill de Nariagaru - 26 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 26,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 27,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 28,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 26,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 27,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 28,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 5,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Tensei Shitara Ken Deshita S2 - 02 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-21",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Toukutsu Ou - 12 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 12,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 12,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru - 14 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 17,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-08",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-15",
+              "quality": "1080p"
+            },
+            {
+              "episode": 17,
+              "release_date": "2026-10-22",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 17,
+              "release_date": "2026-10-22",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Uchi no Otouto-domo ga Sumimasen",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 16,
+              "release_date": "2026-10-23",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Yasei no Last Boss ga Arawareta! - 14 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 17,
+              "release_date": "2026-10-24",
+              "in_authorized_manifest": false
+            }
+          ]
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    },
+    {
+      "anilist_id": null,
+      "title_english": "Yowaki Max - 01 (1080p)",
+      "title_romaji": null,
+      "title_native": null,
+      "season": null,
+      "season_year": null,
+      "format": null,
+      "status": null,
+      "anilist_url": null,
+      "seasonal_title": false,
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 3,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-18",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": []
+        }
+      },
+      "review_required": true,
+      "rights_verified_episode_count": 0
+    }
+  ]
+}
