@@ -17,6 +17,32 @@ def row(title, episode, day, uri=None):
     }
 
 
+class AuthorizationGateTests(unittest.TestCase):
+    def test_unauthorized_episode_is_not_dispatched(self):
+        unauthorized = row("Unapproved Saga - 01", 1, "2026-10-05")
+        unauthorized["authorized_for_redistribution"] = False
+        approved = row("Approved Saga - 01", 1, "2026-10-06")
+
+        upload_date, selected = select_next_upload_date(
+            [unauthorized, approved], {"published": {}}
+        )
+
+        self.assertEqual(upload_date, "2026-10-06")
+        self.assertEqual([item["title"] for item in selected], ["Approved Saga - 01"])
+
+    def test_unapproved_earlier_episode_blocks_later_episode_in_same_series(self):
+        unauthorized = row("Same Saga - 01", 1, "2026-10-05")
+        unauthorized["authorized_for_redistribution"] = False
+        later = row("Same Saga - 02", 2, "2026-10-06")
+
+        upload_date, selected = select_next_upload_date(
+            [unauthorized, later], {"published": {}}
+        )
+
+        self.assertIsNone(upload_date)
+        self.assertEqual(selected, [])
+
+
 class QuotaCooldownTests(unittest.TestCase):
     def test_future_cooldown_blocks_dispatch_until_reset(self):
         with tempfile.TemporaryDirectory() as directory:
