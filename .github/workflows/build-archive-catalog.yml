@@ -63,7 +63,7 @@ jobs:
           if not isinstance(rows, list) or not rows:
               raise SystemExit("Candidate file is empty or invalid.")
           if any(
-              row.get("authorized_for_redistribution") is not False
+              "authorized_for_redistribution" in row
               or row.get("review_required") is not True
               for row in rows
           ):
