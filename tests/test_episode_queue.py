@@ -27,11 +27,15 @@ class ManualPublicationApprovalTests(unittest.TestCase):
             {"title": "Denied Saga - 01 (1080p)", "episode": 1},
         ]
         allowed, counts = filter_by_publication_approval(manifest, {
-            "approved_series": ["Approved Saga", "Denied Saga"],
+            "default_decision": "allow",
+            "approved_series": [],
             "denied_series": ["Denied Saga"],
         })
-        self.assertEqual([row["title"] for row in allowed], ["Approved Saga - 01 (1080p)"])
-        self.assertEqual(counts, {"approved": 1, "pending": 1, "denied": 1, "ambiguous": 0})
+        self.assertEqual(
+            [row["title"] for row in allowed],
+            ["Approved Saga - 01 (1080p)", "Pending Saga - 01 (1080p)"],
+        )
+        self.assertEqual(counts, {"approved": 2, "pending": 0, "denied": 1, "ambiguous": 0})
 
     def test_ambiguous_titles_are_allowed_by_default_and_can_be_denied_manually(self):
         manifest = [
