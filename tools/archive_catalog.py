@@ -93,7 +93,8 @@ def _preferred_download(row: dict, max_file_size_mb: int = 1800) -> tuple[str, s
 
 
 def select_show_episodes(
-    show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800
+    show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800,
+    authorized_for_redistribution: bool = False,
 ) -> list[dict]:
     """Select all post-cutoff episodes and backfill up to three earlier episodes.
 
@@ -145,7 +146,8 @@ def select_show_episodes(
         "episode": item["episode"],
         "quality": item["quality"],
         "uri": item["uri"],
-        "authorized_for_redistribution": True,
+        "authorized_for_redistribution": bool(authorized_for_redistribution),
+        "review_required": not authorized_for_redistribution,
         "release_date": item["release_date"].isoformat(),
         "_episode": item["episode"],
         "_release_date": item["release_date"].isoformat(),
@@ -230,7 +232,7 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
 
 def build_archive_manifest(
     cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
-    max_file_size_mb: int = 1800,
+    max_file_size_mb: int = 1800, authorized_for_redistribution: bool = False,
 ) -> list[dict]:
     """Discover shows released since cutoff, then create an ordered one-file-per-episode manifest."""
     if max_pages < 1 or max_pages > 500:
@@ -271,7 +273,10 @@ def build_archive_manifest(
             try:
                 show_title, episodes = _fetch_show_episodes(client, page_url)
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
-                selected = select_show_episodes(show_title, episodes, cutoff, max_file_size_mb)
+                selected = select_show_episodes(
+                    show_title, episodes, cutoff, max_file_size_mb,
+                    authorized_for_redistribution=authorized_for_redistribution,
+                )
                 if selected:
                     first_date = min(row["_release_date"] for row in selected)
                     series.append((first_date, show_title.casefold(), show_title, selected))
@@ -355,15 +360,28 @@ def main() -> int:
     parser.add_argument("--max-pages", type=int, default=100)
     parser.add_argument("--max-file-size-mb", type=int, default=1800,
                         help="Skip sources whose declared payload exceeds this worker download limit.")
-    parser.add_argument("--output", default="data/archive_manifest.json")
+    parser.add_argument(
+        "--output", default="data/archive_candidates.json",
+        help="Output path. Automatic discovery writes review-required candidates, never the authorized manifest.",
+    )
     parser.add_argument(
         "--confirm-redistribution-rights",
         action="store_true",
         help="Confirm that you have rights to download, process, and republish every selected release.",
     )
     args = parser.parse_args()
-    if not args.confirm_redistribution_rights:
-        parser.error("Refusing to generate an authorized manifest without --confirm-redistribution-rights.")
+    destination = Path(args.output)
+    has_authorization_confirmation = bool(args.confirm_redistribution_rights)
+    if destination.name == "archive_manifest.json" and not has_authorization_confirmation:
+        parser.error(
+            "Refusing to write discovered releases into the publishing manifest without "
+            "--confirm-redistribution-rights. Use data/archive_candidates.json for discovery."
+        )
+    if destination.name == "archive_candidates.json" and has_authorization_confirmation:
+        parser.error(
+            "Refusing to label review candidates as authorized. Use an explicitly curated "
+            "archive manifest path for releases whose rights you have verified."
+        )
     try:
         cutoff = date.fromisoformat(args.since)
     except ValueError:
@@ -371,12 +389,14 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     if args.max_file_size_mb < 1:
         parser.error("--max-file-size-mb must be a positive integer.")
-    manifest = build_archive_manifest(cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb)
+    manifest = build_archive_manifest(
+        cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb,
+        authorized_for_redistribution=has_authorization_confirmation,
+    )
     if not manifest:
         LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
         return 1
-    destination = Path(args.output)
-    if destination.exists():
+    if has_authorization_confirmation and destination.exists():
         try:
             existing_rows = json.loads(destination.read_text(encoding="utf-8"))
             if not isinstance(existing_rows, list):
@@ -387,7 +407,12 @@ def main() -> int:
             return 1
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    LOG.info("Wrote %d ordered episode entries to %s.", len(manifest), destination)
+    LOG.info(
+        "Wrote %d ordered %s entries to %s.",
+        len(manifest),
+        "authorized" if has_authorization_confirmation else "review-required candidate",
+        destination,
+    )
     return 0
 
 
