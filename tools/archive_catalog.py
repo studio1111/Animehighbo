@@ -96,20 +96,7 @@ def _preferred_download(row: dict, max_file_size_mb: int = 1800) -> tuple[str, s
     return None
 
 
-def select_show_episodes(
-    show_title: str, episodes: list[dict], cutoff: date, max_file_size_mb: int = 1800,
-    authorization_evidence: str = "",
-    authorization_reviewed_at: str = "",
-) -> list[dict]:
-    """Select episodes and include at most three earlier backfill entries.
 
-    A source URI is included only when the supplied evidence reference and review
-    date pass the rights validator. Otherwise the result is metadata-only.
-    """
-    rights_authorized = has_redistribution_authorization({
-        "authorization_evidence": authorization_evidence,
-        "authorization_reviewed_at": authorization_reviewed_at,
-    })
 
     parsed_rows = []
     for row in episodes:
