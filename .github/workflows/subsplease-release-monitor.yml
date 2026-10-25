@@ -2,12 +2,14 @@ name: Monitor SubsPlease release metadata coverage
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 */2 * * *"
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - "tools/subsplease_release_monitor.py"
+      - "tools/notify_new_releases.py"
+      - "tests/test_notify_new_releases.py"
       - "tests/test_subsplease_release_monitor.py"
       - ".github/workflows/subsplease-release-monitor.yml"
       - "data/archive_manifest.json"
@@ -36,8 +38,20 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run metadata monitor regression tests
         run: python -m unittest discover -s tests -p 'test_subsplease_release_monitor.py' -v
+      - name: Preserve previous release report for change detection
+        run: |
+          if [ -f data/subsplease_release_report.json ]; then
+            cp data/subsplease_release_report.json /tmp/subsplease_release_report.previous.json
+          else
+            printf '{"releases": []}\n' > /tmp/subsplease_release_report.previous.json
+          fi
       - name: Refresh release coverage report
         run: python tools/subsplease_release_monitor.py
+      - name: Notify Telegram about newly detected release metadata
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python tools/notify_new_releases.py --previous /tmp/subsplease_release_report.previous.json --current data/subsplease_release_report.json
       - name: Commit report when changed
         run: |
           if [ -z "$(git status --porcelain -- data/subsplease_release_report.json)" ]; then
