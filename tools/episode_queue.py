@@ -84,17 +84,17 @@ def _approval_key(entry: dict) -> str | None:
     else:
         identity = series_identity(entry)
         if identity:
-            title = re.sub(r"::season-\\d+$", "", identity)
+            title = re.sub(r"::season-\d+$", "", identity)
         else:
             raw = str(entry.get("title") or "").strip()
-            raw = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw)
-            raw = re.sub(r"(?i)\\s+\\(?\\d{3,4}p\\)?\\s*$", "", raw)
-            raw = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", raw).strip()
-            match = re.match(r"^(.*?)\\s+-\\s+\\d{1,4}(?:\\.\\d+)?(?=\\s*(?:\\(|\\[|$))", raw, re.I)
+            raw = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw)
+            raw = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", raw)
+            raw = re.sub(r"\s*\[[^\]]*\]\s*$", "", raw).strip()
+            match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", raw, re.I)
             if not match:
                 return None
             title = match.group(1).strip(" -–—")
-    key = re.sub(r"\\s+", " ", title).strip().casefold()
+    key = re.sub(r"\s+", " ", title).strip().casefold()
     return key or None
 
 
@@ -109,11 +109,11 @@ def filter_by_publication_approval(
     if not isinstance(approved_raw, list) or not isinstance(denied_raw, list):
         raise ValueError("approved_series and denied_series must be JSON lists.")
     approved = {
-        re.sub(r"\\s+", " ", str(item)).strip().casefold()
+        re.sub(r"\s+", " ", str(item)).strip().casefold()
         for item in approved_raw if isinstance(item, str) and item.strip()
     }
     denied = {
-        re.sub(r"\\s+", " ", str(item)).strip().casefold()
+        re.sub(r"\s+", " ", str(item)).strip().casefold()
         for item in denied_raw if isinstance(item, str) and item.strip()
     }
     allowed: list[dict] = []
