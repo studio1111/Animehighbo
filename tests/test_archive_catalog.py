@@ -211,6 +211,29 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(merged[0]["quality"], "720p")
 
 
+    def test_authorized_catalog_entry_requires_evidence_and_review_date(self):
+        rows = [{
+            "title": "Licensed Candidate - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:authorizedcandidate"}],
+        }]
+        with self.assertRaisesRegex(ValueError, "authorization_evidence"):
+            select_show_episodes(
+                "Licensed Candidate", rows, date(2026, 10, 1),
+                authorized_for_redistribution=True,
+            )
+
+        selected = select_show_episodes(
+            "Licensed Candidate", rows, date(2026, 10, 1),
+            authorized_for_redistribution=True,
+            authorization_evidence="https://rights.example.org/licenses/animehighbo",
+            authorization_reviewed_at="2026-10-24",
+        )
+        self.assertTrue(selected[0]["authorized_for_redistribution"])
+        self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
+        self.assertTrue(selected[0]["authorization_evidence"])
+
     def test_discovered_episodes_are_unapproved_candidates_by_default(self):
         rows = [{
             "title": "Candidate Saga - 01",
