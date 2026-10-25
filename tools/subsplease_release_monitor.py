@@ -94,19 +94,25 @@ def normalize_series(value: object) -> str:
 
 
 def release_key(row: dict) -> str:
-    series = row.get("series_key") or normalize_series(row.get("series_title") or row.get("title"))
+    # RSS rows carry a normalized series key; manifest rows usually carry a full
+    # episode title, so strip the episode suffix before normalizing.
+    series = str(row.get("series_key") or "").strip()
     episode = row.get("episode")
     if not series:
-        raw = _clean_title(str(row.get("title") or ""))
-        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", raw, re.I)
-        if match:
-            series, episode = normalize_series(match.group(1)), episode or int(match.group(2))
+        explicit_series = str(row.get("series_title") or "").strip()
+        if explicit_series:
+            series = normalize_series(explicit_series)
+        else:
+            raw = _clean_title(str(row.get("title") or ""))
+            match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", raw, re.I)
+            if match:
+                series = normalize_series(match.group(1))
+                episode = episode or int(match.group(2))
     try:
         number = int(episode)
     except (TypeError, ValueError):
         return ""
     return f"{series}::episode-{number}" if series and number > 0 else ""
-
 
 def build_report(
     feed_rows: list[dict],
