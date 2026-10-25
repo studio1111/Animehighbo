@@ -91,9 +91,8 @@ def _approval_key(entry: dict) -> str | None:
             raw = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", raw)
             raw = re.sub(r"\s*\[[^\]]*\]\s*$", "", raw).strip()
             match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", raw, re.I)
-            if not match:
-                return None
-            title = match.group(1).strip(" -–—")
+            # Keep unfamiliar release titles available for manual review and denial.
+            title = match.group(1).strip(" -–—") if match else raw
     key = re.sub(r"\s+", " ", title).strip().casefold()
     return key or None
 
@@ -361,6 +360,10 @@ def select_next_upload_date(
                 if season_match:
                     series_title = season_match.group(1).strip(" -–—")
                     season = int(season_match.group(2))
+                else:
+                    # Keep unfamiliar release titles queueable for manual review.
+                    # Use the cleaned release title as a fallback identity.
+                    series_title = raw.strip()
         if season in (None, ""):
             season = 1 if series_title else None
         try:
