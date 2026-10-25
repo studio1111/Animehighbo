@@ -1,4 +1,4 @@
-"""Select and gate authorized episodes without cross-series failure coupling."""
+"""Select episode candidates with manual denylist control and no automatic authorization lock."""
 from __future__ import annotations
 
 import argparse
@@ -8,12 +8,6 @@ import os
 import re
 from pathlib import Path
 from datetime import date, datetime, timezone
-
-try:
-    from tools.redistribution_rights import has_redistribution_authorization
-except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
-    from redistribution_rights import has_redistribution_authorization
-
 
 def _day(value: object) -> str:
     raw = str(value or "").strip()
@@ -136,29 +130,6 @@ def filter_by_publication_approval(
             counts["pending"] += 1
     return allowed, counts
 
-def apply_global_rights_evidence(
-    manifest: list[dict],
-    evidence: str,
-    reviewed_at: str,
-) -> int:
-    """Inherit a validated archive-wide license record without weakening the gate."""
-    record = {
-        "authorization_evidence": str(evidence or "").strip(),
-        "authorization_reviewed_at": str(reviewed_at or "").strip(),
-    }
-    if not has_redistribution_authorization(record):
-        return 0
-    inherited = 0
-    for entry in manifest:
-        if not isinstance(entry, dict) or has_redistribution_authorization(entry):
-            continue
-        entry["authorization_evidence"] = record["authorization_evidence"]
-        entry["authorization_reviewed_at"] = record["authorization_reviewed_at"]
-        if has_redistribution_authorization(entry):
-            inherited += 1
-    return inherited
-
-
 def _is_complete(record: object) -> bool:
     return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
         set(record.get("complete_qualities", []))
@@ -177,7 +148,7 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
     if not isinstance(published, dict):
         published = {}
 
-    parsed: list[tuple[dict, str, str, int, bool]] = []
+    parsed: list[tuple[dict, str, str, int]] = []
     counts: dict[tuple[str, int], int] = {}
     for entry in entries:
         if not isinstance(entry, dict):
@@ -193,16 +164,11 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
             identity = episode_identity(entry)
         except ValueError:
             continue
-        parsed.append((
-            entry, identity, series, number,
-            has_redistribution_authorization(entry),
-        ))
+        parsed.append((entry, identity, series, number))
         counts[(series, number)] = counts.get((series, number), 0) + 1
 
     eligible: list[dict] = []
-    for entry, identity, series, number, authorized in parsed:
-        if not authorized:
-            continue
+    for entry, identity, series, number in parsed:
         status = str(entry.get("status") or "prepared").casefold()
         if status not in {"prepared", "ready", "complete"}:
             continue
@@ -212,10 +178,8 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
         if counts[(series, number)] != 1:
             continue
         blocked = False
-        for earlier, earlier_identity, earlier_series, earlier_number, earlier_authorized in parsed:
-            # An episode excluded by the rights gate must not block separately
-            # authorized episodes in the same series. The gate applies per item.
-            if not earlier_authorized or earlier_series != series or earlier_number >= number:
+        for earlier, earlier_identity, earlier_series, earlier_number in parsed:
+            if earlier_series != series or earlier_number >= number:
                 continue
             if not _is_complete(published.get(earlier_identity)):
                 blocked = True
@@ -391,7 +355,6 @@ def select_next_upload_date(
             "series_title": series_title,
             "season": season_number,
             "series_key": series_key,
-            "authorized_for_redistribution": has_redistribution_authorization(row),
         })
 
     if not normalized:
@@ -403,10 +366,6 @@ def select_next_upload_date(
 
     eligible = []
     for row in normalized:
-        # The current episode must pass the same evidence check as earlier episodes.
-        if not row["authorized_for_redistribution"]:
-            continue
-        
         series_key = (row["series_title"].casefold(), row["season"])
         episode_key = (*series_key, row["episode"])
         if counts[episode_key] != 1:
@@ -414,13 +373,7 @@ def select_next_upload_date(
         blocked = False
         for earlier in normalized:
             earlier_series = (earlier["series_title"].casefold(), earlier["season"])
-            # Missing rights for one episode excludes that item only. It must not
-            # prevent the queue from progressing to later episodes with valid rights.
-            if (
-                not earlier["authorized_for_redistribution"]
-                or earlier_series != series_key
-                or earlier["episode"] >= row["episode"]
-            ):
+            if earlier_series != series_key or earlier["episode"] >= row["episode"]:
                 continue
             if not _is_complete(published.get(earlier["identity"], {})):
                 blocked = True
@@ -550,35 +503,6 @@ def main() -> int:
                 f"- Unresolvable candidates (missing usable title): {approval_counts['ambiguous']}\\n"
                 "- All titled entries, including unfamiliar releases, are eligible by default; denied_series takes precedence.\\n"
             )
-    # Legal redistribution evidence remains a separate mandatory gate; manual approval
-    # decides what the operator wants published, not whether rights exist.
-    global_evidence = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_EVIDENCE", "").strip()
-    global_reviewed_at = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT", "").strip()
-    inherited = apply_global_rights_evidence(manifest, global_evidence, global_reviewed_at)
-    if inherited:
-        print(f"Applied the validated repository-level rights record to {inherited} curated manifest entries.")
-    elif global_evidence or global_reviewed_at:
-        print("Repository-level rights record is incomplete or invalid; no global authorization was applied.")
-
-    rights_blocked_count = sum(
-        1 for entry in manifest if not has_redistribution_authorization(entry)
-    )
-    if rights_blocked_count:
-        message = (
-            f"Redistribution safety gate: {rights_blocked_count} manifest entry/entries "
-            "blocked because rights evidence and a valid review date are missing or invalid. "
-            "No worker will be dispatched for these entries."
-        )
-        print(message)
-        summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "").strip()
-        if summary_path:
-            with open(summary_path, "a", encoding="utf-8") as summary:
-                summary.write(
-                    "## Redistribution authorization gate\n\n"
-                    f"- **Blocked manifest entries:** {rights_blocked_count}\n"
-                    "- Automatic discovery is metadata-only and is not permission to redistribute.\n"
-                    "- Add a genuine rights record and review date only after verifying the rights-holder permission.\n"
-                )
     config_path = Path("config.json")
     config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
     cutoff = str(config.get("archive_cutoff_date") or "2026-10-01")
