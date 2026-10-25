@@ -74,6 +74,6 @@ class OctoberCoverageRegressionTests(unittest.TestCase):
             date(2026, 10, 25),
         )
         self.assertEqual(report['summary']['distinct_manifest_episodes'], 1)
-        self.assertEqual(report['summary']['distinct_candidate_report_episodes'], 1)
+        self.assertEqual(report['summary']['distinct_candidate_episodes'], 1)
         self.assertEqual(report['summary']['distinct_rss_episodes'], 1)
         self.assertIn('limitations', report)
