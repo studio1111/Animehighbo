@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, select_next_upload_date, select_upload_date_group
+from tools.episode_queue import active_quota_cooldown, apply_global_rights_evidence, select_next_upload_date, select_upload_date_group
 
 
 def row(title, episode, day, uri=None):
@@ -35,6 +35,22 @@ class AuthorizationGateTests(unittest.TestCase):
             "authorization_evidence": "rights-record:animehighbo-global-license-2026",
             "authorization_reviewed_at": "2999-01-01",
         }))
+
+    def test_global_rights_record_is_inherited_only_when_valid(self):
+        missing = {"title": "Licensed Saga - 01", "uri": "magnet:?xt=urn:btih:ABC", "release_date": "2026-10-01"}
+        already_reviewed = row("Reviewed Saga - 01", 1, "2026-10-01")
+        manifest = [missing, already_reviewed]
+
+        inherited = apply_global_rights_evidence(
+            manifest, "rights-record:animehighbo-global-license-2026", date.today().isoformat()
+        )
+        self.assertEqual(inherited, 1)
+        self.assertEqual(missing["authorization_evidence"], "rights-record:animehighbo-global-license-2026")
+        self.assertEqual(already_reviewed["authorization_evidence"], "https://rights.example.org/licenses/animehighbo")
+
+        unapproved = {"title": "Unapproved Saga - 01", "uri": "magnet:?xt=urn:btih:DEF"}
+        self.assertEqual(apply_global_rights_evidence([unapproved], "licensed", date.today().isoformat()), 0)
+        self.assertNotIn("authorization_evidence", unapproved)
 
     def test_unauthorized_episode_is_not_dispatched(self):
         unauthorized = row("Unapproved Saga - 01", 1, "2026-10-05")
