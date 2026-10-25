@@ -68,8 +68,7 @@ def notify(rows: list[dict], token: str, chat_id: str, post: Callable = requests
         print("No new release metadata detected; no Telegram notification needed.")
         return 0
     if not token or not chat_id:
-        print("New releases detected, but Telegram notification skipped: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing.", file=sys.stderr)
-        return 0
+        raise RuntimeError("New releases were found, but TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing; refusing to mark them as notified.")
     for message in messages:
         response = post(
             f"https://api.telegram.org/bot{token}/sendMessage",
