@@ -71,7 +71,7 @@ def has_redistribution_authorization(
         return False
 
     raw_review_date = str(entry.get("authorization_reviewed_at") or "").strip()
-    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", raw_review_date):
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw_review_date):
         return False
     try:
         reviewed_date = date.fromisoformat(raw_review_date)
