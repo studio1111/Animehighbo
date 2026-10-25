@@ -70,8 +70,8 @@ def series_identity(entry: dict) -> str | None:
 
 
 
-def _approval_key(entry: dict) -> str | None:
-    """Normalize a series title for manual denylist matching."""
+def _manual_exclusion_key(entry: dict) -> str | None:
+    """Normalize a series/title for exact manual denylist matching."""
     explicit = str(entry.get("series_title") or "").strip()
     if explicit:
         title = explicit
@@ -85,49 +85,33 @@ def _approval_key(entry: dict) -> str | None:
             raw = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", raw)
             raw = re.sub(r"\s*\[[^\]]*\]\s*$", "", raw).strip()
             match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", raw, re.I)
-            # Keep unfamiliar release titles available for manual review and denial.
             title = match.group(1).strip(" -–—") if match else raw
     key = re.sub(r"\s+", " ", title).strip().casefold()
     return key or None
 
 
-def filter_by_publication_approval(
-    manifest: list[dict], policy: dict
+def filter_by_manual_exclusions(
+    manifest: list[dict], exclusions: list[str]
 ) -> tuple[list[dict], dict[str, int]]:
-    """Allow identifiable series by default; a manual denylist always takes precedence."""
-    if not isinstance(policy, dict):
-        raise ValueError("Publication approval policy must be a JSON object.")
-    approved_raw = policy.get("approved_series", [])
-    denied_raw = policy.get("denied_series", [])
-    default_decision = str(policy.get("default_decision", "pending")).strip().casefold()
-    if default_decision not in {"allow", "pending"}:
-        raise ValueError("default_decision must be 'allow' or 'pending'.")
-    if not isinstance(approved_raw, list) or not isinstance(denied_raw, list):
-        raise ValueError("approved_series and denied_series must be JSON lists.")
-    approved = {
-        re.sub(r"\s+", " ", str(item)).strip().casefold()
-        for item in approved_raw if isinstance(item, str) and item.strip()
-    }
-    denied = {
-        re.sub(r"\s+", " ", str(item)).strip().casefold()
-        for item in denied_raw if isinstance(item, str) and item.strip()
-    }
+    """Allow every valid titled entry by default; remove only explicitly excluded titles."""
+    if not isinstance(exclusions, list) or not all(isinstance(item, str) for item in exclusions):
+        raise ValueError("Manual exclusions must be a JSON list of strings.")
+    denied = {re.sub(r"\s+", " ", item).strip().casefold() for item in exclusions if item.strip()}
     allowed: list[dict] = []
-    counts = {"approved": 0, "pending": 0, "denied": 0, "ambiguous": 0}
+    counts = {"eligible": 0, "excluded": 0, "invalid": 0}
     for entry in manifest:
         if not isinstance(entry, dict):
-            counts["ambiguous"] += 1
+            counts["invalid"] += 1
             continue
-        key = _approval_key(entry)
+        key = _manual_exclusion_key(entry)
         if key is None:
-            counts["ambiguous"] += 1
-        elif key in denied:
-            counts["denied"] += 1
-        elif key in approved or default_decision == "allow":
-            allowed.append(entry)
-            counts["approved"] += 1
-        else:
-            counts["pending"] += 1
+            counts["invalid"] += 1
+            continue
+        if key in denied:
+            counts["excluded"] += 1
+            continue
+        allowed.append(entry)
+        counts["eligible"] += 1
     return allowed, counts
 
 def _is_complete(record: object) -> bool:
@@ -483,24 +467,23 @@ def main() -> int:
     # Unfamiliar titles use their cleaned release title as a fallback deny key.
     exclusions_path = Path("data/archive_exclusions.json")
     exclusions = json.loads(exclusions_path.read_text(encoding="utf-8")) if exclusions_path.exists() else []
-    approval_policy = {"default_decision": "allow", "approved_series": [], "denied_series": exclusions}
-    manifest, approval_counts = filter_by_publication_approval(manifest, approval_policy)
+    manual_exclusions = exclusions
+    manifest, exclusion_counts = filter_by_manual_exclusions(manifest, manual_exclusions)
     print(
         "Manual exclusions only: "
-        f"{approval_counts['approved']} eligible episode candidate(s), "
-        f"{approval_counts['pending']} pending, {approval_counts['denied']} denied, "
-        f"{approval_counts['ambiguous']} ambiguous."
+        f"{exclusion_counts['eligible']} eligible episode candidate(s), "
+        f"{exclusion_counts['excluded']} manually excluded, "
+        f"{exclusion_counts['invalid']} invalid catalog row(s)."
     )
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "").strip()
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as summary:
             summary.write(
                 "## Anime queue\\n\\n"
-                f"- Eligible candidates: {approval_counts['approved']}\\n"
-                f"- Pending candidates: {approval_counts['pending']}\\n"
-                f"- Denied candidates (not published): {approval_counts['denied']}\\n"
-                f"- Unresolvable candidates (missing usable title): {approval_counts['ambiguous']}\\n"
-                "- All titled entries, including unfamiliar releases, are eligible by default; denied_series takes precedence.\\n"
+                f"- Eligible candidates: {exclusion_counts['eligible']}\\n"
+                f"- Manually excluded candidates: {exclusion_counts['excluded']}\\n"
+                f"- Invalid catalog rows: {exclusion_counts['invalid']}\\n"
+                "- All titled entries are eligible by default; only data/archive_exclusions.json can manually exclude a title.\\n"
             )
     config_path = Path("config.json")
     config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
