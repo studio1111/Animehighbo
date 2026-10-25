@@ -157,12 +157,15 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("if group_failed:\n                continue", source)
         self.assertIn("Could not complete anime group", source)
 
-    def test_archive_catalog_workflow_requires_rights_confirmation_and_does_not_publish(self):
+    def test_archive_catalog_workflow_only_writes_unapproved_candidates(self):
         workflow_path = ROOT / ".github/workflows/build-archive-catalog.yml"
         self.assertTrue(workflow_path.exists())
         workflow = workflow_path.read_text(encoding="utf-8")
-        self.assertIn("--confirm-redistribution-rights", workflow)
-        self.assertIn("data/archive_manifest.json", workflow)
+        self.assertIn("data/archive_candidates.json", workflow)
+        self.assertNotIn("data/archive_manifest.json", workflow)
+        self.assertNotIn("--confirm-redistribution-rights", workflow)
+        self.assertIn("review_required", workflow)
+        self.assertIn("authorization", workflow.lower())
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertNotIn("python app.py", workflow)
 
