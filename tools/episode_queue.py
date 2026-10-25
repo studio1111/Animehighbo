@@ -38,7 +38,7 @@ def episode_identity(entry: dict) -> str:
 
 
 def series_identity(entry: dict) -> str | None:
-    """Return a conservative series/season key; ambiguous identity is held."""
+    """Return a series/season key, falling back only when callers provide a title."""
     title = str(entry.get("series_title") or "").strip()
     season = entry.get("season")
     if not title:
@@ -371,7 +371,7 @@ def select_next_upload_date(
         except (TypeError, ValueError):
             season_number = 0
         if not series_title or season_number < 1:
-            # Ambiguous identity is held rather than guessed.
+            # Entries without a usable fallback title or season cannot be queued safely.
             continue
 
         series_key = series_identity({
@@ -524,8 +524,8 @@ def main() -> int:
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
         raise ValueError("Archive manifest must contain a JSON list of episode entries.")
-    # Identifiable titles are eligible by default; the manual denylist is the operator's exclusion control.
-    # Ambiguous titles remain held, and explicit denial always overrides any legacy approval.
+    # All titled entries are eligible by default; the manual denylist is the operator's exclusion control.
+    # Unfamiliar titles use their cleaned release title as a fallback deny key.
     approval_path = Path("data/anime_publication_approvals.json")
     if not approval_path.exists():
         raise RuntimeError("Manual publication policy is missing; refusing to dispatch any episode.")
@@ -545,8 +545,8 @@ def main() -> int:
                 f"- Eligible candidates: {approval_counts['approved']}\\n"
                 f"- Pending candidates (not published): {approval_counts['pending']}\\n"
                 f"- Denied candidates (not published): {approval_counts['denied']}\\n"
-                f"- Ambiguous candidates (not published): {approval_counts['ambiguous']}\\n"
-                "- Identifiable titles are eligible by default; denied_series takes precedence.\\n"
+                f"- Unresolvable candidates (missing usable title): {approval_counts['ambiguous']}\\n"
+                "- All titled entries, including unfamiliar releases, are eligible by default; denied_series takes precedence.\\n"
             )
     # Legal redistribution evidence remains a separate mandatory gate; manual approval
     # decides what the operator wants published, not whether rights exist.
