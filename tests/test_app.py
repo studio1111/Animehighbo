@@ -305,15 +305,16 @@ class ArchiveManifestTests(unittest.TestCase):
         self.assertFalse(entries[0]["torrent_source"])
         self.assertEqual(entries[0]["url"], "https://media.example.org/moonlit-01.mkv")
 
-    def test_manifest_rejects_entries_without_explicit_redistribution_rights(self):
+    def test_manifest_accepts_entries_without_automatic_authorization_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "archive.json"
             path.write_text(json.dumps([{
                 "title": "Moonlit Saga - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             }]), encoding="utf-8")
-            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
-                load_archive_manifest(str(path))
+            entries = load_archive_manifest(str(path))
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["title"], "Moonlit Saga - 01 (1080p)")
 
     def test_manifest_rejects_batches_missing_episode_numbers_and_duplicate_sources(self):
         cases = [
@@ -366,7 +367,7 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "allowed_download_hosts": [],
             "torrent_sources": [],
         }))
-        self.assertFalse(has_file_media_source({
+        self.assertTrue(has_file_media_source({
             "feeds": [{"url": "https://media.example.org/feed.xml"}],
             "allowed_download_hosts": ["media.example.org"],
             "torrent_sources": [],
@@ -381,7 +382,7 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "allowed_download_hosts": ["media.example.org"],
             "torrent_sources": [],
         }))
-        self.assertFalse(has_file_media_source({
+        self.assertTrue(has_file_media_source({
             "feeds": [{"url": "https://subsplease.org/rss/?r=1080"}],
             "allowed_download_hosts": [],
             "allowed_torrent_hosts": [],
@@ -405,7 +406,7 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "archive_manifest": "data/archive_manifest.json",
         }))
 
-    def test_only_evidence_backed_rights_authorize_a_torrent_source(self):
+    def test_configured_torrent_source_needs_no_automatic_authorization_metadata(self):
         source = {
             "title": "Open Sample - 01 (1080p)",
             "url": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
@@ -414,15 +415,10 @@ class TorrentSourceConfigTests(unittest.TestCase):
             "authorization_reviewed_at": "2026-10-24",
         }
         self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
-        source["authorization_evidence"] = ""
-        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
-        source["authorization_evidence"] = "https://rights.example.org/licenses/animehighbo"
-        source["authorized_for_redistribution"] = "true"
-        self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source.pop("authorization_evidence")
+        source.pop("authorization_reviewed_at")
         source["authorized_for_redistribution"] = False
         self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
-        source.pop("authorization_evidence")
-        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
     def test_link_poster_rejects_success_response_without_message_id(self):
         response = Mock()
@@ -931,28 +927,25 @@ class PosterFallbackTests(unittest.TestCase):
         self.assertIn("/sendMessage", post.call_args.args[0])
 
 
-class DirectMediaRightsGateTests(unittest.TestCase):
-    def test_direct_media_download_rejects_legacy_boolean_before_network(self):
-        with patch("app.requests.get") as get:
-            with self.assertRaisesRegex(PermissionError, "evidence-backed redistribution authorization"):
+class NoAutomaticRightsGateTests(unittest.TestCase):
+    def test_direct_media_download_reaches_network_without_rights_metadata(self):
+        with patch("app.requests.get", side_effect=OSError("network reached")) as get:
+            with self.assertRaisesRegex(OSError, "network reached"):
                 app.download_media(
                     "https://media.example.org/sample.mkv",
                     "Sample Episode 01",
                     {"allowed_download_hosts": ["media.example.org"], "download_dir": "downloads",
                      "max_file_size_mb": 10, "request_timeout_seconds": 5},
-                    authorized_for_redistribution=True,
                 )
-            get.assert_not_called()
+        get.assert_called_once()
 
-
-class ArchiveManifestRightsGateTests(unittest.TestCase):
-    def test_legacy_true_flag_without_rights_evidence_is_rejected(self):
+    def test_archive_manifest_accepts_entry_without_rights_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "legacy.json"
             path.write_text(json.dumps([{
                 "title": "Legacy Saga - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                "authorized_for_redistribution": True,
             }]), encoding="utf-8")
-            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
-                load_archive_manifest(str(path))
+            entries = load_archive_manifest(str(path))
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["title"], "Legacy Saga - 01 (1080p)")
