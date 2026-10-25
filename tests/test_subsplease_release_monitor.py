@@ -38,13 +38,48 @@ class SubsPleaseReleaseMonitorTests(unittest.TestCase):
             "episode": 4,
             "release_date": "2026-10-24",
             "authorized_for_redistribution": True,
+            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+            "authorization_reviewed_at": "2026-10-24",
         }]
         report = build_report(feed_rows, manifest, date(2026, 10, 25), "2026-10-01")
         self.assertEqual(report["summary"]["feed_releases"], 1)
-        self.assertEqual(report["summary"]["matched_in_manifest"], 1)
+        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 1)
+        self.assertEqual(report["summary"]["found_in_candidate_report"], 0)
         self.assertEqual(report["summary"]["review_required"], 0)
+        self.assertTrue(report["releases"][0]["in_authorized_manifest"])
+        self.assertFalse(report["releases"][0]["in_candidate_report"])
         self.assertNotIn("authorized_for_redistribution", report["releases"][0])
         self.assertNotIn("uri", report["releases"][0])
+
+    def test_legacy_boolean_only_manifest_entry_is_not_a_rights_match(self):
+        feed_rows = parse_feed(RSS, "1080p")
+        legacy_manifest = [{
+            "title": "Kashita Maryoku - 04 (1080p)",
+            "episode": 4,
+            "release_date": "2026-10-24",
+            "authorized_for_redistribution": True,
+        }]
+        report = build_report(feed_rows, legacy_manifest, date(2026, 10, 25), "2026-10-01")
+        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 0)
+        self.assertEqual(report["summary"]["review_required"], 1)
+        self.assertFalse(report["releases"][0]["in_authorized_manifest"])
+
+    def test_candidate_report_match_is_visible_but_still_needs_rights_review(self):
+        feed_rows = parse_feed(RSS, "1080p")
+        candidates = [{
+            "title": "Kashita Maryoku - 04 (1080p)",
+            "episode": 4,
+            "release_date": "2026-10-24",
+            "quality": "1080p",
+            "authorized_for_redistribution": False,
+            "review_required": True,
+        }]
+        report = build_report(feed_rows, [], date(2026, 10, 25), "2026-10-01", candidates)
+        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 0)
+        self.assertEqual(report["summary"]["found_in_candidate_report"], 1)
+        self.assertEqual(report["summary"]["review_required"], 1)
+        self.assertTrue(report["releases"][0]["in_candidate_report"])
+        self.assertFalse(report["releases"][0]["in_authorized_manifest"])
 
     def test_release_key_uses_series_and_episode_not_quality(self):
         self.assertEqual(
