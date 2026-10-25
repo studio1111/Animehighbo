@@ -35,13 +35,6 @@
     "release_date": "2026-10-01"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
-    "episode": 49,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-02"
-  },
-  {
     "title": "Nige Jouzu no Wakagimi S2 - 12 (1080p)",
     "episode": 12,
     "quality": "1080p",
@@ -58,6 +51,13 @@
   {
     "title": "Honzuki no Gekokujou S4 - 24 (1080p)",
     "episode": 24,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-03"
+  },
+  {
+    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
+    "episode": 49,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -259,15 +259,15 @@
     "release_date": "2026-10-08"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
-    "episode": 50,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-09"
-  },
-  {
     "title": "Detective Conan - 1216 (1080p)",
     "episode": 1216,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
+    "episode": 50,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -518,15 +518,15 @@
     "release_date": "2026-10-15"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
-    "episode": 51,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-16"
-  },
-  {
     "title": "Detective Conan - 1217 (1080p)",
     "episode": 1217,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
+    "episode": 51,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
@@ -760,6 +760,6 @@
     "episode": 52,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-23"
+    "release_date": "2026-10-24"
   }
 ]
