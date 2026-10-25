@@ -49,6 +49,8 @@ class TorrentSourceValidationTests(unittest.TestCase):
                     {"download_dir": str(root / "downloads"), "allowed_torrent_hosts": [],
                      "max_file_size_mb": 5, "torrent_timeout_seconds": 10},
                     authorized_for_redistribution=True,
+                    authorization_evidence="https://rights.example.org/licenses/animehighbo",
+                    authorization_reviewed_at="2026-10-24",
                 )
 
             self.assertIn("--bt-stop-timeout=900", captured["command"])
@@ -56,6 +58,30 @@ class TorrentSourceValidationTests(unittest.TestCase):
             self.assertNotEqual(captured["stdout"], __import__("subprocess").PIPE)
             self.assertTrue(hasattr(captured["stdout"], "write"))
             self.assertEqual(result.read_bytes()[:4], bytes.fromhex("1A45DFA3"))
+
+    def test_rejects_legacy_true_flag_without_evidence_before_aria2(self):
+        with patch("tools.torrent_downloader.shutil.which") as which:
+            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
+                download_authorized_torrent(
+                    "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                    "Legacy Sample 01 1080p",
+                    {"download_dir": "downloads", "allowed_torrent_hosts": []},
+                    authorized_for_redistribution=True,
+                )
+            which.assert_not_called()
+
+    def test_rejects_future_rights_review_before_aria2(self):
+        with patch("tools.torrent_downloader.shutil.which") as which:
+            with self.assertRaises(PermissionError):
+                download_authorized_torrent(
+                    "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                    "Future Review 01 1080p",
+                    {"download_dir": "downloads", "allowed_torrent_hosts": []},
+                    authorized_for_redistribution=True,
+                    authorization_evidence="https://rights.example.org/licenses/animehighbo",
+                    authorization_reviewed_at="2999-01-01",
+                )
+            which.assert_not_called()
 
     def test_requires_explicit_redistribution_authorization(self):
         with patch("tools.torrent_downloader.shutil.which") as which:
