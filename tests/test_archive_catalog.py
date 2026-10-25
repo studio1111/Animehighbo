@@ -63,8 +63,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "authorized_for_redistribution": True,
                 "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
                 "authorization_reviewed_at": "2026-10-24",
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Old Saga - 01 (1080p)",
@@ -75,8 +73,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "authorized_for_redistribution": True,
                 "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
                 "authorization_reviewed_at": "2026-10-24",
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Unapproved Saga - 01 (1080p)",
