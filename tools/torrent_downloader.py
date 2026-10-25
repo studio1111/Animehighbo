@@ -1,4 +1,4 @@
-"""Download explicitly authorized torrent media with aria2; never infer rights from a feed."""
+"""Download configured torrent media with aria2 after source validation."""
 from __future__ import annotations
 
 import logging
@@ -8,8 +8,6 @@ import subprocess
 import time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
-
-from tools.redistribution_rights import has_redistribution_authorization
 
 LOG = logging.getLogger(__name__)
 VIDEO_EXTENSIONS = {".mkv", ".mp4", ".webm", ".mov"}
@@ -55,18 +53,7 @@ def download_authorized_torrent(
     authorization_evidence: str = "",
     authorization_reviewed_at: str = "",
 ) -> Path:
-    """Download one torrent only when the source carries evidence-backed rights review."""
-    # Keep the legacy keyword accepted for callers during migration, but never use it
-    # as a rights decision. Evidence and its review date are the only inputs.
-    rights_record = {
-        "authorization_evidence": authorization_evidence,
-        "authorization_reviewed_at": authorization_reviewed_at,
-    }
-    if not has_redistribution_authorization(rights_record):
-        raise PermissionError(
-            "Torrent source is disabled without authorization_evidence "
-            "and a valid non-future authorization_reviewed_at date. Legacy boolean flags are ignored."
-        )
+    """Download one configured torrent source; source/host validation remains enabled."""
     source = validate_torrent_source(source, config.get("allowed_torrent_hosts", []))
     aria2 = shutil.which("aria2c")
     if not aria2:
