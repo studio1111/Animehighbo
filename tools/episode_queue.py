@@ -9,7 +9,10 @@ import re
 from pathlib import Path
 from datetime import date, datetime, timezone
 
-from tools.redistribution_rights import has_redistribution_authorization
+try:
+    from tools.redistribution_rights import has_redistribution_authorization
+except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
+    from redistribution_rights import has_redistribution_authorization
 
 
 def _day(value: object) -> str:
