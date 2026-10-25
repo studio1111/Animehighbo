@@ -75,6 +75,29 @@ def series_identity(entry: dict) -> str | None:
     return f"{normalized_title}::season-{season_number}"
 
 
+def apply_global_rights_evidence(
+    manifest: list[dict],
+    evidence: str,
+    reviewed_at: str,
+) -> int:
+    """Inherit a validated archive-wide license record without weakening the gate."""
+    record = {
+        "authorization_evidence": str(evidence or "").strip(),
+        "authorization_reviewed_at": str(reviewed_at or "").strip(),
+    }
+    if not has_redistribution_authorization(record):
+        return 0
+    inherited = 0
+    for entry in manifest:
+        if not isinstance(entry, dict) or has_redistribution_authorization(entry):
+            continue
+        entry["authorization_evidence"] = record["authorization_evidence"]
+        entry["authorization_reviewed_at"] = record["authorization_reviewed_at"]
+        if has_redistribution_authorization(entry):
+            inherited += 1
+    return inherited
+
+
 def _is_complete(record: object) -> bool:
     return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
         set(record.get("complete_qualities", []))
@@ -440,22 +463,12 @@ def main() -> int:
     # It is accepted only when both protected settings are present and pass the same
     # evidence-reference/date validator used for per-entry records. Per-entry evidence
     # always wins; discovery candidates remain outside this publishing manifest.
-    global_rights = {
-        "authorization_evidence": os.environ.get("ANIMEHIGHBO_AUTHORIZATION_EVIDENCE", "").strip(),
-        "authorization_reviewed_at": os.environ.get("ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT", "").strip(),
-    }
-    global_rights_valid = has_redistribution_authorization(global_rights)
-    if global_rights_valid:
-        inherited = 0
-        for entry in manifest:
-            if not isinstance(entry, dict) or has_redistribution_authorization(entry):
-                continue
-            entry["authorization_evidence"] = global_rights["authorization_evidence"]
-            entry["authorization_reviewed_at"] = global_rights["authorization_reviewed_at"]
-            if has_redistribution_authorization(entry):
-                inherited += 1
+    global_evidence = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_EVIDENCE", "").strip()
+    global_reviewed_at = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT", "").strip()
+    inherited = apply_global_rights_evidence(manifest, global_evidence, global_reviewed_at)
+    if inherited:
         print(f"Applied the validated repository-level rights record to {inherited} curated manifest entries.")
-    elif any(global_rights.values()):
+    elif global_evidence or global_reviewed_at:
         print("Repository-level rights record is incomplete or invalid; no global authorization was applied.")
 
     rights_blocked_count = sum(
