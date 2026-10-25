@@ -1,7 +1,0 @@
-{
-  "policy_version": 3,
-  "default_decision": "allow",
-  "approved_series": [],
-  "denied_series": [],
-  "instructions": "All 166 archive entries and unfamiliar/ambiguous release titles are eligible by default when their source metadata is sufficient to queue them. Add exact cleaned release or series titles to denied_series to block them; denied_series overrides approved_series. Unfamiliar titles use the cleaned release title as a fallback identity for manual review. Eligibility does not bypass the separate redistribution-rights gate for actual episode uploads."
-}
