@@ -34,7 +34,7 @@ class AuthorizationGateTests(unittest.TestCase):
 
     def test_unapproved_earlier_episode_blocks_later_episode_in_same_series(self):
         unauthorized = row("Same Saga - 01", 1, "2026-10-05")
-        unauthorized["authorized_for_redistribution"] = False
+        unauthorized.pop("authorization_evidence", None)
         later = row("Same Saga - 02", 2, "2026-10-06")
 
         upload_date, selected = select_next_upload_date(
