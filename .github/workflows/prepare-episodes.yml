@@ -19,7 +19,7 @@ on:
       - 'app.py'
       - 'config.json'
       - 'data/archive_manifest.json'
-      - 'data/anime_publication_approvals.json'
+      - 'data/archive_exclusions.json'
       - 'tools/episode_queue.py'
       - 'tools/bilingual_subtitles.py'
       - 'tools/torrent_downloader.py'
@@ -28,9 +28,9 @@ on:
       - '.github/workflows/prepare-one-episode.yml'
   schedule:
     - cron: '*/5 * * * *'
-  # Reconcile newly committed seasonal catalog entries promptly as well as on schedule.
-# Refill worker slots immediately whenever an episode worker finishes,
-  # including failures, so queued episodes do not wait for the next 5-minute poll.
+  # Reconcile newly committed catalog and manual-exclusion changes promptly.
+  # Refill worker slots whenever an episode worker finishes, including failures,
+  # so queued episodes do not wait for the next five-minute poll.
   workflow_run:
     workflows: ["Animehighbo single-episode worker"]
     types: [completed]
