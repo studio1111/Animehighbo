@@ -1,6 +1,7 @@
 import unittest
+from unittest.mock import Mock
 
-from tools.notify_new_releases import format_messages, new_releases, release_key
+from tools.notify_new_releases import format_messages, new_releases, notify, release_key
 
 
 class NewReleaseNotificationTests(unittest.TestCase):
@@ -23,6 +24,18 @@ class NewReleaseNotificationTests(unittest.TestCase):
             {"title": "Blue Box", "episode": 2},
         ]})
         self.assertEqual(len(rows), 1)
+
+    def test_notification_requires_separate_alert_destination(self):
+        with self.assertRaisesRegex(RuntimeError, "TELEGRAM_ALERT_CHAT_ID"):
+            notify([{"title": "Blue Box", "episode": 3}], "token", "")
+
+    def test_notification_sends_to_alert_destination(self):
+        response = Mock()
+        response.json.return_value = {"ok": True}
+        post = Mock(return_value=response)
+        sent = notify([{"title": "Blue Box", "episode": 3}], "token", "-100123", post=post)
+        self.assertEqual(sent, 1)
+        self.assertEqual(post.call_args.kwargs["json"]["chat_id"], "-100123")
 
     def test_message_discloses_metadata_only(self):
         message = format_messages([{"title": "Blue Box", "episode": 3, "release_date": "2026-10-25"}])[0]

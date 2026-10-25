@@ -41,3 +41,8 @@ This runbook supports [CHANNEL_RULES.md](../../CHANNEL_RULES.md). It describes r
 ## Evidence to include in incident reports
 
 Include the dispatcher run URL, worker run URL(s), planner summary, identity/title/episode, lock state, state-record keys, last successful Telegram message ID, retry/backoff decision, and whether publication was verified. Never include bot tokens, API hashes, or other secrets.
+
+
+## Private release-alert destination
+
+The two-hour metadata monitor sends new-release alerts only to `TELEGRAM_ALERT_CHAT_ID`, a separate GitHub Actions repository secret for a private administrator chat or alert group. Do not point it at the public anime channel. The secret must be configured before the next newly detected release; if it is missing, the monitor fails closed and does not advance the report, so it can retry after configuration. `TELEGRAM_CHAT_ID` remains the publication destination for the publisher workflow. Alerts contain metadata only and do not publish media.

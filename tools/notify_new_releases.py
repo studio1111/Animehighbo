@@ -62,17 +62,17 @@ def format_messages(rows: list[dict], max_rows: int = 30) -> list[str]:
     return chunks
 
 
-def notify(rows: list[dict], token: str, chat_id: str, post: Callable = requests.post) -> int:
+def notify(rows: list[dict], token: str, alert_chat_id: str, post: Callable = requests.post) -> int:
     messages = format_messages(rows)
     if not messages:
         print("No new release metadata detected; no Telegram notification needed.")
         return 0
-    if not token or not chat_id:
-        raise RuntimeError("New releases were found, but TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing; refusing to mark them as notified.")
+    if not token or not alert_chat_id:
+        raise RuntimeError("New releases were found, but TELEGRAM_BOT_TOKEN or TELEGRAM_ALERT_CHAT_ID is missing; refusing to mark them as notified.")
     for message in messages:
         response = post(
             f"https://api.telegram.org/bot{token}/sendMessage",
-            json={"chat_id": chat_id, "text": message, "disable_web_page_preview": True},
+            json={"chat_id": alert_chat_id, "text": message, "disable_web_page_preview": True},
             timeout=(10, 30),
         )
         response.raise_for_status()
@@ -93,7 +93,7 @@ def main() -> int:
         current = json.loads(Path(args.current).read_text(encoding="utf-8"))
         rows = new_releases(previous, current)
         print(f"Detected {len(rows)} new release metadata row(s).")
-        notify(rows, os.environ.get("TELEGRAM_BOT_TOKEN", ""), os.environ.get("TELEGRAM_CHAT_ID", ""))
+        notify(rows, os.environ.get("TELEGRAM_BOT_TOKEN", ""), os.environ.get("TELEGRAM_ALERT_CHAT_ID", ""))
         return 0
     except (OSError, ValueError, requests.RequestException, RuntimeError) as exc:
         print(f"Release notification failed: {exc}", file=sys.stderr)
