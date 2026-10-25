@@ -9,6 +9,8 @@ import re
 from pathlib import Path
 from datetime import date, datetime, timezone
 
+from tools.redistribution_rights import has_redistribution_authorization
+
 
 def _day(value: object) -> str:
     raw = str(value or "").strip()
@@ -106,7 +108,7 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
             continue
         parsed.append((
             entry, identity, series, number,
-            entry.get("authorized_for_redistribution") is True,
+            has_redistribution_authorization(entry),
         ))
         counts[(series, number)] = counts.get((series, number), 0) + 1
 
@@ -296,7 +298,7 @@ def select_next_upload_date(
             "series_title": series_title,
             "season": season_number,
             "series_key": series_key,
-            "authorized_for_redistribution": row.get("authorized_for_redistribution") is True,
+            "authorized_for_redistribution": has_redistribution_authorization(row),
         })
 
     if not normalized:
