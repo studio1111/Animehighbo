@@ -161,7 +161,7 @@ def select_show_episodes(
         "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
         "episode": item["episode"],
         "quality": item["quality"],
-        "uri": item["uri"],
+        **({"uri": item["uri"]} if authorized_for_redistribution else {}),
         "authorized_for_redistribution": bool(authorized_for_redistribution),
         "review_required": not authorized_for_redistribution,
         **({
