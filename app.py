@@ -1243,7 +1243,6 @@ def load_archive_manifest(path: str) -> list[dict]:
             "feed": "episode archive manifest",
             "identity": identity,
             "torrent_source": is_torrent_source,
-            "authorized_for_redistribution": True,
             "authorization_evidence": str(item.get("authorization_evidence") or "").strip(),
             "authorization_reviewed_at": str(item.get("authorization_reviewed_at") or "").strip(),
             "release_date": str(item.get("release_date") or "").strip(),
@@ -1538,9 +1537,6 @@ def run() -> int:
                 pending.append({
                     **entry,
                     "feed": feed_name,
-                    "authorized_for_redistribution": True,
-                    "authorization_evidence": str(feed.get("authorization_evidence") or ""),
-                    "authorization_reviewed_at": str(feed.get("authorization_reviewed_at") or ""),
                 })
                 continue
             if is_torrent_feed and urlparse(entry_url).scheme.lower() == "magnet":
@@ -1563,7 +1559,6 @@ def run() -> int:
                     "feed": feed_name,
                     "identity": identity,
                     "torrent_source": True,
-                    "authorized_for_redistribution": True,
                     "authorization_evidence": feed["authorization_evidence"],
                     "authorization_reviewed_at": feed["authorization_reviewed_at"],
                 })
@@ -1587,9 +1582,6 @@ def run() -> int:
                 "title": title, "url": uri, "feed": "authorized torrent",
                 "identity": identity,
                 "torrent_source": True,
-                "authorized_for_redistribution": True,
-                "authorization_evidence": str(source.get("authorization_evidence") or ""),
-                "authorization_reviewed_at": str(source.get("authorization_reviewed_at") or ""),
             })
 
     requested_identity = os.getenv("ANIMEHIGHBO_EPISODE_ID", "").strip()
