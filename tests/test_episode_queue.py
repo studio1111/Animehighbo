@@ -32,7 +32,7 @@ class AuthorizationGateTests(unittest.TestCase):
         self.assertEqual(upload_date, "2026-10-06")
         self.assertEqual([item["title"] for item in selected], ["Approved Saga - 01"])
 
-    def test_unapproved_earlier_episode_blocks_later_episode_in_same_series(self):
+    def test_unapproved_earlier_episode_does_not_block_later_authorized_episode_in_same_series(self):
         unauthorized = row("Same Saga - 01", 1, "2026-10-05")
         unauthorized.pop("authorization_evidence", None)
         later = row("Same Saga - 02", 2, "2026-10-06")
@@ -41,8 +41,19 @@ class AuthorizationGateTests(unittest.TestCase):
             [unauthorized, later], {"published": {}}
         )
 
-        self.assertIsNone(upload_date)
-        self.assertEqual(selected, [])
+        self.assertEqual(upload_date, "2026-10-06")
+        self.assertEqual([item["title"] for item in selected], ["Same Saga - 02"])
+
+    def test_prepared_queue_skips_unapproved_episode_without_blocking_later_authorized_one(self):
+        from tools.episode_queue import eligible_prepared_episodes
+
+        unauthorized = row("Same Saga - 01", 1, "2026-10-05")
+        unauthorized.pop("authorization_evidence", None)
+        later = row("Same Saga - 02", 2, "2026-10-06")
+
+        selected = eligible_prepared_episodes([unauthorized, later], {"published": {}})
+
+        self.assertEqual([item["title"] for item in selected], ["Same Saga - 02"])
 
 
 class QuotaCooldownTests(unittest.TestCase):

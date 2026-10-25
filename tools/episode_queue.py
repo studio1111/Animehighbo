@@ -128,8 +128,10 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
         if counts[(series, number)] != 1:
             continue
         blocked = False
-        for earlier, earlier_identity, earlier_series, earlier_number, _ in parsed:
-            if earlier_series != series or earlier_number >= number:
+        for earlier, earlier_identity, earlier_series, earlier_number, earlier_authorized in parsed:
+            # An episode excluded by the rights gate must not block separately
+            # authorized episodes in the same series. The gate applies per item.
+            if not earlier_authorized or earlier_series != series or earlier_number >= number:
                 continue
             if not _is_complete(published.get(earlier_identity)):
                 blocked = True
@@ -322,7 +324,13 @@ def select_next_upload_date(
         blocked = False
         for earlier in normalized:
             earlier_series = (earlier["series_title"].casefold(), earlier["season"])
-            if earlier_series != series_key or earlier["episode"] >= row["episode"]:
+            # Missing rights for one episode excludes that item only. It must not
+            # prevent the queue from progressing to later episodes with valid rights.
+            if (
+                not earlier["authorized_for_redistribution"]
+                or earlier_series != series_key
+                or earlier["episode"] >= row["episode"]
+            ):
                 continue
             if not _is_complete(published.get(earlier["identity"], {})):
                 blocked = True
