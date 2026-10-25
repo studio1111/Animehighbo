@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, apply_global_rights_evidence, select_next_upload_date, select_upload_date_group
+from tools.episode_queue import active_quota_cooldown, apply_global_rights_evidence, filter_by_publication_approval, select_next_upload_date, select_upload_date_group
 
 
 def row(title, episode, day, uri=None):
@@ -17,6 +17,41 @@ def row(title, episode, day, uri=None):
         "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
         "authorization_reviewed_at": date.today().isoformat(),
     }
+
+
+class ManualPublicationApprovalTests(unittest.TestCase):
+    def test_only_explicitly_approved_series_are_allowed(self):
+        manifest = [
+            {"title": "Approved Saga - 01 (1080p)", "episode": 1},
+            {"title": "Pending Saga - 01 (1080p)", "episode": 1},
+            {"title": "Denied Saga - 01 (1080p)", "episode": 1},
+        ]
+        allowed, counts = filter_by_publication_approval(manifest, {
+            "approved_series": ["Approved Saga", "Denied Saga"],
+            "denied_series": ["Denied Saga"],
+        })
+        self.assertEqual([row["title"] for row in allowed], ["Approved Saga - 01 (1080p)"])
+        self.assertEqual(counts, {"approved": 1, "pending": 1, "denied": 1, "ambiguous": 0})
+
+    def test_unknown_or_ambiguous_titles_fail_closed(self):
+        manifest = [
+            {"title": "No Episode Pattern"},
+            {"title": "Not Approved - 01 (1080p)", "episode": 1},
+        ]
+        allowed, counts = filter_by_publication_approval(manifest, {
+            "approved_series": [],
+            "denied_series": [],
+        })
+        self.assertEqual(allowed, [])
+        self.assertEqual(counts["pending"], 1)
+        self.assertEqual(counts["ambiguous"], 1)
+
+    def test_invalid_policy_shape_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "JSON lists"):
+            filter_by_publication_approval([{"title": "A - 01"}], {
+                "approved_series": "A",
+                "denied_series": [],
+            })
 
 
 class AuthorizationGateTests(unittest.TestCase):
