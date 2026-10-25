@@ -24,7 +24,7 @@ class SeasonalDiscoveryTests(unittest.TestCase):
     def test_normalize_episode_title_to_series(self):
         self.assertEqual(
             normalize_title("Blue Box - 02 (1080p)"),
-            "blue box 02",
+            "blue box",
         )
         self.assertEqual(
             normalize_title("Blue Box - 02"),
