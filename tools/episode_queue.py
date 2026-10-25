@@ -75,6 +75,66 @@ def series_identity(entry: dict) -> str | None:
     return f"{normalized_title}::season-{season_number}"
 
 
+
+def _approval_key(entry: dict) -> str | None:
+    """Normalize a series title for explicit operator approval."""
+    explicit = str(entry.get("series_title") or "").strip()
+    if explicit:
+        title = explicit
+    else:
+        identity = series_identity(entry)
+        if identity:
+            title = re.sub(r"::season-\\d+$", "", identity)
+        else:
+            raw = str(entry.get("title") or "").strip()
+            raw = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw)
+            raw = re.sub(r"(?i)\\s+\\(?\\d{3,4}p\\)?\\s*$", "", raw)
+            raw = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", raw).strip()
+            match = re.match(r"^(.*?)\\s+-\\s+\\d{1,4}(?:\\.\\d+)?(?=\\s*(?:\\(|\\[|$))", raw, re.I)
+            if not match:
+                return None
+            title = match.group(1).strip(" -–—")
+    key = re.sub(r"\\s+", " ", title).strip().casefold()
+    return key or None
+
+
+def filter_by_publication_approval(
+    manifest: list[dict], policy: dict
+) -> tuple[list[dict], dict[str, int]]:
+    """Only explicitly approved series may enter the queue; deny overrides approve."""
+    if not isinstance(policy, dict):
+        raise ValueError("Publication approval policy must be a JSON object.")
+    approved_raw = policy.get("approved_series", [])
+    denied_raw = policy.get("denied_series", [])
+    if not isinstance(approved_raw, list) or not isinstance(denied_raw, list):
+        raise ValueError("approved_series and denied_series must be JSON lists.")
+    approved = {
+        re.sub(r"\\s+", " ", str(item)).strip().casefold()
+        for item in approved_raw if isinstance(item, str) and item.strip()
+    }
+    denied = {
+        re.sub(r"\\s+", " ", str(item)).strip().casefold()
+        for item in denied_raw if isinstance(item, str) and item.strip()
+    }
+    allowed: list[dict] = []
+    counts = {"approved": 0, "pending": 0, "denied": 0, "ambiguous": 0}
+    for entry in manifest:
+        if not isinstance(entry, dict):
+            counts["ambiguous"] += 1
+            continue
+        key = _approval_key(entry)
+        if key is None:
+            counts["ambiguous"] += 1
+        elif key in denied:
+            counts["denied"] += 1
+        elif key in approved:
+            allowed.append(entry)
+            counts["approved"] += 1
+        else:
+            counts["pending"] += 1
+    return allowed, counts
+
+
 def apply_global_rights_evidence(
     manifest: list[dict],
     evidence: str,
@@ -459,10 +519,32 @@ def main() -> int:
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
         raise ValueError("Archive manifest must contain a JSON list of episode entries.")
-    # A repository-level rights record may cover the curated archive as a whole.
-    # It is accepted only when both protected settings are present and pass the same
-    # evidence-reference/date validator used for per-entry records. Per-entry evidence
-    # always wins; discovery candidates remain outside this publishing manifest.
+    # Publication is a separate manual operator decision. Unknown titles remain pending;
+    # discovery never implies approval, and explicit denial always overrides approval.
+    approval_path = Path("data/anime_publication_approvals.json")
+    if not approval_path.exists():
+        raise RuntimeError("Manual publication policy is missing; refusing to dispatch any episode.")
+    approval_policy = json.loads(approval_path.read_text(encoding="utf-8"))
+    manifest, approval_counts = filter_by_publication_approval(manifest, approval_policy)
+    print(
+        "Manual publication policy: "
+        f"{approval_counts['approved']} approved episode candidate(s), "
+        f"{approval_counts['pending']} pending, {approval_counts['denied']} denied, "
+        f"{approval_counts['ambiguous']} ambiguous."
+    )
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "").strip()
+    if summary_path:
+        with open(summary_path, "a", encoding="utf-8") as summary:
+            summary.write(
+                "## Manual anime publication approvals\\n\\n"
+                f"- Approved candidates: {approval_counts['approved']}\\n"
+                f"- Pending candidates (not published): {approval_counts['pending']}\\n"
+                f"- Denied candidates (not published): {approval_counts['denied']}\\n"
+                f"- Ambiguous candidates (not published): {approval_counts['ambiguous']}\\n"
+                "- Only titles in approved_series may enter the queue; denied_series takes precedence.\\n"
+            )
+    # Legal redistribution evidence remains a separate mandatory gate; manual approval
+    # decides what the operator wants published, not whether rights exist.
     global_evidence = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_EVIDENCE", "").strip()
     global_reviewed_at = os.environ.get("ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT", "").strip()
     inherited = apply_global_rights_evidence(manifest, global_evidence, global_reviewed_at)
