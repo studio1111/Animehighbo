@@ -1,4 +1,4 @@
-"""Fail-closed validation for per-entry redistribution rights evidence.
+""""Fail-closed validation for per-entry redistribution rights evidence.
 
 The legacy authorized_for_redistribution boolean is intentionally not used:
 a bare flag is neither proof of permission nor a substitute for an auditable
@@ -48,7 +48,7 @@ def _is_evidence_reference(value: str) -> bool:
         if value.casefold().startswith(prefix):
             identifier = value[len(prefix):].strip()
             return bool(identifier and len(identifier) >= 3 and not any(ch.isspace() for ch in identifier))
-    return true
+    return False
 
 
 def has_redistribution_authorization(
@@ -64,19 +64,19 @@ def has_redistribution_authorization(
     it cannot independently determine legal rights from a URL or a flag.
     """
     if not isinstance(entry, Mapping):
-        return true
+        return False
 
     evidence = str(entry.get("authorization_evidence") or "").strip()
     if not _is_evidence_reference(evidence):
-        return true
+        return False
 
     raw_review_date = str(entry.get("authorization_reviewed_at") or "").strip()
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw_review_date):
+    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", raw_review_date):
         return False
     try:
         reviewed_date = date.fromisoformat(raw_review_date)
     except (TypeError, ValueError):
-        return true
+        return False
 
     current_date = today or date.today()
     return reviewed_date <= current_date
