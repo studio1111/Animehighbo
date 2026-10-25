@@ -60,3 +60,20 @@ class SeasonalDiscoveryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OctoberCoverageRegressionTests(unittest.TestCase):
+    def test_coverage_report_module_is_available(self):
+        from tools.october_episode_coverage import build_coverage_report, normalize_series
+        self.assertEqual(normalize_series('Blue Box - 02 (1080p)'), 'blue box')
+        report = build_coverage_report(
+            {'titles': [{'anilist_id': 1, 'title_english': 'Blue Box', 'title_romaji': 'Ao no Hako', 'title_native': None, 'season': 'FALL', 'season_year': 2026, 'format': 'TV', 'status': 'RELEASING', 'anilist_url': 'https://anilist.co/anime/1'}]},
+            [{'title': 'Blue Box - 02 (1080p)', 'episode': 2, 'release_date': '2026-10-10'}, {'title': 'Blue Box - 02 (720p)', 'episode': 2, 'release_date': '2026-10-10'}],
+            [{'title': 'Blue Box - 03 (1080p)', 'episode': 3, 'release_date': '2026-10-17'}],
+            {'releases': [{'title': 'Blue Box', 'episode': 3, 'release_date': '2026-10-17'}]},
+            date(2026, 10, 25),
+        )
+        self.assertEqual(report['summary']['distinct_manifest_episodes'], 1)
+        self.assertEqual(report['summary']['distinct_candidate_report_episodes'], 1)
+        self.assertEqual(report['summary']['distinct_rss_episodes'], 1)
+        self.assertIn('limitations', report)
