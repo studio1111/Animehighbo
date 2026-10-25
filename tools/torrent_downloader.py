@@ -9,6 +9,8 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
+from tools.redistribution_rights import has_redistribution_authorization
+
 LOG = logging.getLogger(__name__)
 VIDEO_EXTENSIONS = {".mkv", ".mp4", ".webm", ".mov"}
 
@@ -50,10 +52,20 @@ def download_authorized_torrent(
     config: dict,
     *,
     authorized_for_redistribution: bool = False,
+    authorization_evidence: str = "",
+    authorization_reviewed_at: str = "",
 ) -> Path:
-    """Download one authorized torrent, enforcing time/size limits and validating the result."""
-    if authorized_for_redistribution is not True:
-        raise PermissionError("Torrent source is disabled unless redistribution authorization is explicitly true.")
+    """Download one torrent only when the source carries evidence-backed rights review."""
+    rights_record = {
+        "authorized_for_redistribution": authorized_for_redistribution,
+        "authorization_evidence": authorization_evidence,
+        "authorization_reviewed_at": authorization_reviewed_at,
+    }
+    if not has_redistribution_authorization(rights_record):
+        raise PermissionError(
+            "Torrent source is disabled without authorized_for_redistribution=true, "
+            "authorization_evidence, and a valid non-future authorization_reviewed_at date."
+        )
     source = validate_torrent_source(source, config.get("allowed_torrent_hosts", []))
     aria2 = shutil.which("aria2c")
     if not aria2:
