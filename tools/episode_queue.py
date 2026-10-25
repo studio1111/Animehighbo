@@ -101,11 +101,14 @@ def _approval_key(entry: dict) -> str | None:
 def filter_by_publication_approval(
     manifest: list[dict], policy: dict
 ) -> tuple[list[dict], dict[str, int]]:
-    """Only explicitly approved series may enter the queue; deny overrides approve."""
+    """Allow identifiable series by default; a manual denylist always takes precedence."""
     if not isinstance(policy, dict):
         raise ValueError("Publication approval policy must be a JSON object.")
     approved_raw = policy.get("approved_series", [])
     denied_raw = policy.get("denied_series", [])
+    default_decision = str(policy.get("default_decision", "pending")).strip().casefold()
+    if default_decision not in {"allow", "pending"}:
+        raise ValueError("default_decision must be 'allow' or 'pending'.")
     if not isinstance(approved_raw, list) or not isinstance(denied_raw, list):
         raise ValueError("approved_series and denied_series must be JSON lists.")
     approved = {
@@ -127,13 +130,12 @@ def filter_by_publication_approval(
             counts["ambiguous"] += 1
         elif key in denied:
             counts["denied"] += 1
-        elif key in approved:
+        elif key in approved or default_decision == "allow":
             allowed.append(entry)
             counts["approved"] += 1
         else:
             counts["pending"] += 1
     return allowed, counts
-
 
 def apply_global_rights_evidence(
     manifest: list[dict],
