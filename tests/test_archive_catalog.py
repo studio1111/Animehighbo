@@ -251,9 +251,11 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "release_date": "2026-10-07T10:00:00Z",
             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:secret"}],
         }]
-        with patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]), \\
-             patch("tools.archive_catalog._fetch_show_episodes", return_value=("Candidate Saga", episode_rows)), \\
-             patch("tools.archive_catalog.time.sleep"):
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
+            patch("tools.archive_catalog._fetch_show_episodes", return_value=("Candidate Saga", episode_rows)),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
             candidates = build_archive_manifest(
                 date(2026, 10, 1), max_pages=5, session=session
             )
