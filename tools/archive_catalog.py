@@ -409,11 +409,7 @@ def main() -> int:
             "--authorization-evidence and --authorization-reviewed-at must identify "
             "a valid evidence record with a non-future ISO review date."
         )
-    if destination.name == "archive_manifest.json" and not rights_authorized:
-        parser.error(
-            "Refusing to write discovered releases into the publishing manifest without "
-            "valid per-item rights evidence. Use data/archive_candidates.json for discovery."
-        )
+
     if destination.name == "archive_candidates.json" and rights_authorized:
         parser.error(
             "Refusing to write evidence-backed publishing entries to the review-candidate "
