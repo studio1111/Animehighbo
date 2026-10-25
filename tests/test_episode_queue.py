@@ -2,7 +2,7 @@ import hashlib
 import json
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from tools.episode_queue import active_quota_cooldown, select_next_upload_date, select_upload_date_group
 
@@ -14,6 +14,8 @@ def row(title, episode, day, uri=None):
         "release_date": day,
         "uri": uri or f"magnet:?xt=urn:btih:{title.replace(' ', '')}{episode}",
         "authorized_for_redistribution": True,
+        "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+        "authorization_reviewed_at": date.today().isoformat(),
     }
 
 
