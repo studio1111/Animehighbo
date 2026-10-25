@@ -1028,7 +1028,10 @@ def has_file_media_source(config: dict) -> bool:
         host = (parsed.hostname or "").lower().rstrip(".")
         if parsed.scheme != "https" or not host:
             continue
-        if host in torrent_feed_hosts or (host in allowed_download_hosts and allowed_download_hosts):
+        # RSS host and media host may be different. The RSS source itself must
+        # have reviewed rights metadata; any enclosure is separately checked
+        # against allowed_download_hosts before a download.
+        if host in torrent_feed_hosts or allowed_download_hosts:
             return True
     return has_authorized_torrent_source(config)
 
