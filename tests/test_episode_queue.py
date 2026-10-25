@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, filter_by_publication_approval, select_next_upload_date, select_upload_date_group
+from tools.episode_queue import active_quota_cooldown, filter_by_manual_exclusions, select_next_upload_date, select_upload_date_group
 
 
 def row(title, episode, day, uri=None):
@@ -19,14 +19,14 @@ def row(title, episode, day, uri=None):
     }
 
 
-class ManualPublicationApprovalTests(unittest.TestCase):
-    def test_only_explicitly_approved_series_are_allowed(self):
+class ManualExclusionTests(unittest.TestCase):
+    def test_all_series_are_allowed_except_explicit_manual_exclusions(self):
         manifest = [
             {"title": "Approved Saga - 01 (1080p)", "episode": 1},
             {"title": "Pending Saga - 01 (1080p)", "episode": 1},
             {"title": "Denied Saga - 01 (1080p)", "episode": 1},
         ]
-        allowed, counts = filter_by_publication_approval(manifest, {
+        allowed, counts = filter_by_manual_exclusions(manifest, {
             "default_decision": "allow",
             "approved_series": [],
             "denied_series": ["Denied Saga"],
@@ -42,7 +42,7 @@ class ManualPublicationApprovalTests(unittest.TestCase):
             {"title": "No Episode Pattern"},
             {"title": "Not Approved - 01 (1080p)", "episode": 1},
         ]
-        allowed, counts = filter_by_publication_approval(manifest, {
+        allowed, counts = filter_by_manual_exclusions(manifest, {
             "default_decision": "allow",
             "approved_series": [],
             "denied_series": [],
@@ -53,7 +53,7 @@ class ManualPublicationApprovalTests(unittest.TestCase):
         ])
         self.assertEqual(counts, {"approved": 2, "pending": 0, "denied": 0, "ambiguous": 0})
 
-        denied, counts = filter_by_publication_approval(manifest, {
+        denied, counts = filter_by_manual_exclusions(manifest, {
             "default_decision": "allow",
             "approved_series": [],
             "denied_series": ["No Episode Pattern"],
@@ -67,9 +67,9 @@ class ManualPublicationApprovalTests(unittest.TestCase):
         self.assertEqual(upload_date, "2026-10-05")
         self.assertEqual([item["title"] for item in selected], ["Unparsed Release Name"])
 
-    def test_invalid_policy_shape_is_rejected(self):
+    def test_invalid_manual_exclusions_shape_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "JSON lists"):
-            filter_by_publication_approval([{"title": "A - 01"}], {
+            filter_by_manual_exclusions([{"title": "A - 01"}], {
                 "approved_series": "A",
                 "denied_series": [],
             })
