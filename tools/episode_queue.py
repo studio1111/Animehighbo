@@ -432,11 +432,21 @@ def main() -> int:
         1 for entry in manifest if not has_redistribution_authorization(entry)
     )
     if rights_blocked_count:
-        print(
+        message = (
             f"Redistribution safety gate: {rights_blocked_count} manifest entry/entries "
             "blocked because rights evidence and a valid review date are missing or invalid. "
             "No worker will be dispatched for these entries."
         )
+        print(message)
+        summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "").strip()
+        if summary_path:
+            with open(summary_path, "a", encoding="utf-8") as summary:
+                summary.write(
+                    "## Redistribution authorization gate\n\n"
+                    f"- **Blocked manifest entries:** {rights_blocked_count}\n"
+                    "- Automatic discovery is metadata-only and is not permission to redistribute.\n"
+                    "- Add a genuine rights record and review date only after verifying the rights-holder permission.\n"
+                )
     config_path = Path("config.json")
     config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
     cutoff = str(config.get("archive_cutoff_date") or "2026-10-01")
