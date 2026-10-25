@@ -132,7 +132,7 @@ def build_report(
         if (key := release_key(row))
         and _release_date(str(row.get("release_date") or "")) is not None
         and date.fromisoformat(_release_date(str(row.get("release_date") or ""))) >= cutoff_date
-        and has_redistribution_authorization(row)
+        and has_redistribution_authorization(row, today=today)
     }
     candidate_keys = {
         key for row in (candidates or []) if isinstance(row, dict)
