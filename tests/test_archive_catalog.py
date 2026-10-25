@@ -41,6 +41,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             [row["release_date"] for row in selected],
             ["2026-09-05", "2026-09-12", "2026-09-19"],
         )
+        self.assertTrue(all("uri" not in row for row in selected))
+        self.assertTrue(all("magnet" not in json.dumps(row).lower() for row in selected))
 
     def test_preserves_curated_authorized_entries_missing_from_catalog_api(self):
         generated = [{
@@ -171,7 +173,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         selected = select_show_episodes("Sasaki to Pii-chan S2", rows, date(2026, 10, 1), 1800)
         self.assertEqual(len(selected), 1)
         self.assertEqual(selected[0]["quality"], "720p")
-        self.assertIn("small720", selected[0]["uri"])
+        self.assertNotIn("uri", selected[0])
 
     def test_oversized_sources_are_skipped_when_no_lower_quality_fits(self):
         rows = [{
@@ -233,6 +235,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertTrue(selected[0]["authorized_for_redistribution"])
         self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
         self.assertTrue(selected[0]["authorization_evidence"])
+        self.assertIn("authorizedcandidate", selected[0]["uri"])
 
     def test_discovered_episodes_are_unapproved_candidates_by_default(self):
         rows = [{
