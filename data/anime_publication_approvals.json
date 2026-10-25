@@ -1,7 +1,7 @@
 {
-  "policy_version": 1,
-  "default_decision": "pending",
+  "policy_version": 2,
+  "default_decision": "allow",
   "approved_series": [],
   "denied_series": [],
-  "instructions": "Add exact series titles to approved_series to permit queueing. Add titles to denied_series to block them; denied_series overrides approved_series. Titles absent from both lists stay pending and are never published. Manual approval does not replace redistribution-rights evidence."
+  "instructions": "All identifiable series are eligible by default. Add exact series titles to denied_series to block them; denied_series overrides legacy approved_series. Ambiguous titles remain held for review. Eligibility does not bypass the separate redistribution-rights gate for actual episode uploads."
 }
