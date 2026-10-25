@@ -17,6 +17,7 @@ on:
       - ".github/workflows/seasonal-discovery.yml"
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -42,6 +43,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_*.py' -v
       - name: Commit report when changed
         if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$(git status --porcelain -- data/seasonal_discovery_report.json data/october_episode_coverage_report.json)" ]; then
             echo "Seasonal discovery report is unchanged."
@@ -52,3 +55,4 @@ jobs:
           git add data/seasonal_discovery_report.json data/october_episode_coverage_report.json
           git commit -m "chore: refresh seasonal and October episode coverage reports"
           git push
+          gh workflow run publish-anime-posters.yml --ref main
