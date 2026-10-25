@@ -398,6 +398,9 @@ def select_next_upload_date(
         return None, []
     counts: dict[tuple[str, int, int], int] = {}
     for row in normalized:
+        # The current episode must pass the same evidence check as earlier episodes.
+        if not row["authorized_for_redistribution"]:
+            continue
         key = (row["series_title"].casefold(), row["season"], row["episode"])
         counts[key] = counts.get(key, 0) + 1
 
