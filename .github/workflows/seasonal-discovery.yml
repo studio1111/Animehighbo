@@ -34,7 +34,7 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_seasonal_discovery.py' -v
       - name: Commit report when changed
         run: |
-          if git diff --quiet -- data/seasonal_discovery_report.json; then
+          if [ -z "$(git status --porcelain -- data/seasonal_discovery_report.json)" ]; then
             echo "Seasonal discovery report is unchanged."
             exit 0
           fi
