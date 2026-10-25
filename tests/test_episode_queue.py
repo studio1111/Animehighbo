@@ -20,6 +20,22 @@ def row(title, episode, day, uri=None):
 
 
 class AuthorizationGateTests(unittest.TestCase):
+    def test_global_rights_record_validator_rejects_placeholders_and_future_dates(self):
+        from tools.redistribution_rights import has_redistribution_authorization
+
+        self.assertTrue(has_redistribution_authorization({
+            "authorization_evidence": "rights-record:animehighbo-global-license-2026",
+            "authorization_reviewed_at": date.today().isoformat(),
+        }))
+        self.assertFalse(has_redistribution_authorization({
+            "authorization_evidence": "licensed",
+            "authorization_reviewed_at": date.today().isoformat(),
+        }))
+        self.assertFalse(has_redistribution_authorization({
+            "authorization_evidence": "rights-record:animehighbo-global-license-2026",
+            "authorization_reviewed_at": "2999-01-01",
+        }))
+
     def test_unauthorized_episode_is_not_dispatched(self):
         unauthorized = row("Unapproved Saga - 01", 1, "2026-10-05")
         unauthorized.pop("authorization_evidence", None)
