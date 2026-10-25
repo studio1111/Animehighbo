@@ -18,6 +18,11 @@ from pathlib import Path
 
 import requests
 
+try:
+    from tools.redistribution_rights import has_redistribution_authorization
+except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
+    from redistribution_rights import has_redistribution_authorization
+
 FEEDS = {
     "1080p": "https://subsplease.org/rss/?r=1080",
     "720p": "https://subsplease.org/rss/?r=720",
@@ -119,6 +124,7 @@ def build_report(
     manifest: list[dict],
     today: date,
     cutoff: str = "2026-10-01",
+    candidates: list[dict] | None = None,
 ) -> dict:
     cutoff_date = date.fromisoformat(cutoff)
     manifest_keys = {
@@ -126,7 +132,13 @@ def build_report(
         if (key := release_key(row))
         and _release_date(str(row.get("release_date") or "")) is not None
         and date.fromisoformat(_release_date(str(row.get("release_date") or ""))) >= cutoff_date
-        and row.get("authorized_for_redistribution") is True
+        and has_redistribution_authorization(row)
+    }
+    candidate_keys = {
+        key for row in (candidates or []) if isinstance(row, dict)
+        if (key := release_key(row))
+        and _release_date(str(row.get("release_date") or "")) is not None
+        and date.fromisoformat(_release_date(str(row.get("release_date") or ""))) >= cutoff_date
     }
     unique: dict[str, dict] = {}
     for row in feed_rows:
@@ -149,7 +161,8 @@ def build_report(
                 "episode": int(row["episode"]),
                 "release_date": released,
                 "feed_quality": str(row.get("quality") or ""),
-                "in_manifest": key in manifest_keys,
+                "in_authorized_manifest": key in manifest_keys,
+                "in_candidate_report": key in candidate_keys,
                 "review_required": key not in manifest_keys,
             }
     releases = sorted(unique.values(), key=lambda row: (row["release_date"], row["title"].casefold(), row["episode"]))
@@ -160,10 +173,15 @@ def build_report(
         "metadata_only": True,
         "summary": {
             "feed_releases": len(releases),
-            "matched_in_manifest": sum(1 for row in releases if row["in_manifest"]),
+            "matched_in_authorized_manifest": sum(1 for row in releases if row["in_authorized_manifest"]),
+            "found_in_candidate_report": sum(1 for row in releases if row["in_candidate_report"]),
             "review_required": sum(1 for row in releases if row["review_required"]),
         },
-        "policy": "This report contains metadata only. A manifest match is not proof of redistribution rights; no media URLs are stored or published.",
+        "policy": (
+            "This report contains metadata only. Only entries with an evidence-backed rights-review "
+            "record count as authorized-manifest matches; candidate or RSS matches are not permission "
+            "to redistribute. No media URLs are stored or published."
+        ),
         "releases": releases,
     }
 
@@ -189,9 +207,16 @@ def main() -> int:
                 print(f"Checking {quality} RSS metadata...", flush=True)
                 rows.extend(fetch_feed(session, quality, url))
                 time.sleep(0.2)
+        candidates_path = root / "data" / "archive_candidates.json"
+        candidates: list[dict] = []
+        if candidates_path.exists():
+            candidates_data = json.loads(candidates_path.read_text(encoding="utf-8"))
+            if not isinstance(candidates_data, list):
+                raise ValueError("Archive candidate report must be a JSON list.")
+            candidates = [row for row in candidates_data if isinstance(row, dict)]
         config = json.loads((root / "config.json").read_text(encoding="utf-8"))
         cutoff = str(config.get("archive_cutoff_date") or "2026-10-01")
-        report = build_report(rows, manifest, date.today(), cutoff)
+        report = build_report(rows, manifest, date.today(), cutoff, candidates)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(report["summary"], ensure_ascii=False))
