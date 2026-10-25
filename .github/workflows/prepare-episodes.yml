@@ -129,9 +129,6 @@ jobs:
           PY
       - name: Plan up to five independently publishable episodes
         id: plan
-        env:
-          ANIMEHIGHBO_AUTHORIZATION_EVIDENCE: ${{ secrets.ANIMEHIGHBO_AUTHORIZATION_EVIDENCE }}
-          ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT: ${{ secrets.ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT }}
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned independent workers
         env:
