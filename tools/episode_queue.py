@@ -521,8 +521,8 @@ def main() -> int:
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
         raise ValueError("Archive manifest must contain a JSON list of episode entries.")
-    # Publication is a separate manual operator decision. Unknown titles remain pending;
-    # discovery never implies approval, and explicit denial always overrides approval.
+    # Identifiable titles are eligible by default; the manual denylist is the operator's exclusion control.
+    # Ambiguous titles remain held, and explicit denial always overrides any legacy approval.
     approval_path = Path("data/anime_publication_approvals.json")
     if not approval_path.exists():
         raise RuntimeError("Manual publication policy is missing; refusing to dispatch any episode.")
@@ -543,7 +543,7 @@ def main() -> int:
                 f"- Pending candidates (not published): {approval_counts['pending']}\\n"
                 f"- Denied candidates (not published): {approval_counts['denied']}\\n"
                 f"- Ambiguous candidates (not published): {approval_counts['ambiguous']}\\n"
-                "- Only titles in approved_series may enter the queue; denied_series takes precedence.\\n"
+                "- Identifiable titles are eligible by default; denied_series takes precedence.\\n"
             )
     # Legal redistribution evidence remains a separate mandatory gate; manual approval
     # decides what the operator wants published, not whether rights exist.
