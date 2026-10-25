@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, apply_global_rights_evidence, filter_by_publication_approval, select_next_upload_date, select_upload_date_group
+from tools.episode_queue import active_quota_cooldown, filter_by_publication_approval, select_next_upload_date, select_upload_date_group
 
 
 def row(title, episode, day, uri=None):
@@ -71,73 +71,29 @@ class ManualPublicationApprovalTests(unittest.TestCase):
             })
 
 
-class AuthorizationGateTests(unittest.TestCase):
-    def test_global_rights_record_validator_rejects_placeholders_and_future_dates(self):
-        from tools.redistribution_rights import has_redistribution_authorization
+class NoAutomaticAuthorizationGateTests(unittest.TestCase):
+    def test_archive_episode_without_rights_metadata_is_still_queueable(self):
+        episode = row("Queueable Saga - 01", 1, "2026-10-05")
+        episode.pop("authorization_evidence", None)
+        episode.pop("authorization_reviewed_at", None)
+        episode["authorized_for_redistribution"] = False
 
-        self.assertTrue(has_redistribution_authorization({
-            "authorization_evidence": "rights-record:animehighbo-global-license-2026",
-            "authorization_reviewed_at": date.today().isoformat(),
-        }))
-        self.assertFalse(has_redistribution_authorization({
-            "authorization_evidence": "licensed",
-            "authorization_reviewed_at": date.today().isoformat(),
-        }))
-        self.assertFalse(has_redistribution_authorization({
-            "authorization_evidence": "rights-record:animehighbo-global-license-2026",
-            "authorization_reviewed_at": "2999-01-01",
-        }))
+        upload_date, selected = select_next_upload_date([episode], {"published": {}})
 
-    def test_global_rights_record_is_inherited_only_when_valid(self):
-        missing = {"title": "Licensed Saga - 01", "uri": "magnet:?xt=urn:btih:ABC", "release_date": "2026-10-01"}
-        already_reviewed = row("Reviewed Saga - 01", 1, "2026-10-01")
-        manifest = [missing, already_reviewed]
+        self.assertEqual(upload_date, "2026-10-05")
+        self.assertEqual([item["title"] for item in selected], ["Queueable Saga - 01"])
 
-        inherited = apply_global_rights_evidence(
-            manifest, "rights-record:animehighbo-global-license-2026", date.today().isoformat()
-        )
-        self.assertEqual(inherited, 1)
-        self.assertEqual(missing["authorization_evidence"], "rights-record:animehighbo-global-license-2026")
-        self.assertEqual(already_reviewed["authorization_evidence"], "https://rights.example.org/licenses/animehighbo")
-
-        unapproved = {"title": "Unapproved Saga - 01", "uri": "magnet:?xt=urn:btih:DEF"}
-        self.assertEqual(apply_global_rights_evidence([unapproved], "licensed", date.today().isoformat()), 0)
-        self.assertNotIn("authorization_evidence", unapproved)
-
-    def test_unauthorized_episode_is_not_dispatched(self):
-        unauthorized = row("Unapproved Saga - 01", 1, "2026-10-05")
-        unauthorized.pop("authorization_evidence", None)
-        approved = row("Approved Saga - 01", 1, "2026-10-06")
-
-        upload_date, selected = select_next_upload_date(
-            [unauthorized, approved], {"published": {}}
-        )
-
-        self.assertEqual(upload_date, "2026-10-06")
-        self.assertEqual([item["title"] for item in selected], ["Approved Saga - 01"])
-
-    def test_unapproved_earlier_episode_does_not_block_later_authorized_episode_in_same_series(self):
-        unauthorized = row("Same Saga - 01", 1, "2026-10-05")
-        unauthorized.pop("authorization_evidence", None)
-        later = row("Same Saga - 02", 2, "2026-10-06")
-
-        upload_date, selected = select_next_upload_date(
-            [unauthorized, later], {"published": {}}
-        )
-
-        self.assertEqual(upload_date, "2026-10-06")
-        self.assertEqual([item["title"] for item in selected], ["Same Saga - 02"])
-
-    def test_prepared_queue_skips_unapproved_episode_without_blocking_later_authorized_one(self):
+    def test_prepared_episode_without_rights_metadata_is_still_eligible(self):
         from tools.episode_queue import eligible_prepared_episodes
 
-        unauthorized = row("Same Saga - 01", 1, "2026-10-05")
-        unauthorized.pop("authorization_evidence", None)
-        later = row("Same Saga - 02", 2, "2026-10-06")
+        episode = row("Queueable Saga - 01", 1, "2026-10-05")
+        episode.pop("authorization_evidence", None)
+        episode.pop("authorization_reviewed_at", None)
+        episode["authorized_for_redistribution"] = False
 
-        selected = eligible_prepared_episodes([unauthorized, later], {"published": {}})
+        selected = eligible_prepared_episodes([episode], {"published": {}})
 
-        self.assertEqual([item["title"] for item in selected], ["Same Saga - 02"])
+        self.assertEqual([item["title"] for item in selected], ["Queueable Saga - 01"])
 
 
 class QuotaCooldownTests(unittest.TestCase):
