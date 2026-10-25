@@ -200,5 +200,20 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0]["quality"], "720p")
 
+
+    def test_discovered_episodes_are_unapproved_candidates_by_default(self):
+        rows = [{
+            "title": "Candidate Saga - 01",
+            "episode": "1",
+            "release_date": "2026-10-07T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:candidate"}],
+        }]
+
+        selected = select_show_episodes("Candidate Saga", rows, date(2026, 10, 1))
+
+        self.assertEqual(len(selected), 1)
+        self.assertIs(selected[0].get("authorized_for_redistribution"), False)
+        self.assertTrue(selected[0].get("review_required"))
+
 if __name__ == "__main__":
     unittest.main()
