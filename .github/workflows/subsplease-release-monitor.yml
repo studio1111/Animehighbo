@@ -38,6 +38,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run metadata monitor regression tests
         run: python -m unittest discover -s tests -p 'test_subsplease_release_monitor.py' -v
+          python -m unittest discover -s tests -p 'test_notify_new_releases.py' -v
       - name: Preserve previous release report for change detection
         run: |
           if [ -f data/subsplease_release_report.json ]; then
