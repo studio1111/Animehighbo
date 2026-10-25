@@ -22,7 +22,7 @@ def row(title, episode, day, uri=None):
 class AuthorizationGateTests(unittest.TestCase):
     def test_unauthorized_episode_is_not_dispatched(self):
         unauthorized = row("Unapproved Saga - 01", 1, "2026-10-05")
-        unauthorized["authorized_for_redistribution"] = False
+        unauthorized.pop("authorization_evidence", None)
         approved = row("Approved Saga - 01", 1, "2026-10-06")
 
         upload_date, selected = select_next_upload_date(
