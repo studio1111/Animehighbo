@@ -4,22 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 41,
+    "feed_releases": 42,
     "matched_in_authorized_manifest": 0,
-    "found_in_candidate_report": 23,
-    "review_required": 41
+    "found_in_candidate_report": 22,
+    "review_required": 42
   },
   "policy": "This report contains metadata only. Only entries with an evidence-backed rights-review record count as authorized-manifest matches; candidate or RSS matches are not permission to redistribute. No media URLs are stored or published.",
   "releases": [
-    {
-      "title": "Bleach - Sennen Kessen Hen",
-      "episode": 49,
-      "release_date": "2026-10-19",
-      "feed_quality": "720p",
-      "in_authorized_manifest": false,
-      "in_candidate_report": true,
-      "review_required": true
-    },
     {
       "title": "Battle Spirits Re - Zekkai no Kuu",
       "episode": 3,
@@ -375,6 +366,24 @@
       "title": "Zombie Sagashitemasu",
       "episode": 4,
       "release_date": "2026-10-24",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "Ace of Diamond Act II S2",
+      "episode": 16,
+      "release_date": "2026-10-25",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "Ao Ashi S2",
+      "episode": 4,
+      "release_date": "2026-10-25",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
       "in_candidate_report": false,
