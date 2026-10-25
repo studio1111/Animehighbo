@@ -403,8 +403,7 @@ def select_next_upload_date(
 
     eligible = []
     for row in normalized:
-        if not row["authorized_for_redistribution"]:
-            continue
+        
         series_key = (row["series_title"].casefold(), row["season"])
         episode_key = (*series_key, row["episode"])
         if counts[episode_key] != 1:
