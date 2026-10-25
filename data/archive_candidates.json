@@ -1,12 +1,5 @@
 [
   {
-    "title": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-09-30"
-  },
-  {
     "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
@@ -15,6 +8,13 @@
   },
   {
     "title": "FX Senshi Kurumi-chan - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-01"
+  },
+  {
+    "title": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -56,6 +56,20 @@
     "release_date": "2026-10-02"
   },
   {
+    "title": "Tougen Anki – Nikko Kegon no Taki-hen - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-02"
+  },
+  {
+    "title": "Uchi no Otouto-domo ga Sumimasen - 13 (1080p)",
+    "episode": 13,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-02"
+  },
+  {
     "title": "Detective Conan - 1215 (1080p)",
     "episode": 1215,
     "quality": "1080p",
@@ -70,18 +84,25 @@
     "release_date": "2026-10-03"
   },
   {
-    "title": "Dark Summoner to Dekiteiru - 01 (1080p)",
+    "title": "Keroro Gunsou (2026) - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-04"
+    "release_date": "2026-10-03"
   },
   {
-    "title": "Hotel Inhumans S2 - 01 (1080p)",
+    "title": "Rilakkuma - 26 (1080p)",
+    "episode": 26,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-03"
+  },
+  {
+    "title": "Romelia Senki - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-04"
+    "release_date": "2026-10-03"
   },
   {
     "title": "Seihantai na Kimi to Boku - 25 (1080p)",
@@ -89,48 +110,6 @@
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-04"
-  },
-  {
-    "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 26 (1080p)",
-    "episode": 26,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-04"
-  },
-  {
-    "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu. - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-05"
-  },
-  {
-    "title": "Kanata kara - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-05"
-  },
-  {
-    "title": "PSYREN - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-05"
-  },
-  {
-    "title": "Tensei Goblin dakedo Shitsumon Aru - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-05"
-  },
-  {
-    "title": "Tensei Goblin dakedo Shitsumon Aru - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-05"
   },
   {
     "title": "Battle Spirits Re – Zekkai no Kuu - 01 (1080p)",
@@ -259,6 +238,13 @@
     "release_date": "2026-10-08"
   },
   {
+    "title": "Hotaru no Yomeiri - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
     "title": "Kusuriya no Hitorigoto - 50 (1080p)",
     "episode": 50,
     "quality": "1080p",
@@ -273,8 +259,36 @@
     "release_date": "2026-10-09"
   },
   {
+    "title": "Toaru Anbu no Item - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
+    "title": "Tougen Anki – Nikko Kegon no Taki-hen - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
+    "title": "Uchi no Otouto-domo ga Sumimasen - 14 (1080p)",
+    "episode": 14,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
     "title": "Detective Conan - 1216 (1080p)",
     "episode": 1216,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 02 (1080p)",
+    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -308,60 +322,25 @@
     "release_date": "2026-10-10"
   },
   {
-    "title": "Dark Summoner to Dekiteiru - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
-    "title": "Dragon Ball Super – Beerus - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
-    "title": "Hotel Inhumans S2 - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
-    "title": "Kanata kara - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-11"
-  },
-  {
-    "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 27 (1080p)",
+    "title": "Rilakkuma - 27 (1080p)",
     "episode": 27,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-11"
+    "release_date": "2026-10-10"
   },
   {
-    "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu. - 02 (1080p)",
+    "title": "Romelia Senki - 02 (1080p)",
     "episode": 2,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-12"
+    "release_date": "2026-10-10"
   },
   {
-    "title": "PSYREN - 02 (1080p)",
-    "episode": 2,
+    "title": "Shuiro no Kamen - 01 (1080p)",
+    "episode": 1,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-12"
-  },
-  {
-    "title": "Tensei Goblin dakedo Shitsumon Aru - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-12"
+    "release_date": "2026-10-10"
   },
   {
     "title": "Battle Spirits Re – Zekkai no Kuu - 02 (1080p)",
@@ -511,6 +490,13 @@
     "release_date": "2026-10-15"
   },
   {
+    "title": "Hotaru no Yomeiri - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
     "title": "Kusuriya no Hitorigoto - 51 (1080p)",
     "episode": 51,
     "quality": "1080p",
@@ -525,6 +511,27 @@
     "release_date": "2026-10-16"
   },
   {
+    "title": "Toaru Anbu no Item - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
+    "title": "Tougen Anki – Nikko Kegon no Taki-hen - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
+    "title": "Uchi no Otouto-domo ga Sumimasen - 15 (1080p)",
+    "episode": 15,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
     "title": "Detective Conan - 1217 (1080p)",
     "episode": 1217,
     "quality": "1080p",
@@ -532,64 +539,36 @@
     "release_date": "2026-10-17"
   },
   {
-    "title": "Dark Summoner to Dekiteiru - 03 (1080p)",
+    "title": "Keroro Gunsou (2026) - 03 (1080p)",
     "episode": 3,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-18"
+    "release_date": "2026-10-17"
   },
   {
-    "title": "Dragon Ball Super – Beerus - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-18"
-  },
-  {
-    "title": "Hotel Inhumans S2 - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-18"
-  },
-  {
-    "title": "Kanata kara - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-18"
-  },
-  {
-    "title": "Tensei Kizoku, Kantei Skill de Nariagaru - 28 (1080p)",
+    "title": "Rilakkuma - 28 (1080p)",
     "episode": 28,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-18"
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Romelia Senki - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Shuiro no Kamen - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
   },
   {
     "title": "Bleach – Sennen Kessen Hen - 49 (1080p)",
     "episode": 49,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-19"
-  },
-  {
-    "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu. - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-19"
-  },
-  {
-    "title": "PSYREN - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-19"
-  },
-  {
-    "title": "Tensei Goblin dakedo Shitsumon Aru - 04 (1080p)",
-    "episode": 4,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-19"
@@ -742,6 +721,13 @@
     "release_date": "2026-10-22"
   },
   {
+    "title": "Hotaru no Yomeiri - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
+  },
+  {
     "title": "Kusuriya no Hitorigoto - 52 (1080p)",
     "episode": 52,
     "quality": "1080p",
@@ -754,5 +740,54 @@
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-23"
+  },
+  {
+    "title": "Toaru Anbu no Item - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
+  },
+  {
+    "title": "Tougen Anki – Nikko Kegon no Taki-hen - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
+  },
+  {
+    "title": "Uchi no Otouto-domo ga Sumimasen - 16 (1080p)",
+    "episode": 16,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Rilakkuma - 29 (1080p)",
+    "episode": 29,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Romelia Senki - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Shuiro no Kamen - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
   }
 ]
