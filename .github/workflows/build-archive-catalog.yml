@@ -41,7 +41,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt
-      - name: Generate archive manifest
+      - name: Generate metadata-only archive candidates
         env:
           ARCHIVE_SINCE: ${{ inputs.since || '2026-10-01' }}
           ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
@@ -52,7 +52,7 @@ jobs:
             --max-pages "$ARCHIVE_MAX_PAGES" \
             --max-file-size-mb "$ARCHIVE_MAX_FILE_SIZE_MB" \
             --output data/archive_candidates.json
-      - name: Validate manifest and run tests
+      - name: Validate candidates and run tests
         run: |
           python -m unittest discover -s tests -v
           python -m compileall -q app.py tools tests
@@ -61,7 +61,7 @@ jobs:
           from pathlib import Path
           rows = json.loads(Path("data/archive_candidates.json").read_text(encoding="utf-8"))
           if not isinstance(rows, list) or not rows:
-              raise SystemExit("Archive manifest is empty or invalid.")
+              raise SystemExit("Candidate file is empty or invalid.")
           if any(
               row.get("authorized_for_redistribution") is not False
               or row.get("review_required") is not True
@@ -75,19 +75,19 @@ jobs:
               raise SystemExit("Candidate list is not globally sorted by source upload date.")
           print(f"Validated {len(rows)} date-ordered review candidates; none is authorized for publication.")
           PY
-      - name: Upload manifest for inspection
+      - name: Upload candidate report for inspection
         uses: actions/upload-artifact@v4
         with:
           name: animehighbo-archive-candidates
           path: data/archive_candidates.json
           if-no-files-found: error
           retention-days: 7
-      - name: Commit generated manifest to this branch
+      - name: Commit generated candidate report to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if git diff --quiet -- data/archive_candidates.json; then
-            echo "Manifest is unchanged."
+            echo "Candidate report is unchanged."
             exit 0
           fi
           git config user.name "github-actions[bot]"
