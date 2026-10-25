@@ -1095,9 +1095,6 @@ def download_media(
     title: str,
     config: dict,
     *,
-    authorized_for_redistribution: bool = False,
-    authorization_evidence: str = "",
-    authorization_reviewed_at: str = "",
 ) -> Path:
     if not allowed_media_url(url, config["allowed_download_hosts"]):
         raise ValueError(f"Rejected non-allow-listed or non-direct media URL: {url}")
@@ -1243,8 +1240,6 @@ def load_archive_manifest(path: str) -> list[dict]:
             "feed": "episode archive manifest",
             "identity": identity,
             "torrent_source": is_torrent_source,
-            "authorization_evidence": str(item.get("authorization_evidence") or "").strip(),
-            "authorization_reviewed_at": str(item.get("authorization_reviewed_at") or "").strip(),
             "release_date": str(item.get("release_date") or "").strip(),
             "archive_order": index,
         })
@@ -1559,8 +1554,6 @@ def run() -> int:
                     "feed": feed_name,
                     "identity": identity,
                     "torrent_source": True,
-                    "authorization_evidence": feed["authorization_evidence"],
-                    "authorization_reviewed_at": feed["authorization_reviewed_at"],
                 })
             else:
                 LOG.info("Skipping non-direct, non-magnet, or non-allow-listed entry: %s", entry["title"])
@@ -1655,18 +1648,12 @@ def run() -> int:
                         from tools.torrent_downloader import download_authorized_torrent
                         media_path = download_authorized_torrent(
                             entry["url"], entry["title"], config,
-                            authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
-                            authorization_evidence=str(entry.get("authorization_evidence") or ""),
-                            authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
                         )
                     else:
                         media_path = download_media(
                             entry["url"],
                             entry["title"],
                             config,
-                            authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
-                            authorization_evidence=str(entry.get("authorization_evidence") or ""),
-                            authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
                         )
                     publish_path = media_path
                     if config.get("bilingual_subtitles", False):
@@ -1799,9 +1786,6 @@ def run() -> int:
                             "episode": group["episode"],
                             "release_date": str(selected_source.get("release_date") or group.get("release_date") or ""),
                             "feed": selected_source.get("feed", "episode archive manifest"),
-                            "authorized_for_redistribution": selected_source.get("authorized_for_redistribution") is True,
-                            "authorization_evidence": str(selected_source.get("authorization_evidence") or ""),
-                            "authorization_reviewed_at": str(selected_source.get("authorization_reviewed_at") or ""),
                             "source_quality": source_quality,
                             "files": sorted(file_rows, key=lambda row: _quality_rank(row["quality"])),
                         }
