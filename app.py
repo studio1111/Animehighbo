@@ -1094,7 +1094,6 @@ def download_media(
     url: str,
     title: str,
     config: dict,
-    *,
 ) -> Path:
     if not allowed_media_url(url, config["allowed_download_hosts"]):
         raise ValueError(f"Rejected non-allow-listed or non-direct media URL: {url}")
