@@ -436,6 +436,28 @@ def main() -> int:
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
         raise ValueError("Archive manifest must contain a JSON list of episode entries.")
+    # A repository-level rights record may cover the curated archive as a whole.
+    # It is accepted only when both protected settings are present and pass the same
+    # evidence-reference/date validator used for per-entry records. Per-entry evidence
+    # always wins; discovery candidates remain outside this publishing manifest.
+    global_rights = {
+        "authorization_evidence": os.environ.get("ANIMEHIGHBO_AUTHORIZATION_EVIDENCE", "").strip(),
+        "authorization_reviewed_at": os.environ.get("ANIMEHIGHBO_AUTHORIZATION_REVIEWED_AT", "").strip(),
+    }
+    global_rights_valid = has_redistribution_authorization(global_rights)
+    if global_rights_valid:
+        inherited = 0
+        for entry in manifest:
+            if not isinstance(entry, dict) or has_redistribution_authorization(entry):
+                continue
+            entry["authorization_evidence"] = global_rights["authorization_evidence"]
+            entry["authorization_reviewed_at"] = global_rights["authorization_reviewed_at"]
+            if has_redistribution_authorization(entry):
+                inherited += 1
+        print(f"Applied the validated repository-level rights record to {inherited} curated manifest entries.")
+    elif any(global_rights.values()):
+        print("Repository-level rights record is incomplete or invalid; no global authorization was applied.")
+
     rights_blocked_count = sum(
         1 for entry in manifest if not has_redistribution_authorization(entry)
     )
