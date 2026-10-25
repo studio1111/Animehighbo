@@ -1,6 +1,7 @@
 import unittest
+from unittest.mock import Mock, patch
 
-from tools.publish_anime_catalog import caption, series_title, unique_series
+from tools.publish_anime_catalog import caption, find_poster_kitsu, series_title, unique_series
 
 
 class AnimePosterCatalogTests(unittest.TestCase):
@@ -16,6 +17,30 @@ class AnimePosterCatalogTests(unittest.TestCase):
             {"title": "Other Show - 01 (480p)"},
         ]
         self.assertEqual(unique_series(rows), ["Example Anime", "Other Show"])
+
+    def test_kitsu_fallback_returns_poster_and_metadata(self):
+        response = Mock()
+        response.json.return_value = {
+            "data": [{
+                "id": "123",
+                "attributes": {
+                    "slug": "example-anime",
+                    "canonicalTitle": "Example Anime",
+                    "titles": {"en": "Example Anime", "ja_jp": "例アニメ"},
+                    "posterImage": {"original": "https://media.example/poster.jpg"},
+                    "startDate": "2026-10-01",
+                    "episodeCount": 12,
+                    "synopsis": "An example synopsis.",
+                },
+            }]
+        }
+        with patch("tools.publish_anime_catalog.SESSION.get", return_value=response):
+            record = find_poster_kitsu("Example Anime")
+        self.assertEqual(record["title"], "Example Anime")
+        self.assertEqual(record["native"], "例アニメ")
+        self.assertEqual(record["year"], 2026)
+        self.assertEqual(record["episodes"], 12)
+        self.assertEqual(record["poster_url"], "https://media.example/poster.jpg")
 
     def test_caption_includes_native_title_and_fallbacks(self):
         text = caption({"query_title": "Example", "title": "Example", "native": "",
