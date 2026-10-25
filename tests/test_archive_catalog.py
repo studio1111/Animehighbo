@@ -254,6 +254,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         with (
             patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
             patch("tools.archive_catalog._fetch_show_episodes", return_value=("Candidate Saga", episode_rows)),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
             patch("tools.archive_catalog.time.sleep"),
         ):
             candidates = build_archive_manifest(
