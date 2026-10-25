@@ -51,7 +51,7 @@ jobs:
         run: python tools/subsplease_release_monitor.py
       - name: Notify Telegram about newly detected release metadata
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALERT_BOT_TOKEN: ${{ secrets.TELEGRAM_ALERT_BOT_TOKEN }}
           TELEGRAM_ALERT_CHAT_ID: ${{ secrets.TELEGRAM_ALERT_CHAT_ID }}
         run: python tools/notify_new_releases.py --previous /tmp/subsplease_release_report.previous.json --current data/subsplease_release_report.json
       - name: Commit report when changed
