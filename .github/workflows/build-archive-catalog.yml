@@ -1,4 +1,4 @@
-name: Build authorized episode archive catalog
+name: Discover archive candidates (metadata only)
 
 on:
   push:
@@ -51,8 +51,7 @@ jobs:
             --since "$ARCHIVE_SINCE" \
             --max-pages "$ARCHIVE_MAX_PAGES" \
             --max-file-size-mb "$ARCHIVE_MAX_FILE_SIZE_MB" \
-            --output data/archive_manifest.json \
-            --confirm-redistribution-rights
+            --output data/archive_candidates.json
       - name: Validate manifest and run tests
         run: |
           python -m unittest discover -s tests -v
@@ -60,37 +59,41 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          rows = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
+          rows = json.loads(Path("data/archive_candidates.json").read_text(encoding="utf-8"))
           if not isinstance(rows, list) or not rows:
               raise SystemExit("Archive manifest is empty or invalid.")
-          if any(row.get("authorized_for_redistribution") is not True for row in rows):
-              raise SystemExit("Manifest contains an entry without explicit redistribution authorization.")
+          if any(
+              row.get("authorized_for_redistribution") is not False
+              or row.get("review_required") is not True
+              for row in rows
+          ):
+              raise SystemExit("Discovered candidates must remain unapproved until rights are reviewed.")
           if any(not row.get("release_date") for row in rows):
-              raise SystemExit("Manifest contains an entry without its source upload date.")
+              raise SystemExit("Candidate contains an entry without its source upload date.")
           ordered = [row["release_date"] for row in rows]
           if ordered != sorted(ordered):
-              raise SystemExit("Manifest is not globally sorted by source upload date.")
-          print(f"Validated {len(rows)} date-ordered archive entries.")
+              raise SystemExit("Candidate list is not globally sorted by source upload date.")
+          print(f"Validated {len(rows)} date-ordered review candidates; none is authorized for publication.")
           PY
       - name: Upload manifest for inspection
         uses: actions/upload-artifact@v4
         with:
-          name: animehighbo-archive-manifest
-          path: data/archive_manifest.json
+          name: animehighbo-archive-candidates
+          path: data/archive_candidates.json
           if-no-files-found: error
           retention-days: 7
       - name: Commit generated manifest to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet -- data/archive_manifest.json; then
+          if git diff --quiet -- data/archive_candidates.json; then
             echo "Manifest is unchanged."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/archive_manifest.json
-          git commit -m "data: refresh authorized episode archive manifest"
+          git add data/archive_candidates.json
+          git commit -m "data: refresh archive discovery candidates"
           git fetch origin "${GITHUB_REF_NAME}"
           git rebase "origin/${GITHUB_REF_NAME}"
           git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin "HEAD:${GITHUB_REF_NAME}"
