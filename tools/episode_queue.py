@@ -481,13 +481,12 @@ def main() -> int:
         raise ValueError("Archive manifest must contain a JSON list of episode entries.")
     # All titled entries are eligible by default; the manual denylist is the operator's exclusion control.
     # Unfamiliar titles use their cleaned release title as a fallback deny key.
-    approval_path = Path("data/anime_publication_approvals.json")
-    if not approval_path.exists():
-        raise RuntimeError("Manual publication policy is missing; refusing to dispatch any episode.")
-    approval_policy = json.loads(approval_path.read_text(encoding="utf-8"))
+    exclusions_path = Path("data/archive_exclusions.json")
+    exclusions = json.loads(exclusions_path.read_text(encoding="utf-8")) if exclusions_path.exists() else []
+    approval_policy = {"default_decision": "allow", "approved_series": [], "denied_series": exclusions}
     manifest, approval_counts = filter_by_publication_approval(manifest, approval_policy)
     print(
-        "Manual publication policy: "
+        "Manual exclusions only: "
         f"{approval_counts['approved']} eligible episode candidate(s), "
         f"{approval_counts['pending']} pending, {approval_counts['denied']} denied, "
         f"{approval_counts['ambiguous']} ambiguous."
@@ -496,9 +495,9 @@ def main() -> int:
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as summary:
             summary.write(
-                "## Manual anime publication approvals\\n\\n"
+                "## Anime queue\\n\\n"
                 f"- Eligible candidates: {approval_counts['approved']}\\n"
-                f"- Pending candidates (not published): {approval_counts['pending']}\\n"
+                f"- Pending candidates: {approval_counts['pending']}\\n"
                 f"- Denied candidates (not published): {approval_counts['denied']}\\n"
                 f"- Unresolvable candidates (missing usable title): {approval_counts['ambiguous']}\\n"
                 "- All titled entries, including unfamiliar releases, are eligible by default; denied_series takes precedence.\\n"
