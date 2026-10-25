@@ -10,7 +10,6 @@ import json
 import re
 import sys
 import unicodedata
-from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
@@ -62,6 +61,8 @@ def build_coverage_report(
     seasonal_rows = [
         row for row in seasonal_report.get("titles", [])
         if isinstance(row, dict)
+        and row.get("season") == "FALL"
+        and row.get("season_year") == 2026
     ]
     manifest_rows = [
         row for row in manifest if isinstance(row, dict) and _in_window(row, cutoff, today_text)
@@ -82,7 +83,6 @@ def build_coverage_report(
         "rss": rss_rows,
     }
     seasonal_entries = []
-    matched_source_keys: dict[str, set[str]] = {name: set() for name in source_groups}
     seasonal_alias_index: dict[str, str] = {}
     for row in seasonal_rows:
         aliases = _title_aliases(row, seasonal=True)
@@ -208,7 +208,8 @@ def build_coverage_report(
             "Title matching is normalized exact-alias matching; alternate spellings may remain unmatched.",
             "Raw rows are deduplicated by normalized title and episode number, so multiple quality encodes do not inflate episode counts.",
             "Candidate and RSS matches are metadata-only and do not grant redistribution permission.",
-            "A rights-evidence reference and review date are surfaced as evidence fields but must still be verified by a human rights reviewer.",
+            "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles.",
+            "A rights-evidence reference and review date must still be verified by a human rights reviewer.",
         ],
         "policy": "Never dispatch or publish from this report. Only the existing fail-closed rights gate can authorize media processing.",
         "titles": titles,
