@@ -1,0 +1,61 @@
+name: Publish anime posters and metadata
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/publish_anime_catalog.py'
+      - '.github/workflows/publish-anime-posters.yml'
+      - 'data/archive_manifest.json'
+      - 'data/archive_candidates.json'
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: anime-poster-catalog
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Publish poster-backed metadata for every discovered series
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: python tools/publish_anime_catalog.py
+      - name: Validate and commit deduplication state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          state = json.loads(Path("data/anime_poster_state.json").read_text(encoding="utf-8"))
+          if not isinstance(state.get("published"), dict):
+              raise SystemExit("Poster publication state is invalid.")
+          print(f"Recorded {len(state['published'])} published anime posters.")
+          PY
+          if [ -z "$(git status --porcelain -- data/anime_poster_state.json)" ]; then
+            echo "Poster publication state is unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/anime_poster_state.json
+          git commit -m "data: record published anime posters"
+          git fetch origin main
+          git rebase origin/main
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin HEAD:main
