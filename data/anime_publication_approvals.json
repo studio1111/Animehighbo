@@ -1,0 +1,7 @@
+{
+  "policy_version": 1,
+  "default_decision": "pending",
+  "approved_series": [],
+  "denied_series": [],
+  "instructions": "Add exact series titles to approved_series to permit queueing. Add titles to denied_series to block them; denied_series overrides approved_series. Titles absent from both lists stay pending and are never published. Manual approval does not replace redistribution-rights evidence."
+}
