@@ -77,7 +77,7 @@ def series_identity(entry: dict) -> str | None:
 
 
 def _approval_key(entry: dict) -> str | None:
-    """Normalize a series title for explicit operator approval."""
+    """Normalize a series title for manual denylist matching."""
     explicit = str(entry.get("series_title") or "").strip()
     if explicit:
         title = explicit
@@ -530,7 +530,7 @@ def main() -> int:
     manifest, approval_counts = filter_by_publication_approval(manifest, approval_policy)
     print(
         "Manual publication policy: "
-        f"{approval_counts['approved']} approved episode candidate(s), "
+        f"{approval_counts['approved']} eligible episode candidate(s), "
         f"{approval_counts['pending']} pending, {approval_counts['denied']} denied, "
         f"{approval_counts['ambiguous']} ambiguous."
     )
@@ -539,7 +539,7 @@ def main() -> int:
         with open(summary_path, "a", encoding="utf-8") as summary:
             summary.write(
                 "## Manual anime publication approvals\\n\\n"
-                f"- Approved candidates: {approval_counts['approved']}\\n"
+                f"- Eligible candidates: {approval_counts['approved']}\\n"
                 f"- Pending candidates (not published): {approval_counts['pending']}\\n"
                 f"- Denied candidates (not published): {approval_counts['denied']}\\n"
                 f"- Ambiguous candidates (not published): {approval_counts['ambiguous']}\\n"
