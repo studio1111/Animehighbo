@@ -265,6 +265,29 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
 
 
 class ArchiveManifestTests(unittest.TestCase):
+    def test_manual_exclusion_skips_every_episode_of_selected_series_only(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            manifest_path = root / "archive.json"
+            manifest_path.write_text(json.dumps([
+                {"title": "Moonlit Saga - 01 (1080p)", "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+                {"title": "Moonlit Saga - 02 (1080p)", "url": "magnet:?xt=urn:btih:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+                {"title": "Other Series - 01 (1080p)", "url": "magnet:?xt=urn:btih:cccccccccccccccccccccccccccccccccccccccc"},
+            ]), encoding="utf-8")
+            (root / "archive_exclusions.json").write_text(
+                json.dumps(["Moonlit Saga"]), encoding="utf-8"
+            )
+            entries = load_archive_manifest(str(manifest_path))
+        self.assertEqual([item["title"] for item in entries], ["Other Series - 01 (1080p)"])
+
+    def test_invalid_exclusion_file_fails_clearly(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "archive.json").write_text("[]", encoding="utf-8")
+            (root / "archive_exclusions.json").write_text('{"title": "Moonlit Saga"}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "list of series-title strings"):
+                load_archive_manifest(str(root / "archive.json"))
+
     def test_manifest_preserves_episode_order_and_requires_explicit_authorization(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "archive.json"
