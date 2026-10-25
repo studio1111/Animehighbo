@@ -165,7 +165,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("data/archive_manifest.json", workflow)
         self.assertNotIn("--confirm-redistribution-rights", workflow)
         self.assertIn("review_required", workflow)
-        self.assertIn("authorization", workflow.lower())
+        self.assertIn("authorized_for_redistribution", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertNotIn("python app.py", workflow)
 
