@@ -7,6 +7,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkflowContractTests(unittest.TestCase):
+
+    def test_channel_rules_and_manual_exclusion_trigger_are_enforced(self):
+        rules = (ROOT / "CHANNEL_RULES.md").read_text(encoding="utf-8")
+        dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
+        self.assertIn("No per-anime approval gate", rules)
+        self.assertIn("data/archive_exclusions.json", dispatcher)
+        self.assertNotIn("data/anime_publication_approvals.json", dispatcher)
+        self.assertFalse((ROOT / ".github/workflows/manage-anime-publication-approval.yml").exists())
+        self.assertTrue((ROOT / "docs/operations/reliability-runbook.md").exists())
+
     def test_dispatcher_runs_five_independent_episode_workers_without_pat(self):
         dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
         worker = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
