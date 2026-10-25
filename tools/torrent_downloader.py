@@ -56,15 +56,16 @@ def download_authorized_torrent(
     authorization_reviewed_at: str = "",
 ) -> Path:
     """Download one torrent only when the source carries evidence-backed rights review."""
+    # Keep the legacy keyword accepted for callers during migration, but never use it
+    # as a rights decision. Evidence and its review date are the only inputs.
     rights_record = {
-        "authorized_for_redistribution": authorized_for_redistribution,
         "authorization_evidence": authorization_evidence,
         "authorization_reviewed_at": authorization_reviewed_at,
     }
     if not has_redistribution_authorization(rights_record):
         raise PermissionError(
-            "Torrent source is disabled without authorized_for_redistribution=true, "
-            "authorization_evidence, and a valid non-future authorization_reviewed_at date."
+            "Torrent source is disabled without authorization_evidence "
+            "and a valid non-future authorization_reviewed_at date. Legacy boolean flags are ignored."
         )
     source = validate_torrent_source(source, config.get("allowed_torrent_hosts", []))
     aria2 = shutil.which("aria2c")
