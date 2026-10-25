@@ -1102,8 +1102,9 @@ def download_media(
     authorization_evidence: str = "",
     authorization_reviewed_at: str = "",
 ) -> Path:
+    # Keep the legacy keyword accepted for callers during migration, but never use it
+    # as a rights decision. Evidence and its review date are the only inputs.
     rights_record = {
-        "authorized_for_redistribution": authorized_for_redistribution,
         "authorization_evidence": authorization_evidence,
         "authorization_reviewed_at": authorization_reviewed_at,
     }
