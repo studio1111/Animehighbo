@@ -34,7 +34,7 @@ jobs:
       - name: Publish poster-backed metadata for every discovered series
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python tools/publish_anime_catalog.py
       - name: Validate and commit deduplication state
         env:
