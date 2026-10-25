@@ -489,7 +489,13 @@ class TorrentSourceConfigTests(unittest.TestCase):
     def test_rss_feed_failure_returns_nonzero_for_actions(self):
         config = {
             "mode": "files",
-            "feeds": [{"name": "Authorized sample", "url": "https://media.example.org/feed.xml"}],
+            "feeds": [{
+                "name": "Authorized sample",
+                "url": "https://media.example.org/feed.xml",
+                "authorized_for_redistribution": True,
+                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
+                "authorization_reviewed_at": "2026-10-24",
+            }],
             "dry_run": False,
             "state_file": "unused-state.json",
             "request_timeout_seconds": 30,
