@@ -7,7 +7,7 @@ on:
       - 'tools/archive_catalog.py'
       - '.github/workflows/build-archive-catalog.yml'
   schedule:
-    - cron: '17 */6 * * *'
+    - cron: '17 */2 * * *'
   workflow_dispatch:
     inputs:
       since:
