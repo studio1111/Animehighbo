@@ -88,7 +88,7 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
     if not isinstance(published, dict):
         published = {}
 
-    parsed: list[tuple[dict, str, str, int]] = []
+    parsed: list[tuple[dict, str, str, int, bool]] = []
     counts: dict[tuple[str, int], int] = {}
     for entry in entries:
         if not isinstance(entry, dict):
@@ -104,11 +104,16 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
             identity = episode_identity(entry)
         except ValueError:
             continue
-        parsed.append((entry, identity, series, number))
+        parsed.append((
+            entry, identity, series, number,
+            entry.get("authorized_for_redistribution") is True,
+        ))
         counts[(series, number)] = counts.get((series, number), 0) + 1
 
     eligible: list[dict] = []
-    for entry, identity, series, number in parsed:
+    for entry, identity, series, number, authorized in parsed:
+        if not authorized:
+            continue
         status = str(entry.get("status") or "prepared").casefold()
         if status not in {"prepared", "ready", "complete"}:
             continue
@@ -118,7 +123,7 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
         if counts[(series, number)] != 1:
             continue
         blocked = False
-        for earlier, earlier_identity, earlier_series, earlier_number in parsed:
+        for earlier, earlier_identity, earlier_series, earlier_number, _ in parsed:
             if earlier_series != series or earlier_number >= number:
                 continue
             if not _is_complete(published.get(earlier_identity)):
@@ -291,6 +296,7 @@ def select_next_upload_date(
             "series_title": series_title,
             "season": season_number,
             "series_key": series_key,
+            "authorized_for_redistribution": row.get("authorized_for_redistribution") is True,
         })
 
     if not normalized:
@@ -302,6 +308,8 @@ def select_next_upload_date(
 
     eligible = []
     for row in normalized:
+        if not row["authorized_for_redistribution"]:
+            continue
         series_key = (row["series_title"].casefold(), row["season"])
         episode_key = (*series_key, row["episode"])
         if counts[episode_key] != 1:
