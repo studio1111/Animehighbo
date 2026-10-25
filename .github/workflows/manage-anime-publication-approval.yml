@@ -8,13 +8,12 @@ on:
         required: true
         type: string
       decision:
-        description: Manual publication decision
+        description: Deny a series or allow it by removing it from the denylist
         required: true
         type: choice
         options:
-          - approve
+          - allow
           - deny
-          - pending
 
 permissions:
   contents: write
@@ -44,7 +43,7 @@ jobs:
 
           title = re.sub(r"\s+", " ", os.environ["SERIES_TITLE"]).strip()
           decision = os.environ["DECISION"].strip().lower()
-          if not title or decision not in {"approve", "deny", "pending"}:
+          if not title or decision not in {"allow", "deny"}:
               raise SystemExit("Invalid series title or decision.")
 
           path = Path("data/anime_publication_approvals.json")
@@ -58,15 +57,13 @@ jobs:
                   if not (isinstance(value, str) and value.casefold() == title.casefold())
               ]
 
-          if decision == "approve":
-              policy["approved_series"].append(title)
-          elif decision == "deny":
+          if decision == "deny":
               policy["denied_series"].append(title)
 
           for key in ("approved_series", "denied_series"):
               policy[key] = sorted(set(policy[key]), key=str.casefold)
           path.write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          print(f"Manual decision saved: {title} -> {decision}")
+          print(f"Manual decision saved: {title} -> {decision}; denylist has precedence.")
           PY
       - name: Commit policy update
         env:
