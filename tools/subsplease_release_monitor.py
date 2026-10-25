@@ -137,7 +137,7 @@ def build_report(
             continue
         previous = unique.get(key)
         # Keep a single metadata row per episode, preferring the highest feed quality.
-        if previous is None or str(row.get("quality")) > str(previous.get("quality")):
+        if previous is None or {"480p": 1, "720p": 2, "1080p": 3}.get(str(row.get("quality")), 0) > {"480p": 1, "720p": 2, "1080p": 3}.get(str(previous.get("quality")), 0):
             unique[key] = {
                 "title": str(row.get("title") or ""),
                 "episode": int(row["episode"]),
