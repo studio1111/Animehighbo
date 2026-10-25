@@ -426,6 +426,17 @@ def main() -> int:
     parser.add_argument("--publisher-lock", default="data/publisher.lock")
     args = parser.parse_args()
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+    if not isinstance(manifest, list):
+        raise ValueError("Archive manifest must contain a JSON list of episode entries.")
+    rights_blocked_count = sum(
+        1 for entry in manifest if not has_redistribution_authorization(entry)
+    )
+    if rights_blocked_count:
+        print(
+            f"Redistribution safety gate: {rights_blocked_count} manifest entry/entries "
+            "blocked because rights evidence and a valid review date are missing or invalid. "
+            "No worker will be dispatched for these entries."
+        )
     config_path = Path("config.json")
     config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.exists() else {}
     cutoff = str(config.get("archive_cutoff_date") or "2026-10-01")
