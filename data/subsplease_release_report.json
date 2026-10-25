@@ -6,7 +6,7 @@
   "summary": {
     "feed_releases": 45,
     "matched_in_authorized_manifest": 0,
-    "found_in_candidate_report": 25,
+    "found_in_candidate_report": 26,
     "review_required": 45
   },
   "policy": "This report contains metadata only. Only entries with an evidence-backed rights-review record count as authorized-manifest matches; candidate or RSS matches are not permission to redistribute. No media URLs are stored or published.",
@@ -296,7 +296,7 @@
       "release_date": "2026-10-24",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
-      "in_candidate_report": false,
+      "in_candidate_report": true,
       "review_required": true
     },
     {
