@@ -11,6 +11,7 @@ on:
       - "tests/test_subsplease_release_monitor.py"
       - ".github/workflows/subsplease-release-monitor.yml"
       - "data/archive_manifest.json"
+      - "data/archive_candidates.json"
       - "config.json"
 
 permissions:
