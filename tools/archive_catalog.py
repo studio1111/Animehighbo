@@ -1,9 +1,9 @@
-"""Build a chronological archive manifest from the SubsPlease show catalogue.
+"""Discover chronological episode candidates from the SubsPlease show catalogue.
 
-The generator records one-episode releases with 1080p or 720p magnets, includes
-all releases on/after the configured cutoff, and backfills at most three earlier
-episodes for short series. It requires explicit confirmation of redistribution
-rights and never downloads or publishes media itself.
+The default path produces metadata-only review candidates with redistribution
+authorization disabled. Publishing-manifest output is reserved for reviewed rights
+records supplied explicitly for the selected releases; discovery itself never grants
+rights and never downloads or publishes media.
 """
 from __future__ import annotations
 
@@ -103,12 +103,11 @@ def select_show_episodes(
     authorization_evidence: str = "",
     authorization_reviewed_at: str = "",
 ) -> list[dict]:
-    """Select all post-cutoff episodes and backfill up to three earlier episodes.
+    """Select episode candidates and include at most three earlier backfill entries.
 
-    If a series has one, two, or three episodes before the cutoff, include those
-    too so a short season is complete. If it has four or more earlier episodes,
-    keep the archive focused on releases on/after the cutoff. Source eligibility
-    is checked per episode, so one unavailable episode does not hide later ones.
+    Automatic discovery emits review-required, unauthorized candidates. A caller
+    may request authorized output only after supplying an auditable rights reference
+    and a valid review date for those selected releases.
     """
     if authorized_for_redistribution and not has_redistribution_authorization({
         "authorized_for_redistribution": True,
@@ -256,7 +255,7 @@ def build_archive_manifest(
     max_file_size_mb: int = 1800, authorized_for_redistribution: bool = False,
     authorization_evidence: str = "", authorization_reviewed_at: str = "",
 ) -> list[dict]:
-    """Discover shows released since cutoff, then create an ordered one-file-per-episode manifest."""
+    """Discover shows released since cutoff into an ordered list of episode candidates."""
     if max_pages < 1 or max_pages > 500:
         raise ValueError("max_pages must be between 1 and 500.")
     own_session = session is None
