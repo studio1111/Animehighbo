@@ -15,11 +15,11 @@
     "source_only_titles": 34,
     "titles_with_manifest_episodes": 58,
     "titles_with_candidate_episodes": 38,
-    "titles_with_rss_episodes": 41,
+    "titles_with_rss_episodes": 42,
     "distinct_manifest_episodes": 165,
     "distinct_candidate_episodes": 107,
-    "distinct_rss_episodes": 41,
-    "titles_needing_review": 129,
+    "distinct_rss_episodes": 42,
+    "titles_needing_review": 131,
     "rights_verified_episode_count": 0
   },
   "limitations": [
@@ -1883,7 +1883,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "SPECIAL",
-      "status": "NOT_YET_RELEASED",
+      "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/190054",
       "source_coverage": {
         "manifest": {
@@ -3663,11 +3663,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 16,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -3707,11 +3713,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -3797,14 +3809,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 49,
-              "release_date": "2026-10-19",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "review_required": true,
@@ -4382,22 +4388,22 @@
           "episodes": [
             {
               "episode": 49,
-              "release_date": "2026-10-02",
+              "release_date": "2026-10-03",
               "quality": "1080p"
             },
             {
               "episode": 50,
-              "release_date": "2026-10-09",
+              "release_date": "2026-10-10",
               "quality": "1080p"
             },
             {
               "episode": 51,
-              "release_date": "2026-10-16",
+              "release_date": "2026-10-17",
               "quality": "1080p"
             },
             {
               "episode": 52,
-              "release_date": "2026-10-23",
+              "release_date": "2026-10-24",
               "quality": "1080p"
             }
           ]
