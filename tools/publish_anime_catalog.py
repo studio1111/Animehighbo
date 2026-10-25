@@ -117,6 +117,9 @@ def find_poster(title: str, timeout: int = 20, max_attempts: int = 7) -> dict:
                         response.status_code, title, delay, attempt + 1, max_attempts)
             time.sleep(delay)
             continue
+        if response.status_code == 404:
+            LOG.warning("AniList returned HTTP 404; falling back to Kitsu for %r.", title)
+            return find_poster_kitsu(title, timeout=timeout)
         response.raise_for_status()
         break
     if response is None:
