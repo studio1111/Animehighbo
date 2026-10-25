@@ -12,7 +12,7 @@ import sys
 import unicodedata
 from collections import defaultdict
 from datetime import date
-from pathlib import Path
+from pathlib import Path\n\ntry:\n    from tools.redistribution_rights import has_redistribution_authorization\nexcept ModuleNotFoundError:\n    from redistribution_rights import has_redistribution_authorization
 
 
 def normalize_series(value: object) -> str:
