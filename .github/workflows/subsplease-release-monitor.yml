@@ -36,8 +36,9 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt
-      - name: Run metadata monitor regression tests
-        run: python -m unittest discover -s tests -p 'test_subsplease_release_monitor.py' -v
+      - name: Run metadata monitor and notification regression tests
+        run: |
+          python -m unittest discover -s tests -p 'test_subsplease_release_monitor.py' -v
           python -m unittest discover -s tests -p 'test_notify_new_releases.py' -v
       - name: Preserve previous release report for change detection
         run: |
