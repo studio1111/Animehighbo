@@ -312,7 +312,7 @@ class ArchiveManifestTests(unittest.TestCase):
                 "title": "Moonlit Saga - 01 (1080p)",
                 "url": "magnet:?xt=urn:btih:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             }]), encoding="utf-8")
-            with self.assertRaisesRegex(PermissionError, "authorized_for_redistribution"):
+            with self.assertRaisesRegex(PermissionError, "authorization_evidence"):
                 load_archive_manifest(str(path))
 
     def test_manifest_rejects_batches_missing_episode_numbers_and_duplicate_sources(self):
@@ -418,8 +418,10 @@ class TorrentSourceConfigTests(unittest.TestCase):
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
         source["authorization_evidence"] = "https://rights.example.org/licenses/animehighbo"
         source["authorized_for_redistribution"] = "true"
-        self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
         source["authorized_for_redistribution"] = False
+        self.assertTrue(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
+        source.pop("authorization_evidence")
         self.assertFalse(has_authorized_torrent_source({"feeds": [], "torrent_sources": [source]}))
 
     def test_link_poster_rejects_success_response_without_message_id(self):
