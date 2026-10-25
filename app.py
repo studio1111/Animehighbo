@@ -1090,7 +1090,24 @@ def safe_filename(title: str, url: str) -> str:
     return stem + suffix
 
 
-def download_media(url: str, title: str, config: dict) -> Path:
+def download_media(
+    url: str,
+    title: str,
+    config: dict,
+    *,
+    authorized_for_redistribution: bool = False,
+    authorization_evidence: str = "",
+    authorization_reviewed_at: str = "",
+) -> Path:
+    rights_record = {
+        "authorized_for_redistribution": authorized_for_redistribution,
+        "authorization_evidence": authorization_evidence,
+        "authorization_reviewed_at": authorization_reviewed_at,
+    }
+    if not has_redistribution_authorization(rights_record):
+        raise PermissionError(
+            "Direct media download is disabled without evidence-backed redistribution authorization."
+        )
     if not allowed_media_url(url, config["allowed_download_hosts"]):
         raise ValueError(f"Rejected non-allow-listed or non-direct media URL: {url}")
     target_dir = Path(config["download_dir"])
@@ -1683,7 +1700,14 @@ def run() -> int:
                             authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
                         )
                     else:
-                        media_path = download_media(entry["url"], entry["title"], config)
+                        media_path = download_media(
+                            entry["url"],
+                            entry["title"],
+                            config,
+                            authorized_for_redistribution=entry.get("authorized_for_redistribution") is True,
+                            authorization_evidence=str(entry.get("authorization_evidence") or ""),
+                            authorization_reviewed_at=str(entry.get("authorization_reviewed_at") or ""),
+                        )
                     publish_path = media_path
                     if config.get("bilingual_subtitles", False):
                         from tools.bilingual_subtitles import process as process_bilingual_subtitles
