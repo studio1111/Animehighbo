@@ -42,7 +42,7 @@ jobs:
           import re
           from pathlib import Path
 
-          title = re.sub(r"\\s+", " ", os.environ["SERIES_TITLE"]).strip()
+          title = re.sub(r"\s+", " ", os.environ["SERIES_TITLE"]).strip()
           decision = os.environ["DECISION"].strip().lower()
           if not title or decision not in {"approve", "deny", "pending"}:
               raise SystemExit("Invalid series title or decision.")
@@ -65,7 +65,7 @@ jobs:
 
           for key in ("approved_series", "denied_series"):
               policy[key] = sorted(set(policy[key]), key=str.casefold)
-          path.write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          path.write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           print(f"Manual decision saved: {title} -> {decision}")
           PY
       - name: Commit policy update
