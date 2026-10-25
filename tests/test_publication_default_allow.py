@@ -14,11 +14,12 @@ def test_default_allow_queues_identifiable_titles_except_manual_denylist():
     assert [item["title"] for item in allowed] == [
         "Allowed Saga - 01 (1080p)",
         "Allowed Saga - 03 (480p)",
+        "Unclear title without episode metadata",
     ]
     assert counts == {
-        "eligible": 2,
+        "eligible": 3,
         "excluded": 1,
-        "invalid": 1,
+        "invalid": 0,
     }
 
 
