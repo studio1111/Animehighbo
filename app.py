@@ -713,9 +713,9 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
     while True:
         caption = "\n".join(lines + [synopsis_open + _safe_caption_text(synopsis) + synopsis_close, footer])
-        if len(caption) <= 1000:
+        if len(caption) <= 950:
             return caption
-        overflow = len(caption) - 1000
+        overflow = len(caption) - 950
         if len(synopsis) > 70:
             synopsis = synopsis[:max(70, len(synopsis) - overflow - 8)].rstrip()
             continue
@@ -727,6 +727,21 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
             lines[0] = f"🎬 <b>English:</b> {_safe_caption_text(english_title)}"
             continue
         raise ValueError("Anime caption exceeds Telegram's limit even after safe metadata reduction.")
+
+def build_video_caption(title: str, episode: str, quality: str, metadata: dict | None = None) -> str:
+    """Build a complete video caption with its quality before the channel footer."""
+    if quality not in {"1080p", "720p", "480p"}:
+        raise ValueError(f"Unsupported video quality: {quality}")
+    caption = build_episode_caption(title, episode, metadata=metadata)
+    lines = caption.splitlines()
+    quality_line = f"🎞️ <b>کیفیت:</b> {quality}"
+    footer_index = len(lines) - 1 if lines and lines[-1] == "@Animehighbo" else len(lines)
+    lines.insert(footer_index, quality_line)
+    result = "\n".join(lines)
+    if len(result) > 1024:
+        raise ValueError("Video caption exceeds Telegram's 1024-character limit.")
+    return result
+
 
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
@@ -1435,8 +1450,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 duplicate_of = state["seen"].get(file_hash)
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
-                video_caption = build_episode_caption(title, episode_number, metadata=metadata)
-                video_caption = f"{video_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
+                video_caption = build_video_caption(title, episode_number, quality, metadata=metadata)
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
                     thumbnail_path=thumbnail_path,
@@ -1864,10 +1878,9 @@ def run() -> int:
                                 completed_qualities.append(quality)
                             continue
                         output_path, file_hash, _ = prepared_outputs[quality]
-                        file_caption = build_episode_caption(
-                            group["title"], group["episode"], metadata=metadata
+                        file_caption = build_video_caption(
+                            group["title"], group["episode"], quality, metadata=metadata
                         )
-                        file_caption = f"{file_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
                             thumbnail_path=thumbnail_path,
