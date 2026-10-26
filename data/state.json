@@ -573,6 +573,47 @@
       "source_quality": "1080p",
       "published_at": 1793018537,
       "release_date": "2026-10-03"
+    },
+    "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:1080p": {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d4927ede06ac7e53e5c1f9189bb3d9e992469490e16d0ea73777b46b0bf113df",
+      "message_id": "843",
+      "published_at": 1793018790,
+      "bilingual_subtitles": true
+    },
+    "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:720p": {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "720d23882b871af78a07f0437d918b04a72ad561db27380dfc63ca7a79760744",
+      "message_id": "844",
+      "published_at": 1793018794,
+      "bilingual_subtitles": true
+    },
+    "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:480p": {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a2968f821e4bcaf12a8eb2e3a98decdf25c2991a5ec87248b6d90f1bbf026361",
+      "message_id": "845",
+      "published_at": 1793018797,
+      "bilingual_subtitles": true
+    },
+    "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24": {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793018797,
+      "release_date": "2026-10-03"
     }
   },
   "seen": {
@@ -1130,7 +1171,10 @@
     "eae7cbb99c5a2a841ad822b12c541c94782521ce185882404c04bc675b273a00": "72cab29878b736bc8f76683b7b3ca23960bed834215b5ca9e7ac8078068bf500:480p",
     "1ebbd1ca52f44162d1bdd385015e99e69005561cc62489fff8ce600077162198": "fa127d7ec58568a06a02b79d4c6ea407a64db981630b9b44042470f59712f80b:1080p",
     "1efdc6c59f0429d8d3c1af9460d564fd15684c635a2cf086ff75eceed1fbb538": "fa127d7ec58568a06a02b79d4c6ea407a64db981630b9b44042470f59712f80b:720p",
-    "feefef1a269424c366dc6fd85941dae7d4dc71d1361b5679d3ed5767a2927f00": "fa127d7ec58568a06a02b79d4c6ea407a64db981630b9b44042470f59712f80b:480p"
+    "feefef1a269424c366dc6fd85941dae7d4dc71d1361b5679d3ed5767a2927f00": "fa127d7ec58568a06a02b79d4c6ea407a64db981630b9b44042470f59712f80b:480p",
+    "d4927ede06ac7e53e5c1f9189bb3d9e992469490e16d0ea73777b46b0bf113df": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:1080p",
+    "720d23882b871af78a07f0437d918b04a72ad561db27380dfc63ca7a79760744": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:720p",
+    "a2968f821e4bcaf12a8eb2e3a98decdf25c2991a5ec87248b6d90f1bbf026361": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -1225,6 +1269,12 @@
       "episode": "02",
       "message_id": "838",
       "published_at": 1793018521
+    },
+    "archive:e580deba8590f2984d7ad037a0fc12246c3f9e007e8bd3471461c17d664bfe94": {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "episode": "01",
+      "message_id": "842",
+      "published_at": 1793018784
     }
   }
 }
