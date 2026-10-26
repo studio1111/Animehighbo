@@ -285,7 +285,7 @@ def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024
         # Verify the bytes themselves, not only an untrusted Content-Type header.
         signatures = (
             (b"\xff\xd8\xff", "image/jpeg"),
-            (b"\x89PNG\\r\\n\x1a\\n", "image/png"),
+            (b"\x89PNG\r\n\x1a\n", "image/png"),
             (b"GIF87a", "image/gif"),
             (b"GIF89a", "image/gif"),
             (b"RIFF", "image/webp"),
