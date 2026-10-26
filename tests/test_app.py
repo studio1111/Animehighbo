@@ -655,6 +655,8 @@ class FeedParserTests(unittest.TestCase):
         self.assertEqual(episode_details("Moonlit Saga Episode 07"), ("Moonlit Saga", "07"))
         self.assertEqual(episode_details("青い星 第12話"), ("青い星", "12"))
         self.assertEqual(episode_details("Moonlit Saga latest update"), ("Moonlit Saga latest update", ""))
+        self.assertEqual(episode_details("Keroro Gunsou (2026)"), ("Keroro Gunsou (2026)", ""))
+        self.assertEqual(episode_details("Keroro Gunsou (2026) - 01 (1080p)"), ("Keroro Gunsou (2026)", "01"))
 
     def test_parses_rss_enclosure(self):
         xml = '''<?xml version="1.0"?><rss><channel><item><title>Episode 01</title><enclosure url="https://media.example.org/ep01.mkv" type="video/x-matroska"/><link>https://example.org/post</link></item></channel></rss>'''
