@@ -219,11 +219,16 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         file_events = [event for event in events if event[0] == "file"]
         self.assertEqual([event[3] for event in file_events], [None] * 6)
         self.assertTrue(all(event[2] == thumbnail for event in file_events))
-        self.assertTrue(all("EP " in event[1] and "1080p" in event[1]
+        self.assertTrue(all("EP " in event[1]
                             and "@Animehighbo" not in event[1]
                             and "English:" not in event[1]
                             and "فارسی:" not in event[1]
                             and "کیفیت:" not in event[1] for event in file_events))
+        self.assertEqual(
+            [next(q for q in ("1080p", "720p", "480p") if q in event[1])
+             for event in file_events],
+            ["1080p", "720p", "480p"] * 2,
+        )
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
