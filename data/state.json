@@ -1229,6 +1229,47 @@
       "source_quality": "1080p",
       "published_at": 1793033241,
       "release_date": "2026-10-04"
+    },
+    "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:1080p": {
+      "title": "Seihantai na Kimi to Boku",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e8e6ef344708ad24a85ad59cd4b8ae9bd932e7d99c9c3852e36a56152544814b",
+      "message_id": "907",
+      "published_at": 1793033977,
+      "bilingual_subtitles": true
+    },
+    "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:720p": {
+      "title": "Seihantai na Kimi to Boku",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9454dd87f56b06f2362daa0d4cc448c83213ddaa11ccfe9dd1c2357b45595690",
+      "message_id": "908",
+      "published_at": 1793033983,
+      "bilingual_subtitles": true
+    },
+    "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:480p": {
+      "title": "Seihantai na Kimi to Boku",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "57c9e42d6fa56a0179b463f86b7958974f68c557ec42fac54fa2c6f808ac208f",
+      "message_id": "909",
+      "published_at": 1793033986,
+      "bilingual_subtitles": true
+    },
+    "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2": {
+      "title": "Seihantai na Kimi to Boku",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793033986,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -1834,7 +1875,10 @@
     "2bbe7acb5226ce10acd5a8f14b7d9767a6661f213aac6fcee7e990795fb7113f": "787eff9a541c36af3a058033891fc1e0f9fb738d98e4799eb421500de111bc75:480p",
     "0a50922f703ef2a6b495885ac9331889b2cf5d7441db8c410fe74deb4737eb8c": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:1080p",
     "bb58f30c4b8567626eed1fda00da74854b6cc08f7f7ba6ae626b5d0be9a5a09d": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:720p",
-    "6179abae71e04f0dcf91029f3d03f84fa3ecc1b9b185c887d7d49bf6729046f4": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:480p"
+    "6179abae71e04f0dcf91029f3d03f84fa3ecc1b9b185c887d7d49bf6729046f4": "b52d66c879e5e8625ca5e6947fba3c8e8e60df9568c9079d3156185c512629c6:480p",
+    "e8e6ef344708ad24a85ad59cd4b8ae9bd932e7d99c9c3852e36a56152544814b": "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:1080p",
+    "9454dd87f56b06f2362daa0d4cc448c83213ddaa11ccfe9dd1c2357b45595690": "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:720p",
+    "57c9e42d6fa56a0179b463f86b7958974f68c557ec42fac54fa2c6f808ac208f": "9a12e893a5594e3c48626c3af239fe1f411085ada2ea18057b17c6276b8bdaa2:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -2025,6 +2069,12 @@
       "episode": "36",
       "message_id": "902",
       "published_at": 1793033217
+    },
+    "archive:6af40a33dc86d2491585853b9194029f053b6a004257eee23373755d7b366157": {
+      "title": "Seihantai na Kimi to Boku",
+      "episode": "25",
+      "message_id": "906",
+      "published_at": 1793033970
     }
   }
 }
