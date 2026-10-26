@@ -189,8 +189,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("timeout-minutes: 15", workflow)
         self.assertNotIn("command -v ffmpeg\n          sudo timeout 180 apt-get install", workflow)
         publisher = workflow.split("  publish:", 1)[1]
-        self.assertNotIn("apt-get", publisher)
-        self.assertNotIn("command -v ffmpeg", publisher)
+        self.assertIn("sudo timeout 300 apt-get -o Acquire::Retries=3 update", publisher)
+        self.assertIn("sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg", publisher)
+        self.assertIn("command -v ffmpeg", publisher)
 
 
 if __name__ == "__main__":
