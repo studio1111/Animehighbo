@@ -20,6 +20,7 @@ on:
       - 'config.json'
       - 'data/archive_manifest.json'
       - 'data/archive_exclusions.json'
+      - 'data/state.json'
       - 'tools/episode_queue.py'
       - 'tools/bilingual_subtitles.py'
       - 'tools/torrent_downloader.py'
