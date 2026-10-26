@@ -74,8 +74,8 @@ def _read_lock(identity: str, token: str, repository: str) -> dict | None:
     return {**record, "sha": sha}
 
 
-def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
-    """Check persisted state before reclaiming a lock left by a completed publisher."""
+def _episode_publication_status(identity: str, token: str, repository: str) -> tuple[bool, bool]:
+    """Return (complete, has_any_video_quality) from one persisted-state read."""
     response = requests.get(
         f"https://api.github.com/repos/{repository}/contents/{STATE_PATH}",
         headers=_headers(token),
@@ -83,7 +83,7 @@ def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
         timeout=20,
     )
     if response.status_code == 404:
-        return False
+        return False, False
     response.raise_for_status()
     try:
         payload = response.json()
@@ -92,10 +92,23 @@ def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
     except (ValueError, KeyError, TypeError, UnicodeDecodeError) as exc:
         raise RuntimeError("Publication state is malformed; refusing to reclaim the publisher lock.") from exc
     published = state.get("published", {}) if isinstance(state, dict) else {}
-    record = published.get(identity, {}) if isinstance(published, dict) else {}
-    required = {"1080p", "720p", "480p"}
+    if not isinstance(published, dict):
+        raise RuntimeError("Publication state has an invalid published section.")
+    record = published.get(identity, {})
     qualities = record.get("complete_qualities", []) if isinstance(record, dict) else []
-    return isinstance(qualities, list) and required.issubset(set(qualities))
+    if not isinstance(qualities, list):
+        qualities = []
+    required = {"1080p", "720p", "480p"}
+    complete = required.issubset(set(qualities))
+    has_any_quality = bool(set(qualities) & required) or any(
+        f"{identity}:{quality}" in published for quality in required
+    )
+    return complete, has_any_quality
+
+
+def _episode_is_complete(identity: str, token: str, repository: str) -> bool:
+    """Check persisted state before reclaiming a lock left by a completed publisher."""
+    return _episode_publication_status(identity, token, repository)[0]
 
 
 def acquire_lock(
@@ -195,12 +208,18 @@ def release_lock(
             raise RuntimeError(
                 f"Cannot release publisher lock owned by {current['identity']} from episode {identity}."
             )
-        if not _episode_is_complete(identity, token, repository):
+        complete, has_any_quality = _episode_publication_status(identity, token, repository)
+        if not complete and has_any_quality:
             print(
-                f"Retaining publisher lock for {identity}; its three-quality publication is not complete.",
+                f"Retaining publisher lock for {identity}; some video qualities were published and the episode must resume first.",
                 flush=True,
             )
             return False
+        if not complete:
+            print(
+                f"Releasing publisher lock for {identity}; no video quality was published, so the episode can retry safely.",
+                flush=True,
+            )
         response = requests.delete(
             url,
             headers=headers,
