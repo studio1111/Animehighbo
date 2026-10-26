@@ -1413,6 +1413,10 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
             metadata = anime_catalog_metadata(title)
+            # Validate video thumbnail assets before creating the public anchor.
+            thumbnail_path = create_anime_video_thumbnail(
+                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
+            )
             # Publish (or recover) exactly one poster-led anchor for this episode.
             # The three quality messages are replies to this anchor, never standalone posts.
             poster_record = state["posters"].get(poster_identity, {})
@@ -1426,9 +1430,6 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                     "message_id": poster_message_id, "published_at": int(time.time()),
                 }
                 save_state(config["state_file"], state)
-            thumbnail_path = create_anime_video_thumbnail(
-                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
-            )
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
@@ -1855,8 +1856,13 @@ def run() -> int:
                                  group["title"], prepared_manifest["release_date"], len(file_rows))
                         continue
 
-                    # Publish (or recover) one poster-led anchor, then reply with all qualities.
+                    # Validate thumbnail assets before creating the public anchor.
                     metadata = anime_catalog_metadata(group["title"])
+                    thumbnail_dir = Path("prepared") / identity
+                    thumbnail_path = create_anime_video_thumbnail(
+                        group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
+                    )
+                    # Publish (or recover) one poster-led anchor, then reply with all qualities.
                     poster_record = state["posters"].get(poster_identity, {})
                     poster_message_id = str(poster_record.get("message_id") or "")
                     if not poster_message_id:
@@ -1868,10 +1874,6 @@ def run() -> int:
                             "message_id": poster_message_id, "published_at": int(time.time()),
                         }
                         save_state(config["state_file"], state)
-                    thumbnail_dir = Path("prepared") / identity
-                    thumbnail_path = create_anime_video_thumbnail(
-                        group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
-                    )
 
                     for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
