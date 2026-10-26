@@ -204,7 +204,6 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
                  patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
-                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None, quality=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | کیفیت: {quality} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
                     {"state_file": str(state_path), "max_file_size_mb": 1800,
@@ -220,9 +219,11 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         file_events = [event for event in events if event[0] == "file"]
         self.assertEqual([event[3] for event in file_events], [None] * 6)
         self.assertTrue(all(event[2] == thumbnail for event in file_events))
-        self.assertTrue(all("قسمت" in event[1] and "@Animehighbo" in event[1]
-                            and "کیفیت:" in event[1] and "English:" in event[1]
-                            and "فارسی:" in event[1] for event in file_events))
+        self.assertTrue(all("EP " in event[1] and "1080p" in event[1]
+                            and "@Animehighbo" not in event[1]
+                            and "English:" not in event[1]
+                            and "فارسی:" not in event[1]
+                            and "کیفیت:" not in event[1] for event in file_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
@@ -873,7 +874,11 @@ class PersianAnimeCaptionTests(unittest.TestCase):
     def test_processed_filename_has_only_anime_quality_and_channel(self):
         self.assertEqual(
             processed_filename("[SubsPlease] PSYREN - 03 (1080p) [ABC123].mkv", "1080p"),
-            "PSYREN 1080p @Animehighbo.mkv",
+            "PSYREN EP 03 1080p @Animehighbo.mkv",
+        )
+        self.assertEqual(
+            processed_filename("Ao Ashi S2 EP 02 (1080p).mkv", "720p"),
+            "Ao Ashi S2 EP 02 720p @Animehighbo.mkv",
         )
 
     def test_episode_group_matches_different_quality_releases(self):
