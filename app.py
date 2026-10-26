@@ -282,7 +282,22 @@ def download_poster(image_url: str, timeout: int = 20, max_bytes: int = 8 * 1024
         data = b"".join(chunks)
         if not data:
             raise ValueError("Poster image is empty.")
-        return data, content_type
+        # Verify the bytes themselves, not only an untrusted Content-Type header.
+        signatures = (
+            (b"\\xff\\xd8\\xff", "image/jpeg"),
+            (b"\\x89PNG\\r\\n\\x1a\\n", "image/png"),
+            (b"GIF87a", "image/gif"),
+            (b"GIF89a", "image/gif"),
+            (b"RIFF", "image/webp"),
+        )
+        detected_type = ""
+        for signature, mime in signatures:
+            if data.startswith(signature) and (mime != "image/webp" or data[8:12] == b"WEBP"):
+                detected_type = mime
+                break
+        if not detected_type:
+            raise ValueError("Downloaded poster is not a supported, recognizable image file.")
+        return data, detected_type
 
 
 def translate_title_to_persian(title: str, timeout: int = 10) -> str:
