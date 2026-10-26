@@ -2008,6 +2008,47 @@
       "source_quality": "1080p",
       "published_at": 1793052186,
       "release_date": "2026-10-08"
+    },
+    "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:1080p": {
+      "title": "Magic Knight Rayearth (2026)",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9a9adc60dc68327f71d25d82c8894f0594eb8f45000d5e6413f004dc1be16cf0",
+      "message_id": "983",
+      "published_at": 1793053740,
+      "bilingual_subtitles": true
+    },
+    "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:720p": {
+      "title": "Magic Knight Rayearth (2026)",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0015d03ef621fce927d4bac4f080162fb211eeba80b533717bd88f0c2be18a53",
+      "message_id": "984",
+      "published_at": 1793053747,
+      "bilingual_subtitles": true
+    },
+    "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:480p": {
+      "title": "Magic Knight Rayearth (2026)",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7408b3895d10d9c89b25ba6b5b16099e75c480a1caad2910bb418da03931fa61",
+      "message_id": "985",
+      "published_at": 1793053751,
+      "bilingual_subtitles": true
+    },
+    "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11": {
+      "title": "Magic Knight Rayearth (2026)",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793053751,
+      "release_date": "2026-10-07"
     }
   },
   "seen": {
@@ -2670,7 +2711,10 @@
     "c0e5757ef8d8692977a40492132b5a9304810dc7461c2604d0b2b22525868df5": "fb55bdb86454d96ca31d6b358630d0ae50558f126f760be01cae1116b10f7a0e:480p",
     "ae7ccec970654d09220115888e56362244b69ae2735a780d53d3c25ae7c70554": "fa9b334851567a247073a52cd134d34ed1358287d79fe2cf42c124431932a6cc:1080p",
     "fa18f74151caa09641de2b75572d937db2240370a29d44c6693fd00f89ce2f74": "fa9b334851567a247073a52cd134d34ed1358287d79fe2cf42c124431932a6cc:720p",
-    "e66f1f75b438f208bfa485967c99b40a5ffc684db809a7f4053b919371e95b23": "fa9b334851567a247073a52cd134d34ed1358287d79fe2cf42c124431932a6cc:480p"
+    "e66f1f75b438f208bfa485967c99b40a5ffc684db809a7f4053b919371e95b23": "fa9b334851567a247073a52cd134d34ed1358287d79fe2cf42c124431932a6cc:480p",
+    "9a9adc60dc68327f71d25d82c8894f0594eb8f45000d5e6413f004dc1be16cf0": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:1080p",
+    "0015d03ef621fce927d4bac4f080162fb211eeba80b533717bd88f0c2be18a53": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:720p",
+    "7408b3895d10d9c89b25ba6b5b16099e75c480a1caad2910bb418da03931fa61": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -2975,6 +3019,12 @@
       "episode": "01",
       "message_id": "978",
       "published_at": 1793052172
+    },
+    "archive:aec421ee1ea7ac523d013816d76145db07b7120e46ddad27b9d4831124fd8be3": {
+      "title": "Magic Knight Rayearth (2026)",
+      "episode": "01",
+      "message_id": "982",
+      "published_at": 1793053729
     }
   }
 }
