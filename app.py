@@ -126,13 +126,14 @@ def episode_details(title: str) -> tuple[str, str]:
         match = re.search(pattern, clean)
         if match:
             episode = match.group(1)
-            clean = re.sub(pattern, " ", clean).strip(" -|:[]()")
+            clean = re.sub(pattern, " ", clean).strip(" -|:[]")
             break
     # Remove release-group wrappers, quality labels, file extensions, and hashes.
     clean = re.sub(r"(?i)\b(?:480|720|1080|1440|2160)p\b", " ", clean)
     clean = re.sub(r"(?i)\.(?:mkv|mp4|webm|mov)$", " ", clean)
     clean = re.sub(r"\[[^\]]*\]", " ", clean)
-    clean = re.sub(r"\s+", " ", clean).strip(" -|:[]()")
+    clean = re.sub(r"\(\s*\)", " ", clean)
+    clean = re.sub(r"\s+", " ", clean).strip(" -|:[]")
     return (re.sub(r"\s+", " ", clean) or title.strip(), episode)
 
 
