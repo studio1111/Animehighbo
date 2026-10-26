@@ -983,6 +983,47 @@
       "source_quality": "1080p",
       "published_at": 1793027214,
       "release_date": "2026-10-03"
+    },
+    "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:1080p": {
+      "title": "Ao Ashi S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ab9801cf79efdb6fbac589444a791e6b09a819ca8501aefb895141c607b74dce",
+      "message_id": "883",
+      "published_at": 1793029495,
+      "bilingual_subtitles": true
+    },
+    "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:720p": {
+      "title": "Ao Ashi S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "eb6f6a5a33f102253dcbefe438010b3f3ac878a1033b527e4e6c6e1bfa5e5484",
+      "message_id": "884",
+      "published_at": 1793029511,
+      "bilingual_subtitles": true
+    },
+    "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:480p": {
+      "title": "Ao Ashi S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "826cfad6f1e34693871a5a9b73d3ef598109aa6a8e35b0edcd91712fd26b90a6",
+      "message_id": "885",
+      "published_at": 1793029527,
+      "bilingual_subtitles": true
+    },
+    "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2": {
+      "title": "Ao Ashi S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793029527,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -1570,7 +1611,10 @@
     "d31111aafa51c430faba00e25b8c8d05ccde4a0a6f13865020228616d1402ac2": "2669fcab9efebe6b190501873de1ab71ef3f80405759200473ab747853bff95e:480p",
     "273dbd4e7b4cb478a8a06d7c7b82a65dd152aab3483aedfd3f70a155eea42f10": "cf50ce3539ea334f4b4030b35dee833af6c26f65b0364ea5ff649d02ac8b4159:1080p",
     "c41c03ff1dca30973d934d7c6d4c4ab4a9fcd7e4092dd97dd1b9b30c4ab91011": "cf50ce3539ea334f4b4030b35dee833af6c26f65b0364ea5ff649d02ac8b4159:720p",
-    "c96a1d83cc2ab2119e1926d8fe22c46012d48046f6d37d11886a286a89226f71": "cf50ce3539ea334f4b4030b35dee833af6c26f65b0364ea5ff649d02ac8b4159:480p"
+    "c96a1d83cc2ab2119e1926d8fe22c46012d48046f6d37d11886a286a89226f71": "cf50ce3539ea334f4b4030b35dee833af6c26f65b0364ea5ff649d02ac8b4159:480p",
+    "ab9801cf79efdb6fbac589444a791e6b09a819ca8501aefb895141c607b74dce": "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:1080p",
+    "eb6f6a5a33f102253dcbefe438010b3f3ac878a1033b527e4e6c6e1bfa5e5484": "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:720p",
+    "826cfad6f1e34693871a5a9b73d3ef598109aa6a8e35b0edcd91712fd26b90a6": "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -1725,6 +1769,12 @@
       "episode": "01",
       "message_id": "878",
       "published_at": 1793027191
+    },
+    "archive:5db9b3022aa04bc96feb3751c5d7f677475d94cef65e77932b204120b7347a8f": {
+      "title": "Ao Ashi S2",
+      "episode": "01",
+      "message_id": "882",
+      "published_at": 1793029475
     }
   }
 }
