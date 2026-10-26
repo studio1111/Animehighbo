@@ -207,7 +207,7 @@ def page_metadata(page_url: str, timeout: int = 20) -> dict:
 
 
 def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> list[str]:
-    """Find likely anime posters through Google Images, then Bing Images as fallback."""
+    """Search Google Images, Bing Images, and DuckDuckGo Images for poster candidates."""
     from urllib.parse import parse_qs, unquote, urlparse
 
     query = re.sub(r"\s+", " ", str(title or "")).strip()
@@ -217,6 +217,7 @@ def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> l
     searches = (
         ("https://www.google.com/search", {"tbm": "isch", "q": f"{query} anime poster"}),
         ("https://www.bing.com/images/search", {"q": f"{query} anime poster"}),
+        ("https://duckduckgo.com/", {"q": f"{query} anime poster", "iax": "images", "ia": "images"}),
     )
     for endpoint, params in searches:
         try:
@@ -613,7 +614,7 @@ def translate_anime_synopsis(description: str) -> str:
     source = html.unescape(re.sub(r"<[^>]+>", " ", str(description or "")))
     source = re.sub(r"\s+", " ", source).strip()
     if not source:
-        return "خلاصهٔ این انیمه فعلاً در دسترس نیست."
+        return "—"
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if api_key:
         model = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
@@ -665,11 +666,11 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
     persian_title = translate_title_to_persian(english_title)
-    japanese_title = str(titles.get("native") or "").strip() or anime_japanese_title(title, media)
+    # The channel contract requires Japanese pronunciation in Latin letters (romaji), never Japanese script.
+    japanese_title = str(titles.get("romaji") or "").strip() or anime_japanese_title(title, media)
     episode_number = episode or episode_details(title)[1]
-    synopsis = translate_anime_synopsis(str(media.get("description") or ""))
-    if not str(media.get("description") or "").strip():
-        synopsis = "—"
+    raw_synopsis = str(media.get("description") or "").strip()
+    synopsis = translate_anime_synopsis(raw_synopsis) if raw_synopsis else ""
 
     season = _season_label(title, media)
     if season == "نامشخص":
@@ -692,7 +693,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title or '—')}",
-        f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title or '—')}",
+        f"🇯🇵 <b>日本語（ローマ字）:</b> {_safe_caption_text(japanese_title or '—')}",
         f"📺 <b>قسمت {_safe_caption_text(str(episode_number or '—'))}</b>",
         f"📚 <b>فصل:</b> {_safe_caption_text(season or '—')}",
         f"📅 <b>سال پخش:</b> {_safe_caption_text(str(year))}",
@@ -707,7 +708,8 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     synopsis_open = "<blockquote expandable>📝 "
     synopsis_close = "</blockquote>"
     footer = "@Animehighbo"
-    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip() or "—"
+    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip()
+    synopsis = synopsis or "—"
 
     # Respect Telegram's caption limit while preserving the three titles, episode,
     # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
@@ -826,7 +828,7 @@ def create_anime_video_thumbnail(title: str, metadata: dict, output_path: Path) 
 
 def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
                                metadata: dict) -> str:
-    """Send the best catalog/web poster, or publish a text-only post as a safe fallback."""
+    """Send a poster-led anime post; fail closed rather than publish without a verified poster."""
     caption = build_episode_caption(title, episode, metadata=metadata)
     cover = metadata.get("coverImage") or {}
     image_url = cover.get("extraLarge") or cover.get("large") or cover.get("medium") or ""
@@ -872,26 +874,12 @@ def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: st
             message_id = (result.get("result") or {}).get("message_id")
             if message_id is not None:
                 return str(message_id)
-            LOG.warning("Telegram sendPhoto returned no message_id for %r; trying text post.", title)
+            raise RuntimeError(f"Telegram sendPhoto returned no message_id for {title!r}; refusing an unsafe text-only fallback.")
         else:
             detail = result.get("description", f"HTTP {response.status_code} or invalid Telegram API response.") if isinstance(result, dict) else f"HTTP {response.status_code} or invalid Telegram API response."
-            LOG.warning("Telegram sendPhoto was rejected for %r; trying text post: %s", title, detail)
+            raise RuntimeError(f"Telegram sendPhoto was rejected for {title!r}; refusing an unsafe text-only fallback: {detail}")
 
-    response = requests.post(
-        telegram_api_endpoint(token, "sendMessage"),
-        data={"chat_id": chat_id, "text": caption, "parse_mode": "HTML", "disable_web_page_preview": "true"},
-        timeout=(30, 60),
-    )
-    response.raise_for_status()
-    result = response.json()
-    if not isinstance(result, dict) or result.get("ok") is not True:
-        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
-        raise RuntimeError(f"Telegram sendMessage failed: {detail}")
-    message_id = (result.get("result") or {}).get("message_id")
-    if message_id is None:
-        raise RuntimeError("Telegram sendMessage succeeded without a message_id.")
-    LOG.info("Published text-only anime post because no usable poster was available: %s", title)
-    return str(message_id)
+    raise RuntimeError(f"No verified poster could be found for {title!r}; episode held for retry instead of publishing a malformed text-only post.")
 
 def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_type: str,
                           title: str, episode: str, page_url: str) -> str:
@@ -974,36 +962,41 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                     LOG.info("[DRY RUN] Episode link: %s | episode=%s | poster=%s | %s",
                              anime_title, episode or "unknown", image_url or "text-only", page_url)
                     continue
+                image_data = None
+                image_type = ""
+                poster_candidates = []
                 if image_url:
+                    poster_candidates.append(image_url)
+                try:
+                    # Always search alternate poster sources too, so a dead feed image
+                    # does not prevent publication when a catalog/search image exists.
+                    poster_candidates.extend(search_poster_image_urls(anime_title))
+                except Exception as search_exc:
+                    LOG.warning("Alternate poster search failed for %s: %s", anime_title, search_exc)
+                seen_poster_urls = set()
+                for candidate in poster_candidates:
+                    candidate = str(candidate or "").strip()
+                    if not candidate or candidate in seen_poster_urls:
+                        continue
+                    seen_poster_urls.add(candidate)
                     try:
-                        image_data, image_type = download_poster(image_url, int(config["request_timeout_seconds"]))
+                        image_data, image_type = download_poster(candidate, int(config["request_timeout_seconds"]))
+                        image_url = candidate
+                        break
                     except Exception as poster_exc:
-                        LOG.warning("Poster download failed for %s; falling back to text-only post: %s", title, poster_exc)
-                        image_url = ""
-                if image_url:
-                    # Do not send a text fallback after a Telegram transport timeout:
-                    # the photo may already have been accepted, which would duplicate
-                    # the anchor post. Only poster acquisition failures are safe fallbacks.
-                    message_id = telegram_send_episode(
-                        token, chat_id, image_data, image_type, title, episode, page_url
+                        LOG.warning("Poster candidate failed for %s; trying next source: %s", anime_title, poster_exc)
+                if not image_data:
+                    raise RuntimeError(
+                        f"No downloadable poster found for {anime_title!r} after feed metadata and alternate-source searches; "
+                        "episode remains queued for retry. Text-only publication is forbidden."
                     )
-                if not image_url:
-                    catalog = anime_catalog_metadata(anime_title)
-                    caption = build_episode_caption(title, episode, page_url, catalog)
-                    response = requests.post(
-                        telegram_api_endpoint(token, "sendMessage"),
-                        data={"chat_id": chat_id, "text": caption, "parse_mode": "HTML",
-                              "disable_web_page_preview": "true"},
-                        timeout=(30, 60),
-                    )
-                    response.raise_for_status()
-                    result = response.json()
-                    if not isinstance(result, dict) or result.get("ok") is not True:
-                        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
-                        raise RuntimeError(f"Telegram text-only episode post failed: {detail}")
-                    message_id = str((result.get("result") or {}).get("message_id") or "")
-                    if not message_id:
-                        raise RuntimeError("Telegram text-only post succeeded without a message_id.")
+                # A sendPhoto transport error can be ambiguous. Never fall back to
+                # sendMessage, which would break the fixed channel format or duplicate a post.
+                # Use the exact validated image candidate selected above.
+                # Avoid a second search that could choose a different image or fail.
+                message_id = telegram_send_episode(
+                    token, chat_id, image_data, image_type, title, episode, page_url
+                )
                 state["published"][identity] = {
                     "title": anime_title,
                     "episode": episode or None,
@@ -1218,7 +1211,7 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None) -> str:
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None, reply_to_message_id: str | None = None) -> str:
     """Upload a verified media file as a standalone post with its poster thumbnail."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
@@ -1228,6 +1221,8 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024], "parse_mode": "HTML"}
+    if reply_to_message_id:
+        payload["reply_to_message_id"] = str(reply_to_message_id)
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
@@ -1433,11 +1428,23 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
             metadata = anime_catalog_metadata(title)
+            # Validate video thumbnail assets before creating the public anchor.
             thumbnail_path = create_anime_video_thumbnail(
                 title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
             )
-            # Each video carries its own poster thumbnail and full metadata.
-            # Do not create a separate poster-only channel message.
+            # Publish (or recover) exactly one poster-led anchor for this episode.
+            # The three quality messages are replies to this anchor, never standalone posts.
+            poster_record = state["posters"].get(poster_identity, {})
+            poster_message_id = str(poster_record.get("message_id") or "")
+            if not poster_message_id:
+                poster_message_id = telegram_send_anime_poster(
+                    token, chat_id, title, episode_number, metadata
+                )
+                state["posters"][poster_identity] = {
+                    "title": title, "episode": episode_number,
+                    "message_id": poster_message_id, "published_at": int(time.time()),
+                }
+                save_state(config["state_file"], state)
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
@@ -1453,7 +1460,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 video_caption = build_video_caption(title, episode_number, quality, metadata=metadata)
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
-                    thumbnail_path=thumbnail_path,
+                    thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1863,13 +1870,24 @@ def run() -> int:
                                  group["title"], prepared_manifest["release_date"], len(file_rows))
                         continue
 
-                    # Each video post carries its own poster thumbnail and complete metadata.
-                    # Never emit a standalone poster-only channel message.
+                    # Validate thumbnail assets before creating the public anchor.
                     metadata = anime_catalog_metadata(group["title"])
                     thumbnail_dir = Path("prepared") / identity
                     thumbnail_path = create_anime_video_thumbnail(
                         group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
                     )
+                    # Publish (or recover) one poster-led anchor, then reply with all qualities.
+                    poster_record = state["posters"].get(poster_identity, {})
+                    poster_message_id = str(poster_record.get("message_id") or "")
+                    if not poster_message_id:
+                        poster_message_id = telegram_send_anime_poster(
+                            token, chat_id, group["title"], group["episode"], metadata
+                        )
+                        state["posters"][poster_identity] = {
+                            "title": group["title"], "episode": group["episode"],
+                            "message_id": poster_message_id, "published_at": int(time.time()),
+                        }
+                        save_state(config["state_file"], state)
 
                     for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
@@ -1883,7 +1901,7 @@ def run() -> int:
                         )
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
-                            thumbnail_path=thumbnail_path,
+                            thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
                         )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
