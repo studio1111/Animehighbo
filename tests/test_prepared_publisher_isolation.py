@@ -62,14 +62,14 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             with patch.dict(os.environ, {
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
-            }), patch.object(app, "telegram_send_anime_poster", return_value="poster-message") as poster, patch.object(
+            }), patch.object(app, "create_anime_video_thumbnail", return_value=root / "thumbnail.jpg"), patch.object(app, "telegram_send_anime_poster") as poster, patch.object(
                 app, "telegram_upload_and_send",
                 side_effect=["1080-message", "720-message", "480-message"],
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            self.assertEqual(poster.call_count, 1)
+            poster.assert_not_called()
             self.assertIn("good", state["published"])
             self.assertNotIn("escape", state["published"])
             self.assertEqual(upload.call_count, 3)
@@ -91,9 +91,8 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
                 "ANIMEHIGHBO_PUBLISH_EVENTS_FILE": str(root / "publish-events.json"),
-            }), patch.object(
-                app, "telegram_send_anime_poster",
-                side_effect=[RuntimeError("temporary Telegram error"), "poster-message"],
+            }), patch.object(app, "create_anime_video_thumbnail", return_value=root / "thumbnail.jpg"), patch.object(
+                app, "telegram_send_anime_poster"
             ) as poster, patch.object(
                 app, "telegram_upload_and_send",
                 side_effect=["1080-message", "720-message", "480-message"],
@@ -103,8 +102,8 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             # Successful unrelated delivery is retained, but the run must be red
             # so the failed episode is visible and eligible for retry.
             self.assertEqual(result, 1)
-            self.assertEqual(poster.call_count, 2)
-            self.assertEqual(upload.call_count, 3)
+            poster.assert_not_called()
+            self.assertEqual(upload.call_count, 4)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
 
@@ -125,14 +124,13 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
                 "ANIMEHIGHBO_PUBLISH_EVENTS_FILE": str(root / "publish-events.json"),
-            }), patch.object(app, "telegram_send_anime_poster", return_value="poster-message") as poster, patch.object(
+            }), patch.object(app, "create_anime_video_thumbnail", return_value=root / "thumbnail.jpg"), patch.object(app, "telegram_send_anime_poster") as poster, patch.object(
                 app, "telegram_upload_and_send", side_effect=["1080-message", "720-message", "480-message"]
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            poster.assert_called_once()
-            self.assertIn("good", str(poster.call_args))
+            poster.assert_not_called()
             self.assertEqual(upload.call_count, 3)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
