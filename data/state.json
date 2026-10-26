@@ -122,6 +122,47 @@
       "source_quality": "1080p",
       "published_at": 1793004009,
       "release_date": "2026-10-01"
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:1080p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ccb79d46e4afad2a8ea06327e5d55e3f152f438ac4167b399951035452f3a2db",
+      "message_id": "798",
+      "published_at": 1793005192,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:720p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "dbe51b2ee673bf99039fbd2233c026621d75a430d964c038d8f501e055a74e79",
+      "message_id": "799",
+      "published_at": 1793005211,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "794a1abc4d360624fad949bb9fe8c0df0bac1681215e831a9a605bfd724002b5",
+      "message_id": "800",
+      "published_at": 1793005226,
+      "bilingual_subtitles": true
+    },
+    "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0": {
+      "title": "Tensei Shitara Ken Deshita S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793005226,
+      "release_date": "2026-09-30"
     }
   },
   "seen": {
@@ -640,7 +681,10 @@
     "63fe5d01c83efa1278b5129bc70189053d637419265ce878ec2f5e639a0f45c1": "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3:480p",
     "d1e817dd6b6e42a7ced94976c8149b15e3b7fd04067a4093630e392a723ddc25": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:1080p",
     "bf6e1c019df94add7170bca3a71d70d05023f5274db286f652a216d67802e2fc": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:720p",
-    "8da335a3fd19b02fb247622347002c72364c8f54c5ce385d1a27c5315918459e": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:480p"
+    "8da335a3fd19b02fb247622347002c72364c8f54c5ce385d1a27c5315918459e": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:480p",
+    "ccb79d46e4afad2a8ea06327e5d55e3f152f438ac4167b399951035452f3a2db": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:1080p",
+    "dbe51b2ee673bf99039fbd2233c026621d75a430d964c038d8f501e055a74e79": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:720p",
+    "794a1abc4d360624fad949bb9fe8c0df0bac1681215e831a9a605bfd724002b5": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
