@@ -1426,23 +1426,9 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             thumbnail_path = create_anime_video_thumbnail(
                 title, metadata, manifest_path.parent / "telegram-thumbnail.jpg"
             )
-            if not state["posters"].get(poster_identity, {}).get("message_id"):
-                poster_message_id = telegram_send_anime_poster(
-                    token, chat_id, title, episode_number, metadata
-                )
-                state["posters"][poster_identity] = {
-                    "title": title,
-                    "episode": episode_number or None,
-                    "message_id": poster_message_id,
-                    "published_at": int(time.time()),
-                    "release_date": episode["release_date"],
-                }
-                save_state(config["state_file"], state)
-                published_series_keys.add(series_key)
-
-            poster_message_id = state["posters"][poster_identity].get("message_id")
-            if not poster_message_id:
-                raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
+            # Each video carries its own poster thumbnail and full metadata.
+            # Do not create a separate poster-only channel message.
+            published_series_keys.add(series_key)
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
@@ -1474,7 +1460,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published standalone video post with anime metadata: %s %s (poster message %s)", title, quality, poster_message_id)
+                LOG.info("Published video post with poster thumbnail and anime metadata: %s %s", title, quality)
 
             state["published"][identity] = {
                 "title": title,
