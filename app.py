@@ -1419,7 +1419,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
 
             metadata = anime_catalog_metadata(title)
             thumbnail_path = create_anime_video_thumbnail(
-                title, metadata, manifest_path.parent / "telegram-thumbnail.jpg"
+                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
             )
             # Each video carries its own poster thumbnail and full metadata.
             # Do not create a separate poster-only channel message.
@@ -1455,7 +1455,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published standalone video post with anime metadata: %s %s (poster message %s)", title, quality, poster_message_id)
+                LOG.info("Published video post with poster thumbnail and anime metadata: %s %s", title, quality)
 
             state["published"][identity] = {
                 "title": title,
