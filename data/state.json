@@ -2172,6 +2172,47 @@
       "source_quality": "1080p",
       "published_at": 1793056798,
       "release_date": "2026-10-09"
+    },
+    "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:1080p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "614520415ab83e95c6e75f2455b9a133a0cdba1c3986a1eff261f256defc796a",
+      "message_id": "999",
+      "published_at": 1793057150,
+      "bilingual_subtitles": true
+    },
+    "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:720p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "aece59971b6acba57a7c99a0e5aa745898d5525cd1aeaedce1d6824f427e156c",
+      "message_id": "1000",
+      "published_at": 1793057155,
+      "bilingual_subtitles": true
+    },
+    "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:480p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "3c717e374267eca49b2bb2b108c85f666b994e5c7f3bf1d5719ac9f8ec6a3c17",
+      "message_id": "1001",
+      "published_at": 1793057160,
+      "bilingual_subtitles": true
+    },
+    "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6": {
+      "title": "Kusuriya no Hitorigoto",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793057160,
+      "release_date": "2026-10-09"
     }
   },
   "seen": {
@@ -2846,7 +2887,10 @@
     "ab3876c89b183e05e2ffa40e90c2e038e24d6aca019cd3ab727095680e84cc19": "fe4ff12e58946d07e043a2b29d25ba75212378af2b029b8b8923991eec9c615d:480p",
     "ea4c3ecc1fab0880c018bd4b268726a141a8bb211b4c62d74ebfb0f4ce1dfe1c": "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:1080p",
     "12f8961eb721ff9b49aea87cc6479b16c4775b1d64fa6f4b9ef6b0d3002d7e67": "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:720p",
-    "8931fe0c0058437ffb4a7ac5167a6e297a78babb3e2203cd39a1e0e9156370a9": "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:480p"
+    "8931fe0c0058437ffb4a7ac5167a6e297a78babb3e2203cd39a1e0e9156370a9": "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:480p",
+    "614520415ab83e95c6e75f2455b9a133a0cdba1c3986a1eff261f256defc796a": "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:1080p",
+    "aece59971b6acba57a7c99a0e5aa745898d5525cd1aeaedce1d6824f427e156c": "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:720p",
+    "3c717e374267eca49b2bb2b108c85f666b994e5c7f3bf1d5719ac9f8ec6a3c17": "4653d05fa86b5f0cfa49c64e8779b98f94dda10952e22d129f280e6dce2defc6:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -3175,6 +3219,12 @@
       "episode": "01",
       "message_id": "994",
       "published_at": 1793056782
+    },
+    "archive:c9bee666b9b06516b0f5a9a7590429639a6cebaae58d3087e561fda148e42ce3": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "50",
+      "message_id": "998",
+      "published_at": 1793057142
     }
   }
 }
