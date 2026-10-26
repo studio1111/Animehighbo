@@ -286,6 +286,47 @@
       "source_quality": "1080p",
       "published_at": 1793007024,
       "release_date": "2026-10-02"
+    },
+    "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:1080p": {
+      "title": "Nige Jouzu no Wakagimi S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1866aac53f70463f2c3fabe605d7b5be3d028063ce87a99078188451cdb810a7",
+      "message_id": "810",
+      "published_at": 1793007678,
+      "bilingual_subtitles": true
+    },
+    "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:720p": {
+      "title": "Nige Jouzu no Wakagimi S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "06de97a3cc987d8c499062fa0f0619145c5451bfd30f70202a85fe5d0d61dfe9",
+      "message_id": "811",
+      "published_at": 1793007696,
+      "bilingual_subtitles": true
+    },
+    "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:480p": {
+      "title": "Nige Jouzu no Wakagimi S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b52bb9eea9e8528523808e7935cd00cdc2a8efe68c9d27a465332a56c0cd83ae",
+      "message_id": "812",
+      "published_at": 1793007711,
+      "bilingual_subtitles": true
+    },
+    "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d": {
+      "title": "Nige Jouzu no Wakagimi S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793007711,
+      "release_date": "2026-10-02"
     }
   },
   "seen": {
@@ -816,7 +857,10 @@
     "4128ac76286f5af0955b07e00fa0262e886005145733e76d8af91f87e0728dae": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p",
     "6c170f3e20e99d30385d6a6477329f98539510b4398aee8bb68591f88c316cc4": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:1080p",
     "fb965a24b4338e87c83f62c95ad02fb43b5c819e22aaf0c3a9793a61c48feca8": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:720p",
-    "d7263e524fbd6dd95aa49387d45b3ce7677ce2099be2e124e1976824d1fb90a8": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p"
+    "d7263e524fbd6dd95aa49387d45b3ce7677ce2099be2e124e1976824d1fb90a8": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p",
+    "1866aac53f70463f2c3fabe605d7b5be3d028063ce87a99078188451cdb810a7": "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:1080p",
+    "06de97a3cc987d8c499062fa0f0619145c5451bfd30f70202a85fe5d0d61dfe9": "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:720p",
+    "b52bb9eea9e8528523808e7935cd00cdc2a8efe68c9d27a465332a56c0cd83ae": "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
