@@ -4,22 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 45,
+    "feed_releases": 46,
     "matched_in_authorized_manifest": 0,
-    "found_in_candidate_report": 26,
-    "review_required": 45
+    "found_in_candidate_report": 24,
+    "review_required": 46
   },
   "policy": "This report contains metadata only. Only entries with an evidence-backed rights-review record count as authorized-manifest matches; candidate or RSS matches are not permission to redistribute. No media URLs are stored or published.",
   "releases": [
-    {
-      "title": "Dark Machine - The Animation",
-      "episode": 2,
-      "release_date": "2026-10-20",
-      "feed_quality": "720p",
-      "in_authorized_manifest": false,
-      "in_candidate_report": true,
-      "review_required": true
-    },
     {
       "title": "Juuou Mujin Dandivine",
       "episode": 3,
@@ -50,15 +41,6 @@
     {
       "title": "Paw and Palaces",
       "episode": 6,
-      "release_date": "2026-10-21",
-      "feed_quality": "720p",
-      "in_authorized_manifest": false,
-      "in_candidate_report": true,
-      "review_required": true
-    },
-    {
-      "title": "Sasaki to Pii-chan S2",
-      "episode": 3,
       "release_date": "2026-10-21",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
@@ -411,6 +393,33 @@
       "title": "Yowaki Max",
       "episode": 4,
       "release_date": "2026-10-25",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "episode": 4,
+      "release_date": "2026-10-26",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "PSYREN",
+      "episode": 4,
+      "release_date": "2026-10-26",
+      "feed_quality": "720p",
+      "in_authorized_manifest": false,
+      "in_candidate_report": false,
+      "review_required": true
+    },
+    {
+      "title": "Tensei Goblin dakedo Shitsumon Aru",
+      "episode": 5,
+      "release_date": "2026-10-26",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
       "in_candidate_report": false,
