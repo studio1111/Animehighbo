@@ -707,7 +707,9 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     synopsis_open = "<blockquote expandable>📝 "
     synopsis_close = "</blockquote>"
     footer = "@Animehighbo"
-    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip() or "—"
+    synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip()
+    if not synopsis or synopsis == "خلاصهٔ این انیمه فعلاً در دسترس نیست.":
+        raise ValueError("A verified anime synopsis is required; refusing to publish an incomplete lead post.")
 
     # Respect Telegram's caption limit while preserving the three titles, episode,
     # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
