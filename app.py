@@ -665,11 +665,11 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
     persian_title = translate_title_to_persian(english_title)
-    japanese_title = str(titles.get("native") or "").strip() or anime_japanese_title(title, media)
+    # The channel contract requires Japanese pronunciation in Latin letters (romaji), never Japanese script.
+    japanese_title = str(titles.get("romaji") or "").strip() or anime_japanese_title(title, media)
     episode_number = episode or episode_details(title)[1]
-    synopsis = translate_anime_synopsis(str(media.get("description") or ""))
-    if not str(media.get("description") or "").strip():
-        synopsis = "—"
+    raw_synopsis = str(media.get("description") or "").strip()
+    synopsis = translate_anime_synopsis(raw_synopsis) if raw_synopsis else ""
 
     season = _season_label(title, media)
     if season == "نامشخص":
@@ -811,7 +811,7 @@ def create_anime_video_thumbnail(title: str, metadata: dict, output_path: Path) 
 
 def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
                                metadata: dict) -> str:
-    """Send the best catalog/web poster, or publish a text-only post as a safe fallback."""
+    """Send a poster-led anime post; fail closed rather than publish without a verified poster."""
     caption = build_episode_caption(title, episode, metadata=metadata)
     cover = metadata.get("coverImage") or {}
     image_url = cover.get("extraLarge") or cover.get("large") or cover.get("medium") or ""
@@ -857,26 +857,12 @@ def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: st
             message_id = (result.get("result") or {}).get("message_id")
             if message_id is not None:
                 return str(message_id)
-            LOG.warning("Telegram sendPhoto returned no message_id for %r; trying text post.", title)
+            raise RuntimeError(f"Telegram sendPhoto returned no message_id for {title!r}; refusing an unsafe text-only fallback.")
         else:
             detail = result.get("description", f"HTTP {response.status_code} or invalid Telegram API response.") if isinstance(result, dict) else f"HTTP {response.status_code} or invalid Telegram API response."
-            LOG.warning("Telegram sendPhoto was rejected for %r; trying text post: %s", title, detail)
+            raise RuntimeError(f"Telegram sendPhoto was rejected for {title!r}; refusing an unsafe text-only fallback: {detail}")
 
-    response = requests.post(
-        telegram_api_endpoint(token, "sendMessage"),
-        data={"chat_id": chat_id, "text": caption, "parse_mode": "HTML", "disable_web_page_preview": "true"},
-        timeout=(30, 60),
-    )
-    response.raise_for_status()
-    result = response.json()
-    if not isinstance(result, dict) or result.get("ok") is not True:
-        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
-        raise RuntimeError(f"Telegram sendMessage failed: {detail}")
-    message_id = (result.get("result") or {}).get("message_id")
-    if message_id is None:
-        raise RuntimeError("Telegram sendMessage succeeded without a message_id.")
-    LOG.info("Published text-only anime post because no usable poster was available: %s", title)
-    return str(message_id)
+    raise RuntimeError(f"No verified poster could be found for {title!r}; episode held for retry instead of publishing a malformed text-only post.")
 
 def telegram_send_episode(token: str, chat_id: str, image_data: bytes, image_type: str,
                           title: str, episode: str, page_url: str) -> str:
