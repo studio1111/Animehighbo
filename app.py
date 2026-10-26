@@ -1407,10 +1407,6 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
                 video_caption = build_episode_caption(title, episode_number, metadata=metadata)
-                video_caption = video_caption.replace(
-                    "\\n@Animehighbo",
-                    f"\\n🎥 <b>کیفیت:</b> {quality}\\n@Animehighbo",
-                )
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
                     reply_to_message_id=poster_message_id,
