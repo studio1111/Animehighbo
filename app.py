@@ -1423,7 +1423,6 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             )
             # Each video carries its own poster thumbnail and full metadata.
             # Do not create a separate poster-only channel message.
-            published_series_keys.add(series_key)
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
