@@ -12,6 +12,7 @@ import logging
 import os
 import re
 import shutil
+import subprocess
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -769,6 +770,45 @@ def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str
     return f"{clean} {quality} @Animehighbo{extension}"
 
 
+def create_anime_video_thumbnail(title: str, metadata: dict, output_path: Path) -> Path:
+    """Download and compress an anime poster into Telegram's video-thumbnail limits."""
+    cover = (metadata.get("coverImage") or {}) if isinstance(metadata, dict) else {}
+    candidates = [str(cover.get(key) or "") for key in ("extraLarge", "large", "medium")]
+    candidates.extend(search_poster_image_urls(title))
+    seen = set()
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        raise RuntimeError("ffmpeg is required to create a poster thumbnail for every video.")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    for candidate in candidates:
+        candidate = candidate.strip()
+        if not candidate or candidate in seen:
+            continue
+        seen.add(candidate)
+        try:
+            image_data, _ = download_poster(candidate)
+            source_path = output_path.with_suffix(".source-image")
+            source_path.write_bytes(image_data)
+            try:
+                for quality in (5, 10, 15, 20, 25):
+                    output_path.unlink(missing_ok=True)
+                    result = subprocess.run(
+                        [ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+                         "-i", str(source_path), "-frames:v", "1",
+                         "-vf", "scale=320:320:force_original_aspect_ratio=decrease",
+                         "-q:v", str(quality), str(output_path)],
+                        capture_output=True, text=True, timeout=30, check=False,
+                    )
+                    if result.returncode == 0 and output_path.is_file() and 0 < output_path.stat().st_size <= 200 * 1024:
+                        return output_path
+                LOG.warning("Poster could not be compressed to Telegram thumbnail limits for %r", title)
+            finally:
+                source_path.unlink(missing_ok=True)
+        except Exception as exc:
+            LOG.warning("Unable to prepare video thumbnail from %r for %s: %s", candidate, title, exc)
+    raise RuntimeError(f"No usable poster thumbnail found for {title}; refusing to publish videos without posters.")
+
+
 def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
                                metadata: dict) -> str:
     """Send the best catalog/web poster, or publish a text-only post as a safe fallback."""
@@ -1163,8 +1203,8 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str) -> str:
-    """Upload a verified media file as its own visible channel post."""
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None) -> str:
+    """Upload a verified media file as a standalone post with its poster thumbnail."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
     if not chat_id:
@@ -1176,14 +1216,18 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
+    needs_thumbnail = path.suffix.lower() in VIDEO_EXTENSIONS
+    if needs_thumbnail and (thumbnail_path is None or not thumbnail_path.is_file()
+            or not 0 < thumbnail_path.stat().st_size <= 200 * 1024):
+        raise RuntimeError("A valid compressed poster thumbnail is required for every video post.")
     with path.open("rb") as media:
-        response = requests.post(
-            endpoint,
-            data=payload,
-            files={media_field: (path.name, media, "application/octet-stream")},
-            # Large MKV uploads to a local Bot API server can legitimately take several minutes.
-            timeout=(30, 1800),
-        )
+        files = {media_field: (path.name, media, "application/octet-stream")}
+        if needs_thumbnail:
+            with thumbnail_path.open("rb") as thumbnail:
+                files["thumbnail"] = (thumbnail_path.name, thumbnail, "image/jpeg")
+                response = requests.post(endpoint, data=payload, files=files, timeout=(30, 1800))
+        else:
+            response = requests.post(endpoint, data=payload, files=files, timeout=(30, 1800))
     response.raise_for_status()
     result = response.json()
     if not isinstance(result, dict) or result.get("ok") is not True:
@@ -1374,23 +1418,11 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
             metadata = anime_catalog_metadata(title)
-            if not state["posters"].get(poster_identity, {}).get("message_id"):
-                poster_message_id = telegram_send_anime_poster(
-                    token, chat_id, title, episode_number, metadata
-                )
-                state["posters"][poster_identity] = {
-                    "title": title,
-                    "episode": episode_number or None,
-                    "message_id": poster_message_id,
-                    "published_at": int(time.time()),
-                    "release_date": episode["release_date"],
-                }
-                save_state(config["state_file"], state)
-                published_series_keys.add(series_key)
-
-            poster_message_id = state["posters"][poster_identity].get("message_id")
-            if not poster_message_id:
-                raise RuntimeError(f"Poster message ID missing for {title}; refusing unthreaded upload.")
+            thumbnail_path = create_anime_video_thumbnail(
+                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
+            )
+            # Each video carries its own poster thumbnail and full metadata.
+            # Do not create a separate poster-only channel message.
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
@@ -1404,8 +1436,10 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
                 video_caption = build_episode_caption(title, episode_number, metadata=metadata)
+                video_caption = f"{video_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
+                    thumbnail_path=thumbnail_path,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1420,7 +1454,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published standalone video post with anime metadata: %s %s (poster message %s)", title, quality, poster_message_id)
+                LOG.info("Published video post with poster thumbnail and anime metadata: %s %s", title, quality)
 
             state["published"][identity] = {
                 "title": title,
@@ -1815,25 +1849,13 @@ def run() -> int:
                                  group["title"], prepared_manifest["release_date"], len(file_rows))
                         continue
 
-                    # A new poster must have all required, validated output files ready.
-                    if poster_identity not in state["posters"]:
-                        if completed_qualities or len(prepared_outputs) != len(variants):
-                            raise RuntimeError(
-                                "Refusing to publish a new poster until all three quality files are prepared."
-                            )
-                        metadata = anime_catalog_metadata(group["title"])
-                        poster_message_id = telegram_send_anime_poster(
-                            token, chat_id, group["title"], group["episode"], metadata
-                        )
-                        state["posters"][poster_identity] = {
-                            "title": group["title"], "episode": group["episode"] or None,
-                            "message_id": poster_message_id, "published_at": int(time.time()),
-                        }
-                        save_state(config["state_file"], state)
-
-                    poster_message_id = state["posters"][poster_identity].get("message_id")
-                    if not poster_message_id:
-                        raise RuntimeError("Poster state has no Telegram message ID; refusing to send ungrouped files.")
+                    # Each video post carries its own poster thumbnail and complete metadata.
+                    # Never emit a standalone poster-only channel message.
+                    metadata = anime_catalog_metadata(group["title"])
+                    thumbnail_dir = Path("prepared") / identity
+                    thumbnail_path = create_anime_video_thumbnail(
+                        group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
+                    )
 
                     for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
@@ -1842,9 +1864,13 @@ def run() -> int:
                                 completed_qualities.append(quality)
                             continue
                         output_path, file_hash, _ = prepared_outputs[quality]
-                        file_caption = f"{group['title']} {quality} @Animehighbo"
+                        file_caption = build_episode_caption(
+                            group["title"], group["episode"], metadata=metadata
+                        )
+                        file_caption = f"{file_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
+                            thumbnail_path=thumbnail_path,
                         )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
