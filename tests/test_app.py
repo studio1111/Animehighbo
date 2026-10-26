@@ -198,6 +198,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
+                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | قسمت {episode} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
                     {"state_file": str(state_path), "max_file_size_mb": 1800,
