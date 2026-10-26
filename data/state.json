@@ -2049,6 +2049,47 @@
       "source_quality": "1080p",
       "published_at": 1793053751,
       "release_date": "2026-10-07"
+    },
+    "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:1080p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "23c5011ab804d80856df0f0ae8c96d76d926d3301c38ebf9dcb980e83096e8a8",
+      "message_id": "987",
+      "published_at": 1793054521,
+      "bilingual_subtitles": true
+    },
+    "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:720p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "de4bc2a8ac15d1e320756a9b6da9499e608e957d54635c1294d3ef17aa3e9287",
+      "message_id": "988",
+      "published_at": 1793054527,
+      "bilingual_subtitles": true
+    },
+    "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:480p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bfa2103ccd10855bb418a8b0f1fedf3b6c9ef579e7738719cc4389de0f26edf9",
+      "message_id": "989",
+      "published_at": 1793054534,
+      "bilingual_subtitles": true
+    },
+    "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793054534,
+      "release_date": "2026-10-08"
     }
   },
   "seen": {
@@ -2714,7 +2755,10 @@
     "e66f1f75b438f208bfa485967c99b40a5ffc684db809a7f4053b919371e95b23": "fa9b334851567a247073a52cd134d34ed1358287d79fe2cf42c124431932a6cc:480p",
     "9a9adc60dc68327f71d25d82c8894f0594eb8f45000d5e6413f004dc1be16cf0": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:1080p",
     "0015d03ef621fce927d4bac4f080162fb211eeba80b533717bd88f0c2be18a53": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:720p",
-    "7408b3895d10d9c89b25ba6b5b16099e75c480a1caad2910bb418da03931fa61": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:480p"
+    "7408b3895d10d9c89b25ba6b5b16099e75c480a1caad2910bb418da03931fa61": "d3c6f213a6dd174fcf74e4c448b3936765554a084a937650e4a17d5a1b152a11:480p",
+    "23c5011ab804d80856df0f0ae8c96d76d926d3301c38ebf9dcb980e83096e8a8": "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:1080p",
+    "de4bc2a8ac15d1e320756a9b6da9499e608e957d54635c1294d3ef17aa3e9287": "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:720p",
+    "bfa2103ccd10855bb418a8b0f1fedf3b6c9ef579e7738719cc4389de0f26edf9": "ce86e3673ce4914ef3b38fa8a613a244e5c0baa45796daa5c6d232445158f5ff:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -3025,6 +3069,12 @@
       "episode": "01",
       "message_id": "982",
       "published_at": 1793053729
+    },
+    "archive:4e4cc00a0dad6ad4171cb9d90195f3cf0e281562653c8a44661671592ad3c08a": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "episode": "02",
+      "message_id": "986",
+      "published_at": 1793054510
     }
   }
 }
