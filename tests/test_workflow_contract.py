@@ -16,6 +16,10 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("data/anime_publication_approvals.json", dispatcher)
         self.assertFalse((ROOT / ".github/workflows/manage-anime-publication-approval.yml").exists())
         self.assertTrue((ROOT / "docs/operations/reliability-runbook.md").exists())
+        self.assertIn("No publisher approval gate or publisher lock files", rules)
+        self.assertNotIn("data/publisher.lock", (ROOT / "README.md").read_text(encoding="utf-8"))
+        self.assertFalse((ROOT / "data/publisher-locks").exists())
+        self.assertFalse((ROOT / "docs/manual-anime-approval.md").exists())
 
     def test_dispatcher_runs_five_independent_episode_workers_without_pat(self):
         dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
