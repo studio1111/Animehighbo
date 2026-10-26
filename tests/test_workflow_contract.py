@@ -78,6 +78,15 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("createDispatchEvent", workflow)
         self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
 
+    def test_recovery_publisher_reuses_prepared_artifact_without_locks(self):
+        workflow = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/download-artifact@v4", workflow)
+        self.assertIn("run-id:", workflow)
+        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
+        self.assertIn("Install FFmpeg for poster thumbnails", workflow)
+        self.assertNotIn("publisher_lock", workflow)
+        self.assertNotIn("publisher.lock", workflow)
+
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
