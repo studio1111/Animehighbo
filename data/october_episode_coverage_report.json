@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-10-25",
+  "generated_on": "2026-10-26",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-10-25",
+  "through_date": "2026-10-26",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -14,12 +14,12 @@
     "seasonal_titles": 100,
     "source_only_titles": 34,
     "titles_with_manifest_episodes": 58,
-    "titles_with_candidate_episodes": 37,
-    "titles_with_rss_episodes": 42,
+    "titles_with_candidate_episodes": 38,
+    "titles_with_rss_episodes": 45,
     "distinct_manifest_episodes": 165,
-    "distinct_candidate_episodes": 112,
-    "distinct_rss_episodes": 42,
-    "titles_needing_review": 121,
+    "distinct_candidate_episodes": 119,
+    "distinct_rss_episodes": 45,
+    "titles_needing_review": 130,
     "rights_verified_episode_count": 0
   },
   "limitations": [
@@ -392,14 +392,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 3,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "seasonal_title": true,
@@ -717,12 +711,18 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
       "seasonal_title": true,
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -934,12 +934,18 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
       "seasonal_title": true,
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -973,12 +979,18 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 3,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
       "seasonal_title": true,
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -1350,12 +1362,18 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
       "seasonal_title": true,
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -1945,14 +1963,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 3,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "seasonal_title": true,
@@ -2051,12 +2063,18 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 5,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
       "seasonal_title": true,
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -2624,14 +2642,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 3,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "seasonal_title": true,
@@ -2868,14 +2880,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 3,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "seasonal_title": true,
@@ -3761,21 +3767,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 49,
-              "release_date": "2026-10-19",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
+      "review_required": false,
       "rights_verified_episode_count": 0
     },
     {
@@ -3831,14 +3831,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 3,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "review_required": true,
@@ -3887,14 +3881,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 15,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "review_required": true,
@@ -4037,11 +4025,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -4571,11 +4565,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -4837,11 +4837,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -5003,14 +5009,8 @@
           ]
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 16,
-              "release_date": "2026-10-20",
-              "in_authorized_manifest": false
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         }
       },
       "review_required": true,
@@ -5119,11 +5119,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 29,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     },
     {
@@ -5164,8 +5170,34 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 5,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            },
+            {
+              "episode": 5,
+              "release_date": "2026-10-24",
+              "quality": "1080p"
+            }
+          ]
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5214,13 +5246,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
+          "distinct_episodes": 3,
           "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-01",
-              "quality": "1080p"
-            },
             {
               "episode": 2,
               "release_date": "2026-10-07",
@@ -5456,8 +5483,29 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 4,
+          "episodes": [
+            {
+              "episode": 14,
+              "release_date": "2026-10-03",
+              "quality": "1080p"
+            },
+            {
+              "episode": 15,
+              "release_date": "2026-10-10",
+              "quality": "1080p"
+            },
+            {
+              "episode": 16,
+              "release_date": "2026-10-17",
+              "quality": "1080p"
+            },
+            {
+              "episode": 17,
+              "release_date": "2026-10-24",
+              "quality": "1080p"
+            }
+          ]
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5510,11 +5558,17 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 4,
+              "release_date": "2026-10-25",
+              "in_authorized_manifest": false
+            }
+          ]
         }
       },
-      "review_required": false,
+      "review_required": true,
       "rights_verified_episode_count": 0
     }
   ]
