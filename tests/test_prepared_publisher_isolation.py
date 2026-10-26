@@ -62,7 +62,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             with patch.dict(os.environ, {
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "",
-            }), patch.object(app, "create_anime_video_thumbnail", return_value=root / "thumbnail.jpg"), patch.object(app, "telegram_send_anime_poster") as poster, patch.object(
+            }), patch.object(app, "create_anime_video_thumbnail", return_value=root / "thumbnail.jpg"), patch.object(app, "telegram_send_anime_poster", return_value="poster-message") as poster, patch.object(
                 app, "telegram_upload_and_send",
                 side_effect=["1080-message", "720-message", "480-message"],
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
