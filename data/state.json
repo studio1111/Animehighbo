@@ -409,6 +409,47 @@
       "source_quality": "1080p",
       "published_at": 1793008892,
       "release_date": "2026-10-03"
+    },
+    "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:1080p": {
+      "title": "Black Clover",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "892e833999744d0b258e90053216048b19b6d3e86a40a6d975339d9f6dddd3f3",
+      "message_id": "819",
+      "published_at": 1793009687,
+      "bilingual_subtitles": true
+    },
+    "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:720p": {
+      "title": "Black Clover",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f44e469ce70cb27bf22c104e59d5ab026a73e072d7a50e5cde4ec8115aa7fd74",
+      "message_id": "820",
+      "published_at": 1793009696,
+      "bilingual_subtitles": true
+    },
+    "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:480p": {
+      "title": "Black Clover",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6eacf43d5358dadc9e1ec7567ab93dfee15c218884b5b39557420be47af39b0c",
+      "message_id": "821",
+      "published_at": 1793009701,
+      "bilingual_subtitles": true
+    },
+    "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d": {
+      "title": "Black Clover",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793009701,
+      "release_date": "2026-10-03"
     }
   },
   "seen": {
@@ -948,7 +989,10 @@
     "9d5b3aee26f381a2d3ed8ba7e0f04d3e8c4b437ed75a1a138028acefb214edf3": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:480p",
     "52b7755b918cbefe461337b14354d17e1d46f5fb0955ae685177cfc8c3b0f801": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:1080p",
     "d230facbb400d61abe4aa4b25843ae88703bad5c3501e00c9e8f3c3b47abc039": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:720p",
-    "33992f7da367ba1496cd0d59b75874f7d1935372275647fd68312476e70d9a5e": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:480p"
+    "33992f7da367ba1496cd0d59b75874f7d1935372275647fd68312476e70d9a5e": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:480p",
+    "892e833999744d0b258e90053216048b19b6d3e86a40a6d975339d9f6dddd3f3": "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:1080p",
+    "f44e469ce70cb27bf22c104e59d5ab026a73e072d7a50e5cde4ec8115aa7fd74": "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:720p",
+    "6eacf43d5358dadc9e1ec7567ab93dfee15c218884b5b39557420be47af39b0c": "1c605bbfc245c6a14815f49831c17d4e3b080929d1a257efd74a3b948f56283d:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
