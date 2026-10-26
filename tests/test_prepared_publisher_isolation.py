@@ -69,7 +69,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            poster.assert_not_called()
+            poster.assert_called_once_with("token", "chat", "Series good", "1", {})
             self.assertIn("good", state["published"])
             self.assertNotIn("escape", state["published"])
             self.assertEqual(upload.call_count, 3)
@@ -102,7 +102,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
             # Successful unrelated delivery is retained, but the run must be red
             # so the failed episode is visible and eligible for retry.
             self.assertEqual(result, 1)
-            poster.assert_not_called()
+            self.assertEqual(poster.call_count, 2)
             self.assertEqual(upload.call_count, 4)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
@@ -130,7 +130,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            poster.assert_not_called()
+            poster.assert_called_once_with("token", "chat", "Series good", "1", {})
             self.assertEqual(upload.call_count, 3)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
