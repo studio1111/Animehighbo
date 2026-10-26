@@ -93,8 +93,9 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
             caption = build_episode_caption("Demon Slayer - 01 (1080p)", "01", metadata=metadata)
         self.assertIn("English:", caption)
         self.assertIn("فارسی:", caption)
-        self.assertIn("日本語:", caption)
-        self.assertIn("鬼滅の刃", caption)
+        self.assertIn("日本語（ローマ字）:", caption)
+        self.assertIn("Kimetsu no Yaiba", caption)
+        self.assertNotIn("鬼滅の刃", caption)
 
 
 class PreferredSourceTests(unittest.TestCase):
@@ -198,7 +199,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
                  patch.object(app, "telegram_send_anime_poster") as send_poster, \
-                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | @Animehighbo"), \
+                 patch.object(app, "build_video_caption", side_effect=lambda title, episode, quality, metadata=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | کیفیت: {quality} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
                     {"state_file": str(state_path), "max_file_size_mb": 1800,
