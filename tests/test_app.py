@@ -229,8 +229,8 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
-        self.assertIn("episode-a", state["posters"])
-        self.assertIn("episode-b", state["posters"])
+        self.assertIn("archive:group-episode-a", state["posters"])
+        self.assertIn("archive:group-episode-b", state["posters"])
 
     def test_invalid_manifest_returns_failure_instead_of_green_success(self):
         import os
