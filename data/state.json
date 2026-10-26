@@ -368,6 +368,47 @@
       "source_quality": "1080p",
       "published_at": 1793008027,
       "release_date": "2026-10-01"
+    },
+    "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:1080p": {
+      "title": "Detective Conan",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "52b7755b918cbefe461337b14354d17e1d46f5fb0955ae685177cfc8c3b0f801",
+      "message_id": "816",
+      "published_at": 1793008883,
+      "bilingual_subtitles": true
+    },
+    "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:720p": {
+      "title": "Detective Conan",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d230facbb400d61abe4aa4b25843ae88703bad5c3501e00c9e8f3c3b47abc039",
+      "message_id": "817",
+      "published_at": 1793008888,
+      "bilingual_subtitles": true
+    },
+    "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:480p": {
+      "title": "Detective Conan",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "33992f7da367ba1496cd0d59b75874f7d1935372275647fd68312476e70d9a5e",
+      "message_id": "818",
+      "published_at": 1793008892,
+      "bilingual_subtitles": true
+    },
+    "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13": {
+      "title": "Detective Conan",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793008892,
+      "release_date": "2026-10-03"
     }
   },
   "seen": {
@@ -904,7 +945,10 @@
     "b52bb9eea9e8528523808e7935cd00cdc2a8efe68c9d27a465332a56c0cd83ae": "edb24718f92968da4ec4fe6b6d816eb4541865229dac39870539635b9b744a3d:480p",
     "4e247420aac828fe4af91db468fe4a4cd165df804a68adf4e1af146871f39b4a": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:1080p",
     "bb9f87960381a37c33264639b870826a4532cbba3b7d83f50edb6f186f9039b7": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:720p",
-    "9d5b3aee26f381a2d3ed8ba7e0f04d3e8c4b437ed75a1a138028acefb214edf3": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:480p"
+    "9d5b3aee26f381a2d3ed8ba7e0f04d3e8c4b437ed75a1a138028acefb214edf3": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:480p",
+    "52b7755b918cbefe461337b14354d17e1d46f5fb0955ae685177cfc8c3b0f801": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:1080p",
+    "d230facbb400d61abe4aa4b25843ae88703bad5c3501e00c9e8f3c3b47abc039": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:720p",
+    "33992f7da367ba1496cd0d59b75874f7d1935372275647fd68312476e70d9a5e": "8d1190288cd4bf7e3084a04b0c639e5630bf66c2844ba4188d47fd6be7e0ac13:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
