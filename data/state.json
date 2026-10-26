@@ -163,6 +163,47 @@
       "source_quality": "1080p",
       "published_at": 1793005226,
       "release_date": "2026-09-30"
+    },
+    "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:1080p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b889c71439bdd562033c6e9857c7442da90f8f30438e61be0dfef87c7c71bb57",
+      "message_id": "801",
+      "published_at": 1793005482,
+      "bilingual_subtitles": true
+    },
+    "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:720p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9df69156b3f6db7f05ffad15bef9b869b6ccfaebd3a7d415c97313434e4d2749",
+      "message_id": "802",
+      "published_at": 1793005487,
+      "bilingual_subtitles": true
+    },
+    "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "c338ce866748e6a41d0dcddecaf109594837a37b7501bce492081f3a72df8f30",
+      "message_id": "803",
+      "published_at": 1793005493,
+      "bilingual_subtitles": true
+    },
+    "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8": {
+      "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793005493,
+      "release_date": "2026-10-01"
     }
   },
   "seen": {
@@ -684,7 +725,10 @@
     "8da335a3fd19b02fb247622347002c72364c8f54c5ce385d1a27c5315918459e": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:480p",
     "ccb79d46e4afad2a8ea06327e5d55e3f152f438ac4167b399951035452f3a2db": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:1080p",
     "dbe51b2ee673bf99039fbd2233c026621d75a430d964c038d8f501e055a74e79": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:720p",
-    "794a1abc4d360624fad949bb9fe8c0df0bac1681215e831a9a605bfd724002b5": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p"
+    "794a1abc4d360624fad949bb9fe8c0df0bac1681215e831a9a605bfd724002b5": "51d5468b01197f8e2521c98016339bdbcb78f3de412f379151335c2b5063a5f0:480p",
+    "b889c71439bdd562033c6e9857c7442da90f8f30438e61be0dfef87c7c71bb57": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:1080p",
+    "9df69156b3f6db7f05ffad15bef9b869b6ccfaebd3a7d415c97313434e4d2749": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:720p",
+    "c338ce866748e6a41d0dcddecaf109594837a37b7501bce492081f3a72df8f30": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
