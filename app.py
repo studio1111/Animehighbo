@@ -1381,15 +1381,6 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                     raise ValueError(
                         f"Prepared episode {manifest.get('title')} is missing required {quality}."
                     )
-            poster_identity = str(manifest.get("poster_identity") or "")
-            poster_exists = bool(state["posters"].get(poster_identity, {}).get("message_id"))
-            if not poster_exists and any(
-                f"{identity}:{quality}" in state["published"]
-                for quality in ("1080p", "720p", "480p")
-            ):
-                raise ValueError(
-                    f"Episode {manifest.get('title')} has delivered files but no recorded poster."
-                )
             episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
 
         except Exception as exc:
@@ -1432,20 +1423,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             thumbnail_path = create_anime_video_thumbnail(
                 title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
             )
-            # Publish (or recover) exactly one poster-led anchor for this episode.
-            # The three quality messages are replies to this anchor, never standalone posts.
-            poster_record = state["posters"].get(poster_identity, {})
-            poster_message_id = str(poster_record.get("message_id") or "")
-            if not poster_message_id:
-                poster_message_id = telegram_send_anime_poster(
-                    token, chat_id, title, episode_number, metadata
-                )
-                state["posters"][poster_identity] = {
-                    "title": title, "episode": episode_number,
-                    "message_id": poster_message_id, "published_at": int(time.time()),
-                }
-                save_state(config["state_file"], state)
-
+            # Each video is a standalone post with its own poster thumbnail and metadata.
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
                 if output_identity in state["published"]:
@@ -1460,7 +1438,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 video_caption = build_video_caption(title, episode_number, quality, metadata=metadata)
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
-                    thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
+                    thumbnail_path=thumbnail_path,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1699,9 +1677,9 @@ def run() -> int:
         group_failed = False
         try:
             poster_identity = _poster_identity(group_id, archive_mode)
-            if poster_identity not in state["posters"] and dry_run:
+            if dry_run:
                 LOG.info(
-                    "[DRY RUN] Would prepare the source and bilingual subtitles, then send poster + qualities: %s (%s)",
+                    "[DRY RUN] Would prepare the source and bilingual subtitles, then send each video with its poster thumbnail and metadata: %s (%s)",
                     group["title"], ", ".join(_quality_from_title(item["title"]) for item in entries),
                 )
                 continue
@@ -1829,9 +1807,7 @@ def run() -> int:
                     # Preparation workers leave all validated outputs as an artifact.
                     # Only the single publisher job is allowed to contact Telegram.
                     if prepare_only:
-                        if poster_identity not in state["posters"] and (
-                            completed_qualities or len(prepared_outputs) != len(variants)
-                        ):
+                        if completed_qualities or len(prepared_outputs) != len(variants):
                             raise RuntimeError(
                                 "Refusing to hand off an episode until all three quality files are prepared."
                             )
@@ -1876,19 +1852,8 @@ def run() -> int:
                     thumbnail_path = create_anime_video_thumbnail(
                         group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
                     )
-                    # Publish (or recover) one poster-led anchor, then reply with all qualities.
-                    poster_record = state["posters"].get(poster_identity, {})
-                    poster_message_id = str(poster_record.get("message_id") or "")
-                    if not poster_message_id:
-                        poster_message_id = telegram_send_anime_poster(
-                            token, chat_id, group["title"], group["episode"], metadata
-                        )
-                        state["posters"][poster_identity] = {
-                            "title": group["title"], "episode": group["episode"],
-                            "message_id": poster_message_id, "published_at": int(time.time()),
-                        }
-                        save_state(config["state_file"], state)
-
+                    # Each video carries its own poster thumbnail and complete metadata.
+                    # Never send a separate poster-only channel message.
                     for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
                         if output_identity in state["published"]:
