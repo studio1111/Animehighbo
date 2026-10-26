@@ -187,7 +187,7 @@ jobs:
           elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
             echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
           fi
-      - name: Refresh publication state after acquiring the global lock
+      - name: Refresh publication state before publishing
         run: |
           git fetch origin main
           git reset --hard origin/main
