@@ -745,6 +745,19 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
             continue
         raise ValueError("Anime caption exceeds Telegram's limit even after safe metadata reduction.")
 
+def build_quality_reply_caption(title: str, episode: str, quality: str) -> str:
+    """Build the stable, minimal caption for a quality video replying to the episode anchor."""
+    if quality not in {"1080p", "720p", "480p"}:
+        raise ValueError(f"Unsupported episode quality: {quality}")
+    anime_title, inferred_episode = episode_details(title)
+    episode_label = str(episode or inferred_episode or "—")
+    return (
+        f"🎬 <b>{_safe_caption_text(anime_title or '—')}</b> · "
+        f"<b>قسمت {_safe_caption_text(episode_label)}</b>\n"
+        f"🎞️ <b>کیفیت:</b> {quality} · @Animehighbo"
+    )
+
+
 def _quality_rank(title: str) -> int:
     quality = _quality_from_title(title)
     return {"1080p": 0, "720p": 1, "480p": 2}.get(quality, 3)
@@ -1457,8 +1470,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 duplicate_of = state["seen"].get(file_hash)
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
-                video_caption = build_episode_caption(title, episode_number, metadata=metadata)
-                video_caption = f"{video_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
+                video_caption = build_quality_reply_caption(title, episode_number, quality)
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
                     thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
@@ -1897,10 +1909,9 @@ def run() -> int:
                                 completed_qualities.append(quality)
                             continue
                         output_path, file_hash, _ = prepared_outputs[quality]
-                        file_caption = build_episode_caption(
-                            group["title"], group["episode"], metadata=metadata
+                        file_caption = build_quality_reply_caption(
+                            group["title"], group["episode"], quality
                         )
-                        file_caption = f"{file_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
                             thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
