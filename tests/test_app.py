@@ -212,7 +212,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                     state, False, "token", "@channel",
                 )
 
-        self.assertEqual(count, 6)
+        self.assertEqual(count, 0)  # Successful publication returns a shell-safe exit status.
         self.assertEqual([event[0] for event in events],
                          ["poster", "file", "file", "file", "poster", "file", "file", "file"])
         self.assertEqual([event[1] for event in events if event[0] == "poster"],
