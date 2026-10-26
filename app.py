@@ -1173,7 +1173,7 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     method = telegram_method_for_file(path.name)
     endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
-    payload = {"chat_id": chat_id, "caption": caption[:1024]}
+    payload = {"chat_id": chat_id, "caption": caption[:1024], "parse_mode": "HTML"}
     if reply_to_message_id:
         payload["reply_to_message_id"] = str(reply_to_message_id)
     if method == "sendVideo":
@@ -1376,8 +1376,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             if not poster_identity or not group_id or not series_key:
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
+            metadata = anime_catalog_metadata(title)
             if not state["posters"].get(poster_identity, {}).get("message_id"):
-                metadata = anime_catalog_metadata(title)
                 poster_message_id = telegram_send_anime_poster(
                     token, chat_id, title, episode_number, metadata
                 )
@@ -1406,8 +1406,13 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 duplicate_of = state["seen"].get(file_hash)
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
+                video_caption = build_episode_caption(title, episode_number, metadata=metadata)
+                video_caption = video_caption.replace(
+                    "\\n@Animehighbo",
+                    f"\\n🎥 <b>کیفیت:</b> {quality}\\n@Animehighbo",
+                )
                 message_id = telegram_upload_and_send(
-                    token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
+                    token, chat_id, output["path"], video_caption,
                     reply_to_message_id=poster_message_id,
                 )
                 state["seen"][file_hash] = output_identity
