@@ -193,9 +193,9 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 events.append(("file", caption, thumbnail_path, reply_to_message_id))
                 return str(len(events))
 
-            def send_poster(_token, _chat, title, episode, _metadata):
+            def send_poster(_token, _chat, title, episode, _metadata, fallback_image_path=None):
                 message_id = f"poster-{title}"
-                events.append(("poster", title, message_id))
+                events.append(("poster", title, message_id, fallback_image_path))
                 return message_id
 
             with patch.dict(os.environ, {
@@ -928,6 +928,55 @@ class PosterFallbackTests(unittest.TestCase):
             app.search_poster_image_urls("Moonlit Saga"),
             ["https://cdn.example.org/moonlit-poster.jpg"],
         )
+
+    def test_thumbnail_extracts_a_frame_when_all_poster_sources_fail(self):
+        import tempfile
+        from pathlib import Path
+        from types import SimpleNamespace
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            video = Path(temp) / "episode.mkv"
+            video.write_bytes(b"video")
+            output = Path(temp) / "thumbnail.jpg"
+
+            def fake_ffmpeg(args, **kwargs):
+                Path(args[-1]).write_bytes(bytes.fromhex("ffd8ff") + b"x" * 2048)
+                return SimpleNamespace(returncode=0, stderr="", stdout="")
+
+            with patch.object(app, "search_poster_image_urls", return_value=[]), \
+                 patch.object(app, "download_poster", side_effect=OSError("image services unavailable")), \
+                 patch.object(app.shutil, "which", return_value="/usr/bin/ffmpeg"), \
+                 patch.object(app.subprocess, "run", side_effect=fake_ffmpeg) as run:
+                result = app.create_anime_video_thumbnail(
+                    "Moonlit Saga", {}, output, fallback_video_path=video
+                )
+
+            self.assertEqual(result, output)
+            self.assertTrue(output.is_file())
+            self.assertIn(str(video), run.call_args.args[0])
+
+    def test_poster_sender_uses_generated_video_frame_when_web_images_fail(self):
+        import tempfile
+        from pathlib import Path
+        import app
+
+        response = Mock()
+        response.status_code = 200
+        response.json.return_value = {"ok": True, "result": {"message_id": 77}}
+        with tempfile.TemporaryDirectory() as temp:
+            fallback = Path(temp) / "thumbnail.jpg"
+            fallback.write_bytes(bytes.fromhex("ffd8ff") + b"x" * 1024)
+            with patch.object(app, "build_episode_caption", return_value="caption"), \
+                 patch.object(app, "search_poster_image_urls", return_value=[]), \
+                 patch.object(app.requests, "post", return_value=response) as post:
+                message_id = app.telegram_send_anime_poster(
+                    "token", "@channel", "Moonlit Saga", "07", {"coverImage": {}},
+                    fallback_image_path=fallback,
+                )
+
+        self.assertEqual(message_id, "77")
+        self.assertEqual(post.call_args.kwargs["files"]["photo"][1][:3], bytes.fromhex("ffd8ff"))
 
     def test_cli_main_configures_info_logging_before_running(self):
         with patch.object(app.logging, "basicConfig") as configure_logging, patch.object(

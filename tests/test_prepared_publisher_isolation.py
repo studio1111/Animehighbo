@@ -69,7 +69,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            poster.assert_called_once_with("token", "chat", "Series good", "1", {})
+            poster.assert_called_once_with("token", "chat", "Series good", "1", {}, fallback_image_path=root / "thumbnail.jpg")
             self.assertIn("good", state["published"])
             self.assertNotIn("escape", state["published"])
             self.assertEqual(upload.call_count, 3)
@@ -130,7 +130,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
             self.assertEqual(result, 1)  # Valid episode posts, but invalid bundle makes the run fail.
-            poster.assert_called_once_with("token", "chat", "Series good", "1", {})
+            poster.assert_called_once_with("token", "chat", "Series good", "1", {}, fallback_image_path=root / "thumbnail.jpg")
             self.assertEqual(upload.call_count, 3)
             self.assertIn("good", state["published"])
             self.assertNotIn("bad", state["published"])
