@@ -83,7 +83,10 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertIn("run-id:", workflow)
         self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
-        self.assertIn("Install FFmpeg for poster thumbnails", workflow)
+        self.assertIn("Ensure FFmpeg is available for poster thumbnails", workflow)
+        self.assertIn("sudo timeout -k 5s 180 apt-get", workflow)
+        self.assertIn("Acquire::http::Timeout=20", workflow)
+        self.assertIn("sudo timeout -k 5s 300 apt-get", workflow)
         self.assertNotIn("publisher_lock", workflow)
         self.assertNotIn("publisher.lock", workflow)
 
@@ -198,8 +201,13 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("timeout-minutes: 15", workflow)
         self.assertNotIn("command -v ffmpeg\n          sudo timeout 180 apt-get install", workflow)
         publisher = workflow.split("  publish:", 1)[1]
-        self.assertIn("sudo timeout 300 apt-get -o Acquire::Retries=3 update", publisher)
-        self.assertIn("sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg", publisher)
+        self.assertIn("Ensure FFmpeg is available for poster thumbnails", publisher)
+        self.assertIn("if command -v ffmpeg >/dev/null 2>&1", publisher)
+        self.assertIn("sudo timeout -k 5s 180 apt-get", publisher)
+        self.assertIn("Acquire::http::Timeout=20", publisher)
+        self.assertIn("Acquire::https::Timeout=20", publisher)
+        self.assertIn("install -y --no-install-recommends ffmpeg", publisher)
+        self.assertIn("sudo timeout -k 5s 300 apt-get", publisher)
         self.assertIn("command -v ffmpeg", publisher)
 
 
