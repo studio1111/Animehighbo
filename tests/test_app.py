@@ -171,7 +171,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_oldest_day_in_title_order_with_standalone_video_posts(self):
+    def test_publishes_poster_then_three_reply_videos_in_title_order(self):
         import os
         import tempfile
         from unittest.mock import patch
@@ -189,16 +189,21 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             thumbnail = Path(temp) / "poster.jpg"
             thumbnail.write_bytes(b"compressed-jpeg")
 
-            def send_file(_token, _chat, path, caption, thumbnail_path=None):
-                events.append(("file", caption, thumbnail_path))
+            def send_file(_token, _chat, path, caption, thumbnail_path=None, reply_to_message_id=None):
+                events.append(("file", caption, thumbnail_path, reply_to_message_id))
                 return str(len(events))
+
+            def send_poster(_token, _chat, title, episode, _metadata):
+                message_id = f"poster-{title}"
+                events.append(("poster", title, message_id))
+                return message_id
 
             with patch.dict(os.environ, {
                 "ANIMEHIGHBO_PREPARED_DIR": str(root),
                 "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
-                 patch.object(app, "telegram_send_anime_poster") as send_poster, \
+                 patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
                  patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
@@ -207,18 +212,25 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                     state, False, "token", "@channel",
                 )
 
-        self.assertEqual(count, 0)  # Successful publication must return a shell-safe exit status.
-        self.assertEqual(len(events), 6)
-        self.assertTrue(all(event[0] == "file" for event in events))
-        self.assertTrue(all(event[2] == thumbnail for event in events))
+        self.assertEqual(count, 6)
+        self.assertEqual([event[0] for event in events],
+                         ["poster", "file", "file", "file", "poster", "file", "file", "file"])
+        self.assertEqual([event[1] for event in events if event[0] == "poster"],
+                         ["Series A", "Series B"])
+        file_events = [event for event in events if event[0] == "file"]
+        self.assertEqual([event[3] for event in file_events],
+                         ["poster-Series A", "poster-Series A", "poster-Series A",
+                          "poster-Series B", "poster-Series B", "poster-Series B"])
+        self.assertTrue(all(event[2] == thumbnail for event in file_events))
         self.assertTrue(all("English:" in event[1] and "فارسی:" in event[1]
                             and "قسمت" in event[1] and "@Animehighbo" in event[1]
-                            and "کیفیت:" in event[1] for event in events))
-        send_poster.assert_not_called()
+                            and "کیفیت:" in event[1] for event in file_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
+        self.assertIn("episode-a", state["posters"])
+        self.assertIn("episode-b", state["posters"])
 
     def test_invalid_manifest_returns_failure_instead_of_green_success(self):
         import os
