@@ -1807,9 +1807,13 @@ def run() -> int:
                     # Preparation workers leave all validated outputs as an artifact.
                     # Only the single publisher job is allowed to contact Telegram.
                     if prepare_only:
-                        if completed_qualities or len(prepared_outputs) != len(variants):
+                        expected_missing = sum(
+                            1 for quality, _, _ in variants
+                            if f"{identity}:{quality}" not in state["published"]
+                        )
+                        if len(prepared_outputs) != expected_missing:
                             raise RuntimeError(
-                                "Refusing to hand off an episode until all three quality files are prepared."
+                                "Refusing to hand off an episode until every missing quality file is prepared."
                             )
                         prepared_dir = Path("prepared") / identity
                         prepared_dir.mkdir(parents=True, exist_ok=True)
