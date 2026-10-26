@@ -83,7 +83,10 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertIn("run-id:", workflow)
         self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", workflow)
-        self.assertIn("Install FFmpeg for poster thumbnails", workflow)
+        self.assertIn("Ensure FFmpeg is available for poster thumbnails", workflow)
+        self.assertIn("sudo timeout -k 5s 180 apt-get", workflow)
+        self.assertIn("Acquire::http::Timeout=20", workflow)
+        self.assertIn("sudo timeout -k 5s 300 apt-get", workflow)
         self.assertNotIn("publisher_lock", workflow)
         self.assertNotIn("publisher.lock", workflow)
 
