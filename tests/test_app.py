@@ -941,7 +941,7 @@ class PosterFallbackTests(unittest.TestCase):
             output = Path(temp) / "thumbnail.jpg"
 
             def fake_ffmpeg(args, **kwargs):
-                Path(args[-1]).write_bytes(b"\\xff\\xd8\\xff" + b"x" * 2048)
+                Path(args[-1]).write_bytes(bytes.fromhex("ffd8ff") + b"x" * 2048)
                 return SimpleNamespace(returncode=0, stderr="", stdout="")
 
             with patch.object(app, "search_poster_image_urls", return_value=[]), \
@@ -966,7 +966,7 @@ class PosterFallbackTests(unittest.TestCase):
         response.json.return_value = {"ok": True, "result": {"message_id": 77}}
         with tempfile.TemporaryDirectory() as temp:
             fallback = Path(temp) / "thumbnail.jpg"
-            fallback.write_bytes(b"\\xff\\xd8\\xff" + b"x" * 1024)
+            fallback.write_bytes(bytes.fromhex("ffd8ff") + b"x" * 1024)
             with patch.object(app, "build_episode_caption", return_value="caption"), \
                  patch.object(app, "search_poster_image_urls", return_value=[]), \
                  patch.object(app.requests, "post", return_value=response) as post:
@@ -976,7 +976,7 @@ class PosterFallbackTests(unittest.TestCase):
                 )
 
         self.assertEqual(message_id, "77")
-        self.assertEqual(post.call_args.kwargs["files"]["photo"][1][:3], b"\\xff\\xd8\\xff")
+        self.assertEqual(post.call_args.kwargs["files"]["photo"][1][:3], bytes.fromhex("ffd8ff"))
 
     def test_cli_main_configures_info_logging_before_running(self):
         with patch.object(app.logging, "basicConfig") as configure_logging, patch.object(
