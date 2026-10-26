@@ -1844,7 +1844,6 @@ def run() -> int:
                         file_caption = f"{group['title']} {quality} @Animehighbo"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
-                            reply_to_message_id=poster_message_id,
                         )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
