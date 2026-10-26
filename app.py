@@ -801,8 +801,11 @@ def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str
     return f"{clean} {quality} @Animehighbo{extension}"
 
 
-def create_anime_video_thumbnail(title: str, metadata: dict, output_path: Path) -> Path:
-    """Download and compress an anime poster into Telegram's video-thumbnail limits."""
+def create_anime_video_thumbnail(
+    title: str, metadata: dict, output_path: Path,
+    fallback_video_path: Path | None = None,
+) -> Path:
+    """Use an online poster where available, otherwise extract a frame from the episode."""
     cover = (metadata.get("coverImage") or {}) if isinstance(metadata, dict) else {}
     candidates = [str(cover.get(key) or "") for key in ("extraLarge", "large", "medium")]
     candidates.extend(search_poster_image_urls(title))
@@ -837,11 +840,38 @@ def create_anime_video_thumbnail(title: str, metadata: dict, output_path: Path) 
                 source_path.unlink(missing_ok=True)
         except Exception as exc:
             LOG.warning("Unable to prepare video thumbnail from %r for %s: %s", candidate, title, exc)
-    raise RuntimeError(f"No usable poster thumbnail found for {title}; refusing to publish videos without posters.")
+
+    # External catalogs/search engines may be unreachable in CI or omit a new season.
+    # A real frame from the already-prepared episode keeps the poster+thumbnail contract
+    # intact without fabricating artwork or publishing a video without an image.
+    if fallback_video_path is not None and Path(fallback_video_path).is_file():
+        for timestamp in ("5", "15", "30", "1", "0"):
+            for quality in (5, 10, 15, 20, 25):
+                output_path.unlink(missing_ok=True)
+                try:
+                    result = subprocess.run(
+                        [ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+                         "-ss", timestamp, "-i", str(fallback_video_path),
+                         "-frames:v", "1",
+                         "-vf", "scale=320:320:force_original_aspect_ratio=decrease",
+                         "-q:v", str(quality), str(output_path)],
+                        capture_output=True, text=True, timeout=45, check=False,
+                    )
+                except Exception as exc:
+                    LOG.warning("Video-frame poster fallback failed for %s at %ss: %s",
+                                title, timestamp, exc)
+                    break
+                if result.returncode == 0 and output_path.is_file() and 0 < output_path.stat().st_size <= 200 * 1024:
+                    LOG.warning("Using an episode frame as poster/thumbnail fallback for %s", title)
+                    return output_path
+        output_path.unlink(missing_ok=True)
+    raise RuntimeError(f"No usable poster or episode-frame thumbnail found for {title}; refusing to publish videos without images.")
 
 
-def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: str,
-                               metadata: dict) -> str:
+def telegram_send_anime_poster(
+    token: str, chat_id: str, title: str, episode: str, metadata: dict,
+    fallback_image_path: Path | None = None,
+) -> str:
     """Send a poster-led anime post; fail closed rather than publish without a verified poster."""
     caption = build_episode_caption(title, episode, metadata=metadata)
     cover = metadata.get("coverImage") or {}
@@ -870,6 +900,18 @@ def telegram_send_anime_poster(token: str, chat_id: str, title: str, episode: st
                 break
             except Exception as exc:
                 LOG.warning("Web poster candidate failed for %r; trying another source: %s", title, exc)
+
+    if not image_data and fallback_image_path is not None:
+        try:
+            fallback_path = Path(fallback_image_path)
+            fallback_bytes = fallback_path.read_bytes()
+            if fallback_bytes.startswith(b"\\xff\\xd8\\xff"):
+                image_data, image_type = fallback_bytes, "image/jpeg"
+                LOG.warning("Using a verified frame from the episode as the poster for %r", title)
+            else:
+                LOG.warning("Generated poster fallback is not a valid JPEG for %r", title)
+        except OSError as exc:
+            LOG.warning("Could not read generated episode-frame poster for %r: %s", title, exc)
 
     if image_data:
         # A transport timeout can mean Telegram accepted the photo, so never send a
@@ -1443,8 +1485,14 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
 
             metadata = anime_catalog_metadata(title)
             # Validate video thumbnail assets before creating the public anchor.
+            source_video = next(
+                (episode["files"][quality]["path"] for quality in ("1080p", "720p", "480p")
+                 if quality in episode["files"]),
+                None,
+            )
             thumbnail_path = create_anime_video_thumbnail(
-                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
+                title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg",
+                fallback_video_path=source_video,
             )
             # Publish (or recover) exactly one poster-led anchor for this episode.
             # The three quality messages are replies to this anchor, never standalone posts.
@@ -1452,7 +1500,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             poster_message_id = str(poster_record.get("message_id") or "")
             if not poster_message_id:
                 poster_message_id = telegram_send_anime_poster(
-                    token, chat_id, title, episode_number, metadata
+                    token, chat_id, title, episode_number, metadata,
+                    fallback_image_path=thumbnail_path,
                 )
                 state["posters"][poster_identity] = {
                     "title": title, "episode": episode_number,
