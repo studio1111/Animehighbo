@@ -613,7 +613,7 @@ def translate_anime_synopsis(description: str) -> str:
     source = html.unescape(re.sub(r"<[^>]+>", " ", str(description or "")))
     source = re.sub(r"\s+", " ", source).strip()
     if not source:
-        return "خلاصهٔ این انیمه فعلاً در دسترس نیست."
+        return "—"
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if api_key:
         model = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
@@ -708,8 +708,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     synopsis_close = "</blockquote>"
     footer = "@Animehighbo"
     synopsis = re.sub(r"\s+", " ", str(synopsis or "")).strip()
-    if not synopsis or synopsis == "خلاصهٔ این انیمه فعلاً در دسترس نیست.":
-        raise ValueError("A verified anime synopsis is required; refusing to publish an incomplete lead post.")
+    synopsis = synopsis or "—"
 
     # Respect Telegram's caption limit while preserving the three titles, episode,
     # synopsis block, and channel footer. Reduce synopsis before lower-priority details.
@@ -947,36 +946,39 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                     LOG.info("[DRY RUN] Episode link: %s | episode=%s | poster=%s | %s",
                              anime_title, episode or "unknown", image_url or "text-only", page_url)
                     continue
+                image_data = None
+                image_type = ""
+                poster_candidates = []
                 if image_url:
+                    poster_candidates.append(image_url)
+                try:
+                    # Always search alternate poster sources too, so a dead feed image
+                    # does not prevent publication when a catalog/search image exists.
+                    poster_candidates.extend(search_poster_image_urls(anime_title))
+                except Exception as search_exc:
+                    LOG.warning("Alternate poster search failed for %s: %s", anime_title, search_exc)
+                seen_poster_urls = set()
+                for candidate in poster_candidates:
+                    candidate = str(candidate or "").strip()
+                    if not candidate or candidate in seen_poster_urls:
+                        continue
+                    seen_poster_urls.add(candidate)
                     try:
-                        image_data, image_type = download_poster(image_url, int(config["request_timeout_seconds"]))
+                        image_data, image_type = download_poster(candidate, int(config["request_timeout_seconds"]))
+                        image_url = candidate
+                        break
                     except Exception as poster_exc:
-                        LOG.warning("Poster download failed for %s; falling back to text-only post: %s", title, poster_exc)
-                        image_url = ""
-                if image_url:
-                    # Do not send a text fallback after a Telegram transport timeout:
-                    # the photo may already have been accepted, which would duplicate
-                    # the anchor post. Only poster acquisition failures are safe fallbacks.
-                    message_id = telegram_send_episode(
-                        token, chat_id, image_data, image_type, title, episode, page_url
+                        LOG.warning("Poster candidate failed for %s; trying next source: %s", anime_title, poster_exc)
+                if not image_data:
+                    raise RuntimeError(
+                        f"No downloadable poster found for {anime_title!r} after feed metadata and alternate-source searches; "
+                        "episode remains queued for retry. Text-only publication is forbidden."
                     )
-                if not image_url:
-                    catalog = anime_catalog_metadata(anime_title)
-                    caption = build_episode_caption(title, episode, page_url, catalog)
-                    response = requests.post(
-                        telegram_api_endpoint(token, "sendMessage"),
-                        data={"chat_id": chat_id, "text": caption, "parse_mode": "HTML",
-                              "disable_web_page_preview": "true"},
-                        timeout=(30, 60),
-                    )
-                    response.raise_for_status()
-                    result = response.json()
-                    if not isinstance(result, dict) or result.get("ok") is not True:
-                        detail = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
-                        raise RuntimeError(f"Telegram text-only episode post failed: {detail}")
-                    message_id = str((result.get("result") or {}).get("message_id") or "")
-                    if not message_id:
-                        raise RuntimeError("Telegram text-only post succeeded without a message_id.")
+                # A sendPhoto transport error can be ambiguous. Never fall back to
+                # sendMessage, which would break the fixed channel format or duplicate a post.
+                message_id = telegram_send_episode(
+                    token, chat_id, image_data, image_type, title, episode, page_url
+                )
                 state["published"][identity] = {
                     "title": anime_title,
                     "episode": episode or None,
