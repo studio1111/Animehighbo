@@ -21,6 +21,23 @@ This file is the canonical operating policy for the Animehighbo channel. All imp
 11. **Do not promise perfect uptime.** External torrent/feed availability, GitHub Actions limits, Telegram API limits, credentials, and network failures are outside the program's control. The engineering goal is automatic detection, safe recovery, and no permanent silent stall, not an impossible guarantee that failures can never occur.
 12. **Preserve source and platform safeguards.** Removing an operator approval gate does not mean bypassing source validation, credentials, Telegram limits, or applicable rights restrictions. Only process and republish media the channel is authorized to distribute.
 
+
+## Immutable Telegram post format (owner-directed, 2026-10-26)
+
+The following layout is a permanent channel contract. Do not reorder, omit, or replace any section because a metadata provider changes, a translation is missing, or a fallback source is used. Only the repository owner may change this format by an explicit instruction.
+
+For every episode, publish exactly one lead post followed by its three quality videos, in this order:
+
+1. **A real anime poster image first.** Search multiple independent metadata/image sources when needed (AniList, Jikan/MyAnimeList, Kitsu, and image search providers such as Google Images and Bing Images). Validate that the downloaded image is a real, decodable image and corresponds to the correct anime, not a logo, unrelated title, placeholder, or broken URL. Cache the chosen poster for retry consistency. If the first source has no usable poster, continue to other sources. Do not publish a text-only lead post and do not publish a poster as an unrelated standalone message. If no poster can be verified, hold the episode for retry/review instead of publishing a malformed post.
+2. **Three names, always in this order:** English title, Persian title, and Japanese title written in Latin letters (romaji). Never substitute Japanese script for romaji, and never silently drop one of the three fields. Use — only after searching available sources and confirming a title cannot be verified.
+3. **Complete anime metadata:** episode number, season/cour/cour or season label when known, release year, genres, airing status, rating and rating source, and studio. Query multiple metadata providers and merge compatible non-conflicting facts. Prefer authoritative/primary catalog records where available; never invent missing values. Display — for a field that remains unavailable after the source checks. Keep source attribution compact and consistent.
+4. **Persian synopsis:** include a readable Persian summary in a collapsible Telegram HTML block. Obtain/compare synopsis data from multiple catalogs when available, translate it into natural Persian, and preserve the actual plot meaning. Do not omit the summary because one provider lacks it; try the other providers. Escape all untrusted metadata before inserting it into HTML.
+5. **Three episode video qualities:** send 1080p, then 720p, then 480p, each as a reply to the lead poster message. They must all belong to the exact same episode. The publisher must verify that the poster post and complete metadata/synopsis are ready and that all three video files are present and valid before beginning the public sequence. Do not start a partial sequence that can strand a poster without its three videos.
+
+The lead post's fixed visual order is therefore: **poster image → English / Persian / Japanese-romaji titles → complete metadata → Persian synopsis → 1080p reply → 720p reply → 480p reply**. Use one centralized caption/template builder for all sources and all workers; source changes must only change field values, never the layout or required sections.
+
+Publication state must track the lead poster message ID and each quality message ID separately. Recovery must resume the same episode thread without creating a second lead post or duplicating already-confirmed quality messages. If Telegram's response is ambiguous, reconcile with persisted state and logs before retrying; never delete or edit an existing channel post to silently change its layout. Do not delete existing channel posts or messages as part of automated recovery. Any removal or edit of published channel content requires the owner's explicit instruction.
+
 ## Definition of done for reliability changes
 
 A reliability change is not complete until:
