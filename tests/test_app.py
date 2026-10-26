@@ -85,7 +85,7 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
         self.assertEqual(anime_japanese_title("Demon Slayer", {"title": {"english": "Demon Slayer"}}),
                          "Kimetsu no Yaiba")
 
-    def test_caption_uses_native_japanese_title_when_available(self):
+    def test_caption_uses_japanese_romaji_not_native_script(self):
         metadata = {"title": {"english": "Demon Slayer", "romaji": "Kimetsu no Yaiba", "native": "鬼滅の刃"}}
         with patch("app.translate_title_to_persian", return_value="شیطان‌کش"), patch(
             "app.translate_anime_synopsis", return_value="خلاصهٔ آزمایشی"
@@ -93,8 +93,9 @@ class JapaneseRomajiTitleTests(unittest.TestCase):
             caption = build_episode_caption("Demon Slayer - 01 (1080p)", "01", metadata=metadata)
         self.assertIn("English:", caption)
         self.assertIn("فارسی:", caption)
-        self.assertIn("日本語:", caption)
-        self.assertIn("鬼滅の刃", caption)
+        self.assertIn("日本語（ローマ字）:", caption)
+        self.assertIn("Kimetsu no Yaiba", caption)
+        self.assertNotIn("鬼滅の刃", caption)
 
 
 class PreferredSourceTests(unittest.TestCase):
