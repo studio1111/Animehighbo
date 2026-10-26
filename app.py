@@ -758,9 +758,9 @@ def build_quality_reply_caption(title: str, episode: str, quality: str) -> str:
     anime_title, inferred_episode = episode_details(title)
     episode_label = str(episode or inferred_episode or "—")
     return (
-        f"🎬 <b>{_safe_caption_text(anime_title or '—')}</b> · "
-        f"<b>قسمت {_safe_caption_text(episode_label)}</b>\n"
-        f"🎞️ <b>کیفیت:</b> {quality} · @Animehighbo"
+        f"🎬 <b>{_safe_caption_text(anime_title or '—')}</b>\n"
+        f"📺 <b>EP {_safe_caption_text(episode_label)}</b> · "
+        f"🎞️ <b>{quality}</b>"
     )
 
 
@@ -796,14 +796,16 @@ def _episode_group(title: str) -> tuple[str, str, str]:
 
 
 def processed_filename(title: str, quality: str, extension: str = ".mkv") -> str:
-    """Return the requested minimal filename: anime title, resolution, channel handle."""
-    anime_title, _ = episode_details(title)
+    """Return a minimal filename with anime title, episode, quality, and channel handle."""
+    anime_title, episode = episode_details(title)
     clean = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", anime_title)
     clean = re.sub(r"[^\w .'-]+", " ", clean, flags=re.UNICODE)
     clean = re.sub(r"\s+", " ", clean).strip(" ._-") or "Anime"
+    episode = re.sub(r"[^\w.-]+", "", str(episode or "").strip(), flags=re.UNICODE)
+    episode_label = f" EP {episode}" if episode else ""
     quality = quality if quality in {"480p", "720p", "1080p", "1440p", "2160p"} else "quality-unknown"
     extension = extension if extension.startswith(".") else f".{extension}"
-    return f"{clean} {quality} @Animehighbo{extension}"
+    return f"{clean}{episode_label} {quality} @Animehighbo{extension}"
 
 
 def create_anime_video_thumbnail(
@@ -1525,8 +1527,8 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 duplicate_of = state["seen"].get(file_hash)
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
-                video_caption = build_episode_caption(
-                    title, episode_number, metadata=metadata, quality=quality,
+                video_caption = build_quality_reply_caption(
+                    title, episode_number, quality,
                 )
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
