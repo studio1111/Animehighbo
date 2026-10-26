@@ -1203,7 +1203,7 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str) -> str:
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None) -> str:
     """Upload a verified media file as a standalone post with its poster thumbnail."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
