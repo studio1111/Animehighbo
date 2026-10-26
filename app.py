@@ -977,6 +977,8 @@ def run_link_mode(config: dict, state: dict, dry_run: bool, token: str, chat_id:
                     )
                 # A sendPhoto transport error can be ambiguous. Never fall back to
                 # sendMessage, which would break the fixed channel format or duplicate a post.
+                # Use the exact validated image candidate selected above.
+                # Avoid a second search that could choose a different image or fail.
                 message_id = telegram_send_episode(
                     token, chat_id, image_data, image_type, title, episode, page_url
                 )
