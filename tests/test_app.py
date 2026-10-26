@@ -922,39 +922,30 @@ class PosterFallbackTests(unittest.TestCase):
         self.assertEqual(configure_logging.call_args.kwargs.get("level"), app.logging.INFO)
         run.assert_called_once_with()
 
-    def test_missing_poster_publishes_text_and_returns_anchor_message_id(self):
-        from unittest.mock import Mock, patch
+    def test_missing_poster_never_publishes_a_text_only_post(self):
         import app
 
-        response = Mock()
-        response.raise_for_status.return_value = None
-        response.json.return_value = {"ok": True, "result": {"message_id": 731}}
-        with patch.object(app, "search_poster_image_urls", return_value=[]), patch.object(app.requests, "post", return_value=response) as post:
-            message_id = app.telegram_send_anime_poster(
-                "token", "@channel", "Moonlit Saga", "07",
-                {"coverImage": {}, "title": {"english": "Moonlit Saga", "romaji": "Tsuki no Monogatari"}},
-            )
-        self.assertEqual(message_id, "731")
-        self.assertIn("/sendMessage", post.call_args.args[0])
-        self.assertIn("text", post.call_args.kwargs["data"])
-        self.assertNotIn("files", post.call_args.kwargs)
+        with patch.object(app, "search_poster_image_urls", return_value=[]), \
+             patch.object(app.requests, "post") as post:
+            with self.assertRaisesRegex(RuntimeError, "No verified poster"):
+                app.telegram_send_anime_poster(
+                    "token", "@channel", "Moonlit Saga", "07",
+                    {"coverImage": {}, "title": {"english": "Moonlit Saga", "romaji": "Tsuki no Monogatari"}},
+                )
+        post.assert_not_called()
 
-    def test_unavailable_poster_download_falls_back_to_text(self):
-        from unittest.mock import Mock, patch
+    def test_unavailable_poster_sources_hold_episode_for_retry(self):
         import app
 
-        response = Mock()
-        response.raise_for_status.return_value = None
-        response.json.return_value = {"ok": True, "result": {"message_id": 732}}
         with patch.object(app, "download_poster", side_effect=OSError("catalog image unreachable")), \
              patch.object(app, "search_poster_image_urls", return_value=[]), \
-             patch.object(app.requests, "post", return_value=response) as post:
-            message_id = app.telegram_send_anime_poster(
-                "token", "@channel", "Moonlit Saga", "07",
-                {"coverImage": {"extraLarge": "https://cdn.example.org/poster.jpg"}},
-            )
-        self.assertEqual(message_id, "732")
-        self.assertIn("/sendMessage", post.call_args.args[0])
+             patch.object(app.requests, "post") as post:
+            with self.assertRaisesRegex(RuntimeError, "No verified poster"):
+                app.telegram_send_anime_poster(
+                    "token", "@channel", "Moonlit Saga", "07",
+                    {"coverImage": {"extraLarge": "https://cdn.example.org/poster.jpg"}},
+                )
+        post.assert_not_called()
 
 
 class NoAutomaticRightsGateTests(unittest.TestCase):
