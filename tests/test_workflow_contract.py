@@ -144,7 +144,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertLess(subtitle, encode)
         self.assertLess(encode, thumbnail)
         self.assertLess(thumbnail, upload)
-        self.assertNotIn("poster_message_id = telegram_send_anime_poster(", group_flow)
+        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        self.assertLess(thumbnail, poster)
+        self.assertLess(poster, upload)
 
     def test_all_three_qualities_are_encoded_before_video_posts_are_sent(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
