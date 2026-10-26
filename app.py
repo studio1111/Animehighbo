@@ -1870,7 +1870,7 @@ def run() -> int:
                         )
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
-                            thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
+                            thumbnail_path=thumbnail_path,
                         )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
