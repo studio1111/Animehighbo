@@ -1,0 +1,199 @@
+name: Recover and publish prepared episode
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: GitHub Actions run containing the prepared episode artifact
+        required: true
+        type: string
+      artifact_name:
+        description: Exact prepared episode artifact name
+        required: true
+        type: string
+      identity:
+        description: Episode identity from the artifact manifest
+        required: true
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - 'data/recover_prepared_episode.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    name: Publish one already-prepared episode
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Read recovery request
+        id: request
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_RUN_ID: ${{ inputs.run_id }}
+          INPUT_ARTIFACT_NAME: ${{ inputs.artifact_name }}
+          INPUT_IDENTITY: ${{ inputs.identity }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from pathlib import Path
+
+          if os.environ["EVENT_NAME"] == "workflow_dispatch":
+              request = {
+                  "run_id": os.environ["INPUT_RUN_ID"].strip(),
+                  "artifact_name": os.environ["INPUT_ARTIFACT_NAME"].strip(),
+                  "identity": os.environ["INPUT_IDENTITY"].strip(),
+              }
+          else:
+              request = json.loads(Path("data/recover_prepared_episode.json").read_text(encoding="utf-8"))
+          if not all(str(request.get(key, "")).strip() for key in ("run_id", "artifact_name", "identity")):
+              raise SystemExit("Recovery request requires run_id, artifact_name, and identity.")
+          if not str(request["run_id"]).isdigit():
+              raise SystemExit("Recovery run_id must be numeric.")
+          identity = str(request["identity"]).strip()
+          if not all(ch in "0123456789abcdef" for ch in identity) or len(identity) != 64:
+              raise SystemExit("Recovery identity must be a 64-character lowercase SHA-256 hex string.")
+          print("run_id=" + str(request["run_id"]).strip())
+          print("artifact_name=" + str(request["artifact_name"]).strip())
+          print("identity=" + identity)
+          PY
+      - name: Download the already-prepared episode artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.request.outputs.artifact_name }}
+          path: prepared-artifacts/episode-${{ steps.request.outputs.identity }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ steps.request.outputs.run_id }}
+      - name: Install FFmpeg for poster thumbnails
+        run: |
+          sudo timeout 300 apt-get -o Acquire::Retries=3 update
+          sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg
+          command -v ffmpeg
+      - name: Configure Telegram API endpoint
+        env:
+          TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}
+          TELEGRAM_LOCAL_API_VAR: ${{ vars.TELEGRAM_LOCAL_API }}
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_API_BASE_URL: ${{ vars.TELEGRAM_API_BASE_URL }}
+        run: |
+          if [ -n "$TELEGRAM_LOCAL_API_SECRET" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_SECRET"
+          elif [ -n "$TELEGRAM_LOCAL_API_VAR" ]; then
+            TELEGRAM_LOCAL_API="$TELEGRAM_LOCAL_API_VAR"
+          else
+            TELEGRAM_LOCAL_API="false"
+          fi
+          if [ "${TELEGRAM_LOCAL_API,,}" = "true" ]; then
+            if [ -z "$TELEGRAM_API_ID" ] || [ -z "$TELEGRAM_API_HASH" ] || [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+              echo "TELEGRAM_LOCAL_API=true requires TELEGRAM_API_ID, TELEGRAM_API_HASH, and TELEGRAM_BOT_TOKEN secrets."
+              exit 1
+            fi
+            docker run --pull always --detach --name animehighbo-local-bot-api \
+              --publish 127.0.0.1:8081:8081 \
+              --env TELEGRAM_API_ID="$TELEGRAM_API_ID" \
+              --env TELEGRAM_API_HASH="$TELEGRAM_API_HASH" \
+              --env TELEGRAM_LOCAL=1 \
+              aiogram/telegram-bot-api:latest
+            ready=false
+            for attempt in $(seq 1 60); do
+              if curl --silent --show-error --fail "http://127.0.0.1:8081/bot${TELEGRAM_BOT_TOKEN}/getMe" >/dev/null; then
+                ready=true
+                break
+              fi
+              sleep 2
+            done
+            if [ "$ready" != "true" ]; then
+              docker logs animehighbo-local-bot-api || true
+              echo "Local Telegram Bot API did not become ready."
+              exit 1
+            fi
+            echo "TELEGRAM_API_BASE_URL=http://127.0.0.1:8081" >> "$GITHUB_ENV"
+          elif [ -n "$TELEGRAM_API_BASE_URL" ]; then
+            echo "TELEGRAM_API_BASE_URL=$TELEGRAM_API_BASE_URL" >> "$GITHUB_ENV"
+          fi
+      - name: Publish poster and all three video qualities
+        id: publish
+        env:
+          ANIMEHIGHBO_PUBLISH_PREPARED: 'true'
+          ANIMEHIGHBO_PREPARED_DIR: prepared-artifacts
+          ANIMEHIGHBO_DRY_RUN: 'false'
+          ANIMEHIGHBO_PUBLISH_EVENTS_FILE: publish-events.json
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR: ${{ vars.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET"
+          elif [ -n "$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR" ]; then
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB="$ANIMEHIGHBO_MAX_FILE_SIZE_MB_VAR"
+          else
+            export ANIMEHIGHBO_MAX_FILE_SIZE_MB=1800
+          fi
+          export ANIMEHIGHBO_RELEASE_DATE=""
+          python app.py
+      - name: Persist publication state without restoring stale poster-only records
+        if: always() && steps.publish.outcome == 'success'
+        run: |
+          if [ -n "$(git status --porcelain data/state.json)" ]; then
+            cp data/state.json /tmp/animehighbo-local-state.json
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git reset --hard origin/main
+              git checkout -B state-update origin/main
+              python - <<'PY'
+          import json
+          from pathlib import Path
+
+          local = json.loads(Path("/tmp/animehighbo-local-state.json").read_text(encoding="utf-8"))
+          path = Path("data/state.json")
+          current = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+          for section in ("published", "posters", "seen"):
+              destination = current.setdefault(section, {})
+              source = local.get(section, {})
+              if not isinstance(destination, dict) or not isinstance(source, dict):
+                  raise SystemExit(f"Invalid state section: {section}")
+              for key, value in source.items():
+                  if key not in destination:
+                      destination[key] = value
+                  elif section == "published" and isinstance(value, dict):
+                      required = {"1080p", "720p", "480p"}
+                      if required.issubset(set(value.get("complete_qualities", []))):
+                          existing = destination[key]
+                          if not isinstance(existing, dict) or not required.issubset(set(existing.get("complete_qualities", []))):
+                              destination[key] = value
+          path.write_text(json.dumps(current, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+              if git diff --quiet -- data/state.json; then
+                echo "Publication state already persisted."
+                exit 0
+              fi
+              git add data/state.json
+              git commit -m "chore: persist recovered episode publication state [skip ci]"
+              if git push origin HEAD:main; then
+                echo "Recovered publication state persisted."
+                exit 0
+              fi
+            done
+            echo "Could not persist recovered publication state after five attempts."
+            exit 1
+          else
+            echo "No publication state changes to persist."
+          fi
