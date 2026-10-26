@@ -1352,47 +1352,6 @@
       "published_at": 1792755300,
       "release_date": "2026-10-07"
     },
-    "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:1080p": {
-      "title": "Toaru Anbu no Item",
-      "quality": "1080p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "62502c9d590bc626845329eece0b8eda875efe01cbbeaed28e1f309926265478",
-      "message_id": "186",
-      "published_at": 1792756360,
-      "bilingual_subtitles": true
-    },
-    "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:720p": {
-      "title": "Toaru Anbu no Item",
-      "quality": "720p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "5013a45315818753f44bb250b61c44200beb1e26f5c43577c825e6393e4e31a3",
-      "message_id": "187",
-      "published_at": 1792756364,
-      "bilingual_subtitles": true
-    },
-    "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96:480p": {
-      "title": "Toaru Anbu no Item",
-      "quality": "480p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "babd458104f5aea90c7c4444af7762a5d25975332664de8584a8ecc5974cb7ca",
-      "message_id": "188",
-      "published_at": 1792756367,
-      "bilingual_subtitles": true
-    },
-    "234607d9e8efd41e5bcc8976e40305aefb795243617e6659a65395f818067f96": {
-      "title": "Toaru Anbu no Item",
-      "complete_qualities": [
-        "1080p",
-        "720p",
-        "480p"
-      ],
-      "source_quality": "1080p",
-      "published_at": 1792756367,
-      "release_date": "2026-10-09"
-    },
     "7c2192b898da5ed0e694b4be3d67e37c955363034cbdaa54c8c62d4d774428a3:1080p": {
       "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
       "quality": "1080p",
@@ -1515,47 +1474,6 @@
       "source_quality": "1080p",
       "published_at": 1792758457,
       "release_date": "2026-10-10"
-    },
-    "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3:1080p": {
-      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
-      "quality": "1080p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "a38b0a984497cfa169a00acb8ca240a6f9b1e2a42c0eadffe116632a8dac7555",
-      "message_id": "202",
-      "published_at": 1792758533,
-      "bilingual_subtitles": true
-    },
-    "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3:720p": {
-      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
-      "quality": "720p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "9c1807f8ca7e84cfb038563455b171bb0cf1b58e36707ad91e4bba6ca99b5184",
-      "message_id": "203",
-      "published_at": 1792758543,
-      "bilingual_subtitles": true
-    },
-    "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3:480p": {
-      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
-      "quality": "480p",
-      "source_quality": "1080p",
-      "feed": "episode archive manifest",
-      "file_sha256": "c87625b5432c2353882751812bc0f5c3b9a530304fa4c4a8e576d34b1f3deaac",
-      "message_id": "204",
-      "published_at": 1792758547,
-      "bilingual_subtitles": true
-    },
-    "7b415ac2199c6bacc9aea8432954bfb92ff273b7544a68ad4fd2a39d1c9421f3": {
-      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
-      "complete_qualities": [
-        "1080p",
-        "720p",
-        "480p"
-      ],
-      "source_quality": "1080p",
-      "published_at": 1792758547,
-      "release_date": "2026-10-09"
     },
     "8f9c743da09161241cf17dd19c072bfb70a69b93909a7acd56568d6b87b26d89:1080p": {
       "title": "Magical Explorer",

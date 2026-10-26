@@ -170,7 +170,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_oldest_day_in_title_order_with_three_replies_per_poster(self):
+    def test_publishes_oldest_day_in_title_order_with_standalone_video_posts(self):
         import os
         import tempfile
         from unittest.mock import patch
@@ -208,8 +208,8 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(count, 0)  # Successful publication must return a shell-safe exit status.
         self.assertEqual(events[0], ("poster", "Series A"))
         self.assertEqual(events[4], ("poster", "Series B"))
-        self.assertTrue(all(event[2] == "poster-Series A" for event in events[1:4]))
-        self.assertTrue(all(event[2] == "poster-Series B" for event in events[5:8]))
+        self.assertTrue(all(event[2] is None for event in events[1:4]))
+        self.assertTrue(all(event[2] is None for event in events[5:8]))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
@@ -366,11 +366,10 @@ class TorrentSourceConfigTests(unittest.TestCase):
             with patch("app.requests.post", return_value=response) as post:
                 message_id = telegram_upload_and_send(
                     "test-token", "@test-channel", media, "caption",
-                    reply_to_message_id=42,
                 )
         self.assertEqual(message_id, "77")
         self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
-        self.assertEqual(post.call_args.kwargs["data"]["reply_to_message_id"], "42")
+        self.assertNotIn("reply_to_message_id", post.call_args.kwargs["data"])
 
     def test_accepts_both_uri_and_url_source_keys(self):
         magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
