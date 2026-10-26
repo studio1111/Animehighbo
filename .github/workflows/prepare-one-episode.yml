@@ -133,6 +133,20 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Install ffmpeg for poster thumbnails
+        timeout-minutes: 15
+        run: |
+          for source_file in /etc/apt/sources.list.d/*; do
+            if [ -f "$source_file" ] && grep -q "packages.microsoft.com" "$source_file"; then
+              echo "Disabling unrelated Microsoft apt source for this ephemeral runner: $source_file"
+              sudo mv "$source_file" "$source_file.disabled"
+            fi
+          done
+          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/apt-mirrors.txt
+          sudo timeout 300 apt-get -o Acquire::Retries=3 update
+          sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg
+          command -v ffmpeg
+          ffmpeg -version | head -n 1
       - name: Download only this episode's artifact
         uses: actions/download-artifact@v4
         with:
