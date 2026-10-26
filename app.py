@@ -1163,8 +1163,9 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str) -> str:
-    """Upload a verified media file as its own visible channel post."""
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
+                            reply_to_message_id: str | int | None = None) -> str:
+    """Upload a verified media file as a reply under its anime poster."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
     if not chat_id:
@@ -1173,6 +1174,8 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str)
     endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024]}
+    if reply_to_message_id:
+        payload["reply_to_message_id"] = str(reply_to_message_id)
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
@@ -1405,6 +1408,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], f"{title} {quality} @Animehighbo",
+                    reply_to_message_id=poster_message_id,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1419,7 +1423,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published standalone video post: %s %s after poster %s", title, quality, poster_message_id)
+                LOG.info("Published %s %s as a reply to poster %s", title, quality, poster_message_id)
 
             state["published"][identity] = {
                 "title": title,
