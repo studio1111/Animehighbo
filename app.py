@@ -1863,8 +1863,6 @@ def run() -> int:
                     thumbnail_path = create_anime_video_thumbnail(
                         group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
                     )
-                    published_series_keys.add(series_key)
-
                     for quality, _target_height, _video_bitrate in variants:
                         output_identity = f"{identity}:{quality}"
                         if output_identity in state["published"]:
