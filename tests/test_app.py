@@ -189,7 +189,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 events.append(("poster", title))
                 return "poster-" + title
 
-            def send_file(_token, _chat, path, caption, reply_to_message_id=None):
+            def send_file(_token, _chat, path, caption, thumbnail_path=None):
                 events.append(("file", caption, reply_to_message_id))
                 return str(len(events))
 
@@ -369,12 +369,16 @@ class TorrentSourceConfigTests(unittest.TestCase):
             response = Mock()
             response.json.return_value = {"ok": True, "result": {"message_id": 77}}
             with patch("app.requests.post", return_value=response) as post:
-                message_id = telegram_upload_and_send(
-                    "test-token", "@test-channel", media, "caption",
+                thumbnail = Path(temp) / "poster.jpg"
+            thumbnail.write_bytes(b"compressed-jpeg")
+            message_id = telegram_upload_and_send(
+                    "test-token", "@test-channel", media, "caption", thumbnail_path=thumbnail,
                 )
         self.assertEqual(message_id, "77")
         self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
         self.assertNotIn("reply_to_message_id", post.call_args.kwargs["data"])
+        self.assertIn("thumbnail", post.call_args.kwargs["files"])
+        self.assertEqual(post.call_args.kwargs["files"]["thumbnail"][2], "image/jpeg")
 
     def test_accepts_both_uri_and_url_source_keys(self):
         magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
