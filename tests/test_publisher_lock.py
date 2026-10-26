@@ -21,10 +21,13 @@ def github_lock_response(identity, sha="lock-sha"):
     return response
 
 
-def github_state_response(identity, complete=True):
+def github_state_response(identity, complete=True, quality_records=None):
     qualities = ["1080p", "720p", "480p"] if complete else []
+    published = {identity: {"complete_qualities": qualities}}
+    for quality in quality_records or []:
+        published[f"{identity}:{quality}"] = {"quality": quality}
     encoded = base64.b64encode(
-        json.dumps({"published": {identity: {"complete_qualities": qualities}}}).encode("utf-8")
+        json.dumps({"published": published}).encode("utf-8")
     ).decode("ascii")
     response = Mock(status_code=200)
     response.json.return_value = {"sha": "state-sha", "content": encoded}
@@ -107,12 +110,12 @@ class PublisherLockTests(unittest.TestCase):
         self.assertTrue(released)
         self.assertEqual(delete.call_args.kwargs["json"]["sha"], "owned-sha")
 
-    def test_release_keeps_lock_when_episode_is_not_complete(self):
+    def test_release_keeps_lock_when_episode_has_partial_video_publication(self):
         lock = load_publisher_lock(self)
         current = github_lock_response("episode-a", "owned-sha")
 
         with patch.object(lock.requests, "get", side_effect=[
-            current, github_state_response("episode-a", complete=False)
+            current, github_state_response("episode-a", complete=False, quality_records=["1080p"])
         ]), patch.object(lock.requests, "delete") as delete:
             released = lock.release_lock(
                 "episode-a", token="token", repository="owner/repo"
@@ -120,6 +123,30 @@ class PublisherLockTests(unittest.TestCase):
 
         self.assertFalse(released)
         delete.assert_not_called()
+
+    def test_release_clears_lock_when_no_video_quality_was_published(self):
+        lock = load_publisher_lock(self)
+        current = github_lock_response("episode-a", "owned-sha")
+        deleted = Mock(status_code=200)
+
+        with patch.object(lock.requests, "get", side_effect=[
+            current, github_state_response("episode-a", complete=False)
+        ]), patch.object(lock.requests, "delete", return_value=deleted) as delete:
+            released = lock.release_lock(
+                "episode-a", token="token", repository="owner/repo"
+            )
+
+        self.assertTrue(released)
+        delete.assert_called_once_with(
+            lock._url("owner/repo"),
+            headers=lock._headers("token"),
+            json={
+                "message": "chore: release Telegram publisher lock for episode-a",
+                "sha": "owned-sha",
+                "branch": "main",
+            },
+            timeout=20,
+        )
 
     def test_acquire_recovers_a_stale_lock_for_an_already_completed_episode(self):
         lock = load_publisher_lock(self)
