@@ -171,7 +171,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_poster_then_three_reply_videos_in_title_order(self):
+    def test_publishes_poster_then_standalone_thumbnail_videos_with_metadata(self):
         import os
         import tempfile
         from unittest.mock import patch
@@ -204,7 +204,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
                  patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
-                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | @Animehighbo"), \
+                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None, quality=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | کیفیت: {quality} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
                     {"state_file": str(state_path), "max_file_size_mb": 1800,
@@ -218,14 +218,11 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual([event[1] for event in events if event[0] == "poster"],
                          ["Series A", "Series B"])
         file_events = [event for event in events if event[0] == "file"]
-        self.assertEqual([event[3] for event in file_events],
-                         ["poster-Series A", "poster-Series A", "poster-Series A",
-                          "poster-Series B", "poster-Series B", "poster-Series B"])
+        self.assertEqual([event[3] for event in file_events], [None] * 6)
         self.assertTrue(all(event[2] == thumbnail for event in file_events))
         self.assertTrue(all("قسمت" in event[1] and "@Animehighbo" in event[1]
-                            and "کیفیت:" in event[1] for event in file_events))
-        self.assertTrue(all("English:" not in event[1] and "فارسی:" not in event[1]
-                            for event in file_events))
+                            and "کیفیت:" in event[1] and "English:" in event[1]
+                            and "فارسی:" in event[1] for event in file_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],

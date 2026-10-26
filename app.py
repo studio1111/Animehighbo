@@ -676,8 +676,9 @@ def translate_anime_synopsis(description: str) -> str:
     return "خلاصهٔ این انیمه فعلاً در دسترس نیست."
 
 
-def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None) -> str:
-    """Build a structured multilingual anime post, marking unavailable facts with an em dash."""
+def build_episode_caption(title: str, episode: str, page_url: str = "", metadata: dict | None = None,
+                          quality: str | None = None) -> str:
+    """Build a structured multilingual anime post, optionally including a video quality."""
     media = metadata if isinstance(metadata, dict) else {}
     titles = media.get("title") or {}
     english_title = str(titles.get("english") or titles.get("romaji") or episode_details(title)[0]).strip()
@@ -685,6 +686,8 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     # The channel contract requires Japanese pronunciation in Latin letters (romaji), never Japanese script.
     japanese_title = str(titles.get("romaji") or "").strip() or anime_japanese_title(title, media)
     episode_number = episode or episode_details(title)[1]
+    if quality is not None and quality not in {"1080p", "720p", "480p"}:
+        raise ValueError(f"Unsupported episode quality: {quality}")
     raw_synopsis = str(media.get("description") or "").strip()
     synopsis = translate_anime_synopsis(raw_synopsis) if raw_synopsis else ""
 
@@ -711,6 +714,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title or '—')}",
         f"🇯🇵 <b>日本語（ローマ字）:</b> {_safe_caption_text(japanese_title or '—')}",
         f"📺 <b>قسمت {_safe_caption_text(str(episode_number or '—'))}</b>",
+        *([f"🎞️ <b>کیفیت:</b> {quality}"] if quality else []),
         f"📚 <b>فصل:</b> {_safe_caption_text(season or '—')}",
         f"📅 <b>سال پخش:</b> {_safe_caption_text(str(year))}",
         f"🎞 <b>تعداد قسمت‌ها:</b> {_safe_caption_text(str(episode_count))}",
@@ -737,7 +741,8 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
         if len(synopsis) > 70:
             synopsis = synopsis[:max(70, len(synopsis) - overflow - 8)].rstrip()
             continue
-        if len(lines) > 4:
+        minimum_lines = 5 if quality else 4
+        if len(lines) > minimum_lines:
             lines.pop()
             continue
         if len(english_title) > 80:
@@ -1520,10 +1525,12 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 duplicate_of = state["seen"].get(file_hash)
                 if duplicate_of and duplicate_of != output_identity:
                     raise ValueError(f"Prepared {quality} file duplicates {duplicate_of}; refusing duplicate upload.")
-                video_caption = build_quality_reply_caption(title, episode_number, quality)
+                video_caption = build_episode_caption(
+                    title, episode_number, metadata=metadata, quality=quality,
+                )
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
-                    thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
+                    thumbnail_path=thumbnail_path,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1538,7 +1545,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published video post with poster thumbnail and anime metadata: %s %s", title, quality)
+                LOG.info("Published standalone video with poster thumbnail and full anime metadata: %s %s", title, quality)
 
             state["published"][identity] = {
                 "title": title,
