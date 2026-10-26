@@ -207,7 +207,7 @@ def page_metadata(page_url: str, timeout: int = 20) -> dict:
 
 
 def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> list[str]:
-    """Find likely anime posters through Google Images, then Bing Images as fallback."""
+    """Search Google Images, Bing Images, and DuckDuckGo Images for poster candidates."""
     from urllib.parse import parse_qs, unquote, urlparse
 
     query = re.sub(r"\s+", " ", str(title or "")).strip()
@@ -217,6 +217,7 @@ def search_poster_image_urls(title: str, timeout: int = 12, limit: int = 8) -> l
     searches = (
         ("https://www.google.com/search", {"tbm": "isch", "q": f"{query} anime poster"}),
         ("https://www.bing.com/images/search", {"q": f"{query} anime poster"}),
+        ("https://duckduckgo.com/", {"q": f"{query} anime poster", "iax": "images", "ia": "images"}),
     )
     for endpoint, params in searches:
         try:
@@ -692,7 +693,7 @@ def build_episode_caption(title: str, episode: str, page_url: str = "", metadata
     lines = [
         f"🎬 <b>English:</b> {_safe_caption_text(english_title)}",
         f"🇮🇷 <b>فارسی:</b> {_safe_caption_text(persian_title or '—')}",
-        f"🇯🇵 <b>日本語:</b> {_safe_caption_text(japanese_title or '—')}",
+        f"🇯🇵 <b>日本語（ローマ字）:</b> {_safe_caption_text(japanese_title or '—')}",
         f"📺 <b>قسمت {_safe_caption_text(str(episode_number or '—'))}</b>",
         f"📚 <b>فصل:</b> {_safe_caption_text(season or '—')}",
         f"📅 <b>سال پخش:</b> {_safe_caption_text(str(year))}",
