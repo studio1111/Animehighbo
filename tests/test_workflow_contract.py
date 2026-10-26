@@ -36,23 +36,14 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("Install offline subtitle translator fallback", worker)
         self.assertIn("local Argos", worker)
 
-    def test_per_series_publisher_lock_keeps_each_poster_and_three_files_contiguous(self):
+    def test_publisher_workflow_has_no_lock_or_permission_gate(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
-        acquire = workflow.index("Acquire global Telegram publisher lock")
-        refresh = workflow.index("Refresh publication state after acquiring the global lock")
         publish = workflow.index("Publish the episode poster and three reply videos")
         persist = workflow.index("Persist duplicate-prevention state without overwriting parallel workers")
-        release = workflow.index("Release global Telegram publisher lock")
-        self.assertLess(acquire, refresh)
-        self.assertLess(refresh, publish)
         self.assertLess(publish, persist)
-        self.assertLess(persist, release)
-        lock_helper = (ROOT / "tools/publisher_lock.py").read_text(encoding="utf-8")
-        self.assertIn("data/publisher.lock", lock_helper)
-        self.assertIn("python tools/publisher_lock.py acquire", workflow)
-        self.assertIn("python tools/publisher_lock.py release", workflow)
-        release_step = workflow.split("Release global Telegram publisher lock", 1)[1]
-        self.assertIn("if: always()", release_step)
+        self.assertNotIn("publisher_lock", workflow)
+        self.assertNotIn("publisher.lock", workflow)
+        self.assertFalse((ROOT / "tools/publisher_lock.py").exists())
         self.assertIn("git reset --hard origin/main", workflow)
 
     def test_dispatcher_launches_independent_workers_and_skips_active_episodes(self):
@@ -79,7 +70,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn("actions/download-artifact@v4", workflow)
         self.assertNotIn("concurrency:", workflow.split("  publish:", 1)[1].split("  refill:", 1)[0])
-        self.assertIn("ANIMEHIGHBO_PUBLISH_LOCK_PATH=data/publisher.lock", workflow)
+        self.assertNotIn("publisher.lock", workflow)
         self.assertNotIn("publisher-series-" + "${{ inputs.series_key }}", workflow)
         self.assertIn("git fetch origin main", workflow)
         self.assertIn("if key not in current_section:", workflow)
@@ -153,7 +144,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertLess(subtitle, encode)
         self.assertLess(encode, thumbnail)
         self.assertLess(thumbnail, upload)
-        self.assertNotIn("poster_message_id = telegram_send_anime_poster(", group_flow)
+        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        self.assertLess(thumbnail, poster)
+        self.assertLess(poster, upload)
 
     def test_all_three_qualities_are_encoded_before_video_posts_are_sent(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")

@@ -90,7 +90,7 @@ jobs:
                 if identity:
                   active.add(identity)
 
-          # A failed prepare job has no publisher lock to resume. Give that series
+          # A failed prepare job needs no lock recovery. Give that series
           # a short cooldown so a bad source cannot consume a worker slot forever.
           result = subprocess.run(
             ["gh", "api", f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100"],
