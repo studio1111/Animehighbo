@@ -245,6 +245,47 @@
       "source_quality": "1080p",
       "published_at": 1793006967,
       "release_date": "2026-10-01"
+    },
+    "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:1080p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6c170f3e20e99d30385d6a6477329f98539510b4398aee8bb68591f88c316cc4",
+      "message_id": "807",
+      "published_at": 1793007015,
+      "bilingual_subtitles": true
+    },
+    "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:720p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "fb965a24b4338e87c83f62c95ad02fb43b5c819e22aaf0c3a9793a61c48feca8",
+      "message_id": "808",
+      "published_at": 1793007021,
+      "bilingual_subtitles": true
+    },
+    "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p": {
+      "title": "Kusuriya no Hitorigoto",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d7263e524fbd6dd95aa49387d45b3ce7677ce2099be2e124e1976824d1fb90a8",
+      "message_id": "809",
+      "published_at": 1793007024,
+      "bilingual_subtitles": true
+    },
+    "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444": {
+      "title": "Kusuriya no Hitorigoto",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793007024,
+      "release_date": "2026-10-02"
     }
   },
   "seen": {
@@ -772,7 +813,10 @@
     "c338ce866748e6a41d0dcddecaf109594837a37b7501bce492081f3a72df8f30": "ba2640c3f914bae5c268757db11501d4969b6d057e214a9e1e0bc8898c3cdfb8:480p",
     "b5807e94e813e93d4acd7ac018e633c6f31b3eb66e6dc4b553c4c268f638593b": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:1080p",
     "e0a21146fb2e06acc0e56700376d024ffe96b56305c224ce766df55e7d160606": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:720p",
-    "4128ac76286f5af0955b07e00fa0262e886005145733e76d8af91f87e0728dae": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p"
+    "4128ac76286f5af0955b07e00fa0262e886005145733e76d8af91f87e0728dae": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p",
+    "6c170f3e20e99d30385d6a6477329f98539510b4398aee8bb68591f88c316cc4": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:1080p",
+    "fb965a24b4338e87c83f62c95ad02fb43b5c819e22aaf0c3a9793a61c48feca8": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:720p",
+    "d7263e524fbd6dd95aa49387d45b3ce7677ce2099be2e124e1976824d1fb90a8": "e3bdbcb8a401c45d38eb99f248deb1abc2f8636bc16ec04201add1c624315444:480p"
   },
   "posters": {
     "archive:b9a56fa82053fca3e322cc88736b7a21b8f57d37818810cfe456f8f8d270b4c3": {
