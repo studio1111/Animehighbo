@@ -141,25 +141,30 @@ class WorkflowContractTests(unittest.TestCase):
             self.assertNotIn(name, workflow)
         self.assertNotIn("requirements-subtitles.txt", workflow)
 
-    def test_archive_poster_is_not_published_before_media_and_subtitle_preparation(self):
+    def test_video_posts_require_poster_thumbnails_after_media_and_subtitle_preparation(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
         group_flow = source.split("# Each anime/episode group is handled independently", 1)[1]
         download = group_flow.index("download_authorized_torrent(")
         subtitle = group_flow.index("process_bilingual_subtitles(")
-        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        encode = group_flow.index("encode_h265(")
+        thumbnail = group_flow.index("create_anime_video_thumbnail(")
+        upload = group_flow.index("telegram_upload_and_send(")
         self.assertLess(download, subtitle)
-        self.assertLess(subtitle, poster)
+        self.assertLess(subtitle, encode)
+        self.assertLess(encode, thumbnail)
+        self.assertLess(thumbnail, upload)
+        self.assertNotIn("poster_message_id = telegram_send_anime_poster(", group_flow)
 
-    def test_all_three_qualities_are_encoded_before_first_poster_is_sent(self):
+    def test_all_three_qualities_are_encoded_before_video_posts_are_sent(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
         group_flow = source.split("# Each anime/episode group is handled independently", 1)[1]
         subtitle = group_flow.index("process_bilingual_subtitles(")
         encode = group_flow.index("encode_h265(")
-        poster = group_flow.index("poster_message_id = telegram_send_anime_poster(")
+        thumbnail = group_flow.index("create_anime_video_thumbnail(")
         upload = group_flow.index("telegram_upload_and_send(")
         self.assertLess(subtitle, encode)
-        self.assertLess(encode, poster)
-        self.assertLess(poster, upload)
+        self.assertLess(encode, thumbnail)
+        self.assertLess(thumbnail, upload)
 
     def test_one_anime_failure_does_not_break_processing_of_other_groups(self):
         source = (ROOT / "app.py").read_text(encoding="utf-8")
