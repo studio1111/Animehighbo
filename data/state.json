@@ -614,6 +614,47 @@
       "source_quality": "1080p",
       "published_at": 1793018797,
       "release_date": "2026-10-03"
+    },
+    "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:1080p": {
+      "title": "Honzuki no Gekokujou S4",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "833125a0e247a2297ec1b433725699366f574b981ad6bb649ac263adf9a0efd3",
+      "message_id": "847",
+      "published_at": 1793018893,
+      "bilingual_subtitles": true
+    },
+    "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:720p": {
+      "title": "Honzuki no Gekokujou S4",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "32775a065d94fc900d1edb7b7178aa2732af436fdc6d7d761c0808ed0606c668",
+      "message_id": "848",
+      "published_at": 1793018898,
+      "bilingual_subtitles": true
+    },
+    "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:480p": {
+      "title": "Honzuki no Gekokujou S4",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "af6c23ab68702109cf0347996211651ae600a778b63c17559280ecd7800610c3",
+      "message_id": "849",
+      "published_at": 1793018901,
+      "bilingual_subtitles": true
+    },
+    "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9": {
+      "title": "Honzuki no Gekokujou S4",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793018901,
+      "release_date": "2026-10-03"
     }
   },
   "seen": {
@@ -1174,7 +1215,10 @@
     "feefef1a269424c366dc6fd85941dae7d4dc71d1361b5679d3ed5767a2927f00": "fa127d7ec58568a06a02b79d4c6ea407a64db981630b9b44042470f59712f80b:480p",
     "d4927ede06ac7e53e5c1f9189bb3d9e992469490e16d0ea73777b46b0bf113df": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:1080p",
     "720d23882b871af78a07f0437d918b04a72ad561db27380dfc63ca7a79760744": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:720p",
-    "a2968f821e4bcaf12a8eb2e3a98decdf25c2991a5ec87248b6d90f1bbf026361": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:480p"
+    "a2968f821e4bcaf12a8eb2e3a98decdf25c2991a5ec87248b6d90f1bbf026361": "4deb74a84d0788cfee8bf52fb4ef1bd416d975e13c424d5aedf53ed213beeb24:480p",
+    "833125a0e247a2297ec1b433725699366f574b981ad6bb649ac263adf9a0efd3": "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:1080p",
+    "32775a065d94fc900d1edb7b7178aa2732af436fdc6d7d761c0808ed0606c668": "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:720p",
+    "af6c23ab68702109cf0347996211651ae600a778b63c17559280ecd7800610c3": "cd6a89413d43c84dd0f969ff142bbac2829d2cfa31657220fc9d7ed6ab3516e9:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -1275,6 +1319,12 @@
       "episode": "01",
       "message_id": "842",
       "published_at": 1793018784
+    },
+    "archive:0a19370a3695961acd845584f88ec92c647216ecf6196c8b7c46c706a2380d4b": {
+      "title": "Honzuki no Gekokujou S4",
+      "episode": "24",
+      "message_id": "846",
+      "published_at": 1793018885
     }
   }
 }
