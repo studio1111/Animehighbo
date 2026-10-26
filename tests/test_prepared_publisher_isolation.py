@@ -95,7 +95,7 @@ class PreparedPublisherIsolationTests(unittest.TestCase):
                 app, "telegram_send_anime_poster"
             ) as poster, patch.object(
                 app, "telegram_upload_and_send",
-                side_effect=["1080-message", "720-message", "480-message"],
+                side_effect=[RuntimeError("temporary Telegram error"), "1080-message", "720-message", "480-message"],
             ) as upload, patch.object(app, "anime_catalog_metadata", return_value={}):
                 result = app.publish_prepared_episodes(config, state, False, "token", "chat")
 
