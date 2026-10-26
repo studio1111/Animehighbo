@@ -939,7 +939,8 @@ class PosterFallbackTests(unittest.TestCase):
     def test_missing_poster_never_publishes_a_text_only_post(self):
         import app
 
-        with patch.object(app, "search_poster_image_urls", return_value=[]), \
+        with patch.object(app, "build_episode_caption", return_value="caption"), \
+             patch.object(app, "search_poster_image_urls", return_value=[]), \
              patch.object(app.requests, "post") as post:
             with self.assertRaisesRegex(RuntimeError, "No verified poster"):
                 app.telegram_send_anime_poster(
@@ -951,7 +952,8 @@ class PosterFallbackTests(unittest.TestCase):
     def test_unavailable_poster_sources_hold_episode_for_retry(self):
         import app
 
-        with patch.object(app, "download_poster", side_effect=OSError("catalog image unreachable")), \
+        with patch.object(app, "build_episode_caption", return_value="caption"), \
+             patch.object(app, "download_poster", side_effect=OSError("catalog image unreachable")), \
              patch.object(app, "search_poster_image_urls", return_value=[]), \
              patch.object(app.requests, "post") as post:
             with self.assertRaisesRegex(RuntimeError, "No verified poster"):
