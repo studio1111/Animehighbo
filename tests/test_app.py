@@ -222,9 +222,10 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                          ["poster-Series A", "poster-Series A", "poster-Series A",
                           "poster-Series B", "poster-Series B", "poster-Series B"])
         self.assertTrue(all(event[2] == thumbnail for event in file_events))
-        self.assertTrue(all("English:" in event[1] and "فارسی:" in event[1]
-                            and "قسمت" in event[1] and "@Animehighbo" in event[1]
+        self.assertTrue(all("قسمت" in event[1] and "@Animehighbo" in event[1]
                             and "کیفیت:" in event[1] for event in file_events))
+        self.assertTrue(all("English:" not in event[1] and "فارسی:" not in event[1]
+                            for event in file_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
