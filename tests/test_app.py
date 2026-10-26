@@ -170,7 +170,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_oldest_day_in_title_order_with_three_replies_per_poster(self):
+    def test_publishes_each_video_with_metadata_as_reply_under_its_poster(self):
         import os
         import tempfile
         from unittest.mock import patch
