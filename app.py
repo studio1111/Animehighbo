@@ -905,7 +905,7 @@ def telegram_send_anime_poster(
         try:
             fallback_path = Path(fallback_image_path)
             fallback_bytes = fallback_path.read_bytes()
-            if fallback_bytes.startswith(b"\\xff\\xd8\\xff"):
+            if fallback_bytes.startswith(bytes.fromhex("ffd8ff")):
                 image_data, image_type = fallback_bytes, "image/jpeg"
                 LOG.warning("Using a verified frame from the episode as the poster for %r", title)
             else:
