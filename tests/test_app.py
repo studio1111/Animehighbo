@@ -210,6 +210,8 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(events[4], ("poster", "Series B"))
         self.assertTrue(all(event[2] == "poster-Series A" for event in events[1:4]))
         self.assertTrue(all(event[2] == "poster-Series B" for event in events[5:8]))
+        video_events = [event for event in events if event[0] == "file"]
+        self.assertTrue(all("English:" in event[1] and "قسمت" in event[1] and "@Animehighbo" in event[1] for event in video_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
                          ["1080p", "720p", "480p"])
         self.assertEqual(state["published"]["episode-b"]["complete_qualities"],
