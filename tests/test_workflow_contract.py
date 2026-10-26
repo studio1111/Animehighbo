@@ -87,6 +87,17 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("createDispatchEvent", workflow)
         self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
 
+    def test_publish_job_installs_ffmpeg_for_video_thumbnail_generation(self):
+        workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        publish_job = workflow.split("  publish:", 1)[1].split("  refill:", 1)[0]
+        self.assertIn("Install ffmpeg for poster thumbnails", publish_job)
+        self.assertIn("apt-get", publish_job)
+        self.assertIn("ffmpeg -version", publish_job)
+        self.assertLess(
+            publish_job.index("Install ffmpeg for poster thumbnails"),
+            publish_job.index("Acquire global Telegram publisher lock"),
+        )
+
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
