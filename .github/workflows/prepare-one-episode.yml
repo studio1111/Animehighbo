@@ -133,6 +133,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
+      - name: Install FFmpeg for poster thumbnails
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          command -v ffmpeg
       - name: Download only this episode's artifact
         uses: actions/download-artifact@v4
         with:
