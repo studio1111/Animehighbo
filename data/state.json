@@ -1065,6 +1065,47 @@
       "source_quality": "1080p",
       "published_at": 1793030220,
       "release_date": "2026-10-04"
+    },
+    "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:1080p": {
+      "title": "Yowaki Max",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6579e5d8ab4f4fedf4e0ec3018301ec75c5ca6b162f14f5586e988de482bce4c",
+      "message_id": "891",
+      "published_at": 1793030856,
+      "bilingual_subtitles": true
+    },
+    "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:720p": {
+      "title": "Yowaki Max",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "99c21579a4401adfdc2bb504688ecdbfd0b6094a5732bcb24d866c98a65b6739",
+      "message_id": "892",
+      "published_at": 1793030862,
+      "bilingual_subtitles": true
+    },
+    "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:480p": {
+      "title": "Yowaki Max",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8151cc93ebc4dfa4ec98d51cf23857926b101a11300da7670ad2e7de6f452cc3",
+      "message_id": "893",
+      "published_at": 1793030865,
+      "bilingual_subtitles": true
+    },
+    "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf": {
+      "title": "Yowaki Max",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793030865,
+      "release_date": "2026-10-04"
     }
   },
   "seen": {
@@ -1658,7 +1699,10 @@
     "826cfad6f1e34693871a5a9b73d3ef598109aa6a8e35b0edcd91712fd26b90a6": "5f531286fc994e687279fa50c4b60a6a1f36b3c88904995411c5e0346985ead2:480p",
     "4b2bc18a36f0f4ea6810f395a4b1f813ea8d94210345c68ad1a291ef4a1359b7": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:1080p",
     "37069550e3cca3f41de1417f007f081ae7bd38c808f4dcc8a50fc35db37e0c5d": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:720p",
-    "eb6da09af6014eaffdca25c91b50b939db61de1c5d8cbd8b26f2fe91acf6404e": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:480p"
+    "eb6da09af6014eaffdca25c91b50b939db61de1c5d8cbd8b26f2fe91acf6404e": "27efa29f5a84fba60fb049f9b319b70e592504287c2545b14bb28d75bc9205b1:480p",
+    "6579e5d8ab4f4fedf4e0ec3018301ec75c5ca6b162f14f5586e988de482bce4c": "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:1080p",
+    "99c21579a4401adfdc2bb504688ecdbfd0b6094a5732bcb24d866c98a65b6739": "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:720p",
+    "8151cc93ebc4dfa4ec98d51cf23857926b101a11300da7670ad2e7de6f452cc3": "feb1bf6a8f78cdac912137db607df874a4453a860835971558bcc07201a29ecf:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -1825,6 +1869,12 @@
       "episode": "26",
       "message_id": "886",
       "published_at": 1793030204
+    },
+    "archive:5ebb701c571d90e64b121c89c0c061884bcc6ee3d76173ce097705f5fefe59c0": {
+      "title": "Yowaki Max",
+      "episode": "01",
+      "message_id": "890",
+      "published_at": 1793030850
     }
   }
 }
