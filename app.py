@@ -1196,7 +1196,7 @@ def telegram_method_for_file(filename: str) -> str:
     return "sendVideo" if Path(filename).suffix.lower() == ".mp4" else "sendDocument"
 
 
-def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None) -> str:
+def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None, reply_to_message_id: str | None = None) -> str:
     """Upload a verified media file as a standalone post with its poster thumbnail."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
@@ -1206,6 +1206,8 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     endpoint = telegram_api_endpoint(token, method)
     media_field = "video" if method == "sendVideo" else "document"
     payload = {"chat_id": chat_id, "caption": caption[:1024], "parse_mode": "HTML"}
+    if reply_to_message_id:
+        payload["reply_to_message_id"] = str(reply_to_message_id)
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
@@ -1411,11 +1413,22 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
             metadata = anime_catalog_metadata(title)
+            # Publish (or recover) exactly one poster-led anchor for this episode.
+            # The three quality messages are replies to this anchor, never standalone posts.
+            poster_record = state["posters"].get(poster_identity, {})
+            poster_message_id = str(poster_record.get("message_id") or "")
+            if not poster_message_id:
+                poster_message_id = telegram_send_anime_poster(
+                    token, chat_id, title, episode_number, metadata
+                )
+                state["posters"][poster_identity] = {
+                    "title": title, "episode": episode_number,
+                    "message_id": poster_message_id, "published_at": int(time.time()),
+                }
+                save_state(config["state_file"], state)
             thumbnail_path = create_anime_video_thumbnail(
                 title, metadata, episode["manifest_path"].parent / "telegram-thumbnail.jpg"
             )
-            # Each video carries its own poster thumbnail and full metadata.
-            # Do not create a separate poster-only channel message.
 
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
@@ -1432,7 +1445,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 video_caption = f"{video_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
-                    thumbnail_path=thumbnail_path,
+                    thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
@@ -1842,9 +1855,19 @@ def run() -> int:
                                  group["title"], prepared_manifest["release_date"], len(file_rows))
                         continue
 
-                    # Each video post carries its own poster thumbnail and complete metadata.
-                    # Never emit a standalone poster-only channel message.
+                    # Publish (or recover) one poster-led anchor, then reply with all qualities.
                     metadata = anime_catalog_metadata(group["title"])
+                    poster_record = state["posters"].get(poster_identity, {})
+                    poster_message_id = str(poster_record.get("message_id") or "")
+                    if not poster_message_id:
+                        poster_message_id = telegram_send_anime_poster(
+                            token, chat_id, group["title"], group["episode"], metadata
+                        )
+                        state["posters"][poster_identity] = {
+                            "title": group["title"], "episode": group["episode"],
+                            "message_id": poster_message_id, "published_at": int(time.time()),
+                        }
+                        save_state(config["state_file"], state)
                     thumbnail_dir = Path("prepared") / identity
                     thumbnail_path = create_anime_video_thumbnail(
                         group["title"], metadata, thumbnail_dir / "telegram-thumbnail.jpg"
@@ -1863,7 +1886,7 @@ def run() -> int:
                         file_caption = f"{file_caption}\n\n🎞️ <b>کیفیت:</b> {quality}"
                         message_id = telegram_upload_and_send(
                             token, chat_id, output_path, file_caption,
-                            thumbnail_path=thumbnail_path,
+                            thumbnail_path=thumbnail_path, reply_to_message_id=poster_message_id,
                         )
                         state["seen"][file_hash] = output_identity
                         state["published"][output_identity] = {
