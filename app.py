@@ -1216,12 +1216,13 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
     if method == "sendVideo":
         payload["supports_streaming"] = "true"
 
-    if method == "sendVideo" and (thumbnail_path is None or not thumbnail_path.is_file()
+    needs_thumbnail = path.suffix.lower() in VIDEO_EXTENSIONS
+    if needs_thumbnail and (thumbnail_path is None or not thumbnail_path.is_file()
             or not 0 < thumbnail_path.stat().st_size <= 200 * 1024):
         raise RuntimeError("A valid compressed poster thumbnail is required for every video post.")
     with path.open("rb") as media:
         files = {media_field: (path.name, media, "application/octet-stream")}
-        if method == "sendVideo":
+        if needs_thumbnail:
             with thumbnail_path.open("rb") as thumbnail:
                 files["thumbnail"] = (thumbnail_path.name, thumbnail, "image/jpeg")
                 response = requests.post(
