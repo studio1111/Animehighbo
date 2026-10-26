@@ -170,7 +170,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_oldest_day_in_title_order_with_three_replies_per_poster(self):
+    def test_publishes_oldest_day_in_title_order_with_standalone_video_posts(self):
         import os
         import tempfile
         from unittest.mock import patch
@@ -198,7 +198,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
                 "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
             }), patch.object(app, "anime_catalog_metadata", return_value={}), \
                  patch.object(app, "telegram_send_anime_poster", side_effect=send_poster), \
-                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | قسمت {episode} | @Animehighbo"), \
+                 patch.object(app, "build_episode_caption", side_effect=lambda title, episode, metadata=None: f"English: {title} | فارسی: عنوان | قسمت {episode} | @Animehighbo"), \
                  patch.object(app, "telegram_upload_and_send", side_effect=send_file):
                 count = app.publish_prepared_episodes(
                     {"state_file": str(state_path), "max_file_size_mb": 1800,
@@ -209,8 +209,10 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(count, 0)  # Successful publication must return a shell-safe exit status.
         self.assertEqual(events[0], ("poster", "Series A"))
         self.assertEqual(events[4], ("poster", "Series B"))
-        self.assertTrue(all(event[2] == "poster-Series A" for event in events[1:4]))
-        self.assertTrue(all(event[2] == "poster-Series B" for event in events[5:8]))
+        self.assertTrue(all(event[2] is None for event in events[1:4]))
+        self.assertTrue(all(event[2] is None for event in events[5:8]))
+        self.assertTrue(all("English:" in event[1] and "فارسی:" in event[1]
+                            for event in events[1:4] + events[5:8]))
         video_events = [event for event in events if event[0] == "file"]
         self.assertTrue(all("English:" in event[1] and "قسمت" in event[1] and "@Animehighbo" in event[1] for event in video_events))
         self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
@@ -369,11 +371,10 @@ class TorrentSourceConfigTests(unittest.TestCase):
             with patch("app.requests.post", return_value=response) as post:
                 message_id = telegram_upload_and_send(
                     "test-token", "@test-channel", media, "caption",
-                    reply_to_message_id=42,
                 )
         self.assertEqual(message_id, "77")
         self.assertEqual(post.call_args.kwargs["timeout"], (30, 1800))
-        self.assertEqual(post.call_args.kwargs["data"]["reply_to_message_id"], "42")
+        self.assertNotIn("reply_to_message_id", post.call_args.kwargs["data"])
 
     def test_accepts_both_uri_and_url_source_keys(self):
         magnet = "magnet:?xt=urn:btih:0123456789012345678901234567890123456789"
