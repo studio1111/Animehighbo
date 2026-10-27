@@ -1,5 +1,12 @@
 [
   {
+    "title": "Tempal – Item no Chikara - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-09-27"
+  },
+  {
     "title": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
@@ -16,13 +23,6 @@
   {
     "title": "FX Senshi Kurumi-chan - 01 (1080p)",
     "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-01"
-  },
-  {
-    "title": "Toukutsu Ou - 12 (1080p)",
-    "episode": 12,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-01"
@@ -72,13 +72,6 @@
   {
     "title": "Detective Conan - 1215 (1080p)",
     "episode": 1215,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-03"
-  },
-  {
-    "title": "Honzuki no Gekokujou S4 - 24 (1080p)",
-    "episode": 24,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -175,7 +168,28 @@
     "release_date": "2026-10-04"
   },
   {
+    "title": "Ojisan wa Kawaii Mono ga Osuki. - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-04"
+  },
+  {
     "title": "Saikyosoubi - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-04"
+  },
+  {
+    "title": "Tempal – Item no Chikara - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-04"
+  },
+  {
+    "title": "Yowaki Max - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -197,20 +211,6 @@
   },
   {
     "title": "Magic Knight Rayearth (2026) - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-07"
-  },
-  {
-    "title": "Sasaki to Pii-chan S2 - 01 (720p)",
-    "episode": 1,
-    "quality": "720p",
-    "review_required": true,
-    "release_date": "2026-10-07"
-  },
-  {
-    "title": "Tantei wa Mou, Shindeiru. S2 - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -239,13 +239,6 @@
   },
   {
     "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2 - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-08"
-  },
-  {
-    "title": "Sekai Saikyou no Majo, Hajimemashita - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -448,7 +441,35 @@
     "release_date": "2026-10-11"
   },
   {
+    "title": "Ojisan wa Kawaii Mono ga Osuki. - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-11"
+  },
+  {
     "title": "Saikyosoubi - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-11"
+  },
+  {
+    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-11"
+  },
+  {
+    "title": "Tempal – Item no Chikara - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-11"
+  },
+  {
+    "title": "Yowaki Max - 02 (1080p)",
     "episode": 2,
     "quality": "1080p",
     "review_required": true,
@@ -478,27 +499,6 @@
   {
     "title": "Paw and Palaces - 05 (1080p)",
     "episode": 5,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-14"
-  },
-  {
-    "title": "Sasaki to Pii-chan S2 - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-14"
-  },
-  {
-    "title": "Sekai Saikyou no Majo, Hajimemashita - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-14"
-  },
-  {
-    "title": "Tantei wa Mou, Shindeiru. S2 - 02 (1080p)",
-    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-14"
@@ -700,7 +700,35 @@
     "release_date": "2026-10-18"
   },
   {
+    "title": "Ojisan wa Kawaii Mono ga Osuki. - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-18"
+  },
+  {
     "title": "Saikyosoubi - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-18"
+  },
+  {
+    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-18"
+  },
+  {
+    "title": "Tempal – Item no Chikara - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-18"
+  },
+  {
+    "title": "Yowaki Max - 03 (1080p)",
     "episode": 3,
     "quality": "1080p",
     "review_required": true,
@@ -730,27 +758,6 @@
   {
     "title": "Paw and Palaces - 06 (1080p)",
     "episode": 6,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-21"
-  },
-  {
-    "title": "Sasaki to Pii-chan S2 - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-21"
-  },
-  {
-    "title": "Sekai Saikyou no Majo, Hajimemashita - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-21"
-  },
-  {
-    "title": "Tantei wa Mou, Shindeiru. S2 - 03 (1080p)",
-    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-21"
@@ -945,7 +952,35 @@
     "release_date": "2026-10-25"
   },
   {
+    "title": "Ojisan wa Kawaii Mono ga Osuki. - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-25"
+  },
+  {
     "title": "Saikyosoubi - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-25"
+  },
+  {
+    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-25"
+  },
+  {
+    "title": "Tempal – Item no Chikara - 05 (1080p)",
+    "episode": 5,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-25"
+  },
+  {
+    "title": "Yowaki Max - 04 (1080p)",
     "episode": 4,
     "quality": "1080p",
     "review_required": true,
