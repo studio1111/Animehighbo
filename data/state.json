@@ -3197,6 +3197,47 @@
       "source_quality": "1080p",
       "published_at": 1793076920,
       "release_date": "2026-10-11"
+    },
+    "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:1080p": {
+      "title": "Kanata kara",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f6b24c250079fcbcfe313e86ea8859446e21e742577baa38d0a0b48e2b90f6c9",
+      "message_id": "1100",
+      "published_at": 1793077854,
+      "bilingual_subtitles": true
+    },
+    "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:720p": {
+      "title": "Kanata kara",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b33a59907416559cfefada1f16135af8b688eaf55707cca5e384e2bd029e4907",
+      "message_id": "1101",
+      "published_at": 1793077860,
+      "bilingual_subtitles": true
+    },
+    "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:480p": {
+      "title": "Kanata kara",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b8dfe07e328795ed04a5f0b052fdb7866639aeed342e77dc9aadd91e2a93ec0b",
+      "message_id": "1102",
+      "published_at": 1793077864,
+      "bilingual_subtitles": true
+    },
+    "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053": {
+      "title": "Kanata kara",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793077864,
+      "release_date": "2026-10-11"
     }
   },
   "seen": {
@@ -3946,7 +3987,10 @@
     "9553dac1f521d417192b3eb4632f9b92978fc8ff54d2ad699d8d1c6430042cfd": "82f55e6d78dae664ea83b4dbac6b72ef55f3ce82d4da9bb81cad5d17bf7b75c4:480p",
     "e20d82b15dc65a429dad89bce58f51736480785c7acb6a7f88542f41cab685cf": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:1080p",
     "c1062c98ca70fad6828782c36fd177abc7e1868c4925cc03ab7ddec0f1395cbb": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:720p",
-    "f3bd15417c718b276513544fff9c6592ffb84efb017e76a2b53da1c6729b2b28": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:480p"
+    "f3bd15417c718b276513544fff9c6592ffb84efb017e76a2b53da1c6729b2b28": "34fb834b38a0dcc58f28d52541bdc7cf1d26f175891f4761fa0a4da3e156d59e:480p",
+    "f6b24c250079fcbcfe313e86ea8859446e21e742577baa38d0a0b48e2b90f6c9": "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:1080p",
+    "b33a59907416559cfefada1f16135af8b688eaf55707cca5e384e2bd029e4907": "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:720p",
+    "b8dfe07e328795ed04a5f0b052fdb7866639aeed342e77dc9aadd91e2a93ec0b": "27ef0643845a0a26f43f2c55f40b39264bd927281fbb410bfdd97b73b13a9053:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -4425,6 +4469,12 @@
       "episode": "02",
       "message_id": "1095",
       "published_at": 1793076907
+    },
+    "archive:1c7ccb5a77aa6d60ab6e8a5410b199f5f0c6c7c8f8e9c1584456820776f799dc": {
+      "title": "Kanata kara",
+      "episode": "02",
+      "message_id": "1099",
+      "published_at": 1793077847
     }
   }
 }
