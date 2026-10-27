@@ -35,8 +35,8 @@
     "release_date": "2026-10-01"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
-    "episode": 49,
+    "title": "Keroro Gunsou (2026) - 01 (1080p)",
+    "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-02"
@@ -44,6 +44,13 @@
   {
     "title": "Link Click S3 - 09 (1080p)",
     "episode": 9,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-02"
+  },
+  {
+    "title": "Rilakkuma - 26 (1080p)",
+    "episode": 26,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-02"
@@ -84,15 +91,22 @@
     "release_date": "2026-10-03"
   },
   {
-    "title": "Keroro Gunsou (2026) - 01 (1080p)",
+    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
+    "episode": 49,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-03"
+  },
+  {
+    "title": "Magical Explorer - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
   },
   {
-    "title": "Rilakkuma - 26 (1080p)",
-    "episode": 26,
+    "title": "Magical Explorer - 02 (1080p)",
+    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -155,20 +169,6 @@
   },
   {
     "title": "Choujun! Choujou-senpai - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-06"
-  },
-  {
-    "title": "Kyouran Reijou Nia Liston - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-06"
-  },
-  {
-    "title": "Shiotaiou no Satou-san ga Ore ni dake Amai - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -273,8 +273,8 @@
     "release_date": "2026-10-09"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
-    "episode": 50,
+    "title": "Keroro Gunsou (2026) - 02 (1080p)",
+    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-09"
@@ -282,6 +282,13 @@
   {
     "title": "Link Click S3 - 10 (1080p)",
     "episode": 10,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-09"
+  },
+  {
+    "title": "Rilakkuma - 27 (1080p)",
+    "episode": 27,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-09"
@@ -322,8 +329,22 @@
     "release_date": "2026-10-10"
   },
   {
-    "title": "Keroro Gunsou (2026) - 02 (1080p)",
-    "episode": 2,
+    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
+    "episode": 50,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Kyoufu Collector - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Magical Explorer - 03 (1080p)",
+    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -352,13 +373,6 @@
   {
     "title": "Paw and Palaces - 04 (1080p)",
     "episode": 4,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-10"
-  },
-  {
-    "title": "Rilakkuma - 27 (1080p)",
-    "episode": 27,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -436,20 +450,6 @@
   {
     "title": "Dark Machine – The Animation - 01 (1080p)",
     "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-13"
-  },
-  {
-    "title": "Kyouran Reijou Nia Liston - 02 (1080p)",
-    "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-13"
-  },
-  {
-    "title": "Shiotaiou no Satou-san ga Ore ni dake Amai - 02 (1080p)",
-    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-13"
@@ -560,8 +560,8 @@
     "release_date": "2026-10-16"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
-    "episode": 51,
+    "title": "Keroro Gunsou (2026) - 03 (1080p)",
+    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-16"
@@ -569,6 +569,13 @@
   {
     "title": "Link Click S3 - 11 (1080p)",
     "episode": 11,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-16"
+  },
+  {
+    "title": "Rilakkuma - 28 (1080p)",
+    "episode": 28,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-16"
@@ -609,15 +616,22 @@
     "release_date": "2026-10-17"
   },
   {
-    "title": "Keroro Gunsou (2026) - 03 (1080p)",
-    "episode": 3,
+    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
+    "episode": 51,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
   },
   {
-    "title": "Rilakkuma - 28 (1080p)",
-    "episode": 28,
+    "title": "Kyoufu Collector - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Magical Explorer - 04 (1080p)",
+    "episode": 4,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
@@ -695,20 +709,6 @@
   {
     "title": "Dark Machine – The Animation - 02 (1080p)",
     "episode": 2,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-20"
-  },
-  {
-    "title": "Kyouran Reijou Nia Liston - 03 (1080p)",
-    "episode": 3,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-20"
-  },
-  {
-    "title": "Shiotaiou no Satou-san ga Ore ni dake Amai - 03 (1080p)",
-    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-20"
@@ -819,8 +819,8 @@
     "release_date": "2026-10-23"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 52 (1080p)",
-    "episode": 52,
+    "title": "Keroro Gunsou (2026) - 04 (1080p)",
+    "episode": 4,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-23"
@@ -828,6 +828,13 @@
   {
     "title": "Link Click S3 - 12 (1080p)",
     "episode": 12,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-23"
+  },
+  {
+    "title": "Rilakkuma - 29 (1080p)",
+    "episode": 29,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-23"
@@ -861,15 +868,22 @@
     "release_date": "2026-10-24"
   },
   {
-    "title": "Keroro Gunsou (2026) - 04 (1080p)",
-    "episode": 4,
+    "title": "Kusuriya no Hitorigoto - 52 (1080p)",
+    "episode": 52,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-24"
   },
   {
-    "title": "Rilakkuma - 29 (1080p)",
-    "episode": 29,
+    "title": "Kyoufu Collector - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Magical Explorer - 05 (1080p)",
+    "episode": 5,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-24"
