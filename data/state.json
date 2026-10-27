@@ -3484,6 +3484,47 @@
       "source_quality": "1080p",
       "published_at": 1793081368,
       "release_date": "2026-10-11"
+    },
+    "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:1080p": {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e494fd0c51419211047f46c6cf2eea6eeb850621a491a1d1d1a830adb845d654",
+      "message_id": "1128",
+      "published_at": 1793082050,
+      "bilingual_subtitles": true
+    },
+    "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:720p": {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1d4a3973d9cecd6a364fece3b1e60872744d0e4a910d78cb04933d3e41521344",
+      "message_id": "1129",
+      "published_at": 1793082059,
+      "bilingual_subtitles": true
+    },
+    "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:480p": {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "5df82ea2e3ddd3508b83435d639860c09023573e5ee2a90bb317e33fd064dec8",
+      "message_id": "1130",
+      "published_at": 1793082063,
+      "bilingual_subtitles": true
+    },
+    "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2": {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793082063,
+      "release_date": "2026-10-11"
     }
   },
   "seen": {
@@ -4254,7 +4295,10 @@
     "d26e40e8c54d94f0cda77fc1985e0a79088df806203af5f22199d92475958098": "d5b532f2a154cb56cad6b9ed2b17c4cfd2c38e149a2f0b31b10dc4ea5585af16:480p",
     "9439ccc3ce33847f687cade727c6722d7e0cd715fe917296b3089315ee3a1477": "3bf7668d3cf59d288fe9c9016f2796a442312f3f9e47dacd7ce96a02d26c5926:1080p",
     "c3c60d3bfb8a42aa35d1ceebaa943b90f2f1582489724915e016fa552a59d7e5": "3bf7668d3cf59d288fe9c9016f2796a442312f3f9e47dacd7ce96a02d26c5926:720p",
-    "6c083a394484717abd1e9e3e7c425a8d23b1cfa60b47fdd51935d13c7df019d5": "3bf7668d3cf59d288fe9c9016f2796a442312f3f9e47dacd7ce96a02d26c5926:480p"
+    "6c083a394484717abd1e9e3e7c425a8d23b1cfa60b47fdd51935d13c7df019d5": "3bf7668d3cf59d288fe9c9016f2796a442312f3f9e47dacd7ce96a02d26c5926:480p",
+    "e494fd0c51419211047f46c6cf2eea6eeb850621a491a1d1d1a830adb845d654": "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:1080p",
+    "1d4a3973d9cecd6a364fece3b1e60872744d0e4a910d78cb04933d3e41521344": "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:720p",
+    "5df82ea2e3ddd3508b83435d639860c09023573e5ee2a90bb317e33fd064dec8": "5bcbb3ac83bb4d2c89453a5b9df689457a7c0cce7c93c6ff0b0a8ae2c4f91ca2:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -4775,6 +4819,12 @@
       "episode": "03",
       "message_id": "1123",
       "published_at": 1793081350
+    },
+    "archive:5a304a35b775dd5c5d6b75d27aafd05fd5cff758a050290aba5d0fa1f94ce80e": {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "episode": "27",
+      "message_id": "1127",
+      "published_at": 1793082041
     }
   }
 }
