@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-10-26",
+  "generated_on": "2026-10-27",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 187,
+    "seasonal_titles": 189,
     "matched_in_manifest": 29,
-    "review_required": 158
+    "review_required": 160
   },
   "rights_policy": "Metadata discovery does not grant rights. Never add a media source or publish without verified redistribution permission.",
   "titles": [
@@ -515,6 +515,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 218938,
+      "title_english": null,
+      "title_romaji": "Hotaru no Yomeiri: Choitashi",
+      "title_native": "ホタルの嫁入り ちょいたし",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218938",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 199426,
@@ -1075,6 +1089,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 218942,
+      "title_english": null,
+      "title_romaji": "Sylvanian Families: Freya no Colorful Everyday",
+      "title_native": "シルバニアファミリー フレアのカラフル・エブリデイ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218942",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 212539,
