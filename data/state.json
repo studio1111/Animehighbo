@@ -5862,6 +5862,47 @@
       "source_quality": "1080p",
       "published_at": 1793130891,
       "release_date": "2026-10-18"
+    },
+    "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:1080p": {
+      "title": "Chii Fuyo",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a66eb77746b51c549bf8037ecaf5ff3ef3707449ea4c6e61d48ed33597635e05",
+      "message_id": "1360",
+      "published_at": 1793131655,
+      "bilingual_subtitles": true
+    },
+    "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:720p": {
+      "title": "Chii Fuyo",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6852b61e4242bf9a91dccc086d1d2406a057db16e3ae284f083b9a590635e0e0",
+      "message_id": "1361",
+      "published_at": 1793131659,
+      "bilingual_subtitles": true
+    },
+    "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:480p": {
+      "title": "Chii Fuyo",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "785403f2e0719b0912ec850b949fa0f3e68fcb6c38d7ccea23a836a0fa44b405",
+      "message_id": "1362",
+      "published_at": 1793131662,
+      "bilingual_subtitles": true
+    },
+    "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f": {
+      "title": "Chii Fuyo",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793131662,
+      "release_date": "2026-10-20"
     }
   },
   "seen": {
@@ -6806,7 +6847,10 @@
     "9427063d48521c698419df0cc0d37bbb542e2faedf2a9b294c3d43e411c3d56d": "0358809d624332a83073b23cb6f2d749f7524c01866a8260e120c3035609a1c6:480p",
     "e433fc5d77ee66499cbf916671de420d95e980720f7cafa0c856d72d5dce91f6": "19a9abc410a9c3de17805f484afeb1fac46d8f5b2df468eb4adb9fa5824cade7:1080p",
     "84cab8f66d1909cb9b8721989fa74ebd18a3a7a074be08e148a6095909193474": "19a9abc410a9c3de17805f484afeb1fac46d8f5b2df468eb4adb9fa5824cade7:720p",
-    "3ff0f6e6144dc21907092cb8ea743d6e915d8ba8b4abe138d77a9a40e4b3be91": "19a9abc410a9c3de17805f484afeb1fac46d8f5b2df468eb4adb9fa5824cade7:480p"
+    "3ff0f6e6144dc21907092cb8ea743d6e915d8ba8b4abe138d77a9a40e4b3be91": "19a9abc410a9c3de17805f484afeb1fac46d8f5b2df468eb4adb9fa5824cade7:480p",
+    "a66eb77746b51c549bf8037ecaf5ff3ef3707449ea4c6e61d48ed33597635e05": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:1080p",
+    "6852b61e4242bf9a91dccc086d1d2406a057db16e3ae284f083b9a590635e0e0": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:720p",
+    "785403f2e0719b0912ec850b949fa0f3e68fcb6c38d7ccea23a836a0fa44b405": "962f358ca9e783fe561154168390834867b33a6ea92c190542610766866aaf6f:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -7675,6 +7719,12 @@
       "episode": "03",
       "message_id": "1355",
       "published_at": 1793130879
+    },
+    "archive:8d347067841a298ef4df29612a16c64979b8aa0b821f3833cc65a56aff10bff0": {
+      "title": "Chii Fuyo",
+      "episode": "03",
+      "message_id": "1359",
+      "published_at": 1793131647
     }
   }
 }
