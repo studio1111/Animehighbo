@@ -4755,6 +4755,47 @@
       "source_quality": "1080p",
       "published_at": 1793108310,
       "release_date": "2026-10-15"
+    },
+    "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:1080p": {
+      "title": "Detective Conan",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "084e5ab8e711657d69a209927fabe5bbb928bc374d3168705a0cb29fd30c4655",
+      "message_id": "1252",
+      "published_at": 1793109039,
+      "bilingual_subtitles": true
+    },
+    "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:720p": {
+      "title": "Detective Conan",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ba98f5963106531bfb5df2c19c4f42835cd70c4f5ed00e359437369099dc191e",
+      "message_id": "1253",
+      "published_at": 1793109044,
+      "bilingual_subtitles": true
+    },
+    "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:480p": {
+      "title": "Detective Conan",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "19e7e09d525ff0078a122f42da49a1a258cc5baae35689abf7d4830423d8aa21",
+      "message_id": "1254",
+      "published_at": 1793109048,
+      "bilingual_subtitles": true
+    },
+    "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46": {
+      "title": "Detective Conan",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793109048,
+      "release_date": "2026-10-17"
     }
   },
   "seen": {
@@ -5618,7 +5659,10 @@
     "d4bdcce9995c5695bcbb3baa07ecc72aaa00179c452046b4c475935e57e195dc": "2d7ac71e4ba42aa2eca055389ad383fd345fc6e81fde729e6a75e5957022d419:480p",
     "168fc97be617ec0b212d4202607b4cfb613aa7e4569a1d05b2a63bbd1c8c5482": "811da6662c1bdd5c2cc25924ebf8a7f300de069a4b951189934ea2fa8cae49a2:1080p",
     "eb18e26194ab53068be1cbb1a2769086a7cc49932d523c8b9b30f1de2f1d47f9": "811da6662c1bdd5c2cc25924ebf8a7f300de069a4b951189934ea2fa8cae49a2:720p",
-    "b9846a5187096b34dfd9b2e9d2e77ec57236870bafdad581a94268734550b341": "811da6662c1bdd5c2cc25924ebf8a7f300de069a4b951189934ea2fa8cae49a2:480p"
+    "b9846a5187096b34dfd9b2e9d2e77ec57236870bafdad581a94268734550b341": "811da6662c1bdd5c2cc25924ebf8a7f300de069a4b951189934ea2fa8cae49a2:480p",
+    "084e5ab8e711657d69a209927fabe5bbb928bc374d3168705a0cb29fd30c4655": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:1080p",
+    "ba98f5963106531bfb5df2c19c4f42835cd70c4f5ed00e359437369099dc191e": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:720p",
+    "19e7e09d525ff0078a122f42da49a1a258cc5baae35689abf7d4830423d8aa21": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -6325,6 +6369,12 @@
       "episode": "03",
       "message_id": "1247",
       "published_at": 1793108286
+    },
+    "archive:8fba4fa00fb7556b08a9ee71e2d3a427a66732047503f651b6d8d36d345e56eb": {
+      "title": "Detective Conan",
+      "episode": "1217",
+      "message_id": "1251",
+      "published_at": 1793109033
     }
   }
 }
