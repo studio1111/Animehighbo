@@ -5739,6 +5739,47 @@
       "source_quality": "1080p",
       "published_at": 1793128235,
       "release_date": "2026-10-19"
+    },
+    "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:1080p": {
+      "title": "Bleach – Sennen Kessen Hen",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "164daede21a4106fd1c10d53c3464c7bd491ad56fcb2a4f7371e004b4c990189",
+      "message_id": "1348",
+      "published_at": 1793128840,
+      "bilingual_subtitles": true
+    },
+    "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:720p": {
+      "title": "Bleach – Sennen Kessen Hen",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "28bacd532f50318b6fdcee2253367400706040edf8df55479cb7f57ad453dec0",
+      "message_id": "1349",
+      "published_at": 1793128851,
+      "bilingual_subtitles": true
+    },
+    "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:480p": {
+      "title": "Bleach – Sennen Kessen Hen",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7586d61df74982cd9ad0ada0b45267fae0d9bf57158f46796ff95fa1847190a0",
+      "message_id": "1350",
+      "published_at": 1793128857,
+      "bilingual_subtitles": true
+    },
+    "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c": {
+      "title": "Bleach – Sennen Kessen Hen",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793128857,
+      "release_date": "2026-10-19"
     }
   },
   "seen": {
@@ -6674,7 +6715,10 @@
     "68caac5f1026a5a7b85191274922643d3f4c7c23337cc47b9ac36ae242e3d613": "aac4db1142b6742c53a6fabb46b3e0bdc00795721c84da40dfb808801ed5d73b:480p",
     "d574bddf5c71a287a39b9c8a34ad24aa3cf4396030529dfa1c6f5d18d572cd4a": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:1080p",
     "665ea1e206d35e4ed8334d48ae8717a98529c07c090c630bf8026c4428d23f10": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:720p",
-    "bad56507f6a0eab67b132bbdc83c30777a5b7c5151a63b18fe5b4264431302c4": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:480p"
+    "bad56507f6a0eab67b132bbdc83c30777a5b7c5151a63b18fe5b4264431302c4": "7ea797efc5d9fab7bcc9200c161fe547c6a108de1442a9ae143c0eb3ab696b12:480p",
+    "164daede21a4106fd1c10d53c3464c7bd491ad56fcb2a4f7371e004b4c990189": "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:1080p",
+    "28bacd532f50318b6fdcee2253367400706040edf8df55479cb7f57ad453dec0": "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:720p",
+    "7586d61df74982cd9ad0ada0b45267fae0d9bf57158f46796ff95fa1847190a0": "e562dd8b386bf0e512cb1804fa778aa459685c59916c3108c2ef644b4425cf8c:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -7525,6 +7569,12 @@
       "episode": "03",
       "message_id": "1343",
       "published_at": 1793128219
+    },
+    "archive:583bfb6fcafd067911001bc6e9ff13b924f3eb23fc05f4c38cc320e6b4b64660": {
+      "title": "Bleach – Sennen Kessen Hen",
+      "episode": "49",
+      "message_id": "1347",
+      "published_at": 1793128825
     }
   }
 }
