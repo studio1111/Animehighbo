@@ -6436,6 +6436,47 @@
       "source_quality": "1080p",
       "published_at": 1793138476,
       "release_date": "2026-10-21"
+    },
+    "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:1080p": {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bf0275a72a393be5774d4fe70761339dec71f49690eb1704338e7a7298defa53",
+      "message_id": "1416",
+      "published_at": 1793139099,
+      "bilingual_subtitles": true
+    },
+    "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:720p": {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "c0a90259025e232bf3c3981944772b004501c0b50da089f733cd8cf2e20607f3",
+      "message_id": "1417",
+      "published_at": 1793139103,
+      "bilingual_subtitles": true
+    },
+    "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:480p": {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "923c3b7aec8b57cb075f62d6822b5c25fda9ccc03255cba3aecd805bf44ee3e7",
+      "message_id": "1418",
+      "published_at": 1793139106,
+      "bilingual_subtitles": true
+    },
+    "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973": {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793139106,
+      "release_date": "2026-10-21"
     }
   },
   "seen": {
@@ -7422,7 +7463,10 @@
     "270054f32e54862ddeb75089f8e7b445130215e5c02c24c31afd243402c0ffc5": "7e2e3256337bdd5afa835b24bc7845cb3f9ba353f29fca6d038e189e2389aff3:480p",
     "9f4479417a1ca58d7870ae9f33bcf03de7103e35fc4a2b2130d525cb63fbffcb": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:1080p",
     "e783ff389f20516ef93bc193fb54061d7bd4a1826ddd57151cb450ae3dc8c1a4": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:720p",
-    "de9e5fdf453c6cbb3b396b90903c84b1dea861cb0cf15506e09423000f6798ec": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:480p"
+    "de9e5fdf453c6cbb3b396b90903c84b1dea861cb0cf15506e09423000f6798ec": "4966e9d99907912cb95a25b53dc4cffbf525cf95313bd34a5c6150017806efcb:480p",
+    "bf0275a72a393be5774d4fe70761339dec71f49690eb1704338e7a7298defa53": "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:1080p",
+    "c0a90259025e232bf3c3981944772b004501c0b50da089f733cd8cf2e20607f3": "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:720p",
+    "923c3b7aec8b57cb075f62d6822b5c25fda9ccc03255cba3aecd805bf44ee3e7": "23e945b713592c9cd3a0b5f746946ed14a0835236667f3e982ec734d9e1a4973:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -8375,6 +8419,12 @@
       "episode": "16",
       "message_id": "1411",
       "published_at": 1793138457
+    },
+    "archive:0cbc0d7a66b1ae4e38e9675916aa581dd4e087e6d1a75313d94b3c3231e82a27": {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "episode": "03",
+      "message_id": "1415",
+      "published_at": 1793139092
     }
   }
 }
