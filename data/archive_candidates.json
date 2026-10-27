@@ -35,8 +35,8 @@
     "release_date": "2026-10-01"
   },
   {
-    "title": "Keroro Gunsou (2026) - 01 (1080p)",
-    "episode": 1,
+    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
+    "episode": 49,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-02"
@@ -44,13 +44,6 @@
   {
     "title": "Link Click S3 - 09 (1080p)",
     "episode": 9,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-02"
-  },
-  {
-    "title": "Rilakkuma - 26 (1080p)",
-    "episode": 26,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-02"
@@ -91,8 +84,15 @@
     "release_date": "2026-10-03"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 49 (1080p)",
-    "episode": 49,
+    "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 01 (1080p)",
+    "episode": 1,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-03"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 01 (1080p)",
+    "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -107,6 +107,13 @@
   {
     "title": "Magical Explorer - 02 (1080p)",
     "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-03"
+  },
+  {
+    "title": "Rilakkuma - 26 (1080p)",
+    "episode": 26,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-03"
@@ -154,21 +161,14 @@
     "release_date": "2026-10-03"
   },
   {
-    "title": "Battle Spirits Re – Zekkai no Kuu - 01 (1080p)",
-    "episode": 1,
+    "title": "Meitantei Precure! - 36 (1080p)",
+    "episode": 36,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-06"
+    "release_date": "2026-10-04"
   },
   {
     "title": "Chii Fuyo - 01 (1080p)",
-    "episode": 1,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-06"
-  },
-  {
-    "title": "Choujun! Choujou-senpai - 01 (1080p)",
     "episode": 1,
     "quality": "1080p",
     "review_required": true,
@@ -273,8 +273,8 @@
     "release_date": "2026-10-09"
   },
   {
-    "title": "Keroro Gunsou (2026) - 02 (1080p)",
-    "episode": 2,
+    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
+    "episode": 50,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-09"
@@ -282,20 +282,6 @@
   {
     "title": "Link Click S3 - 10 (1080p)",
     "episode": 10,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-09"
-  },
-  {
-    "title": "Rilakkuma - 27 (1080p)",
-    "episode": 27,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-09"
-  },
-  {
-    "title": "Toaru Anbu no Item - 01 (1080p)",
-    "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-09"
@@ -329,8 +315,15 @@
     "release_date": "2026-10-10"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 50 (1080p)",
-    "episode": 50,
+    "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 02 (1080p)",
+    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -378,6 +371,13 @@
     "release_date": "2026-10-10"
   },
   {
+    "title": "Rilakkuma - 27 (1080p)",
+    "episode": 27,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
     "title": "Romelia Senki - 02 (1080p)",
     "episode": 2,
     "quality": "1080p",
@@ -394,6 +394,13 @@
   {
     "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu - 03 (1080p)",
     "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-10"
+  },
+  {
+    "title": "Toaru Anbu no Item - 01 (1080p)",
+    "episode": 1,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-10"
@@ -420,11 +427,11 @@
     "release_date": "2026-10-10"
   },
   {
-    "title": "Battle Spirits Re – Zekkai no Kuu - 02 (1080p)",
-    "episode": 2,
+    "title": "Meitantei Precure! - 37 (1080p)",
+    "episode": 37,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-13"
+    "release_date": "2026-10-11"
   },
   {
     "title": "Chii Fuyo - 02 (1080p)",
@@ -436,13 +443,6 @@
   {
     "title": "Chitose-kun wa Ramune Bin no Naka - 14 (1080p)",
     "episode": 14,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-13"
-  },
-  {
-    "title": "Choujun! Choujou-senpai - 02 (1080p)",
-    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-13"
@@ -560,8 +560,8 @@
     "release_date": "2026-10-16"
   },
   {
-    "title": "Keroro Gunsou (2026) - 03 (1080p)",
-    "episode": 3,
+    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
+    "episode": 51,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-16"
@@ -569,20 +569,6 @@
   {
     "title": "Link Click S3 - 11 (1080p)",
     "episode": 11,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-16"
-  },
-  {
-    "title": "Rilakkuma - 28 (1080p)",
-    "episode": 28,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-16"
-  },
-  {
-    "title": "Toaru Anbu no Item - 02 (1080p)",
-    "episode": 2,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-16"
@@ -616,8 +602,15 @@
     "release_date": "2026-10-17"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 51 (1080p)",
-    "episode": 51,
+    "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 03 (1080p)",
+    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
@@ -632,6 +625,13 @@
   {
     "title": "Magical Explorer - 04 (1080p)",
     "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
+    "title": "Rilakkuma - 28 (1080p)",
+    "episode": 28,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-17"
@@ -658,6 +658,13 @@
     "release_date": "2026-10-17"
   },
   {
+    "title": "Toaru Anbu no Item - 02 (1080p)",
+    "episode": 2,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-17"
+  },
+  {
     "title": "VERTEX FORCE - 03 (1080p)",
     "episode": 3,
     "quality": "1080p",
@@ -679,11 +686,11 @@
     "release_date": "2026-10-17"
   },
   {
-    "title": "Battle Spirits Re – Zekkai no Kuu - 03 (1080p)",
-    "episode": 3,
+    "title": "Meitantei Precure! - 38 (1080p)",
+    "episode": 38,
     "quality": "1080p",
     "review_required": true,
-    "release_date": "2026-10-20"
+    "release_date": "2026-10-18"
   },
   {
     "title": "Chii Fuyo - 03 (1080p)",
@@ -695,13 +702,6 @@
   {
     "title": "Chitose-kun wa Ramune Bin no Naka - 15 (1080p)",
     "episode": 15,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-20"
-  },
-  {
-    "title": "Choujun! Choujou-senpai - 03 (1080p)",
-    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-20"
@@ -819,8 +819,8 @@
     "release_date": "2026-10-23"
   },
   {
-    "title": "Keroro Gunsou (2026) - 04 (1080p)",
-    "episode": 4,
+    "title": "Kusuriya no Hitorigoto - 52 (1080p)",
+    "episode": 52,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-23"
@@ -828,20 +828,6 @@
   {
     "title": "Link Click S3 - 12 (1080p)",
     "episode": 12,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-23"
-  },
-  {
-    "title": "Rilakkuma - 29 (1080p)",
-    "episode": 29,
-    "quality": "1080p",
-    "review_required": true,
-    "release_date": "2026-10-23"
-  },
-  {
-    "title": "Toaru Anbu no Item - 03 (1080p)",
-    "episode": 3,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-23"
@@ -868,8 +854,15 @@
     "release_date": "2026-10-24"
   },
   {
-    "title": "Kusuriya no Hitorigoto - 52 (1080p)",
-    "episode": 52,
+    "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 04 (1080p)",
+    "episode": 4,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Keroro Gunsou (2026) - 04 (1080p)",
+    "episode": 4,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-24"
@@ -884,6 +877,13 @@
   {
     "title": "Magical Explorer - 05 (1080p)",
     "episode": 5,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
+    "title": "Rilakkuma - 29 (1080p)",
+    "episode": 29,
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-24"
@@ -910,6 +910,13 @@
     "release_date": "2026-10-24"
   },
   {
+    "title": "Toaru Anbu no Item - 03 (1080p)",
+    "episode": 3,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-24"
+  },
+  {
     "title": "VERTEX FORCE - 04 (1080p)",
     "episode": 4,
     "quality": "1080p",
@@ -929,5 +936,12 @@
     "quality": "1080p",
     "review_required": true,
     "release_date": "2026-10-24"
+  },
+  {
+    "title": "Meitantei Precure! - 39 (1080p)",
+    "episode": 39,
+    "quality": "1080p",
+    "review_required": true,
+    "release_date": "2026-10-25"
   }
 ]
