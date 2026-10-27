@@ -6067,6 +6067,47 @@
       "source_quality": "1080p",
       "published_at": 1793134484,
       "release_date": "2026-10-21"
+    },
+    "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:1080p": {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "04122264eb0617dccf543aafbd808bd144df3ccc02e6d4f3a8c277ccb6dac7dc",
+      "message_id": "1380",
+      "published_at": 1793134684,
+      "bilingual_subtitles": true
+    },
+    "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:720p": {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ec77ce1ace0921df1cab9ed8a124c6f9853d3724f5b8373201ed83299f4e6d1f",
+      "message_id": "1381",
+      "published_at": 1793134687,
+      "bilingual_subtitles": true
+    },
+    "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:480p": {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2b51fd00b4b300ddf340ef9cd5a6aa308b82807d8d0a5842f432b2889fdea47a",
+      "message_id": "1382",
+      "published_at": 1793134692,
+      "bilingual_subtitles": true
+    },
+    "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74": {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793134692,
+      "release_date": "2026-10-21"
     }
   },
   "seen": {
@@ -7026,7 +7067,10 @@
     "3d400dad9d41574310b697e572c02fd333d3a1912f1064fd2bde7fd1d3616e23": "2cf3d6cdb4cc0c6ee97386629b0c60b4edca3d596eabfb55eee45830ab96322d:480p",
     "2e54108d94dfef0106c0d55668fed82f813db76e2a4540d1970885975107af32": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:1080p",
     "ed1517d0d0b9e094e24c16fb1bb2bfd68977bc4454d9bee8aea05eb5acf44d8b": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:720p",
-    "8bf1bb3e1a384e17fe4591f5a24044ad5a5136229557371cfa0f3a7174737490": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:480p"
+    "8bf1bb3e1a384e17fe4591f5a24044ad5a5136229557371cfa0f3a7174737490": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:480p",
+    "04122264eb0617dccf543aafbd808bd144df3ccc02e6d4f3a8c277ccb6dac7dc": "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:1080p",
+    "ec77ce1ace0921df1cab9ed8a124c6f9853d3724f5b8373201ed83299f4e6d1f": "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:720p",
+    "2b51fd00b4b300ddf340ef9cd5a6aa308b82807d8d0a5842f432b2889fdea47a": "eaf5d5f679de007f960e091fdf7c984a2d404595df63bab64989d983274ebc74:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -7925,6 +7969,12 @@
       "episode": "02",
       "message_id": "1375",
       "published_at": 1793134465
+    },
+    "archive:db81743d2c33514fd5bcc3554d0660ebe95db9b3f478aafece5f536a17dbf8e3": {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "episode": "15",
+      "message_id": "1379",
+      "published_at": 1793134680
     }
   }
 }
