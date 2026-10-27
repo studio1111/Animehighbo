@@ -4796,6 +4796,47 @@
       "source_quality": "1080p",
       "published_at": 1793109048,
       "release_date": "2026-10-17"
+    },
+    "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:1080p": {
+      "title": "Kyoufu Collector",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b4c18b1ce45196f3700bd405f61832d45625d9f31e858f9b25dd4bd36c79f1fc",
+      "message_id": "1256",
+      "published_at": 1793109174,
+      "bilingual_subtitles": true
+    },
+    "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:720p": {
+      "title": "Kyoufu Collector",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "5a827567024dda7f49bebfccaef49f8def49af64d3092b037f6aaddd24fa9d24",
+      "message_id": "1257",
+      "published_at": 1793109177,
+      "bilingual_subtitles": true
+    },
+    "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:480p": {
+      "title": "Kyoufu Collector",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "41eccef4825590c36221f0d849d4111f22555fcf9e1eaaf87468c99a4f524e08",
+      "message_id": "1258",
+      "published_at": 1793109182,
+      "bilingual_subtitles": true
+    },
+    "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2": {
+      "title": "Kyoufu Collector",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793109182,
+      "release_date": "2026-10-17"
     }
   },
   "seen": {
@@ -5662,7 +5703,10 @@
     "b9846a5187096b34dfd9b2e9d2e77ec57236870bafdad581a94268734550b341": "811da6662c1bdd5c2cc25924ebf8a7f300de069a4b951189934ea2fa8cae49a2:480p",
     "084e5ab8e711657d69a209927fabe5bbb928bc374d3168705a0cb29fd30c4655": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:1080p",
     "ba98f5963106531bfb5df2c19c4f42835cd70c4f5ed00e359437369099dc191e": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:720p",
-    "19e7e09d525ff0078a122f42da49a1a258cc5baae35689abf7d4830423d8aa21": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:480p"
+    "19e7e09d525ff0078a122f42da49a1a258cc5baae35689abf7d4830423d8aa21": "de3f3b38d7b406fd4f12d893259911214dd5655995b6b634ab9bb214482b3d46:480p",
+    "b4c18b1ce45196f3700bd405f61832d45625d9f31e858f9b25dd4bd36c79f1fc": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:1080p",
+    "5a827567024dda7f49bebfccaef49f8def49af64d3092b037f6aaddd24fa9d24": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:720p",
+    "41eccef4825590c36221f0d849d4111f22555fcf9e1eaaf87468c99a4f524e08": "18b2a527a7bbd276a567c53e842a5fa64ba69feeaf24d4c025b17517a09de2b2:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -6375,6 +6419,12 @@
       "episode": "1217",
       "message_id": "1251",
       "published_at": 1793109033
+    },
+    "archive:d76d5520aabda369258a7fd39bc7c43395cb7196950135902cc1102f8e5ee018": {
+      "title": "Kyoufu Collector",
+      "episode": "02",
+      "message_id": "1255",
+      "published_at": 1793109166
     }
   }
 }
