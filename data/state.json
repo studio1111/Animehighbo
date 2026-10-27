@@ -5165,6 +5165,47 @@
       "source_quality": "1080p",
       "published_at": 1793115663,
       "release_date": "2026-10-17"
+    },
+    "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:1080p": {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "056bef9a6687df111f455602189bae95c3606b524989e12a514a92b0a1cd1d5a",
+      "message_id": "1292",
+      "published_at": 1793116302,
+      "bilingual_subtitles": true
+    },
+    "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:720p": {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4f037150da238c02121fb4e38edc5fddcb8cbc11f541b5c128bc46b916143cd1",
+      "message_id": "1293",
+      "published_at": 1793116309,
+      "bilingual_subtitles": true
+    },
+    "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:480p": {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "645a91fbf0887605b26f1070032bcd0afda11681a72a9e43798e3a8a0545ed72",
+      "message_id": "1294",
+      "published_at": 1793116314,
+      "bilingual_subtitles": true
+    },
+    "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5": {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793116314,
+      "release_date": "2026-10-17"
     }
   },
   "seen": {
@@ -6058,7 +6099,10 @@
     "8e3b10afbe54025c112cff255ffa81d118764b644ea214410f4456a53c84f741": "08a68a28caf5de6f06808c53b9780e587b20754e3b4150a440f24dbfaae30b3b:480p",
     "2596b04f07632c8bb8f17e17a3b5ea05d9f2c3f4a9a0bd4f60749a1bf27b6fff": "c3f4265e04626e3117b9897fefb7ea8553204b37de163b77d11bfd8a8109d9c4:1080p",
     "b1814f06afe7a3e6f82f8683ce55179261000c561a4a62d197a696c12e48533a": "c3f4265e04626e3117b9897fefb7ea8553204b37de163b77d11bfd8a8109d9c4:720p",
-    "d12af416ba37a737bf13da797eb4b404014c05fd77a92a195e7b38aa44cf8b21": "c3f4265e04626e3117b9897fefb7ea8553204b37de163b77d11bfd8a8109d9c4:480p"
+    "d12af416ba37a737bf13da797eb4b404014c05fd77a92a195e7b38aa44cf8b21": "c3f4265e04626e3117b9897fefb7ea8553204b37de163b77d11bfd8a8109d9c4:480p",
+    "056bef9a6687df111f455602189bae95c3606b524989e12a514a92b0a1cd1d5a": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:1080p",
+    "4f037150da238c02121fb4e38edc5fddcb8cbc11f541b5c128bc46b916143cd1": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:720p",
+    "645a91fbf0887605b26f1070032bcd0afda11681a72a9e43798e3a8a0545ed72": "7c2ab8f276293af4d59cdc7f12e360ce6f30f419253c65db8ae994f316401ad5:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -6825,6 +6869,12 @@
       "episode": "03",
       "message_id": "1287",
       "published_at": 1793115644
+    },
+    "archive:a4310ae74a3a49ccfc3305c357f02a0176cb64cebc2e068432c4f6b8f7979c4d": {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "episode": "16",
+      "message_id": "1291",
+      "published_at": 1793116294
     }
   }
 }
