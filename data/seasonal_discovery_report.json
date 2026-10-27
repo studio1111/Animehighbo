@@ -1427,6 +1427,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 214593,
+      "title_english": "YU-SANCHi! from YU-HACHi",
+      "title_romaji": "Yuusanchi! from Yuuhachi",
+      "title_native": "ゆうさんち！from 遊ハち",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/214593",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 213298,
       "title_english": null,
       "title_romaji": "Yuruyuru Zukan",
@@ -1436,20 +1450,6 @@
       "format": "TV_SHORT",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213298",
-      "in_episode_manifest": false,
-      "review_required": true,
-      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
-    },
-    {
-      "anilist_id": 214593,
-      "title_english": null,
-      "title_romaji": "Yuusanchi! from Yuuhachi",
-      "title_native": "ゆうさんち！from 遊ハち",
-      "season": "FALL",
-      "season_year": 2026,
-      "format": "TV_SHORT",
-      "status": "RELEASING",
-      "anilist_url": "https://anilist.co/anime/214593",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
