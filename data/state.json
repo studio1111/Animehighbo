@@ -3361,6 +3361,47 @@
       "source_quality": "1080p",
       "published_at": 1793079423,
       "release_date": "2026-10-10"
+    },
+    "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:1080p": {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "515fd52c6a56ec45436184586e02cdf26e0906807f09541a8baa1946e35b8cce",
+      "message_id": "1116",
+      "published_at": 1793080056,
+      "bilingual_subtitles": true
+    },
+    "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:720p": {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ae194925548c2f4f5d3716b9a975f9009f4dda6d008e40a74f4ca63ebaeedeb9",
+      "message_id": "1117",
+      "published_at": 1793080063,
+      "bilingual_subtitles": true
+    },
+    "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:480p": {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e122e75474904886066252e1259e36d84c91dc4b68e18dfb99d8ab756985ffa8",
+      "message_id": "1118",
+      "published_at": 1793080068,
+      "bilingual_subtitles": true
+    },
+    "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0": {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793080068,
+      "release_date": "2026-10-11"
     }
   },
   "seen": {
@@ -4122,7 +4163,10 @@
     "9b126ac26b541fc226183d3d02f3c0f9101c2e36673397b9106c6cd06df72b91": "9533ba4d932de25ba9d4805d237fe2a4258087499ccc63a44a8ddc1daba38314:480p",
     "243778e227888dbda67ae3f55a19ae9dbddbfdf781d02e548600ddbff234f26d": "a74359ca6bbd890655b4e852a4f799cd91506408b8571f9ed274d2c9ad038cfa:1080p",
     "f6c90e08cd7be5c0144e17264b7aa5e3067896e23c781d0f1c20102bc634721d": "a74359ca6bbd890655b4e852a4f799cd91506408b8571f9ed274d2c9ad038cfa:720p",
-    "a81b55747b84b8cbe83629385956d4216514ce2c059ec824514b9473d96bc4e4": "a74359ca6bbd890655b4e852a4f799cd91506408b8571f9ed274d2c9ad038cfa:480p"
+    "a81b55747b84b8cbe83629385956d4216514ce2c059ec824514b9473d96bc4e4": "a74359ca6bbd890655b4e852a4f799cd91506408b8571f9ed274d2c9ad038cfa:480p",
+    "515fd52c6a56ec45436184586e02cdf26e0906807f09541a8baa1946e35b8cce": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:1080p",
+    "ae194925548c2f4f5d3716b9a975f9009f4dda6d008e40a74f4ca63ebaeedeb9": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:720p",
+    "e122e75474904886066252e1259e36d84c91dc4b68e18dfb99d8ab756985ffa8": "d500fb2b9333476e4b908fd756d48c98a123324dbea49c755728dc16c04f62f0:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -4625,6 +4669,12 @@
       "episode": "04",
       "message_id": "1111",
       "published_at": 1793079403
+    },
+    "archive:160f5fe695d3317f6314e607e1196570f35db3ecaf09ba9a427303698db80cd8": {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "episode": "01",
+      "message_id": "1115",
+      "published_at": 1793080048
     }
   }
 }
