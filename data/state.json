@@ -2418,6 +2418,47 @@
       "source_quality": "1080p",
       "published_at": 1793062814,
       "release_date": "2026-10-10"
+    },
+    "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:1080p": {
+      "title": "Keroro Gunsou (2026)",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0d21b747b18dab24ebd44400141f7b2bbdffc182314840c99d8de97991381cc9",
+      "message_id": "1023",
+      "published_at": 1793062923,
+      "bilingual_subtitles": true
+    },
+    "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:720p": {
+      "title": "Keroro Gunsou (2026)",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "11f062d40d896f64641ea4a1f44c5fe9119f52030ec0f63de7a6fc1df90f84c3",
+      "message_id": "1024",
+      "published_at": 1793062928,
+      "bilingual_subtitles": true
+    },
+    "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:480p": {
+      "title": "Keroro Gunsou (2026)",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "49705670d7b1aa83f5e522f665130b868944027c91b55d6296a859bb520392fb",
+      "message_id": "1025",
+      "published_at": 1793062933,
+      "bilingual_subtitles": true
+    },
+    "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b": {
+      "title": "Keroro Gunsou (2026)",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793062933,
+      "release_date": "2026-10-10"
     }
   },
   "seen": {
@@ -3110,7 +3151,10 @@
     "5016795c5286178cd625a0ea48162b0798f9f023b4f9676aec3f856026e3f9b0": "0ad667d2d55cc7e4f80090c39cc477e457c574eb0aa0ceb33d9402517fa69875:480p",
     "d77a4d80f20737b905446c4acb4652231cc240c5a63d6a450cf4b65045698542": "7c2192b898da5ed0e694b4be3d67e37c955363034cbdaa54c8c62d4d774428a3:1080p",
     "0470da89823ec80edaa68ca85687270e768a22dd0095aa492d6ea09a3e8ab774": "7c2192b898da5ed0e694b4be3d67e37c955363034cbdaa54c8c62d4d774428a3:720p",
-    "1c9b255facc362dff06338c53993bbaeb8d961e85d43853f25d61b107aee4365": "7c2192b898da5ed0e694b4be3d67e37c955363034cbdaa54c8c62d4d774428a3:480p"
+    "1c9b255facc362dff06338c53993bbaeb8d961e85d43853f25d61b107aee4365": "7c2192b898da5ed0e694b4be3d67e37c955363034cbdaa54c8c62d4d774428a3:480p",
+    "0d21b747b18dab24ebd44400141f7b2bbdffc182314840c99d8de97991381cc9": "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:1080p",
+    "11f062d40d896f64641ea4a1f44c5fe9119f52030ec0f63de7a6fc1df90f84c3": "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:720p",
+    "49705670d7b1aa83f5e522f665130b868944027c91b55d6296a859bb520392fb": "f876bd8578943d9853f84d27ef2027c3d9bfb96167c632eecc851f52316b527b:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -3475,6 +3519,12 @@
       "episode": "02",
       "message_id": "1018",
       "published_at": 1793062795
+    },
+    "archive:6bb5488ab6d635fb65b91b835200e00478f89dcca58d5bef9235ae600a71de55": {
+      "title": "Keroro Gunsou (2026)",
+      "episode": "02",
+      "message_id": "1022",
+      "published_at": 1793062912
     }
   }
 }
