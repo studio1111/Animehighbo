@@ -6026,6 +6026,47 @@
       "source_quality": "1080p",
       "published_at": 1793132481,
       "release_date": "2026-10-19"
+    },
+    "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:1080p": {
+      "title": "Dark Machine – The Animation",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2e54108d94dfef0106c0d55668fed82f813db76e2a4540d1970885975107af32",
+      "message_id": "1376",
+      "published_at": 1793134472,
+      "bilingual_subtitles": true
+    },
+    "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:720p": {
+      "title": "Dark Machine – The Animation",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ed1517d0d0b9e094e24c16fb1bb2bfd68977bc4454d9bee8aea05eb5acf44d8b",
+      "message_id": "1377",
+      "published_at": 1793134479,
+      "bilingual_subtitles": true
+    },
+    "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:480p": {
+      "title": "Dark Machine – The Animation",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8bf1bb3e1a384e17fe4591f5a24044ad5a5136229557371cfa0f3a7174737490",
+      "message_id": "1378",
+      "published_at": 1793134484,
+      "bilingual_subtitles": true
+    },
+    "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7": {
+      "title": "Dark Machine – The Animation",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793134484,
+      "release_date": "2026-10-21"
     }
   },
   "seen": {
@@ -6982,7 +7023,10 @@
     "a55953eebd174ce6ac6161ecc3135fdacd4bb18ea6ba5898a0de6e9b2a9d512e": "aad5181801cad17553f15c13449d8701ab75577c5f1b8c00bfca7fac2b291657:480p",
     "831cd6e800688154a7a9aacd7733a7c8270740fa090a2f2cf1ee8aa21b538389": "2cf3d6cdb4cc0c6ee97386629b0c60b4edca3d596eabfb55eee45830ab96322d:1080p",
     "f1a8bcb362f4c52093f0c13b88e8d41e35c52b74667a57a6d4195e1baf0a1f13": "2cf3d6cdb4cc0c6ee97386629b0c60b4edca3d596eabfb55eee45830ab96322d:720p",
-    "3d400dad9d41574310b697e572c02fd333d3a1912f1064fd2bde7fd1d3616e23": "2cf3d6cdb4cc0c6ee97386629b0c60b4edca3d596eabfb55eee45830ab96322d:480p"
+    "3d400dad9d41574310b697e572c02fd333d3a1912f1064fd2bde7fd1d3616e23": "2cf3d6cdb4cc0c6ee97386629b0c60b4edca3d596eabfb55eee45830ab96322d:480p",
+    "2e54108d94dfef0106c0d55668fed82f813db76e2a4540d1970885975107af32": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:1080p",
+    "ed1517d0d0b9e094e24c16fb1bb2bfd68977bc4454d9bee8aea05eb5acf44d8b": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:720p",
+    "8bf1bb3e1a384e17fe4591f5a24044ad5a5136229557371cfa0f3a7174737490": "947898304918ed515f4e3bc9ad0c8dd0718de0a4cb14c36f48991fa52efc17e7:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -7875,6 +7919,12 @@
       "episode": "04",
       "message_id": "1371",
       "published_at": 1793132466
+    },
+    "archive:6d929822810e504ec5c4238ec7e1b3868101edd47d5b6a39bd45ff1577ae76c8": {
+      "title": "Dark Machine – The Animation",
+      "episode": "02",
+      "message_id": "1375",
+      "published_at": 1793134465
     }
   }
 }
