@@ -50,7 +50,7 @@ def main() -> int:
     records = payload.get("published") if isinstance(payload, dict) else None
     if not isinstance(records, dict) or not records: raise SystemExit("Anime poster cache has no published series records.")
     refreshed, with_synopsis = refresh_records(records, lambda title: anime_catalog_metadata(title, timeout=15), pause_seconds=0.15)
-    cache_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    cache_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Checked {len(records)} anime; refreshed {refreshed} metadata records; {with_synopsis} have a cached synopsis.")
     return 0
 
