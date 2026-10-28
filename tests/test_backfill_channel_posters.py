@@ -23,6 +23,23 @@ class ChannelPosterBackfillTests(unittest.TestCase):
         self.assertEqual([row["message_id"] for row in rows], ["21", "22"])
 
 
+    def test_cached_synopsis_skips_slow_catalog_lookup(self):
+        from tools.backfill_channel_posters import resolve_metadata
+        poster = {
+            "poster_url": "https://cdn.example/verified.jpg",
+            "metadata": {
+                "title": {"english": "Verified Anime", "romaji": "Verified Anime"},
+                "description": "A verified cached synopsis.",
+                "seasonYear": 2026,
+                "metadata_source": "MyAnimeList exact-series record",
+            },
+        }
+        calls = []
+        metadata = resolve_metadata("Verified Anime", poster, lambda title: calls.append(title) or {})
+        self.assertEqual(calls, [])
+        self.assertEqual(metadata["description"], "A verified cached synopsis.")
+        self.assertEqual(metadata["coverImage"]["extraLarge"], "https://cdn.example/verified.jpg")
+
     def test_curated_cached_metadata_overrides_mismatched_catalog_result(self):
         from tools.backfill_channel_posters import merge_cached_metadata
         catalog = {
