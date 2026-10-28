@@ -1301,7 +1301,17 @@ def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str,
                 response = requests.post(endpoint, data=payload, files=files, timeout=(30, 1800))
         else:
             response = requests.post(endpoint, data=payload, files=files, timeout=(30, 1800))
-    response.raise_for_status()
+    if not response.ok:
+        try:
+            error_payload = response.json()
+        except ValueError:
+            error_payload = {}
+        description = (
+            error_payload.get("description", "")
+            if isinstance(error_payload, dict)
+            else ""
+        ) or response.text[:500] or f"HTTP {response.status_code}"
+        raise RuntimeError(f"Telegram {method} failed (HTTP {response.status_code}): {description}")
     result = response.json()
     if not isinstance(result, dict) or result.get("ok") is not True:
         description = result.get("description", "Unexpected Telegram API response.") if isinstance(result, dict) else "Unexpected Telegram API response."
@@ -1530,11 +1540,42 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 video_caption = build_quality_reply_caption(
                     title, episode_number, quality,
                 )
-                message_id = telegram_upload_and_send(
-                    token, chat_id, output["path"], video_caption,
-                    thumbnail_path=thumbnail_path,
-                    reply_to_message_id=poster_message_id,
-                )
+                try:
+                    message_id = telegram_upload_and_send(
+                        token, chat_id, output["path"], video_caption,
+                        thumbnail_path=thumbnail_path,
+                        reply_to_message_id=poster_message_id,
+                    )
+                except RuntimeError as exc:
+                    error_text = str(exc).casefold()
+                    stale_reply_errors = (
+                        "message to be replied not found",
+                        "reply message not found",
+                        "replied message not found",
+                    )
+                    if not any(marker in error_text for marker in stale_reply_errors):
+                        raise
+                    # A poster may have been manually deleted after its ID was saved.
+                    # Replace that anchor and retry this upload once, without leaving
+                    # the quality file as a standalone channel post.
+                    LOG.warning(
+                        "Saved poster message %s for %s no longer exists; creating a new poster anchor.",
+                        poster_message_id, title,
+                    )
+                    poster_message_id = telegram_send_anime_poster(
+                        token, chat_id, title, episode_number, metadata,
+                        fallback_image_path=thumbnail_path,
+                    )
+                    state["posters"][poster_identity] = {
+                        "title": title, "episode": episode_number,
+                        "message_id": poster_message_id, "published_at": int(time.time()),
+                    }
+                    save_state(config["state_file"], state)
+                    message_id = telegram_upload_and_send(
+                        token, chat_id, output["path"], video_caption,
+                        thumbnail_path=thumbnail_path,
+                        reply_to_message_id=poster_message_id,
+                    )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
                     "title": title,
