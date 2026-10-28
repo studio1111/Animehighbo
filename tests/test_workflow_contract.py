@@ -205,6 +205,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("authorization_evidence", workflow)
         self.assertIn("actions/upload-artifact@v4", workflow)
         self.assertIn('git status --porcelain -- data/archive_manifest.json', workflow)
+        self.assertIn("actions: write", workflow)
+        self.assertIn("Refresh release metadata coverage report after catalog update", workflow)
+        self.assertIn("gh workflow run subsplease-release-monitor.yml", workflow)
         self.assertNotIn("python app.py", workflow)
 
 
