@@ -59,6 +59,18 @@ jobs:
               )
               return json.loads(result.stdout)
 
+          def api_all_pages(path):
+              result = subprocess.run(
+                  ["gh", "api", "--paginate", "--slurp", path],
+                  check=True, capture_output=True, text=True,
+              )
+              pages = json.loads(result.stdout)
+              combined = []
+              for page in pages:
+                  if isinstance(page, dict):
+                      combined.extend(page.get("workflow_runs", page.get("artifacts", [])))
+              return combined
+
           def complete(record):
               return isinstance(record, dict) and {
                   "1080p", "720p", "480p"
@@ -94,7 +106,7 @@ jobs:
           denied = {re.sub(r"\s+", " ", str(x)).strip().casefold() for x in exclusions if str(x).strip()}
 
           # Index successful preparation runs and their available artifacts.
-          prep_runs = api(f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100").get("workflow_runs", [])
+          prep_runs = api_all_pages(f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100")
           artifact_by_identity = {}
           for run in prep_runs:
               if run.get("conclusion") != "success":
@@ -118,7 +130,7 @@ jobs:
           # Failed recent publication attempts get a short cooldown, so one broken
           # bundle cannot spin continuously or block unrelated prepared episodes.
           failed_recent = set()
-          failed_runs = api(f"repos/{repo}/actions/workflows/recover-prepared-episode.yml/runs?status=completed&per_page=100").get("workflow_runs", [])
+          failed_runs = api_all_pages(f"repos/{repo}/actions/workflows/recover-prepared-episode.yml/runs?status=completed&per_page=100")
           from datetime import datetime, timedelta, timezone
           now = datetime.now(timezone.utc)
           for run in failed_runs:
