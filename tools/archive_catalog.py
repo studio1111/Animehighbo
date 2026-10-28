@@ -230,9 +230,8 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
 def build_archive_manifest(
     cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
     max_file_size_mb: int = 1800,
-    authorization_evidence: str = "", authorization_reviewed_at: str = "",
 ) -> list[dict]:
-    """Discover shows released since cutoff into an ordered list of episode candidates."""
+    """Discover and return an ordered manifest of eligible SubsPlease episode sources."""
     if max_pages < 1 or max_pages > 500:
         raise ValueError("max_pages must be between 1 and 500.")
     own_session = session is None
@@ -271,11 +270,7 @@ def build_archive_manifest(
             try:
                 show_title, episodes = _fetch_show_episodes(client, page_url)
                 show_title = show_title or str(sample.get("show") or sample.get("title") or page_url)
-                selected = select_show_episodes(
-                    show_title, episodes, cutoff, max_file_size_mb,
-                    authorization_evidence=authorization_evidence,
-                    authorization_reviewed_at=authorization_reviewed_at,
-                )
+                selected = select_show_episodes(show_title, episodes, cutoff, max_file_size_mb)
                 if selected:
                     first_date = min(row["_release_date"] for row in selected)
                     series.append((first_date, show_title.casefold(), show_title, selected))
@@ -297,8 +292,7 @@ def build_archive_manifest(
             str(row.get("title", "")).casefold(),
             int(row.get("episode", 0) or 0),
         ))
-        # Authorized manifests carry source URIs, so exact-source duplicates can
-        # be rejected. Candidate reports deliberately omit media/magnet URLs.
+        # Source URIs are required for the durable archive queue; reject duplicates.
         seen = set()
         for row in manifest:
             uri = str(row.get("uri") or "").strip()
