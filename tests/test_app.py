@@ -171,7 +171,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
             "files": files,
         }), encoding="utf-8")
 
-    def test_publishes_poster_then_standalone_thumbnail_videos_with_metadata(self):
+    def test_publishes_poster_then_reply_videos_with_metadata(self):
         import os
         import tempfile
         from unittest.mock import patch
@@ -217,7 +217,7 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual([event[1] for event in events if event[0] == "poster"],
                          ["Series A", "Series B"])
         file_events = [event for event in events if event[0] == "file"]
-        self.assertEqual([event[3] for event in file_events], [None] * 6)
+        self.assertEqual([event[3] for event in file_events], ["poster-Series A"] * 3 + ["poster-Series B"] * 3)
         self.assertTrue(all(event[2] == thumbnail for event in file_events))
         self.assertTrue(all("EP " in event[1]
                             and "@Animehighbo" not in event[1]
