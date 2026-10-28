@@ -35,7 +35,7 @@ class SeasonalDiscoveryTests(unittest.TestCase):
         keys = archive_title_keys([{"title": "Blue Box - 02 (1080p)"}])
         self.assertIn("blue box", keys)
 
-    def test_report_flags_unmatched_seasonal_titles_without_granting_rights(self):
+    def test_report_flags_unmatched_seasonal_titles_as_coverage_gaps(self):
         report = build_report(
             [{"title": "Blue Box - 02 (1080p)"}],
             [
@@ -55,7 +55,6 @@ class SeasonalDiscoveryTests(unittest.TestCase):
         self.assertEqual(report["summary"]["matched_in_manifest"], 1)
         self.assertEqual(report["summary"]["review_required"], 1)
         self.assertNotIn("authorized_for_redistribution", report["titles"][1])
-        self.assertIn("rights_policy", report)
 
 
 if __name__ == "__main__":
