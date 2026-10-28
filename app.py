@@ -530,6 +530,34 @@ def _kitsu_metadata(title: str, timeout: int) -> dict:
     }
 
 
+def _normalized_poster_key(value: str) -> str:
+    """Normalize title punctuation so cached poster records match release titles."""
+    return re.sub(r"[^a-z0-9]+", " ", str(value or "").casefold()).strip()
+
+
+def _cached_anime_poster(title: str) -> dict:
+    """Return a previously verified poster record for an exact normalized series title."""
+    cache_path = Path(os.environ.get("ANIMEHIGHBO_POSTER_CACHE", "data/anime_poster_state.json"))
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, TypeError):
+        return {}
+    records = payload.get("published", {}) if isinstance(payload, dict) else {}
+    if not isinstance(records, dict):
+        return {}
+    wanted = _normalized_poster_key(title)
+    for key, record in records.items():
+        if not isinstance(record, dict):
+            continue
+        if wanted not in {_normalized_poster_key(key), _normalized_poster_key(record.get("title", ""))}:
+            continue
+        poster_url = str(record.get("poster_url") or "").strip()
+        parsed = urlparse(poster_url)
+        if parsed.scheme == "https" and parsed.hostname:
+            return {**record, "poster_url": poster_url}
+    return {}
+
+
 def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     """Combine AniList, Jikan/MyAnimeList and Kitsu; retain every verified field available."""
     sources = (
@@ -574,6 +602,20 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
                 pass
         except Exception as exc:
             LOG.warning("%s metadata lookup failed for %r: %s", source_name, title, exc)
+    cached = _cached_anime_poster(title) or _cached_anime_poster(search_title)
+    if cached:
+        # Prefer the repository's established series poster if live catalogs fail or disagree.
+        cover = merged.setdefault("coverImage", {})
+        cover["extraLarge"] = cached["poster_url"]
+        if not merged.get("title"):
+            merged["title"] = {
+                "english": cached.get("title") or search_title,
+                "romaji": cached.get("title") or search_title,
+            }
+        if not merged.get("anilist_id") and cached.get("anilist_id"):
+            merged["anilist_id"] = cached["anilist_id"]
+        if not merged.get("description") and cached.get("description"):
+            merged["description"] = cached["description"]
     if not merged:
         LOG.warning("No anime metadata found for %r across AniList, Jikan and Kitsu.", title)
     return merged
@@ -812,14 +854,17 @@ def create_anime_video_thumbnail(
     title: str, metadata: dict, output_path: Path,
     fallback_video_path: Path | None = None,
 ) -> Path:
-    """Use an online poster where available, otherwise extract a frame from the episode."""
+    """Create a compact video thumbnail from actual series poster artwork only."""
     cover = (metadata.get("coverImage") or {}) if isinstance(metadata, dict) else {}
     candidates = [str(cover.get(key) or "") for key in ("extraLarge", "large", "medium")]
+    cached = _cached_anime_poster(title)
+    if cached.get("poster_url"):
+        candidates.insert(0, cached["poster_url"])
     candidates.extend(search_poster_image_urls(title))
     seen = set()
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
-        raise RuntimeError("ffmpeg is required to create a poster thumbnail for every video.")
+        raise RuntimeError("ffmpeg is required to prepare a poster thumbnail for every video.")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     for candidate in candidates:
         candidate = candidate.strip()
@@ -846,33 +891,11 @@ def create_anime_video_thumbnail(
             finally:
                 source_path.unlink(missing_ok=True)
         except Exception as exc:
-            LOG.warning("Unable to prepare video thumbnail from %r for %s: %s", candidate, title, exc)
-
-    # External catalogs/search engines may be unreachable in CI or omit a new season.
-    # A real frame from the already-prepared episode keeps the poster+thumbnail contract
-    # intact without fabricating artwork or publishing a video without an image.
-    if fallback_video_path is not None and Path(fallback_video_path).is_file():
-        for timestamp in ("5", "15", "30", "1", "0"):
-            for quality in (5, 10, 15, 20, 25):
-                output_path.unlink(missing_ok=True)
-                try:
-                    result = subprocess.run(
-                        [ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
-                         "-ss", timestamp, "-i", str(fallback_video_path),
-                         "-frames:v", "1",
-                         "-vf", "scale=320:320:force_original_aspect_ratio=decrease",
-                         "-q:v", str(quality), str(output_path)],
-                        capture_output=True, text=True, timeout=45, check=False,
-                    )
-                except Exception as exc:
-                    LOG.warning("Video-frame poster fallback failed for %s at %ss: %s",
-                                title, timestamp, exc)
-                    break
-                if result.returncode == 0 and output_path.is_file() and 0 < output_path.stat().st_size <= 200 * 1024:
-                    LOG.warning("Using an episode frame as poster/thumbnail fallback for %s", title)
-                    return output_path
-        output_path.unlink(missing_ok=True)
-    raise RuntimeError(f"No usable poster or episode-frame thumbnail found for {title}; refusing to publish videos without images.")
+            LOG.warning("Unable to prepare poster thumbnail from %r for %s: %s", candidate, title, exc)
+    output_path.unlink(missing_ok=True)
+    raise RuntimeError(
+        f"No verified anime poster could be found for {title}; refusing to use an episode frame as poster/thumbnail."
+    )
 
 
 def telegram_send_anime_poster(
@@ -907,18 +930,6 @@ def telegram_send_anime_poster(
                 break
             except Exception as exc:
                 LOG.warning("Web poster candidate failed for %r; trying another source: %s", title, exc)
-
-    if not image_data and fallback_image_path is not None:
-        try:
-            fallback_path = Path(fallback_image_path)
-            fallback_bytes = fallback_path.read_bytes()
-            if fallback_bytes.startswith(bytes.fromhex("ffd8ff")):
-                image_data, image_type = fallback_bytes, "image/jpeg"
-                LOG.warning("Using a verified frame from the episode as the poster for %r", title)
-            else:
-                LOG.warning("Generated poster fallback is not a valid JPEG for %r", title)
-        except OSError as exc:
-            LOG.warning("Could not read generated episode-frame poster for %r: %s", title, exc)
 
     if image_data:
         # A transport timeout can mean Telegram accepted the photo, so never send a
