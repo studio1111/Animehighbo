@@ -282,13 +282,14 @@ def _direct_release_entry(
 def _manifest_episode_key(row: dict) -> tuple[str, int] | None:
     """Normalize one manifest row to a stable series-and-episode key."""
     title = str(row.get("title") or "").strip()
+    title = re.sub(r"[–—−]", "-", title)
     title = re.sub(r"(?i)\s+\((?:1080|720|480)p\)$", "", title)
     number = _episode_number(row)
     title = re.sub(
         r"(?i)\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?$",
         "", title,
     )
-    title = re.sub(r"\s+", " ", title).strip(" -–—").casefold()
+    title = re.sub(r"\s+", " ", title).strip(" -").casefold()
     if not title or number is None:
         return None
     return title, number
@@ -370,10 +371,21 @@ def build_archive_manifest(
         # Prefer direct latest-feed rows over potentially stale show-detail rows
         # for the same series/episode, then deduplicate before validating source URIs.
         combined: dict[tuple[str, int], dict] = {}
+        seen_source_uris: set[str] = set()
         for row in direct_releases + manifest:
             key = _manifest_episode_key(row)
-            if key is not None:
-                combined.setdefault(key, row)
+            if key is None or key in combined:
+                continue
+            uri = str(row.get("uri") or "").strip()
+            if uri and uri in seen_source_uris:
+                LOG.warning(
+                    "Skipping duplicate source URI for %s; the source is already represented in the manifest.",
+                    row.get("title", "unknown episode"),
+                )
+                continue
+            combined[key] = row
+            if uri:
+                seen_source_uris.add(uri)
         manifest = list(combined.values())
         manifest.sort(key=lambda row: (
             row.get("release_date", "9999-12-31"),
