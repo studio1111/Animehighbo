@@ -12,7 +12,7 @@ def merge_nonempty(old: dict, new: dict) -> dict:
     """Merge verified non-empty catalog values without erasing useful cached fields."""
     result = dict(old) if isinstance(old, dict) else {}
     curated_source = str(result.get("metadata_source") or "").casefold()
-    curated = any(marker in curated_source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art"))
+    curated = any(marker in curated_source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art", "official"))
     for key, value in (new.items() if isinstance(new, dict) else []):
         if isinstance(value, dict):
             current = result.get(key, {})
@@ -40,7 +40,7 @@ def refresh_records(records: dict, lookup: Callable[[str], dict], pause_seconds:
         if not title: continue
         old = record.get("metadata") if isinstance(record.get("metadata"), dict) else {}
         source = str(old.get("metadata_source") or "").casefold()
-        curated = any(marker in source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art"))
+        curated = any(marker in source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art", "official"))
         if curated and str(old.get("description") or "").strip():
             with_synopsis += 1
             continue
