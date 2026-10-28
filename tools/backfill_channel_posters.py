@@ -17,14 +17,14 @@ def normalize_title(value: str) -> str:
 def discover_channel_anchors_from_html(content: str) -> tuple[list[dict], str | None]:
     """Parse real photo-message IDs from a public Telegram channel page."""
     more_match = re.search(
-        r'<a\\b(?=[^>]*class=["\'][^"\']*tme_messages_more[^"\']*["\'])(?=[^>]*href=["\']([^"\']+)["\'])[^>]*>',
+        r'<a\b(?=[^>]*class=["\'][^"\']*tme_messages_more[^"\']*["\'])(?=[^>]*href=["\']([^"\']+)["\'])[^>]*>',
         content,
         re.I,
     )
     next_url = unescape(more_match.group(1)) if more_match else None
     anchors = []
     wrapper_pattern = re.compile(
-        r'<div\\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/(\\d+)["\'][^>]*>(.*?)(?=<div\\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/\\d+["\']|$)',
+        r'<div\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/(\d+)["\'][^>]*>(.*?)(?=<div\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/\d+["\']|$)',
         re.I | re.S,
     )
     for match in wrapper_pattern.finditer(content):
@@ -32,23 +32,23 @@ def discover_channel_anchors_from_html(content: str) -> tuple[list[dict], str | 
         if "tgme_widget_message_photo_wrap" not in block and "tgme_widget_message_photo" not in block:
             continue
         caption_match = re.search(
-            r'<div\\b[^>]*class=["\'][^"\']*tgme_widget_message_text[^"\']*["\'][^>]*>(.*?)</div>',
+            r'<div\b[^>]*class=["\'][^"\']*tgme_widget_message_text[^"\']*["\'][^>]*>(.*?)</div>',
             block,
             re.I | re.S,
         )
         if not caption_match:
             continue
         caption = unescape(re.sub(r"<[^>]+>", " ", caption_match.group(1)))
-        caption = re.sub(r"\\s+", " ", caption).strip()
+        caption = re.sub(r"\s+", " ", caption).strip()
         title_match = re.search(
-            r"(?:English|🇬🇧)\\s*[:：]\\s*(.+?)(?=\\s+(?:فارسی|日本語|Japanese|قسمت|EP(?:ISODE)?)(?:\\s|[:：]|$))",
+            r"(?:English|🇬🇧)\s*[:：]\s*(.+?)(?=\s+(?:فارسی|日本語|Japanese|قسمت|EP(?:ISODE)?)(?:\s|[:：]|$))",
             caption,
             re.I,
         )
-        episode_match = re.search(r"(?:قسمت|EP(?:ISODE)?)\\s*[:#：]?\\s*0*(\\d{1,4})", caption, re.I)
+        episode_match = re.search(r"(?:قسمت|EP(?:ISODE)?)\s*[:#：]?\s*0*(\d{1,4})", caption, re.I)
         if not title_match or not episode_match:
             continue
-        title = re.sub(r"\\s+", " ", title_match.group(1)).strip(" -–—:")
+        title = re.sub(r"\s+", " ", title_match.group(1)).strip(" -–—:")
         if title:
             anchors.append({"message_id": message_id, "title": title, "episode": episode_match.group(1)})
     anchors.sort(key=lambda row: int(row["message_id"]))
@@ -99,7 +99,7 @@ def build_poster_index(payload: dict) -> dict:
         for title in titles:
             normalized = normalize_title(title)
             if normalized: index[normalized] = record
-            base = re.sub(r"(?i)\\s+(?:season\\s*\\d+|s\\d+|\\d+(?:st|nd|rd|th)\\s+season)$", "", str(title or "")).strip()
+            base = re.sub(r"(?i)\s+(?:season\s*\d+|s\d+|\d+(?:st|nd|rd|th)\s+season)$", "", str(title or "")).strip()
             base_normalized = normalize_title(base)
             if base_normalized: index[base_normalized] = record
     return index
