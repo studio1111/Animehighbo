@@ -1,9 +1,4 @@
-"""Discover episode candidates from the SubsPlease catalogue.
-
-Discovery alone produces metadata-only review candidates. A publishing manifest
-requires a valid evidence reference and review date; a boolean flag is not used.
-Discovery never grants rights and never downloads or publishes media.
-"""
+"""Discover and refresh the ordered archive manifest from the SubsPlease catalogue."""
 from __future__ import annotations
 
 import argparse
