@@ -38,12 +38,17 @@ def refresh_records(records: dict, lookup: Callable[[str], dict], pause_seconds:
         if not isinstance(record, dict): continue
         title = str(record.get("title") or "").strip()
         if not title: continue
+        old = record.get("metadata") if isinstance(record.get("metadata"), dict) else {}
+        source = str(old.get("metadata_source") or "").casefold()
+        curated = any(marker in source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art"))
+        if curated and str(old.get("description") or "").strip():
+            with_synopsis += 1
+            continue
         try: metadata = lookup(title)
         except Exception as exc:
             LOG.warning("Metadata lookup failed for %s: %s", title, exc)
             continue
         if not isinstance(metadata, dict) or not metadata: continue
-        old = record.get("metadata") if isinstance(record.get("metadata"), dict) else {}
         merged = merge_nonempty(old, metadata)
         if merged != old:
             record["metadata"] = merged
