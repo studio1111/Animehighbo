@@ -244,7 +244,7 @@ class WorkflowContractTests(unittest.TestCase):
         # The RSS monitor is a fallback if the catalog missed a newly released episode.
         self.assertIn('cron: "0 */2 * * *"', monitor)
         self.assertIn("Rebuild archive catalog when scheduled RSS check finds gaps", monitor)
-        self.assertIn("if: github.event_name == 'schedule'", monitor)
+        self.assertIn("if: github.event_name != 'workflow_dispatch'", monitor)
         self.assertIn('"missing_from_manifest"', monitor)
         self.assertIn('"build-archive-catalog.yml"', monitor)
         self.assertIn("actions: write", monitor)
