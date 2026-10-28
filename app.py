@@ -1572,7 +1572,12 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(
                     f"Episode {manifest.get('title')} has delivered files but no recorded poster."
                 )
-            episodes.append({**manifest, "manifest_path": manifest_path, "files": files})
+            episodes.append({
+                **manifest,
+                "manifest_path": manifest_path,
+                "files": files,
+                "published_qualities": sorted(group_published_qualities),
+            })
 
         except Exception as exc:
             invalid_bundle_count += 1
@@ -1606,6 +1611,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             poster_identity = str(episode.get("poster_identity") or "")
             group_id = str(episode.get("group_id") or "")
             series_key = str(episode.get("series_key") or "").strip()
+            group_published_qualities = set(episode.get("published_qualities") or [])
             if not poster_identity or not group_id or not series_key:
                 raise ValueError(f"Prepared episode is missing poster identity: {title}")
 
