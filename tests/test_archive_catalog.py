@@ -247,6 +247,56 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertNotIn("authorization_evidence", manifest[0])
         self.assertIn("magnet:", json.dumps(manifest).lower())
 
+    def test_latest_feed_episode_is_kept_when_show_detail_api_is_stale(self):
+        session = Mock()
+        session.headers = {}
+        latest_page = {
+            "Magic Knight Rayearth (2026) - 04": {
+                "title": "Magic Knight Rayearth (2026) - 04",
+                "show": "Magic Knight Rayearth (2026)",
+                "episode": "4",
+                "release_date": "2026-10-28T10:00:00Z",
+                "page": "magic-knight-rayearth-2026",
+                "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:latest-episode"}],
+            }
+        }
+        stale_show_rows = [
+            {
+                "title": f"Magic Knight Rayearth (2026) - {number:02d}",
+                "episode": str(number),
+                "release_date": f"2026-10-{number * 7:02d}T10:00:00Z",
+                "downloads": [{"res": "1080", "magnet": f"magnet:?xt=urn:btih:old{number}"}],
+            }
+            for number in (1, 2, 3)
+        ]
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
+            patch("tools.archive_catalog._fetch_show_episodes", return_value=("Magic Knight Rayearth (2026)", stale_show_rows)),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
+            manifest = build_archive_manifest(date(2026, 10, 1), max_pages=5, session=session)
+
+        self.assertIn(
+            ("magic knight rayearth (2026)", 4),
+            {(" ".join(row["title"].rsplit(" - ", 1)[0].split()).casefold(), row["episode"]) for row in manifest},
+        )
+        episode_four = next(row for row in manifest if row["episode"] == 4)
+        self.assertIn("latest-episode", episode_four["uri"])
+        self.assertEqual(episode_four["release_date"], "2026-10-28")
+
+    def test_direct_latest_feed_does_not_queue_batch_ranges(self):
+        from tools.archive_catalog import _direct_release_entry
+
+        batch = {
+            "title": "Jujutsu Kaisen (48-59) (1080p)",
+            "show": "Jujutsu Kaisen",
+            "episode": "48-59",
+            "release_date": "2026-10-28T10:00:00Z",
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:batch"}],
+        }
+        self.assertIsNone(_direct_release_entry(batch, date(2026, 10, 1)))
+
     def test_discovered_episodes_are_automatically_eligible_without_review_gate(self):
         rows = [{
             "title": "Candidate Saga - 01",
