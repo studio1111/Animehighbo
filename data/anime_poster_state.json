@@ -889,7 +889,7 @@
           ]
         },
         "isAdult": false,
-        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source": "Oricon current-season record",
         "metadata_source_url": "https://www.oricon.co.jp/anime/1168/"
       },
       "poster_source": "Oricon News current-season key visual",
