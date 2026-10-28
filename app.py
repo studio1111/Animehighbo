@@ -559,6 +559,38 @@ def _cached_anime_poster(title: str) -> dict:
     return {}
 
 
+def apply_cached_anime_metadata(metadata: dict, cached: dict) -> dict:
+    """Apply an exact-title poster cache, preferring curated exact-season records."""
+    merged = dict(metadata) if isinstance(metadata, dict) else {}
+    cached_metadata = cached.get("metadata") if isinstance(cached, dict) else None
+    curated = isinstance(cached_metadata, dict) and cached_metadata.get("metadata_source") == "MyAnimeList exact-season record"
+    if isinstance(cached_metadata, dict):
+        for key, value in cached_metadata.items():
+            if value in (None, "", [], {}):
+                continue
+            if isinstance(value, dict):
+                current = merged.get(key, {})
+                current = dict(current) if isinstance(current, dict) else {}
+                for subkey, subvalue in value.items():
+                    if subvalue in (None, "", [], {}):
+                        continue
+                    if curated or current.get(subkey) in (None, "", [], {}):
+                        current[subkey] = subvalue
+                merged[key] = current
+            elif curated or merged.get(key) in (None, "", [], {}):
+                merged[key] = value
+    poster_url = str(cached.get("poster_url") or "").strip() if isinstance(cached, dict) else ""
+    if poster_url and (curated or not any(str((merged.get("coverImage") or {}).get(key) or "").strip() for key in ("extraLarge", "large", "medium"))):
+        cover = dict(merged.get("coverImage") or {})
+        cover["extraLarge"] = poster_url
+        merged["coverImage"] = cover
+    if not merged.get("title") and isinstance(cached, dict):
+        merged["title"] = {"english": cached.get("title") or "", "romaji": cached.get("title") or ""}
+    if not merged.get("anilist_id") and isinstance(cached, dict) and cached.get("anilist_id"):
+        merged["anilist_id"] = cached["anilist_id"]
+    return merged
+
+
 def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
     """Combine AniList, Jikan/MyAnimeList and Kitsu; retain every verified field available."""
     sources = (
@@ -605,29 +637,7 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
             LOG.warning("%s metadata lookup failed for %r: %s", source_name, title, exc)
     cached = _cached_anime_poster(title) or _cached_anime_poster(search_title)
     if cached:
-        cached_metadata = cached.get("metadata")
-        if isinstance(cached_metadata, dict):
-            for key, value in cached_metadata.items():
-                if key in {"title", "coverImage", "studios"} and isinstance(value, dict):
-                    current = merged.setdefault(key, {})
-                    for subkey, subvalue in value.items():
-                        if not current.get(subkey) and subvalue:
-                            current[subkey] = subvalue
-                elif merged.get(key) in (None, "", [], {}) and value not in (None, "", [], {}):
-                    merged[key] = value
-        # Use the repository's established poster when live catalogs have no usable cover.
-        cover = merged.setdefault("coverImage", {})
-        if not any(str(cover.get(key) or "").strip() for key in ("extraLarge", "large", "medium")):
-            cover["extraLarge"] = cached["poster_url"]
-        if not merged.get("title"):
-            merged["title"] = {
-                "english": cached.get("title") or search_title,
-                "romaji": cached.get("title") or search_title,
-            }
-        if not merged.get("anilist_id") and cached.get("anilist_id"):
-            merged["anilist_id"] = cached["anilist_id"]
-        if not merged.get("description") and cached.get("description"):
-            merged["description"] = cached["description"]
+        merged = apply_cached_anime_metadata(merged, cached)
     if not merged:
         LOG.warning("No anime metadata found for %r across AniList, Jikan and Kitsu.", title)
     return merged
