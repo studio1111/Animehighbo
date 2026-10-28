@@ -6436,6 +6436,47 @@
       "source_quality": "1080p",
       "published_at": 1793144801,
       "release_date": "2026-10-22"
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:1080p": {
+      "title": "Toukutsu Ou",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "21eb1b03d42ff757b166da524895472951982d47aaff727fc519c9977c610b37",
+      "message_id": "1451",
+      "published_at": 1793168975,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:720p": {
+      "title": "Toukutsu Ou",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "aa4a6d2acfc91b4862c703112126ca8b8620b17b361e4ce57bafe6d59c55069a",
+      "message_id": "1452",
+      "published_at": 1793168980,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p": {
+      "title": "Toukutsu Ou",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b0179c6376dfb48c8b3c647c224eb1923d5e42f370482578ace3d742ef791cd7",
+      "message_id": "1453",
+      "published_at": 1793168987,
+      "bilingual_subtitles": true
+    },
+    "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d": {
+      "title": "Toukutsu Ou",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793168987,
+      "release_date": "2026-10-01"
     }
   },
   "seen": {
@@ -7449,7 +7490,10 @@
     "9d28f7b7a916496df346092367fcba4b818000f5aea880eb95bb7466b90e6795": "82a714b2b7d6b741ae3a290791b51a3b13fe20368ccef052c706cdabc3d2076b:480p",
     "02d28264331a9eec15f63c7b45e3105b56080ee291140ad393713ba5b7475485": "4025f528a53ab8283e9e5a775f51f10d30066b1d83267e279111961ec4701f49:1080p",
     "d3cea1cac7fd658ec667649e59e59b8adfac3a0e20f6dfb6a4d80235a0bb9c81": "4025f528a53ab8283e9e5a775f51f10d30066b1d83267e279111961ec4701f49:720p",
-    "8f1d1f3372b1940645d3646044349fd1c77338adbfad0bdedffa6857d480d0a4": "4025f528a53ab8283e9e5a775f51f10d30066b1d83267e279111961ec4701f49:480p"
+    "8f1d1f3372b1940645d3646044349fd1c77338adbfad0bdedffa6857d480d0a4": "4025f528a53ab8283e9e5a775f51f10d30066b1d83267e279111961ec4701f49:480p",
+    "21eb1b03d42ff757b166da524895472951982d47aaff727fc519c9977c610b37": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:1080p",
+    "aa4a6d2acfc91b4862c703112126ca8b8620b17b361e4ce57bafe6d59c55069a": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:720p",
+    "b0179c6376dfb48c8b3c647c224eb1923d5e42f370482578ace3d742ef791cd7": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
