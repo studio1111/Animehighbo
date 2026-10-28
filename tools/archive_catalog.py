@@ -29,6 +29,9 @@ REQUIRED_SHOW_SLUGS = (
     "tokyo-revengers",
     "rilakkuma",
     "uchi-no-otouto-domo-ga-sumimasen",
+    "doumo-suki-na-hito-ni-horegusuri-wo-irai-sareta-majo-desu",
+    "tensei-goblin-dakedo-shitsumon-aru",
+    "bleach-sennen-kessen-hen-kashin-tan",
 )
 
 
