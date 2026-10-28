@@ -163,7 +163,6 @@ def build_report(
             "matched_in_manifest": sum(1 for item in entries if item["in_episode_manifest"]),
             "review_required": sum(1 for item in entries if item["review_required"]),
         },
-        "rights_policy": "Metadata discovery does not grant rights. Never add a media source or publish without verified redistribution permission.",
         "titles": entries,
     }
 
