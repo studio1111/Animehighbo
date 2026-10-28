@@ -37,6 +37,77 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+      - name: Stop legacy workers that still contain direct publishing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PREPARATION_ONLY_COMMIT: 805a40838e70475019536a1d4ec719c39de4e83a
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timedelta, timezone
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          split_commit = os.environ["PREPARATION_ONLY_COMMIT"]
+
+          def api(path):
+              result = subprocess.run(
+                  ["gh", "api", path],
+                  check=True, capture_output=True, text=True,
+              )
+              return json.loads(result.stdout)
+
+          try:
+              subprocess.run(
+                  ["git", "cat-file", "-e", f"{split_commit}^{{commit}}"],
+                  check=True, capture_output=True,
+              )
+          except subprocess.CalledProcessError:
+              print("The preparation-only migration commit is not available locally; leaving active workers untouched.")
+              raise SystemExit(0)
+
+          now = datetime.now(timezone.utc)
+          cutoff = timedelta(minutes=20)
+          legacy = []
+          for status in ("queued", "in_progress"):
+              runs = api(
+                  f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status={status}&per_page=100"
+              ).get("workflow_runs", [])
+              for run in runs:
+                  head_sha = str(run.get("head_sha") or "")
+                  run_id = run.get("id")
+                  if not head_sha or not run_id:
+                      continue
+                  try:
+                      created = datetime.fromisoformat(
+                          str(run.get("created_at") or "").replace("Z", "+00:00")
+                      )
+                  except ValueError:
+                      continue
+                  if now - created.astimezone(timezone.utc) < cutoff:
+                      continue
+                  is_new_pipeline = subprocess.run(
+                      ["git", "merge-base", "--is-ancestor", split_commit, head_sha],
+                      capture_output=True,
+                  ).returncode == 0
+                  if not is_new_pipeline:
+                      legacy.append((run_id, status, run.get("display_title", "")))
+
+          for run_id, status, title in legacy:
+              result = subprocess.run(
+                  ["gh", "run", "cancel", str(run_id), "--repo", repo],
+                  capture_output=True, text=True,
+              )
+              if result.returncode == 0:
+                  print(f"Cancelled legacy {status} worker {run_id}: {title}")
+              else:
+                  print(f"Could not cancel legacy worker {run_id}; continuing: {result.stderr.strip()}")
+          if not legacy:
+              print("No stale pre-migration workers require cancellation.")
+          PY
       - name: Find a prepared episode and dispatch only one publisher
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
