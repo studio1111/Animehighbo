@@ -1,0 +1,300 @@
+name: Temporary Animehighbo channel audit and repair
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/temporary-channel-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: animehighbo-temporary-channel-repair
+  cancel-in-progress: false
+
+jobs:
+  audit-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Audit real Telegram channel posts against saved message IDs
+        id: audit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import concurrent.futures
+          import hashlib
+          import html
+          import json
+          import re
+          import sys
+          import time
+          from pathlib import Path
+          import requests
+
+          CHANNEL = "Animehighbo"
+          BASE = f"https://t.me/{CHANNEL}"
+          state_path = Path("data/state.json")
+          manifest_path = Path("data/archive_manifest.json")
+          state = json.loads(state_path.read_text(encoding="utf-8"))
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          published = state.get("published", {})
+          posters = state.get("posters", {})
+
+          def episode_details(title):
+              patterns = [
+                  r"(?i)\\b(?:episode|ep)\\s*[-.#:]?\\s*(\\d{1,4}(?:\\.\\d+)?)\\b",
+                  r"第\\s*(\\d{1,4}(?:\\.\\d+)?)\\s*[話话集期]",
+                  r"(?i)\\bS\\d{1,2}\\s*E(\\d{1,4})\\b",
+                  r"\\s[-–]\\s*(\\d{1,4})(?=\\s*(?:\\(|\\[|$))",
+              ]
+              episode = ""
+              clean = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title.strip())
+              for pattern in patterns:
+                  match = re.search(pattern, clean)
+                  if match:
+                      episode = match.group(1)
+                      clean = re.sub(pattern, " ", clean).strip(" -|:[]")
+                      break
+              clean = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", clean)
+              clean = re.sub(r"(?i)\\.(?:mkv|mp4|webm|mov)$", " ", clean)
+              clean = re.sub(r"\\[[^\\]]*\\]", " ", clean)
+              clean = re.sub(r"\\(\\s*\\)", " ", clean)
+              clean = re.sub(r"\\s+", " ", clean).strip(" -|:[]")
+              return (re.sub(r"\\s+", " ", clean) or title.strip(), episode)
+
+          # Fail closed unless the public channel preview is reachable and identifies posts.
+          session = requests.Session()
+          session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; AnimehighboChannelAudit/1.0)"})
+          preview = session.get(f"https://t.me/s/{CHANNEL}", timeout=25)
+          preview.raise_for_status()
+          if not re.search(r'data-post=["\\']' + re.escape(CHANNEL) + r'/\\d+', preview.text):
+              raise SystemExit("Channel preview did not expose a verifiable post. No state was changed.")
+
+          expected = {}
+          episode_meta = {}
+          for entry in manifest:
+              uri = str(entry.get("uri") or entry.get("url") or "").strip()
+              title = str(entry.get("title") or "").strip()
+              if not uri or not title:
+                  continue
+              identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+              anime_title, episode = episode_details(title)
+              if not episode:
+                  raise SystemExit(f"Could not parse episode number safely: {title}")
+              normalized = re.sub(r"\\s+", " ", anime_title).strip().casefold()
+              group_id = hashlib.sha256(f"{normalized}|{episode}".encode("utf-8")).hexdigest()
+              poster_key = f"archive:{group_id}"
+              episode_meta[identity] = {
+                  "identity": identity, "title": anime_title, "episode": episode,
+                  "poster_key": poster_key, "series_key": normalized + "::season-" +
+                      str((re.search(r"(?i)\\bS(\\d{1,2})\\b", anime_title).group(1)
+                           if re.search(r"(?i)\\bS(\\d{1,2})\\b", anime_title) else "1")),
+              }
+              expected[identity] = {
+                  "poster": str(posters.get(poster_key, {}).get("message_id") or ""),
+                  "qualities": {
+                      q: str(published.get(f"{identity}:{q}", {}).get("message_id") or "")
+                      for q in ("1080p", "720p", "480p")
+                  },
+              }
+
+          message_ids = sorted({
+              mid for item in expected.values()
+              for mid in [item["poster"], *item["qualities"].values()] if mid
+          }, key=lambda x: int(x) if x.isdigit() else -1)
+          print(f"Manifest episodes: {len(expected)}; unique saved Telegram messages to verify: {len(message_ids)}")
+
+          def check_message(mid):
+              url = f"{BASE}/{mid}?embed=1&mode=tme"
+              for attempt in range(4):
+                  try:
+                      response = requests.get(url, timeout=20, headers={
+                          "User-Agent": "Mozilla/5.0 (compatible; AnimehighboChannelAudit/1.0)"
+                      })
+                      if response.status_code in (429, 500, 502, 503, 504):
+                          time.sleep(1.5 * (attempt + 1))
+                          continue
+                      if response.status_code == 404:
+                          return mid, False, None
+                      if response.status_code != 200:
+                          return mid, None, f"HTTP {response.status_code}"
+                      body = response.text
+                      exact = re.search(
+                          r'data-post=["\\']' + re.escape(CHANNEL) + r'/' + re.escape(mid) + r'["\\']',
+                          body,
+                      )
+                      if exact:
+                          return mid, True, None
+                      # The channel was independently verified above; a reachable but
+                      # non-existent post page means the saved post is no longer present.
+                      if "tgme_widget_message" not in body or "data-post=" not in body:
+                          return mid, False, None
+                      return mid, False, None
+                  except requests.RequestException as exc:
+                      if attempt == 3:
+                          return mid, None, str(exc)
+                      time.sleep(1.5 * (attempt + 1))
+              return mid, None, "request retries exhausted"
+
+          present = set()
+          missing = set()
+          unknown = []
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+              for mid, exists, error in pool.map(check_message, message_ids):
+                  if error:
+                      unknown.append((mid, error))
+                  elif exists:
+                      present.add(mid)
+                  else:
+                      missing.add(mid)
+
+          if unknown:
+              sample = "; ".join(f"{mid}: {err}" for mid, err in unknown[:10])
+              raise SystemExit(
+                  f"Audit incomplete: {len(unknown)} messages could not be verified ({sample}). "
+                  "No state was changed."
+              )
+          if not message_ids:
+              raise SystemExit("No saved Telegram message IDs found; refusing to infer missing posts.")
+
+          repairs = []
+          for identity, meta in expected.items():
+              rows = expected[identity]
+              absent = []
+              if not rows["poster"] or rows["poster"] in missing:
+                  absent.append("poster")
+              for quality, mid in rows["qualities"].items():
+                  if not mid or mid in missing:
+                      absent.append(quality)
+              if absent:
+                  repairs.append({**meta, "missing": absent})
+
+          Path("/tmp/animehighbo-repair-identities.json").write_text(
+              json.dumps(repairs, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          summary = Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
+          with summary.open("a", encoding="utf-8") as out:
+              out.write("# Animehighbo channel audit\\n\\n")
+              out.write(f"- Manifest episodes checked: **{len(expected)}**\\n")
+              out.write(f"- Saved Telegram message IDs verified: **{len(message_ids)}**\\n")
+              out.write(f"- Messages present: **{len(present)}**\\n")
+              out.write(f"- Messages missing: **{len(missing)}**\\n")
+              out.write(f"- Episodes requiring repair: **{len(repairs)}**\\n\\n")
+              for row in repairs:
+                  out.write(f"- {row['title']} EP {row['episode']}: missing {', '.join(row['missing'])}\\n")
+          print(f"Verified {len(present)} messages; {len(missing)} missing; {len(repairs)} episodes need repair.")
+          PY
+
+      - name: Reset only missing episodes in publication state
+        id: reset
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows = json.loads(Path("/tmp/animehighbo-repair-identities.json").read_text(encoding="utf-8"))
+          Path("/tmp/animehighbo-repair-identities.txt").write_text(
+              "\\n".join(row["identity"] for row in rows) + ("\\n" if rows else ""),
+              encoding="utf-8",
+          )
+          print(f"episodes_to_repair={len(rows)}")
+          with open(__import__("os").environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"episodes_to_repair={len(rows)}\\n")
+          PY
+          if [ ! -s /tmp/animehighbo-repair-identities.txt ]; then
+            echo "The live channel audit found no missing episode messages; nothing will be republished."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          ids = set(Path("/tmp/animehighbo-repair-identities.txt").read_text(encoding="utf-8").split())
+          path = Path("data/state.json")
+          state = json.loads(path.read_text(encoding="utf-8"))
+          published = state.setdefault("published", {})
+          posters = state.setdefault("posters", {})
+          for identity in ids:
+              published.pop(identity, None)
+              for quality in ("1080p", "720p", "480p"):
+                  published.pop(f"{identity}:{quality}", None)
+          manifest = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
+          import hashlib, re
+          def details(title):
+              clean = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title.strip())
+              m = re.search(r"\\s[-–]\\s*(\\d{1,4})(?=\\s*(?:\\(|\\[|$))", clean)
+              if not m:
+                  return None
+              ep = m.group(1)
+              clean = re.sub(r"\\s[-–]\\s*\\d{1,4}(?=\\s*(?:\\(|\\[|$))", " ", clean)
+              clean = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", clean)
+              clean = re.sub(r"\\[[^\\]]*\\]", " ", clean)
+              clean = re.sub(r"\\s+", " ", clean).strip(" -|:[]")
+              return clean, ep
+          for entry in manifest:
+              uri = str(entry.get("uri") or entry.get("url") or "").strip()
+              identity = hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest() if uri else ""
+              if identity not in ids:
+                  continue
+              parsed = details(str(entry.get("title") or ""))
+              if not parsed:
+                  raise SystemExit(f"Cannot map poster key for {entry.get('title')}")
+              title, episode = parsed
+              group = hashlib.sha256(f"{re.sub(r'\\s+', ' ', title).strip().casefold()}|{episode}".encode("utf-8")).hexdigest()
+              posters.pop(f"archive:{group}", None)
+          path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          PY
+            git add data/state.json
+            if git diff --cached --quiet; then
+              echo "State already reflects the repair queue."
+              break
+            fi
+            git commit -m "chore: queue missing Animehighbo channel posts for repair [skip ci]"
+            if git push origin HEAD:main; then
+              echo "Reset publication state only for episodes proven incomplete in the live channel."
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Could not update state after five attempts."
+              exit 1
+            fi
+          done
+
+      - name: Restart the normal five-worker episode queue
+        if: steps.reset.outputs.episodes_to_repair != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run prepare-episodes.yml --ref main
+          echo "Triggered the normal five-worker queue to rebuild and republish only the episodes proven incomplete."
+
+      - name: Delete this temporary workflow after the audit and queue handoff
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --hard origin/main
+          if [ -f .github/workflows/temporary-channel-repair.yml ]; then
+            git rm .github/workflows/temporary-channel-repair.yml
+            git commit -m "chore: remove temporary Animehighbo channel repair workflow [skip ci]"
+            git push origin HEAD:main
+            echo "Temporary workflow removed after handing off repairs."
+          else
+            echo "Temporary workflow is already absent."
+          fi
