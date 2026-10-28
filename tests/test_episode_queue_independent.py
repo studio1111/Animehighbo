@@ -29,7 +29,7 @@ class EmptyQueueReasonTests(unittest.TestCase):
     def test_reports_series_order_or_completion_when_no_episode_is_eligible(self):
         self.assertEqual(
             empty_queue_reason(eligible_count=0, active_count=1, max_workers=5),
-            "No incomplete episode is eligible after completion, series-order, lock, and retry-backoff checks.",
+            "No incomplete episode is eligible after completion, series-order, and retry-backoff checks.",
         )
 
     def test_reports_quota_cooldown_before_other_empty_queue_reasons(self):

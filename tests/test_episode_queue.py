@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, filter_by_manual_exclusions, select_next_upload_date, select_upload_date_group
+from tools.episode_queue import active_quota_cooldown, filter_by_manual_exclusions, select_next_upload_date
 
 
 def row(title, episode, day, uri=None):
@@ -261,52 +261,6 @@ class UploadDateQueueTests(unittest.TestCase):
             )
 
 
-    def test_retained_incomplete_publisher_lock_is_prioritized_before_first_five(self):
-        from tools.episode_queue import prioritize_locked_episode
-
-        entries = [{"identity": f"episode-{index}"} for index in range(1, 8)]
-        with tempfile.TemporaryDirectory() as directory:
-            lock_path = f"{directory}/publisher.lock"
-            with open(lock_path, "w", encoding="utf-8") as stream:
-                json.dump({"identity": "episode-7", "run_id": "cancelled-run"}, stream)
-
-            prioritized = prioritize_locked_episode(entries, {"published": {}}, lock_path)
-
-        self.assertEqual(prioritized[0]["identity"], "episode-7")
-        self.assertEqual({item["identity"] for item in prioritized[:5]},
-                         {"episode-1", "episode-2", "episode-3", "episode-4", "episode-7"})
-
-    def test_incomplete_lock_missing_from_eligible_queue_fails_closed(self):
-        from tools.episode_queue import prioritize_locked_episode
-
-        with tempfile.TemporaryDirectory() as directory:
-            lock_path = f"{directory}/publisher.lock"
-            with open(lock_path, "w", encoding="utf-8") as stream:
-                json.dump({"identity": "missing-episode"}, stream)
-
-            with self.assertRaisesRegex(RuntimeError, "not eligible"):
-                prioritize_locked_episode([{"identity": "other-episode"}], {"published": {}}, lock_path)
-
-    def test_completed_episode_lock_does_not_block_queue(self):
-        from tools.episode_queue import prioritize_locked_episode
-
-        entries = [{"identity": "next-episode"}]
-        with tempfile.TemporaryDirectory() as directory:
-            lock_path = f"{directory}/publisher.lock"
-            with open(lock_path, "w", encoding="utf-8") as stream:
-                json.dump({"identity": "finished-episode"}, stream)
-
-            result = prioritize_locked_episode(entries, {
-                "published": {
-                    "finished-episode": {
-                        "complete_qualities": ["1080p", "720p", "480p"]
-                    }
-                }
-            }, lock_path)
-
-        self.assertEqual(result, entries)
-
-
     def test_recent_failure_backoff_skips_only_the_failed_series(self):
         from tools.episode_queue import exclude_recently_failed_series
 
@@ -319,71 +273,6 @@ class UploadDateQueueTests(unittest.TestCase):
         selected = exclude_recently_failed_series(entries, {"failed-episode"})
 
         self.assertEqual([entry["identity"] for entry in selected], ["healthy-episode"])
-
-    def test_recent_failure_backoff_never_drops_global_lock_owner(self):
-        from tools.episode_queue import exclude_recently_failed_series
-
-        entries = [
-            {"identity": "locked-episode", "series_key": "series-a"},
-            {"identity": "later-episode", "series_key": "series-a"},
-            {"identity": "healthy-episode", "series_key": "series-b"},
-        ]
-
-        selected = exclude_recently_failed_series(
-            entries, {"locked-episode"}, locked_identity="locked-episode"
-        )
-
-        self.assertEqual(
-            [entry["identity"] for entry in selected],
-            ["locked-episode", "healthy-episode"],
-        )
-
-    def test_dispatch_group_contains_only_the_oldest_upload_date(self):
-        entries = [
-            {"identity": "old-a", "title": "Old A", "release_date": "2026-10-05"},
-            {"identity": "old-b", "title": "Old B", "release_date": "2026-10-05"},
-            {"identity": "new-c", "title": "New C", "release_date": "2026-10-06"},
-        ]
-
-        with tempfile.TemporaryDirectory() as directory:
-            selected = select_upload_date_group(
-                entries, "2026-10-05", {"published": {}}, f"{directory}/publisher.lock"
-            )
-
-        self.assertEqual([item["identity"] for item in selected], ["old-a", "old-b"])
-
-    def test_incomplete_publisher_lock_overrides_date_group_and_runs_alone(self):
-        entries = [
-            {"identity": "older-date", "title": "Older date", "release_date": "2026-10-01"},
-            {"identity": "locked-date", "title": "Interrupted episode", "release_date": "2026-10-03"},
-            {"identity": "same-later-date", "title": "Other later episode", "release_date": "2026-10-03"},
-        ]
-        with tempfile.TemporaryDirectory() as directory:
-            lock_path = f"{directory}/publisher.lock"
-            with open(lock_path, "w", encoding="utf-8") as stream:
-                json.dump({"identity": "locked-date", "run_id": "cancelled-run"}, stream)
-
-            selected = select_upload_date_group(entries, "2026-10-01", {"published": {}}, lock_path)
-
-        self.assertEqual([item["identity"] for item in selected], ["locked-date"])
-
-    def test_completed_publisher_lock_does_not_override_oldest_date_group(self):
-        entries = [
-            {"identity": "old-date", "title": "Old date", "release_date": "2026-10-01"},
-            {"identity": "new-date", "title": "New date", "release_date": "2026-10-02"},
-        ]
-        with tempfile.TemporaryDirectory() as directory:
-            lock_path = f"{directory}/publisher.lock"
-            with open(lock_path, "w", encoding="utf-8") as stream:
-                json.dump({"identity": "finished"}, stream)
-
-            selected = select_upload_date_group(entries, "2026-10-01", {
-                "published": {
-                    "finished": {"complete_qualities": ["1080p", "720p", "480p"]}
-                }
-            }, lock_path)
-
-        self.assertEqual([item["identity"] for item in selected], ["old-date"])
 
 
 if __name__ == "__main__":
