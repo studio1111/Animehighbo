@@ -7130,6 +7130,62 @@
       "source_quality": "1080p",
       "published_at": 1793190556,
       "release_date": "2026-10-02"
+    },
+    "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:1080p": {
+      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
+      "episode": "04",
+      "group_id": "36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "poster_identity": "archive:36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "release_date": "2026-10-23",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8dbc7412e27f1ec265ee12b2c0d417aed8860b540fa10f5eeffa8c0a2a57ca11",
+      "message_id": "1507",
+      "published_at": 1793191409,
+      "bilingual_subtitles": true
+    },
+    "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:720p": {
+      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
+      "episode": "04",
+      "group_id": "36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "poster_identity": "archive:36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "release_date": "2026-10-23",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "877afeed658967b926012b2d67aa1ddd7ae5d77e60f46739c008dadc53f3a76a",
+      "message_id": "1508",
+      "published_at": 1793191417,
+      "bilingual_subtitles": true
+    },
+    "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:480p": {
+      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
+      "episode": "04",
+      "group_id": "36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "poster_identity": "archive:36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "release_date": "2026-10-23",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "beb3abeb123edd4aff8e9abe87fe0f3accae9b8986c9aaf6cd246664b5a622fe",
+      "message_id": "1509",
+      "published_at": 1793191421,
+      "bilingual_subtitles": true
+    },
+    "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46": {
+      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
+      "episode": "04",
+      "group_id": "36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "poster_identity": "archive:36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793191421,
+      "release_date": "2026-10-23"
     }
   },
   "seen": {
@@ -8185,7 +8241,10 @@
     "6aea1aa84f92ff3186a795ea9d3515f084b5e7f11fd0a6512f13831ded4d6c20": "6f4bcebc7187dc035bca7fba99f27d05fd1470b3f9562752ef1fee605ae5490a:480p",
     "6b0c334c25ed48ce04045ee160ba51ad87f5404c7881e449aa89c0ebc6f281e6": "0ff196f37a4fced812fce4b8c1a28279f66c8eac5ccc7962af3babbb84a1a451:1080p",
     "4feb2cae9de9db1c31507aa1195a43d42607957d9935a2c6545916fc2e45cd7f": "0ff196f37a4fced812fce4b8c1a28279f66c8eac5ccc7962af3babbb84a1a451:720p",
-    "4183fe4617fab6af4a7364b3d85a3493a5905b9b8da7dde01c5a1279cb9000d1": "0ff196f37a4fced812fce4b8c1a28279f66c8eac5ccc7962af3babbb84a1a451:480p"
+    "4183fe4617fab6af4a7364b3d85a3493a5905b9b8da7dde01c5a1279cb9000d1": "0ff196f37a4fced812fce4b8c1a28279f66c8eac5ccc7962af3babbb84a1a451:480p",
+    "8dbc7412e27f1ec265ee12b2c0d417aed8860b540fa10f5eeffa8c0a2a57ca11": "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:1080p",
+    "877afeed658967b926012b2d67aa1ddd7ae5d77e60f46739c008dadc53f3a76a": "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:720p",
+    "beb3abeb123edd4aff8e9abe87fe0f3accae9b8986c9aaf6cd246664b5a622fe": "c9c46ff5b42f31fa5d12af2892257d2902e8d229b20de464fbcf3c64e38bfb46:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -9240,6 +9299,12 @@
       "episode": "09",
       "message_id": "1502",
       "published_at": 1793190536
+    },
+    "archive:36f28c58d28ea7a8febb902e420b1ac1958a5d6d418eb9436f5154e462fbeefe": {
+      "title": "Tougen Anki – Nikko Kegon no Taki-hen",
+      "episode": "04",
+      "message_id": "1506",
+      "published_at": 1793191401
     }
   }
 }
