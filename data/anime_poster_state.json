@@ -103,22 +103,20 @@
       "title": "Bleach – Sennen Kessen Hen",
       "message_id": "703",
       "anilist_id": 116674,
-      "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx116674-p3zK4PUX2Aag.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1275/158595.jpg",
       "published_at": "2026-10-25T10:09:14Z",
       "metadata": {
         "title": {
-          "english": "BLEACH: Thousand-Year Blood War",
-          "romaji": "BLEACH: Sennen Kessen-hen",
-          "native": "BLEACH 千年血戦篇"
+          "english": "Bleach: Thousand-Year Blood War - The Calamity",
+          "romaji": "Bleach: Sennen Kessen-hen - Kashin-tan",
+          "native": "BLEACH 千年血戦篇-禍進譚-"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx116674-p3zK4PUX2Aag.jpg",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116674-p3zK4PUX2Aag.jpg",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116674-p3zK4PUX2Aag.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1275/158595.jpg"
         },
-        "season": "FALL",
-        "seasonYear": 2022,
-        "episodes": 13,
+        "description": "The final part of Bleach: Thousand-Year Blood War brings the Soul Reapers and the Quincies toward the decisive end of their devastating conflict.",
+        "seasonYear": 2026,
+        "episodes": 10,
         "genres": [
           "Action",
           "Adventure",
@@ -126,31 +124,19 @@
         ],
         "format": "TV",
         "status": "FINISHED",
-        "averageScore": 88,
-        "source": "MANGA",
         "studios": {
           "nodes": [
             {
-              "name": "Studio Pierrot"
-            },
-            {
-              "name": "Shueisha"
-            },
-            {
-              "name": "TV Tokyo"
-            },
-            {
-              "name": "Dentsu"
-            },
-            {
-              "name": "Aniplex"
+              "name": "Pierrot Films"
             }
           ]
         },
         "isAdult": false,
-        "description": "Was it all just a coincidence, or was it inevitable?\n<br><br>\nIchigo Kurosaki gained the powers of a Soul Reaper through a chance encounter. As a Substitute\nSoul Reaper, Ichigo became caught in the turmoil of the Soul Society, a place where deceased\nsouls gather. But with help from his friends, Ichigo overcame every challenge to become even\nstronger.\n<br><br>\nWhen new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps\nback into the battlefield with his Zanpakuto to help those in need. Meanwhile, the Soul Society\nis observing a sudden surge in the number of Hollows being destroyed in the World of the Living.\nThey also receive separate reports of residents in the Rukon District having gone missing. Finally,\nthe Seireitei, home of the Soul Reapers, comes under attack by a group calling themselves the\nWandenreich.\n<br><br>\nLed by Yhwach, the father of all Quincies, the Wandenreich declare war against the Soul Reapers\nwith the following message: <i>\"Five days from now, the Soul Society will be annihilated by the\nWandenreich.\"</i>\n<br><br>\nThe history and truth kept hidden by the Soul Reapers for a thousand long years is finally brought\nto light.\n<br><br>\nAll things must come to an end as Ichigo Kurosaki's final battle begins!",
-        "anilist_id": 116674
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan"
     },
     "chii fuyo": {
       "title": "Chii Fuyo",
@@ -837,54 +823,35 @@
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "message_id": "716",
       "anilist_id": 163142,
-      "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163142-RjFeJrTnDA2B.png",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1740/160052.jpg",
       "published_at": "2026-10-25T10:09:44Z",
       "metadata": {
         "title": {
-          "english": "A Returner's Magic Should Be Special",
-          "romaji": "Kikansha no Mahou wa Tokubetsu desu",
-          "native": "帰還者の魔法は特別です"
+          "english": "A Returner's Magic Should Be Special Season 2",
+          "romaji": "Kikansha no Mahou wa Tokubetsu desu 2nd Season",
+          "native": "帰還者の魔法は特別です 2期"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163142-RjFeJrTnDA2B.png",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163142-RjFeJrTnDA2B.png",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163142-RjFeJrTnDA2B.png"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1740/160052.jpg"
         },
-        "season": "FALL",
-        "seasonYear": 2023,
-        "episodes": 12,
+        "description": "Second season of A Returner's Magic Should Be Special. Desir and his companions continue facing the threats that endanger their world, relying on his knowledge of the future to change its fate.",
+        "seasonYear": 2026,
+        "episodes": null,
         "genres": [
           "Action",
-          "Adventure",
           "Fantasy"
         ],
         "format": "TV",
-        "status": "FINISHED",
-        "averageScore": 69,
-        "source": "OTHER",
+        "status": "RELEASING",
         "studios": {
-          "nodes": [
-            {
-              "name": "Aniplex"
-            },
-            {
-              "name": "Arvo Animation"
-            },
-            {
-              "name": "Crunchyroll"
-            },
-            {
-              "name": "D&C WEBTOON Biz"
-            },
-            {
-              "name": "Kakao piccoma"
-            }
-          ]
+          "nodes": []
         },
         "isAdult": false,
-        "description": "Another dimension that continues to taint our world, the Shadow World. Humanity is faced with the worst calamity, known as the Shadow Labyrinth. In spite of their desperate attacks, Desir Herrman and his friends lose their battle to the Destruction Dragon, Boromir Napolitan, and the world comes to an end. When Desir is convinced of his end, he opens his eyes... to find himself 13 years in the past. Desir has gone back in time to the enrollment ceremony of Hebrion Academy, the top school for mages in the Empire.<br>\n<br>\nTo change the future of impending doom, Desir reassembles his friends once again to save the world!\n<br><br>\n(Source: Crunchyroll)",
-        "anilist_id": 163142
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/57612/Kikansha_no_Mahou_wa_Tokubetsu_desu_2nd_Season"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/57612/Kikansha_no_Mahou_wa_Tokubetsu_desu_2nd_Season"
     },
     "kusuriya no hitorigoto": {
       "title": "Kusuriya no Hitorigoto",
@@ -1069,55 +1036,36 @@
       "title": "Magic Knight Rayearth (2026)",
       "message_id": "720",
       "anilist_id": 178868,
-      "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx178868-mfp0HIHNJNAm.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1232/158887.jpg",
       "published_at": "2026-10-25T10:09:52Z",
       "metadata": {
         "title": {
-          "english": "Magic Knight Rayearth",
+          "english": "Magic Knight Rayearth (2026)",
           "romaji": "Magic Knight Rayearth",
-          "native": "魔法騎士（マジックナイト）レイアース"
+          "native": "魔法騎士レイアース"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx435-WO3USrR2jB5u.png",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx435-WO3USrR2jB5u.png",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx435-WO3USrR2jB5u.png"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1232/158887.jpg"
         },
-        "season": "FALL",
-        "seasonYear": 1994,
-        "episodes": 20,
+        "description": "A new 2026 adaptation of Magic Knight Rayearth. Three high school girls, Hikaru, Umi, and Fuu, are summoned from Tokyo Tower to the magical world of Cephiro, where they must become the legendary Magic Knights and save Princess Emeraude.",
+        "seasonYear": 2026,
+        "episodes": null,
         "genres": [
-          "Action",
           "Adventure",
-          "Comedy",
-          "Drama",
           "Fantasy",
-          "Mahou Shoujo",
-          "Mecha"
+          "Isekai"
         ],
         "format": "TV",
-        "status": "FINISHED",
-        "averageScore": 72,
-        "source": "MANGA",
+        "status": "RELEASING",
         "studios": {
-          "nodes": [
-            {
-              "name": "Tokyo Movie Shinsha"
-            },
-            {
-              "name": "Discotek"
-            },
-            {
-              "name": "Yomiuri TV"
-            },
-            {
-              "name": "Dentsu"
-            }
-          ]
+          "nodes": []
         },
         "isAdult": false,
-        "description": "Three young girls, Hikaru, Umi, and Fuu, are transported to a magical world called Cephiro during a field trip to Tokyo Tower. They are soon greeted by Master Mage Clef, who explains to them that they have been summoned to become the Legendary Magic Knights and save Cephiro. The girls are less than enthusiastic about this idea, and only want to return home. Clef further explains that they must seek out the three Rune Gods to help them fight. He bestows armor and magical powers to each of them. They learn from Clef that High Priest Zagato has kidnapped the Pillar of Cephiro, Princess Emeraude. The Pillar of Cephiro has the sole responsibility of keeping Cephiro alive and in balance with her prayers. Without Princess Emeraude, Cephiro would fall into ruin. Hikaru, Umi, and Fuu must fight off Zagato's henchman and find the Rune Gods if they ever want to get back home. They soon learn that friendship and loyalty are the only things they can rely on in the crumbling Cephiro.<br><br>\n(Source: Anime News Network)",
-        "anilist_id": 178868
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/59204/Magic_Knight_Rayearth_2026"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/59204/Magic_Knight_Rayearth_2026"
     },
     "magical explorer": {
       "title": "Magical Explorer",
@@ -1899,68 +1847,39 @@
       "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
       "message_id": "735",
       "anilist_id": 164702,
-      "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx164702-FjpM96MPdzVm.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1533/159859.jpg",
       "published_at": "2026-10-25T10:28:01Z",
       "metadata": {
         "title": {
-          "english": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World",
-          "romaji": "Tensei Kizoku, Kantei Skill de Nariagaru",
-          "native": "転生貴族、鑑定スキルで成り上がる"
+          "english": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
+          "romaji": "Tensei Kizoku, Kantei Skill de Nariagaru 3rd Season",
+          "native": "転生貴族、鑑定スキルで成り上がる 第3期"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx164702-FjpM96MPdzVm.jpg",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx164702-FjpM96MPdzVm.jpg",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx164702-FjpM96MPdzVm.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1533/159859.jpg"
         },
-        "season": "SPRING",
-        "seasonYear": 2024,
-        "episodes": 12,
+        "description": "Third season of Tensei Kizoku, Kantei Skill de Nariagaru, following Ars as he continues using his appraisal ability to recognize talented people and strengthen his territory.",
+        "seasonYear": 2026,
+        "episodes": null,
         "genres": [
           "Adventure",
           "Fantasy"
         ],
         "format": "TV",
-        "status": "FINISHED",
-        "averageScore": 71,
-        "source": "LIGHT_NOVEL",
+        "status": "RELEASING",
         "studios": {
           "nodes": [
             {
-              "name": "studio MOTHER"
-            },
-            {
-              "name": "Bandai Namco Filmworks"
-            },
-            {
-              "name": "Kodansha"
-            },
-            {
-              "name": "Crunchyroll"
-            },
-            {
-              "name": "Tencent"
-            },
-            {
-              "name": "Bandai Namco Music Live"
-            },
-            {
-              "name": "Bushiroad Move"
-            },
-            {
-              "name": "U-NEXT"
-            },
-            {
-              "name": "CBC TV"
-            },
-            {
-              "name": "Dentsu"
+              "name": "GeyeG Pictures"
             }
           ]
         },
         "isAdult": false,
-        "description": "Our protagonist, Ars Louvent, was reincarnated in another world as the young son of a minor noble who owns a small domain. Ars was not particularly strong or intelligent, but he was born with the Appraisal Skill that's able to see others' abilities and statuses. He uses his skill to find the best hidden talents in the world to make their small, weak domain into the best. An isekai tale about unification is about to start, featuring the kind-hearted Ars and the unique talents he manages to find!<br><br>\n(Source: Crunchyroll)",
-        "anilist_id": 164702
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/60601/Tensei_Kizoku_Kantei_Skill_de_Nariagaru_3rd_Season"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/60601/Tensei_Kizoku_Kantei_Skill_de_Nariagaru_3rd_Season"
     },
     "tetsuryou! meet with tetsudou musume": {
       "title": "Tetsuryou! Meet with Tetsudou Musume",
@@ -2719,52 +2638,36 @@
       "title": "Keroro Gunsou (2026)",
       "message_id": "751",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/475/original.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1827/160110.jpg",
       "published_at": "2026-10-25T10:38:47Z",
       "metadata": {
         "title": {
-          "english": "Sgt. Frog",
-          "romaji": "Keroro Gunsou",
-          "native": "ケロロ軍曹"
+          "english": "Keroro☆",
+          "romaji": "Keroro Gunsou☆",
+          "native": "ケロロ軍曹☆"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx516-ofBmeR4TcbKb.jpg",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx516-ofBmeR4TcbKb.jpg",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx516-ofBmeR4TcbKb.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1827/160110.jpg"
         },
-        "season": "SPRING",
-        "seasonYear": 2004,
-        "episodes": 358,
+        "description": "A new Keroro Gunsou adaptation created from scratch, bringing the alien frog platoon back for a new adventure.",
+        "seasonYear": 2026,
+        "episodes": null,
         "genres": [
           "Comedy",
-          "Sci-Fi"
+          "Sci-Fi",
+          "Parody"
         ],
         "format": "TV",
-        "status": "FINISHED",
-        "averageScore": 75,
-        "source": "MANGA",
+        "status": "RELEASING",
         "studios": {
-          "nodes": [
-            {
-              "name": "Sunrise"
-            },
-            {
-              "name": "TV Tokyo"
-            },
-            {
-              "name": "Funimation"
-            },
-            {
-              "name": "NAS"
-            },
-            {
-              "name": "Rakuonsha"
-            }
-          ]
+          "nodes": []
         },
         "isAdult": false,
-        "description": "Keroro is a frog-like alien sent from his home planet on a mission to conquer Earth. But when his cover is blown, his battalion abandons him and he ends up in the home of the Hinata family. There, he's forced to do household chores and sleep in a dark basement that was once supposedly a prison cell haunted by the ghost of an innocent girl. He even spends his free time assembling Gundam model kits. During his stay, Keroro meets up with subordinates who were also stranded during their failed invasion. <br>\n<br>\n(Source: Anime News Network)"
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86"
     },
     "nige jouzu no wakagimi s2": {
       "title": "Nige Jouzu no Wakagimi S2",
