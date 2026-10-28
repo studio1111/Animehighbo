@@ -1,4 +1,5 @@
 name: Recover and publish prepared episode
+run-name: Publish prepared episode ${{ inputs.identity }}
 
 on:
   workflow_dispatch:
