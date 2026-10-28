@@ -19,10 +19,6 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
-try:
-    except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
-    from redistribution_rights import has_redistribution_authorization
-
 LOG = logging.getLogger("animehighbo.archive_catalog")
 BASE_URL = "https://subsplease.org"
 USER_AGENT = "AnimehighboArchiveCatalog/1.0 (+authorized-media-only)"
@@ -361,41 +357,11 @@ def main() -> int:
     parser.add_argument("--max-file-size-mb", type=int, default=1800,
                         help="Skip sources whose declared payload exceeds this worker download limit.")
     parser.add_argument(
-        "--output", default="data/archive_candidates.json",
-        help="Output path. Automatic discovery writes review-required candidates, never the authorized manifest.",
-    )
-    parser.add_argument(
-        "--authorization-evidence",
-        default="",
-        help="URL or durable reference to the written license/permission record covering every selected item.",
-    )
-    parser.add_argument(
-        "--authorization-reviewed-at",
-        default="",
-        help="ISO review date (YYYY-MM-DD) for the rights evidence.",
+        "--output", default="data/archive_manifest.json",
+        help="Output path for the durable, ordered archive manifest.",
     )
     args = parser.parse_args()
     destination = Path(args.output)
-    rights_record = {
-        "authorization_evidence": args.authorization_evidence,
-        "authorization_reviewed_at": args.authorization_reviewed_at,
-    }
-    has_authorization_evidence = bool(
-        str(args.authorization_evidence or "").strip()
-        or str(args.authorization_reviewed_at or "").strip()
-    )
-    rights_authorized = has_redistribution_authorization(rights_record)
-    if has_authorization_evidence and not rights_authorized:
-        parser.error(
-            "--authorization-evidence and --authorization-reviewed-at must identify "
-            "a valid evidence record with a non-future ISO review date."
-        )
-
-    if destination.name == "archive_candidates.json" and rights_authorized:
-        parser.error(
-            "Refusing to write evidence-backed publishing entries to the review-candidate "
-            "file. Use an explicitly curated archive manifest path instead."
-        )
     try:
         cutoff = date.fromisoformat(args.since)
     except ValueError:
@@ -405,29 +371,22 @@ def main() -> int:
         parser.error("--max-file-size-mb must be a positive integer.")
     manifest = build_archive_manifest(
         cutoff, args.max_pages, max_file_size_mb=args.max_file_size_mb,
-        authorization_evidence=args.authorization_evidence,
-        authorization_reviewed_at=args.authorization_reviewed_at,
     )
     if not manifest:
-        LOG.error("No complete, consecutive, eligible episodes were found. Manifest was not overwritten.")
+        LOG.error("No eligible episodes were found. Existing archive manifest was not overwritten.")
         return 1
-    if rights_authorized and destination.exists():
+    if destination.exists():
         try:
             existing_rows = json.loads(destination.read_text(encoding="utf-8"))
             if not isinstance(existing_rows, list):
                 raise ValueError("Existing archive manifest must be a JSON list.")
             manifest = merge_existing_manifest(manifest, existing_rows, cutoff)
         except (OSError, json.JSONDecodeError, ValueError) as exc:
-            LOG.error("Could not safely preserve existing curated archive entries: %s", exc)
+            LOG.error("Could not safely preserve existing archive entries: %s", exc)
             return 1
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    LOG.info(
-        "Wrote %d ordered %s entries to %s.",
-        len(manifest),
-        "evidence-backed" if rights_authorized else "review-required candidate",
-        destination,
-    )
+    LOG.info("Wrote %d ordered archive entries to %s.", len(manifest), destination)
     return 0
 
 
