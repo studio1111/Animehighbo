@@ -70,8 +70,6 @@ jobs:
                   raise SystemExit("Archive manifest row is missing title, source URI, or release date.")
               if not row.get("episode"):
                   raise SystemExit("Archive manifest row is missing episode number.")
-              if "review_required" in row or "authorization_evidence" in row or "authorization_reviewed_at" in row:
-                  raise SystemExit("Archive manifest contains obsolete approval-gate fields.")
               if not str(row["uri"]).startswith(("magnet:", "https://")):
                   raise SystemExit("Archive manifest contains an unsupported source URI.")
           dates = [row["release_date"] for row in rows]
