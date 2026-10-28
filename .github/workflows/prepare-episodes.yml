@@ -46,7 +46,7 @@ concurrency:
 
 jobs:
   queue:
-    name: Select one eligible episode at a time
+    name: Select up to five episodes for parallel preparation
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -138,7 +138,7 @@ jobs:
           python - <<'PY'
           import json, os
           entries = json.loads(os.environ["MATRIX"]).get("include", [])
-          print(f"Planned independent episode workers: {len(entries)} (maximum 1)")
+          print(f"Planned independent episode workers: {len(entries)} (maximum 5)")
           for entry in entries:
               print(f"- {entry.get('title')} [{entry.get('identity')}]")
           PY
@@ -150,7 +150,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 5
       matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
