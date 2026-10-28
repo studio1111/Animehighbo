@@ -857,7 +857,7 @@ def _episode_record_complete(record: dict) -> bool:
 def _episode_group_complete(state: dict, group_id: str, poster_identity: str,
                             title: str, episode: str, release_date: str) -> bool:
     """Prevent a changed source URL from republishing an already-complete episode."""
-    target_title = re.sub(r"\\s+", " ", str(title or "")).strip().casefold()
+    target_title = re.sub(r"\s+", " ", str(title or "")).strip().casefold()
     poster = (state.get("posters") or {}).get(poster_identity, {})
     poster_time = int(poster.get("published_at") or 0) if isinstance(poster, dict) else 0
     for record in (state.get("published") or {}).values():
