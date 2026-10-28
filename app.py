@@ -563,7 +563,8 @@ def apply_cached_anime_metadata(metadata: dict, cached: dict) -> dict:
     """Apply an exact-title poster cache, preferring curated exact-season records."""
     merged = dict(metadata) if isinstance(metadata, dict) else {}
     cached_metadata = cached.get("metadata") if isinstance(cached, dict) else None
-    curated = isinstance(cached_metadata, dict) and cached_metadata.get("metadata_source") == "MyAnimeList exact-season record"
+    curated_source = str(cached_metadata.get("metadata_source") or "").casefold() if isinstance(cached_metadata, dict) else ""
+    curated = any(marker in curated_source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art"))
     if isinstance(cached_metadata, dict):
         for key, value in cached_metadata.items():
             if value in (None, "", [], {}):
