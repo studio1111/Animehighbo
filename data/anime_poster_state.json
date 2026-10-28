@@ -2911,6 +2911,106 @@
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/63316/Dogulwang"
+    },
+    "link click s3": {
+      "title": "Link Click Season 3",
+      "message_id": null,
+      "anilist_id": null,
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1559/159496.jpg",
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/61607/Shiguang_Dailiren_III",
+      "metadata": {
+        "title": {
+          "english": "Link Click Season 3",
+          "romaji": "Shiguang Dailiren III",
+          "native": "时光代理人III"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1559/159496.jpg"
+        },
+        "description": "After the Li Tianchen incident, Time Photo Studio seems to return to peace, but Xia Fei's disappearance draws Cheng Xiaoshi and Lu Guang into a new mystery. As they investigate the Bahati fire and the families' hidden connections, a mysterious organization begins moving against them.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Drama",
+          "Mystery",
+          "Suspense"
+        ],
+        "format": "ONA",
+        "status": "FINISHED",
+        "studios": {
+          "nodes": []
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/61607/Shiguang_Dailiren_III"
+      }
+    },
+    "uchi no otouto-domo ga sumimasen": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "message_id": null,
+      "anilist_id": null,
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1474/160261.jpg",
+      "poster_source": "MyAnimeList exact-series record",
+      "metadata_source_url": "https://myanimelist.net/anime/63061/Uchi_no_Otouto-domo_ga_Sumimasen",
+      "metadata": {
+        "title": {
+          "english": "Please Excuse My Younger Brothers",
+          "romaji": "Uchi no Otouto-domo ga Sumimasen",
+          "native": "うちの弟どもがすみません"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1474/160261.jpg"
+        },
+        "description": "During spring break at the end of her first year of high school, Ito learns that her mother is remarrying and that she will gain four younger stepbrothers. She tries to adjust to her new family, especially Gen, the distant eldest brother, while gradually discovering his kinder side.",
+        "seasonYear": 2026,
+        "episodes": 24,
+        "genres": [
+          "Comedy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": []
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/63061/Uchi_no_Otouto-domo_ga_Sumimasen"
+      }
+    },
+    "rilakkuma": {
+      "title": "Rilakkuma",
+      "message_id": null,
+      "anilist_id": null,
+      "poster_url": "https://a.storyblok.com/f/178900/1400x1975/673b07c4ee/rilakkuma_key_art.jpg/m/filters:quality(95)format(webp)",
+      "poster_source": "Crunchyroll News official key art",
+      "metadata_source_url": "https://www.crunchyroll.com/news/latest/2026/2/28/rilakumma-tv-anime-premiere-date",
+      "metadata": {
+        "title": {
+          "english": "Rilakkuma",
+          "romaji": "Rilakkuma",
+          "native": "リラックマ"
+        },
+        "coverImage": {
+          "extraLarge": "https://a.storyblok.com/f/178900/1400x1975/673b07c4ee/rilakkuma_key_art.jpg/m/filters:quality(95)format(webp)"
+        },
+        "description": "A short-form TV anime following the gentle everyday adventures of Rilakkuma and friends, where friendship, change, and small moments of happiness bring warmth to ordinary life.",
+        "seasonYear": 2026,
+        "episodes": null,
+        "genres": [
+          "Slice of Life",
+          "Comedy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": []
+        },
+        "isAdult": false,
+        "metadata_source": "Crunchyroll News official key art",
+        "metadata_source_url": "https://www.crunchyroll.com/news/latest/2026/2/28/rilakumma-tv-anime-premiere-date"
+      }
     }
   }
 }
