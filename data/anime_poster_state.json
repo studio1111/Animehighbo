@@ -2482,97 +2482,238 @@
       "title": "Ace of Diamond Act II S2",
       "message_id": "745",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/42160/original.jpeg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1594/154245.jpg",
       "published_at": "2026-10-25T10:38:16Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/poster_images/42160/original.jpeg"
-        },
         "title": {
-          "english": "Ace of Diamond Act II S2",
-          "romaji": "Ace of Diamond Act II S2"
-        }
-      }
+          "english": "Ace of Diamond Act II Season 2",
+          "romaji": "Diamond no Ace: Act II Second Season",
+          "native": "ダイヤのA actⅡ Second Season"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1594/154245.jpg"
+        },
+        "description": "Sequel to Diamond no Ace: Act II.",
+        "seasonYear": 2026,
+        "episodes": 13,
+        "genres": [
+          "Sports",
+          "School",
+          "Team Sports"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "studios": {
+          "nodes": [
+            {
+              "name": "OLM"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/58877/Diamond_no_Ace__Act_II_Second_Season"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/58877/Diamond_no_Ace__Act_II_Second_Season"
     },
     "ao ashi s2": {
       "title": "Ao Ashi S2",
       "message_id": "746",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/44629/poster_image/4f89be2f85a04bab7fcd8bcaaca511bc.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1028/160277.jpg",
       "published_at": "2026-10-25T10:38:21Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/44629/poster_image/4f89be2f85a04bab7fcd8bcaaca511bc.jpg"
-        },
         "title": {
-          "english": "Ao Ashi S2",
-          "romaji": "Ao Ashi S2"
-        }
-      }
+          "english": "Ao Ashi Season 2",
+          "romaji": "Ao Ashi Season 2",
+          "native": "アオアシ Season2"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1028/160277.jpg"
+        },
+        "description": "Second season of Ao Ashi.",
+        "seasonYear": 2026,
+        "episodes": null,
+        "genres": [
+          "Sports",
+          "Team Sports"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "TMS Entertainment"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/61603/Ao_Ashi_Season_2"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/61603/Ao_Ashi_Season_2"
     },
     "honzuki no gekokujou s4": {
       "title": "Honzuki no Gekokujou S4",
       "message_id": "747",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/42241/original.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1371/155054.jpg",
       "published_at": "2026-10-25T10:38:26Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/poster_images/42241/original.jpg"
-        },
         "title": {
-          "english": "Honzuki no Gekokujou S4",
-          "romaji": "Honzuki no Gekokujou S4"
-        }
-      }
+          "english": "Ascendance of a Bookworm: Adopted Daughter of an Archduke",
+          "romaji": "Honzuki no Gekokujou: Ryoushu no Youjo",
+          "native": "本好きの下剋上 ～司書になるためには手段を選んでいられません～ 領主の養女"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1371/155054.jpg"
+        },
+        "description": "Anime adaptation of part three of the Honzuki no Gekokujou light novel.",
+        "seasonYear": 2026,
+        "episodes": 24,
+        "genres": [
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Wit Studio"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/57466/Honzuki_no_Gekokujou__Shisho_ni_Naru_Tame_ni_wa_Shudan_wo_Erandeiraremasen_-_Ryoushu_no_Youjo"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/57466/Honzuki_no_Gekokujou__Shisho_ni_Naru_Tame_ni_wa_Shudan_wo_Erandeiraremasen_-_Ryoushu_no_Youjo"
     },
     "hotel inhumans s2": {
       "title": "Hotel Inhumans S2",
       "message_id": "748",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/49898/poster_image/eca6d704b5c87d7931e0cef7ecc33312.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1903/159928.jpg",
       "published_at": "2026-10-25T10:38:31Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/49898/poster_image/eca6d704b5c87d7931e0cef7ecc33312.jpg"
-        },
         "title": {
-          "english": "Hotel Inhumans S2",
-          "romaji": "Hotel Inhumans S2"
-        }
-      }
+          "english": "Hotel Inhumans Season 2",
+          "romaji": "Hotel Inhumans 2nd Season",
+          "native": "ホテル・インヒューマンズ 第2期"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1903/159928.jpg"
+        },
+        "description": "Second season of Hotel Inhumans.",
+        "seasonYear": 2026,
+        "episodes": 13,
+        "genres": [
+          "Action",
+          "Drama",
+          "Organized Crime"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Bridge"
+            },
+            {
+              "name": "Aisle"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/62590/Hotel_Inhumans_2nd_Season"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/62590/Hotel_Inhumans_2nd_Season"
     },
     "hyouken no majutsushi ga sekai wo suberu s2": {
       "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
       "message_id": "749",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/46088/poster_image/79e26986549abab9e593d4574d790911.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1190/159644.jpg",
       "published_at": "2026-10-25T10:38:36Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/46088/poster_image/79e26986549abab9e593d4574d790911.jpg"
-        },
         "title": {
-          "english": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
-          "romaji": "Hyouken no Majutsushi ga Sekai wo Suberu S2"
-        }
-      }
+          "english": "The Iceblade Sorcerer Shall Rule the World II",
+          "romaji": "Hyouken no Majutsushi ga Sekai wo Suberu II",
+          "native": "冰剣の魔術師が世界を統べるII"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1190/159644.jpg"
+        },
+        "description": "Second season of Hyouken no Majutsushi ga Sekai wo Suberu.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Fantasy",
+          "School"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Cloud Hearts"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/64254/Hyouken_no_Majutsushi_ga_Sekai_wo_Suberu_II"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/64254/Hyouken_no_Majutsushi_ga_Sekai_wo_Suberu_II"
     },
     "juuou mujin dandivine": {
       "title": "Juuou Mujin Dandivine",
       "message_id": "750",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/8649/original.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1496/160013.jpg",
       "published_at": "2026-10-25T10:38:42Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/poster_images/8649/original.jpg"
-        },
         "title": {
-          "english": "Juuou Mujin Dandivine",
-          "romaji": "Juuou Mujin Dandivine"
-        }
-      }
+          "english": "Dandivine",
+          "romaji": "Juuou Mujin Dandivine",
+          "native": "獣王武神ダンデヴァイン"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1496/160013.jpg"
+        },
+        "description": "Twenty years after the combining robot Dandivine defeated the Aposdoll invaders, peace has left its toy manufacturer struggling. When the invaders return to Tokyo, high school student Gekiha Shijima is recruited to pilot the legendary robot and confront a new threat.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Mecha",
+          "Action",
+          "Science Fiction"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "LIDENFILMS"
+            },
+            {
+              "name": "Kayac Animation"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/64344/Juuou_Mujin_Dandivine"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/64344/Juuou_Mujin_Dandivine"
     },
     "keroro gunsou (2026)": {
       "title": "Keroro Gunsou (2026)",
@@ -2629,17 +2770,40 @@
       "title": "Nige Jouzu no Wakagimi S2",
       "message_id": "752",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/47197/poster_image/bfc9552e494d660985b9d6e4e4f3e43c.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1105/160712.jpg",
       "published_at": "2026-10-25T10:38:52Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/47197/poster_image/bfc9552e494d660985b9d6e4e4f3e43c.jpg"
-        },
         "title": {
-          "english": "Nige Jouzu no Wakagimi S2",
-          "romaji": "Nige Jouzu no Wakagimi S2"
-        }
-      }
+          "english": "The Elusive Samurai Season 2",
+          "romaji": "Nige Jouzu no Wakagimi 2nd Season",
+          "native": "逃げ上手の若君 第二期"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1105/160712.jpg"
+        },
+        "description": "After the tragic events in Kamakura, Tokiyuki Houjou has overcome the worst and started restoring his noble family. His next goal is to retake Kamakura, despite political turmoil and powerful enemies pursuing him. With his trusted retainers, he uses his elusiveness in battle and speech to rebuild his realm.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Adventure",
+          "Comedy",
+          "Historical"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "studios": {
+          "nodes": [
+            {
+              "name": "CloverWorks"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/60059/Nige_Jouzu_no_Wakagimi_2nd_Season"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/60059/Nige_Jouzu_no_Wakagimi_2nd_Season"
     },
     "ojisan wa kawaii mono ga osuki.": {
       "title": "Ojisan wa Kawaii Mono ga Osuki.",
@@ -2684,17 +2848,41 @@
       "title": "Tantei wa Mou, Shindeiru. S2",
       "message_id": "755",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/44022/original.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1414/160406.jpg",
       "published_at": "2026-10-25T10:39:08Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/poster_images/44022/original.jpg"
-        },
         "title": {
-          "english": "Tantei wa Mou, Shindeiru. S2",
-          "romaji": "Tantei wa Mou, Shindeiru. S2"
-        }
-      }
+          "english": "The Detective Is Already Dead Season 2",
+          "romaji": "Tantei wa Mou, Shindeiru. Season 2",
+          "native": "探偵はもう、死んでいる。Season2"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1414/160406.jpg"
+        },
+        "description": "Second season of Tantei wa Mou, Shindeiru. Kimihiko Kimizuka is drawn back into cases connected to the late legendary detective Siesta and the mysteries surrounding their past.",
+        "seasonYear": 2026,
+        "episodes": 13,
+        "genres": [
+          "Comedy",
+          "Mystery",
+          "Romance",
+          "Detective"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "ENGI"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/52480/Tantei_wa_Mou_Shindeiru_Season_2"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/52480/Tantei_wa_Mou_Shindeiru_Season_2"
     },
     "tensei shita daiseijo wa, seijo de aru koto wo hitakakusu": {
       "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
@@ -2723,33 +2911,80 @@
       "title": "Tensei Shitara Ken Deshita S2",
       "message_id": "757",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/45242/poster_image/72240fce0cca784af8dd52244d69703d.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1539/159559.jpg",
       "published_at": "2026-10-25T10:39:18Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/45242/poster_image/72240fce0cca784af8dd52244d69703d.jpg"
-        },
         "title": {
-          "english": "Tensei Shitara Ken Deshita S2",
-          "romaji": "Tensei Shitara Ken Deshita S2"
-        }
-      }
+          "english": "Reincarnated as a Sword Season 2",
+          "romaji": "Tensei shitara Ken deshita II",
+          "native": "転生したら剣でした II"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1539/159559.jpg"
+        },
+        "description": "Second season of Tensei shitara Ken deshita. Fran and her sentient sword partner continue their journey through a dangerous world.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "C2C"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/53913/Tensei_shitara_Ken_deshita_II"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/53913/Tensei_shitara_Ken_deshita_II"
     },
     "toukutsu ou": {
       "title": "Toukutsu Ou",
       "message_id": "758",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/poster_images/3061/original.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1910/158471.jpg",
       "published_at": "2026-10-25T10:39:23Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/poster_images/3061/original.jpg"
-        },
         "title": {
-          "english": "Toukutsu Ou",
-          "romaji": "Toukutsu Ou"
-        }
-      }
+          "english": "Tomb Raider King",
+          "romaji": "Dogulwang",
+          "native": "도굴왕"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1910/158471.jpg"
+        },
+        "description": "Jooheon Suh uses his ability to uncover and steal powerful relics to take revenge on the organization that exploited him. As the Tower of Pride appears, he must outwit rival warlords and face a new struggle for supremacy.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy",
+          "Time Travel"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio Eek"
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/63316/Dogulwang"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/63316/Dogulwang"
     }
   }
 }
