@@ -73,11 +73,9 @@ class AnimeCatalogFallbackTests(unittest.TestCase):
                     },
                 }
             }}), encoding="utf-8")
-            with patch.dict(os.environ, {"ANIMEHIGHBO_POSTER_CACHE": str(cache)}), \\
-                 patch.object(app, "_anilist_metadata", side_effect=RuntimeError("offline")), \\
-                 patch.object(app, "_jikan_metadata", return_value={}), \\
-                 patch.object(app, "_kitsu_metadata", return_value={}):
-                metadata = app.anime_catalog_metadata("Dark Machine - The Animation")
+            with patch.dict(os.environ, {"ANIMEHIGHBO_POSTER_CACHE": str(cache)}):
+                with patch.object(app, "_anilist_metadata", side_effect=RuntimeError("offline")), patch.object(app, "_jikan_metadata", return_value={}), patch.object(app, "_kitsu_metadata", return_value={}):
+                    metadata = app.anime_catalog_metadata("Dark Machine - The Animation")
         self.assertEqual(metadata["coverImage"]["extraLarge"], "https://cdn.example/official-poster.jpg")
         self.assertEqual(metadata["anilist_id"], 179876)
         self.assertEqual(metadata["description"], "A verified cached synopsis.")
