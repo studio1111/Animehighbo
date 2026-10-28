@@ -491,7 +491,7 @@ def main() -> int:
             + empty_queue_reason(
                 eligible_count=eligible_before_slots,
                 active_count=len(active_identities),
-                max_workers=1,
+                max_workers=5,
                 cooldown_until=cooldown_until,
             )
         )
