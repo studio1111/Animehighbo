@@ -68,8 +68,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "quality": "1080p",
                 "uri": "magnet:?xt=urn:btih:old",
                 "release_date": "2026-08-07",
-                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-                "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Unapproved Saga - 01 (1080p)",
@@ -188,8 +186,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "quality": "720p",
             "uri": "magnet:?xt=urn:btih:small720",
             "release_date": "2026-10-07",
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [{
             "title": "Sasaki to Pii-chan S2 - 01 (1080p)",
