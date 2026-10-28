@@ -550,7 +550,14 @@ def _cached_anime_poster(title: str) -> dict:
     for key, record in records.items():
         if not isinstance(record, dict):
             continue
-        if wanted not in {_normalized_poster_key(key), _normalized_poster_key(record.get("title", ""))}:
+        aliases = record.get("aliases", [])
+        candidates = [key, record.get("title", "")]
+        if isinstance(aliases, list):
+            candidates.extend(aliases)
+        metadata_titles = ((record.get("metadata") or {}).get("title") or {})
+        if isinstance(metadata_titles, dict):
+            candidates.extend(metadata_titles.get(field, "") for field in ("english", "romaji", "native"))
+        if wanted not in {_normalized_poster_key(value) for value in candidates}:
             continue
         poster_url = str(record.get("poster_url") or "").strip()
         parsed = urlparse(poster_url)
