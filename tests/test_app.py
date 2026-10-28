@@ -15,26 +15,30 @@ from tools.subsplease_monitor import parse_releases
 class AnimeCatalogFallbackTests(unittest.TestCase):
     def test_fills_missing_anilist_fields_from_jikan_and_kitsu(self):
         import app
-        with patch.object(app, "_anilist_metadata", return_value={
-            "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
-            "coverImage": {},
-            "genres": [],
-            "description": "",
-        }), patch.object(app, "_jikan_metadata", return_value={
-            "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
-            "coverImage": {"extraLarge": "https://cdn.example/poster.jpg"},
-            "seasonYear": 2026,
-            "genres": ["Comedy", "Sci-Fi"],
-            "format": "TV",
-            "studios": {"nodes": [{"name": "Sunrise"}]},
-            "description": "A verified synopsis.",
-        }), patch.object(app, "_kitsu_metadata", return_value={
-            "title": {"english": "Keroro Gunsou"},
-            "coverImage": {"extraLarge": "https://kitsu.example/poster.jpg"},
-            "status": "RELEASING",
-            "averageScore": 78,
-        }):
-            metadata = app.anime_catalog_metadata("Keroro Gunsou (2026)")
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp) / "empty-cache.json"
+            cache.write_text('{"published": {}}', encoding="utf-8")
+            with patch.dict(os.environ, {"ANIMEHIGHBO_POSTER_CACHE": str(cache)}):
+                with patch.object(app, "_anilist_metadata", return_value={
+                    "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
+                    "coverImage": {},
+                    "genres": [],
+                    "description": "",
+                }), patch.object(app, "_jikan_metadata", return_value={
+                    "title": {"english": "Keroro Gunsou", "romaji": "Keroro Gunsou"},
+                    "coverImage": {"extraLarge": "https://cdn.example/poster.jpg"},
+                    "seasonYear": 2026,
+                    "genres": ["Comedy", "Sci-Fi"],
+                    "format": "TV",
+                    "studios": {"nodes": [{"name": "Sunrise"}]},
+                    "description": "A verified synopsis.",
+                }), patch.object(app, "_kitsu_metadata", return_value={
+                    "title": {"english": "Keroro Gunsou"},
+                    "coverImage": {"extraLarge": "https://kitsu.example/poster.jpg"},
+                    "status": "RELEASING",
+                    "averageScore": 78,
+                }):
+                    metadata = app.anime_catalog_metadata("Keroro Gunsou (2026)")
         self.assertEqual(metadata["coverImage"]["extraLarge"], "https://cdn.example/poster.jpg")
         self.assertEqual(metadata["genres"], ["Comedy", "Sci-Fi"])
         self.assertEqual(metadata["seasonYear"], 2026)
@@ -1141,13 +1145,14 @@ class NoAutomaticRightsGateTests(unittest.TestCase):
             "description": "Old season synopsis.",
             "seasonYear": 2023,
         }
-        cached = {
+        cached_metadata = {
             "title": {"english": "Verified Season 2", "romaji": "Verified II"},
             "coverImage": {"extraLarge": "https://cdn.example/season2.jpg"},
             "description": "Verified season-two synopsis.",
             "seasonYear": 2026,
             "metadata_source": "MyAnimeList exact-season record",
         }
+        cached = {"title": "Verified Season 2", "poster_url": "https://cdn.example/season2.jpg", "metadata": cached_metadata}
         merged = app.apply_cached_anime_metadata(live, cached)
         self.assertEqual(merged["title"]["english"], "Verified Season 2")
         self.assertEqual(merged["coverImage"]["extraLarge"], "https://cdn.example/season2.jpg")
