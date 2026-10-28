@@ -373,6 +373,12 @@ def empty_queue_reason(
         )
     return "All currently eligible episodes are already queued or running."
 
+def exclude_prepared_identities(entries: list[dict], ready_identities: set[str]) -> list[dict]:
+    """Do not start another worker while a successful episode artifact awaits publication."""
+    ready = {value for value in ready_identities if isinstance(value, str) and value}
+    return [entry for entry in entries if str(entry.get("identity") or "") not in ready]
+
+
 def limit_to_available_slots(
     entries: list[dict],
     active_identities: set[str],
@@ -518,8 +524,19 @@ def main() -> int:
             raise ValueError("active identities must be strings")
     except (TypeError, ValueError, json.JSONDecodeError) as exc:
         raise RuntimeError("Could not safely determine active episode workers; refusing to dispatch.") from exc
-    # The cap applies to all queued/running workers across dispatcher runs, not
-    # merely to the number launched by this invocation.
+    try:
+        ready_raw = os.environ.get("ANIMEHIGHBO_READY_IDENTITIES", "[]")
+        ready_value = json.loads(ready_raw)
+        if not isinstance(ready_value, list) or not all(isinstance(item, str) for item in ready_value):
+            raise ValueError("ready artifact identities must be a JSON list of strings")
+        ready_identities = set(ready_value)
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise RuntimeError("Could not safely determine prepared artifacts; refusing to redispatch.") from exc
+    before_ready_filter = len(entries)
+    entries = exclude_prepared_identities(entries, ready_identities)
+    if len(entries) < before_ready_filter:
+        print(f"Skipping {before_ready_filter - len(entries)} episode(s) already prepared and awaiting publication.")
+    # The cap applies only to queued/running workers, not to prepared artifacts.
     eligible_before_slots = len(entries)
     entries = limit_to_available_slots(entries, active_identities, max_workers=5)
     print(

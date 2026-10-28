@@ -78,6 +78,7 @@ jobs:
           prefix = "Animehighbo worker "
           active = set()
           recent_failed = set()
+          ready = set()
           now = datetime.now(timezone.utc)
           cooldown = timedelta(minutes=15)
 
@@ -115,6 +116,25 @@ jobs:
             if identity and timedelta(0) <= age <= cooldown:
               recent_failed.add(identity)
 
+          # Successful preparation artifacts remain ready while the single publisher
+          # processes them. Exclude those identities so a completed worker is not
+          # redundantly dispatched again before publication state is persisted.
+          result = subprocess.run(
+            ["gh", "api", "--paginate", "--slurp", f"repos/{repo}/actions/artifacts?per_page=100"],
+            check=True, capture_output=True, text=True,
+          )
+          for page in json.loads(result.stdout):
+            if not isinstance(page, dict):
+              continue
+            for artifact in page.get("artifacts", []):
+              if not isinstance(artifact, dict) or artifact.get("expired"):
+                continue
+              name = str(artifact.get("name") or "")
+              if name.startswith("episode-"):
+                identity = name[len("episode-"):].strip()
+                if identity:
+                  ready.add(identity)
+
           completed_identity = os.environ.get("COMPLETED_IDENTITY", "").strip()
           completed_conclusion = os.environ.get("COMPLETED_CONCLUSION", "").strip().lower()
           if completed_identity:
@@ -126,9 +146,11 @@ jobs:
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
             output.write("ANIMEHIGHBO_ACTIVE_IDENTITIES=" + json.dumps(sorted(active)) + "\n")
             output.write("ANIMEHIGHBO_RECENT_FAILED_IDENTITIES=" + json.dumps(sorted(recent_failed)) + "\n")
+            output.write("ANIMEHIGHBO_READY_IDENTITIES=" + json.dumps(sorted(ready)) + "\n")
           print(
-            f"Found {len(active)} active worker(s) and {len(recent_failed)} recently failed episode(s); "
-            f"recently failing series are backed off for {int(cooldown.total_seconds() // 60)} minutes."
+            f"Found {len(active)} active worker(s), {len(ready)} ready artifact(s), and "
+            f"{len(recent_failed)} recently failed episode(s); recently failing series are "
+            f"backed off for {int(cooldown.total_seconds() // 60)} minutes."
           )
           PY
       - name: Plan the next single episode publication
