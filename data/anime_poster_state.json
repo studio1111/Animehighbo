@@ -112,7 +112,9 @@
           "native": "BLEACH 千年血戦篇-禍進譚-"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1275/158595.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1275/158595.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116674-p3zK4PUX2Aag.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116674-p3zK4PUX2Aag.jpg"
         },
         "description": "The final part of Bleach: Thousand-Year Blood War brings the Soul Reapers and the Quincies toward the decisive end of their devastating conflict.",
         "seasonYear": 2026,
@@ -133,7 +135,11 @@
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan"
+        "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan",
+        "season": "FALL",
+        "averageScore": 88,
+        "source": "MANGA",
+        "anilist_id": 116674
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan"
@@ -832,11 +838,13 @@
           "native": "帰還者の魔法は特別です 2期"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1740/160052.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1740/160052.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163142-RjFeJrTnDA2B.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163142-RjFeJrTnDA2B.png"
         },
         "description": "Second season of A Returner's Magic Should Be Special. Desir and his companions continue facing the threats that endanger their world, relying on his knowledge of the future to change its fate.",
         "seasonYear": 2026,
-        "episodes": null,
+        "episodes": 12,
         "genres": [
           "Action",
           "Fantasy"
@@ -844,11 +852,31 @@
         "format": "TV",
         "status": "RELEASING",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "Arvo Animation"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "D&C WEBTOON Biz"
+            },
+            {
+              "name": "Kakao piccoma"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/57612/Kikansha_no_Mahou_wa_Tokubetsu_desu_2nd_Season"
+        "metadata_source_url": "https://myanimelist.net/anime/57612/Kikansha_no_Mahou_wa_Tokubetsu_desu_2nd_Season",
+        "season": "FALL",
+        "averageScore": 69,
+        "source": "OTHER",
+        "anilist_id": 163142
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/57612/Kikansha_no_Mahou_wa_Tokubetsu_desu_2nd_Season"
@@ -1026,11 +1054,13 @@
           "native": "魔法騎士レイアース"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1232/158887.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1232/158887.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx435-WO3USrR2jB5u.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx435-WO3USrR2jB5u.png"
         },
         "description": "A new 2026 adaptation of Magic Knight Rayearth. Three high school girls, Hikaru, Umi, and Fuu, are summoned from Tokyo Tower to the magical world of Cephiro, where they must become the legendary Magic Knights and save Princess Emeraude.",
         "seasonYear": 2026,
-        "episodes": null,
+        "episodes": 20,
         "genres": [
           "Adventure",
           "Fantasy",
@@ -1039,11 +1069,28 @@
         "format": "TV",
         "status": "RELEASING",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "Tokyo Movie Shinsha"
+            },
+            {
+              "name": "Discotek"
+            },
+            {
+              "name": "Yomiuri TV"
+            },
+            {
+              "name": "Dentsu"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/59204/Magic_Knight_Rayearth_2026"
+        "metadata_source_url": "https://myanimelist.net/anime/59204/Magic_Knight_Rayearth_2026",
+        "season": "FALL",
+        "averageScore": 72,
+        "source": "MANGA",
+        "anilist_id": 178868
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/59204/Magic_Knight_Rayearth_2026"
@@ -1168,16 +1215,17 @@
           "native": "紫禁·御喵房"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1830/149658.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1830/149658.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166443-0DPdxpZYHRWk.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166443-0DPdxpZYHRWk.jpg"
         },
-        "description": "In the Forbidden City, six royal cats protect the cultural memories of treasured artifacts. Working together as the Forbidden City Imperial Cat Room, they enter the world of Wuhua and repeatedly defeat the destroyer Black Owl to keep the world and its cultural relics safe.",
+        "description": "The Forbidden City is home to six cats with a secret mission: protect the memories held within China’s cultural relics. When the destructive force known as Black Owl threatens Wuhua, the world within those relics, the six guardians enter its realm to fight back. Armed with courage and teamwork, these feline guardians must defeat Black Owl before he erases the history they swore to protect.\n<br><br>(Source: Crunchyroll)",
         "seasonYear": 2025,
         "episodes": 16,
         "genres": [
           "Action",
           "Adventure",
-          "Anthropomorphic",
-          "Historical"
+          "Fantasy"
         ],
         "format": "ONA",
         "status": "FINISHED",
@@ -1190,7 +1238,10 @@
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-series record",
-        "metadata_source_url": "https://myanimelist.net/anime/61640/Zi_Jin__Yu_Miao_Fang"
+        "metadata_source_url": "https://myanimelist.net/anime/61640/Zi_Jin__Yu_Miao_Fang",
+        "averageScore": 57,
+        "source": "MANGA",
+        "anilist_id": 166443
       },
       "poster_source": "MyAnimeList exact-series record",
       "metadata_source_url": "https://myanimelist.net/anime/61640/Zi_Jin__Yu_Miao_Fang"
@@ -1832,11 +1883,13 @@
           "native": "転生貴族、鑑定スキルで成り上がる 第3期"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1533/159859.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1533/159859.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx164702-FjpM96MPdzVm.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx164702-FjpM96MPdzVm.jpg"
         },
         "description": "Third season of Tensei Kizoku, Kantei Skill de Nariagaru, following Ars as he continues using his appraisal ability to recognize talented people and strengthen his territory.",
         "seasonYear": 2026,
-        "episodes": null,
+        "episodes": 12,
         "genres": [
           "Adventure",
           "Fantasy"
@@ -1852,7 +1905,11 @@
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/60601/Tensei_Kizoku_Kantei_Skill_de_Nariagaru_3rd_Season"
+        "metadata_source_url": "https://myanimelist.net/anime/60601/Tensei_Kizoku_Kantei_Skill_de_Nariagaru_3rd_Season",
+        "season": "SPRING",
+        "averageScore": 71,
+        "source": "LIGHT_NOVEL",
+        "anilist_id": 164702
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/60601/Tensei_Kizoku_Kantei_Skill_de_Nariagaru_3rd_Season"
@@ -2623,11 +2680,13 @@
           "native": "ケロロ軍曹☆"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1827/160110.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1827/160110.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx516-ofBmeR4TcbKb.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx516-ofBmeR4TcbKb.jpg"
         },
         "description": "A new Keroro Gunsou adaptation created from scratch, bringing the alien frog platoon back for a new adventure.",
         "seasonYear": 2026,
-        "episodes": null,
+        "episodes": 358,
         "genres": [
           "Comedy",
           "Sci-Fi",
@@ -2636,11 +2695,30 @@
         "format": "TV",
         "status": "RELEASING",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "Sunrise"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Funimation"
+            },
+            {
+              "name": "NAS"
+            },
+            {
+              "name": "Rakuonsha"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86"
+        "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86",
+        "season": "SPRING",
+        "averageScore": 75,
+        "source": "MANGA"
       },
       "poster_source": "MyAnimeList exact-season record",
       "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86"
@@ -2902,7 +2980,9 @@
           "native": "时光代理人III"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1559/159496.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1559/159496.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191832-bsnCaLNVjzEw.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx191832-bsnCaLNVjzEw.png"
         },
         "description": "After the Li Tianchen incident, Time Photo Studio seems to return to peace, but Xia Fei's disappearance draws Cheng Xiaoshi and Lu Guang into a new mystery. As they investigate the Bahati fire and the families' hidden connections, a mysterious organization begins moving against them.",
         "seasonYear": 2026,
@@ -2915,11 +2995,17 @@
         "format": "ONA",
         "status": "FINISHED",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "bilibili"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/61607/Shiguang_Dailiren_III"
+        "metadata_source_url": "https://myanimelist.net/anime/61607/Shiguang_Dailiren_III",
+        "averageScore": 85,
+        "source": "ORIGINAL"
       }
     },
     "uchi no otouto-domo ga sumimasen": {
@@ -2936,7 +3022,9 @@
           "native": "うちの弟どもがすみません"
         },
         "coverImage": {
-          "extraLarge": "https://cdn.myanimelist.net/images/anime/1474/160261.jpg"
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1474/160261.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx203490-YQXiymUiDQNA.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx203490-YQXiymUiDQNA.jpg"
         },
         "description": "During spring break at the end of her first year of high school, Ito learns that her mother is remarrying and that she will gain four younger stepbrothers. She tries to adjust to her new family, especially Gen, the distant eldest brother, while gradually discovering his kinder side.",
         "seasonYear": 2026,
@@ -2948,11 +3036,45 @@
         "format": "TV",
         "status": "RELEASING",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "Lay-duce"
+            },
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "Shueisha"
+            },
+            {
+              "name": "ABC Animation"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "Studio Flag"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "HIKE"
+            },
+            {
+              "name": "whomor"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "MyAnimeList exact-season record",
-        "metadata_source_url": "https://myanimelist.net/anime/63061/Uchi_no_Otouto-domo_ga_Sumimasen"
+        "metadata_source_url": "https://myanimelist.net/anime/63061/Uchi_no_Otouto-domo_ga_Sumimasen",
+        "season": "SUMMER",
+        "averageScore": 69,
+        "source": "MANGA"
       }
     },
     "rilakkuma": {
@@ -2969,23 +3091,35 @@
           "native": "リラックマ"
         },
         "coverImage": {
-          "extraLarge": "https://a.storyblok.com/f/178900/1400x1975/673b07c4ee/rilakkuma_key_art.jpg/m/filters:quality(95)format(webp)"
+          "extraLarge": "https://a.storyblok.com/f/178900/1400x1975/673b07c4ee/rilakkuma_key_art.jpg/m/filters:quality(95)format(webp)",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b183231-z7SgjmXZBcoX.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b183231-z7SgjmXZBcoX.png"
         },
-        "description": "A short-form TV anime following the gentle everyday adventures of Rilakkuma and friends, where friendship, change, and small moments of happiness bring warmth to ordinary life.",
+        "description": "Everyday life gets a cozy twist with the laid-back Rilakkuma. Gentle moments of friendship, change, and small joys unfold, turning ordinary moments into something quietly magical—one soft, comforting day at a time.\n<br><br>\nIt's a moment that will make your heart feel lighter and lighter. No matter where you are or what you're doing, Rilakkuma will be by your side. An exciting new story begins! Experience the stress-free world of Rilakkuma, the relaxed bear who makes being lazy look effortless!<br><br>\n(Source: Crunchyroll, Rilakkuma Anime Site, translated)",
         "seasonYear": 2026,
         "episodes": null,
         "genres": [
-          "Slice of Life",
-          "Comedy"
+          "Fantasy",
+          "Slice of Life"
         ],
-        "format": "TV",
+        "format": "TV_SHORT",
         "status": "RELEASING",
         "studios": {
-          "nodes": []
+          "nodes": [
+            {
+              "name": "Production I.G"
+            },
+            {
+              "name": "Aniplex"
+            }
+          ]
         },
         "isAdult": false,
         "metadata_source": "Crunchyroll News official key art",
-        "metadata_source_url": "https://www.crunchyroll.com/news/latest/2026/2/28/rilakumma-tv-anime-premiere-date"
+        "metadata_source_url": "https://www.crunchyroll.com/news/latest/2026/2/28/rilakumma-tv-anime-premiere-date",
+        "season": "SPRING",
+        "averageScore": 64,
+        "source": "OTHER"
       }
     }
   }
