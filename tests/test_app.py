@@ -1114,3 +1114,20 @@ class NoAutomaticRightsGateTests(unittest.TestCase):
             entries = load_archive_manifest(str(path))
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["title"], "Legacy Saga - 01 (1080p)")
+
+
+    def test_synopsis_translation_is_cached_for_repeated_episode_captions(self):
+        from unittest.mock import Mock, patch
+        import app
+        app.translate_anime_synopsis.cache_clear()
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"candidates": [{"content": {"parts": [{"text": "خلاصهٔ ترجمه‌شده"}]}}]}
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key", "GEMINI_MODEL": "gemini-3.5-flash-lite"}):
+            with patch("app.requests.post", return_value=response) as post:
+                first = app.translate_anime_synopsis("A hero begins a long journey.")
+                second = app.translate_anime_synopsis("A hero begins a long journey.")
+        self.assertEqual(first, "خلاصهٔ ترجمه‌شده")
+        self.assertEqual(second, first)
+        post.assert_called_once()
+        app.translate_anime_synopsis.cache_clear()
