@@ -38,18 +38,27 @@ def select_anchors(state: dict) -> list[dict]:
 def edit_anchor(token: str, chat_id: str, record: dict, image_data: bytes, image_type: str, caption: str, timeout: int = 60) -> None:
     extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image_type, "jpg")
     media = {"type": "photo", "media": "attach://poster", "caption": caption, "parse_mode": "HTML"}
-    response = requests.post(
-        telegram_api_endpoint(token, "editMessageMedia"),
-        data={"chat_id": chat_id, "message_id": str(record["message_id"]), "media": json.dumps(media, ensure_ascii=False)},
-        files={"poster": (f"anime-poster.{extension}", image_data, image_type)},
-        timeout=(20, timeout),
-    )
-    try: payload = response.json()
-    except ValueError: payload = {}
-    if response.status_code < 400 and isinstance(payload, dict) and payload.get("ok") is True: return
-    description = payload.get("description", f"HTTP {response.status_code}") if isinstance(payload, dict) else f"HTTP {response.status_code}"
-    if "message is not modified" in str(description).casefold(): return
-    raise RuntimeError(f"Telegram could not refresh message {record['message_id']}: {description}")
+    for attempt in range(6):
+        response = requests.post(
+            telegram_api_endpoint(token, "editMessageMedia"),
+            data={"chat_id": chat_id, "message_id": str(record["message_id"]), "media": json.dumps(media, ensure_ascii=False)},
+            files={"poster": (f"anime-poster.{extension}", image_data, image_type)},
+            timeout=(20, timeout),
+        )
+        try: payload = response.json()
+        except ValueError: payload = {}
+        if response.status_code < 400 and isinstance(payload, dict) and payload.get("ok") is True: return
+        description = payload.get("description", f"HTTP {response.status_code}") if isinstance(payload, dict) else f"HTTP {response.status_code}"
+        if "message is not modified" in str(description).casefold(): return
+        parameters = payload.get("parameters", {}) if isinstance(payload, dict) else {}
+        retry_after = parameters.get("retry_after") if isinstance(parameters, dict) else None
+        if response.status_code == 429 and attempt < 5:
+            try: wait = max(1, min(60, int(retry_after or 5)))
+            except (TypeError, ValueError): wait = 5
+            LOG.warning("Telegram rate limit for message %s; retrying in %s seconds (attempt %s/6).", record["message_id"], wait, attempt + 1)
+            time.sleep(wait + 1)
+            continue
+        raise RuntimeError(f"Telegram could not refresh message {record['message_id']}: {description}")
 
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
