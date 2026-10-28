@@ -16,6 +16,7 @@ on:
     workflows:
       - Animehighbo single-episode worker
       - Recover and publish prepared episode
+      - Refresh complete archive manifest
     types: [completed]
   schedule:
     - cron: '*/2 * * * *'
