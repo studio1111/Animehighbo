@@ -5,33 +5,31 @@
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
-    "candidates": "archive_candidates.json",
+    "candidates": "not used; archive_manifest.json is the automatic queue source",
     "rss": "subsplease_release_report.json"
   },
   "metadata_only": true,
   "summary": {
-    "titles_total": 136,
+    "titles_total": 135,
     "seasonal_titles": 102,
-    "source_only_titles": 34,
+    "source_only_titles": 33,
     "titles_with_manifest_episodes": 58,
-    "titles_with_candidate_episodes": 38,
+    "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 42,
     "distinct_manifest_episodes": 181,
-    "distinct_candidate_episodes": 137,
+    "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 42,
-    "titles_needing_review": 129,
-    "rights_verified_episode_count": 0
+    "titles_needing_review": 117
   },
   "limitations": [
     "AniList identifies seasonal titles, not a complete episode schedule or every episode aired in the date window.",
     "RSS is a partial release feed; absence from RSS does not prove an episode was not released.",
     "Title matching is normalized exact-alias matching; alternate spellings may remain unmatched.",
     "Raw rows are deduplicated by normalized title and episode number, so multiple quality encodes do not inflate episode counts.",
-    "Candidate and RSS matches are metadata-only and do not grant redistribution permission.",
-    "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles.",
-    "A rights-evidence reference and review date must still be verified by a human rights reviewer."
+    "RSS is a partial release feed; episodes missing from the manifest need source reconciliation.",
+    "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles."
   ],
-  "policy": "Never dispatch or publish from this report. Only the existing fail-closed rights gate can authorize media processing.",
+  "policy": "This is a coverage report only; it does not publish messages or modify the queue.",
   "titles": [
     {
       "anilist_id": 199007,
@@ -70,29 +68,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -100,14 +77,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 186742,
@@ -136,24 +112,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -161,14 +121,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 172192,
@@ -195,8 +154,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 187402,
@@ -223,8 +181,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 204389,
@@ -251,8 +208,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 213658,
@@ -279,8 +235,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 191788,
@@ -307,8 +262,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 185756,
@@ -335,8 +289,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 197543,
@@ -363,8 +316,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 187990,
@@ -412,14 +364,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 195604,
@@ -446,8 +397,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 189123,
@@ -474,8 +424,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 214536,
@@ -502,8 +451,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 198727,
@@ -530,8 +478,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 195539,
@@ -558,8 +505,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 213068,
@@ -586,8 +532,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 179876,
@@ -630,14 +575,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 207217,
@@ -664,8 +608,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 203275,
@@ -692,8 +635,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 206814,
@@ -736,14 +678,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 208367,
@@ -770,8 +711,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 191656,
@@ -798,8 +738,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 200455,
@@ -826,8 +765,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 205909,
@@ -856,24 +794,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -881,14 +803,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 213457,
@@ -915,8 +836,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209463,
@@ -959,14 +879,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 205896,
@@ -995,24 +914,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -1020,14 +923,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 206401,
@@ -1066,29 +968,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-01",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-08",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-15",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-22",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
@@ -1096,8 +977,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": 217282,
@@ -1124,8 +1004,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 187316,
@@ -1152,8 +1031,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 188034,
@@ -1180,8 +1058,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 202390,
@@ -1208,8 +1085,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 178972,
@@ -1236,8 +1112,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 207191,
@@ -1280,14 +1155,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-26",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 203473,
@@ -1316,24 +1190,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -1341,14 +1199,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 218938,
@@ -1375,8 +1232,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 199426,
@@ -1403,8 +1259,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 208025,
@@ -1447,14 +1302,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 218217,
@@ -1481,8 +1335,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 216557,
@@ -1509,8 +1362,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 160275,
@@ -1537,8 +1389,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209642,
@@ -1565,8 +1416,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 178868,
@@ -1600,24 +1450,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
@@ -1625,8 +1459,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": 202250,
@@ -1660,29 +1493,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -1690,14 +1502,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 169581,
@@ -1736,34 +1547,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 5,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 5,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -1771,14 +1556,13 @@
             {
               "episode": 5,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 160803,
@@ -1805,8 +1589,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209032,
@@ -1833,8 +1616,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 218532,
@@ -1861,8 +1643,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 217577,
@@ -1889,8 +1670,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 213657,
@@ -1917,8 +1697,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 211877,
@@ -1945,8 +1724,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 217782,
@@ -1973,8 +1751,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 190054,
@@ -2001,8 +1778,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 214968,
@@ -2029,8 +1805,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 206949,
@@ -2078,14 +1853,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 205289,
@@ -2112,8 +1886,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 206774,
@@ -2140,8 +1913,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 212888,
@@ -2175,29 +1947,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 2,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 5,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -2205,14 +1956,13 @@
             {
               "episode": 5,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 194207,
@@ -2239,8 +1989,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 217624,
@@ -2267,8 +2016,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 217787,
@@ -2295,8 +2043,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 204011,
@@ -2344,14 +2091,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-26",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 216860,
@@ -2378,8 +2124,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 218011,
@@ -2406,8 +2151,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 157330,
@@ -2434,8 +2178,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209872,
@@ -2462,8 +2205,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 199340,
@@ -2490,8 +2232,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 186541,
@@ -2518,8 +2259,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 159042,
@@ -2546,8 +2286,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 180894,
@@ -2574,8 +2313,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 176314,
@@ -2602,8 +2340,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209709,
@@ -2630,8 +2367,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209219,
@@ -2679,14 +2415,13 @@
             {
               "episode": 5,
               "release_date": "2026-10-26",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 206163,
@@ -2713,8 +2448,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 210482,
@@ -2741,8 +2475,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 200294,
@@ -2790,14 +2523,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 218942,
@@ -2824,8 +2556,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 212539,
@@ -2852,8 +2583,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209499,
@@ -2880,8 +2610,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 199594,
@@ -2915,24 +2644,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-08",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-15",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-22",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
@@ -2940,8 +2653,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": 195516,
@@ -2968,8 +2680,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 200929,
@@ -2996,8 +2707,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209502,
@@ -3045,14 +2755,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 152677,
@@ -3079,8 +2788,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 212503,
@@ -3107,8 +2815,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 207329,
@@ -3135,8 +2842,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 199068,
@@ -3175,24 +2881,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 2,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
@@ -3200,8 +2890,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": 213805,
@@ -3228,8 +2917,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 212799,
@@ -3256,8 +2944,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 195571,
@@ -3286,24 +2973,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3311,14 +2982,13 @@
             {
               "episode": 3,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 211778,
@@ -3361,8 +3031,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": 207327,
@@ -3389,8 +3058,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 178083,
@@ -3417,8 +3085,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 204650,
@@ -3452,29 +3119,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-02",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3482,14 +3128,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 215835,
@@ -3516,8 +3161,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 202079,
@@ -3544,8 +3188,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 209562,
@@ -3579,29 +3222,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3609,14 +3231,13 @@
             {
               "episode": 4,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 216895,
@@ -3643,8 +3264,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 143103,
@@ -3671,8 +3291,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 212144,
@@ -3699,8 +3318,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 214593,
@@ -3727,8 +3345,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": 213298,
@@ -3755,8 +3372,7 @@
         }
       },
       "seasonal_title": true,
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -3786,24 +3402,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 14,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 15,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 16,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3811,13 +3411,12 @@
             {
               "episode": 16,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -3852,29 +3451,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3882,13 +3460,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -3928,29 +3505,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 171,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 172,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 173,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 174,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -3958,13 +3514,12 @@
             {
               "episode": 174,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -3998,13 +3553,12 @@
             {
               "episode": 50,
               "release_date": "2026-10-26",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4053,13 +3607,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4103,13 +3656,12 @@
             {
               "episode": 16,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4144,32 +3696,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1215,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 1216,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 1217,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4202,8 +3737,7 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4247,13 +3781,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4288,32 +3821,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-08",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-15",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-22",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4348,32 +3864,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4413,29 +3912,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4443,13 +3921,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4484,32 +3961,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 13,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 14,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 15,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4549,29 +4009,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 49,
-              "release_date": "2026-10-02",
-              "quality": "1080p"
-            },
-            {
-              "episode": 50,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 51,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 52,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4579,62 +4018,12 @@
             {
               "episode": 52,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
-    },
-    {
-      "anilist_id": null,
-      "title_english": "Link Click S3 - 09 (1080p)",
-      "title_romaji": null,
-      "title_native": null,
-      "season": null,
-      "season_year": null,
-      "format": null,
-      "status": null,
-      "anilist_url": null,
-      "seasonal_title": false,
-      "source_coverage": {
-        "manifest": {
-          "distinct_episodes": 0,
-          "episodes": []
-        },
-        "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 9,
-              "release_date": "2026-10-02",
-              "quality": "1080p"
-            },
-            {
-              "episode": 10,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 11,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 12,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
-        },
-        "rss": {
-          "distinct_episodes": 0,
-          "episodes": []
-        }
-      },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4669,29 +4058,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 36,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 37,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 38,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 39,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4699,13 +4067,12 @@
             {
               "episode": 39,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4738,8 +4105,7 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4774,29 +4140,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4804,13 +4149,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4868,12 +4212,11 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
-      "title_english": "Rilakkuma - 26 (1080p)",
+      "title_english": "Rilakkuma",
       "title_romaji": null,
       "title_native": null,
       "season": null,
@@ -4888,29 +4231,8 @@
           "episodes": []
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 26,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 27,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 28,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 29,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4918,13 +4240,12 @@
             {
               "episode": 29,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -4964,29 +4285,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -4994,13 +4294,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5035,29 +4334,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5065,13 +4343,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5114,8 +4391,7 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -5148,8 +4424,7 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -5198,13 +4473,12 @@
             {
               "episode": 17,
               "release_date": "2026-10-27",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5247,8 +4521,7 @@
           "episodes": []
         }
       },
-      "review_required": false,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -5283,29 +4556,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 26,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 27,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 28,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 29,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5313,13 +4565,12 @@
             {
               "episode": 29,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5364,34 +4615,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 5,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 5,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5399,13 +4624,12 @@
             {
               "episode": 5,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5440,32 +4664,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 3,
-          "episodes": [
-            {
-              "episode": 2,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -5490,22 +4697,15 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 12,
-              "release_date": "2026-10-01",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -5545,41 +4745,19 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 14,
-              "release_date": "2026-10-01",
-              "quality": "1080p"
-            },
-            {
-              "episode": 15,
-              "release_date": "2026-10-08",
-              "quality": "1080p"
-            },
-            {
-              "episode": 16,
-              "release_date": "2026-10-15",
-              "quality": "1080p"
-            },
-            {
-              "episode": 17,
-              "release_date": "2026-10-22",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 0,
           "episodes": []
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": false
     },
     {
       "anilist_id": null,
-      "title_english": "Uchi no Otouto-domo ga Sumimasen - 13 (1080p)",
+      "title_english": "Uchi no Otouto-domo ga Sumimasen",
       "title_romaji": null,
       "title_native": null,
       "season": null,
@@ -5594,29 +4772,8 @@
           "episodes": []
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 13,
-              "release_date": "2026-10-02",
-              "quality": "1080p"
-            },
-            {
-              "episode": 14,
-              "release_date": "2026-10-09",
-              "quality": "1080p"
-            },
-            {
-              "episode": 15,
-              "release_date": "2026-10-16",
-              "quality": "1080p"
-            },
-            {
-              "episode": 16,
-              "release_date": "2026-10-23",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5624,13 +4781,12 @@
             {
               "episode": 16,
               "release_date": "2026-10-23",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5670,29 +4826,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 14,
-              "release_date": "2026-10-03",
-              "quality": "1080p"
-            },
-            {
-              "episode": 15,
-              "release_date": "2026-10-10",
-              "quality": "1080p"
-            },
-            {
-              "episode": 16,
-              "release_date": "2026-10-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 17,
-              "release_date": "2026-10-24",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5700,13 +4835,12 @@
             {
               "episode": 17,
               "release_date": "2026-10-24",
-              "in_authorized_manifest": false
+              "in_archive_manifest": true
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     },
     {
       "anilist_id": null,
@@ -5741,29 +4875,8 @@
           ]
         },
         "candidate_report": {
-          "distinct_episodes": 4,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-18",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-25",
-              "quality": "1080p"
-            }
-          ]
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "rss": {
           "distinct_episodes": 1,
@@ -5771,13 +4884,12 @@
             {
               "episode": 4,
               "release_date": "2026-10-25",
-              "in_authorized_manifest": false
+              "in_archive_manifest": false
             }
           ]
         }
       },
-      "review_required": true,
-      "rights_verified_episode_count": 0
+      "review_required": true
     }
   ]
 }
