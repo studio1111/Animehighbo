@@ -29,7 +29,7 @@ on:
       - '.github/workflows/prepare-one-episode.yml'
       - '.github/workflows/publish-prepared-queue.yml'
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/2 * * * *'
   # Reconcile newly committed catalog and manual-exclusion changes promptly.
   # Refill worker slots whenever an episode worker finishes, including failures,
   # so queued episodes do not wait for the next five-minute poll.
