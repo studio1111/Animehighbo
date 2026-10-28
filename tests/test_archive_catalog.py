@@ -193,8 +193,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "quality": "1080p",
             "uri": "magnet:?xt=urn:btih:large1080",
             "release_date": "2026-10-07",
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
         }]
         merged = merge_existing_manifest(generated, existing, date(2026, 10, 1))
         self.assertEqual(len(merged), 1)
