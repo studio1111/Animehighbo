@@ -6,8 +6,10 @@ on:
     paths:
       - 'tools/archive_catalog.py'
       - '.github/workflows/build-archive-catalog.yml'
+  # Scan SubsPlease frequently so new episodes reach the durable queue quickly.
+  # This is intentionally more frequent than the requested two-hour maximum interval.
   schedule:
-    - cron: '17 */2 * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       since:
