@@ -62,4 +62,20 @@ class RefreshAnimeMetadataTests(unittest.TestCase):
         self.assertEqual(merged["seasonYear"], 2026)
         self.assertEqual(merged["coverImage"]["extraLarge"], "https://cdn.example/season2.jpg")
 
+
+    def test_official_season_metadata_with_source_url_is_not_overwritten(self):
+        old = {
+            "metadata_source": "Official Ao Ashi Season 2 website",
+            "metadata_source_url": "https://aoashi-pr.com/",
+            "description": "Official season-two synopsis.",
+            "seasonYear": 2026,
+        }
+        fresh = {
+            "description": "Generic synopsis for the first season.",
+            "seasonYear": 2022,
+        }
+        merged = merge_nonempty(old, fresh)
+        self.assertEqual(merged["description"], "Official season-two synopsis.")
+        self.assertEqual(merged["seasonYear"], 2026)
+
 if __name__ == "__main__": unittest.main()
