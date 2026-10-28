@@ -27,6 +27,7 @@ on:
       - 'tools/video_encoder.py'
       - '.github/workflows/prepare-episodes.yml'
       - '.github/workflows/prepare-one-episode.yml'
+      - '.github/workflows/publish-prepared-queue.yml'
   schedule:
     - cron: '*/5 * * * *'
   # Reconcile newly committed catalog and manual-exclusion changes promptly.
