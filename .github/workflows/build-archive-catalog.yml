@@ -79,14 +79,14 @@ jobs:
               raise SystemExit("Archive manifest is not sorted by release date.")
           print(f"Validated {len(rows)} ordered archive entries with source URIs.")
           PY
-      - name: Upload candidate report for inspection
+      - name: Upload refreshed archive manifest
         uses: actions/upload-artifact@v4
         with:
           name: animehighbo-archive-manifest
           path: data/archive_manifest.json
           if-no-files-found: error
           retention-days: 7
-      - name: Commit generated candidate report to this branch
+      - name: Commit refreshed archive manifest
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
