@@ -95,6 +95,13 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("publisher_lock", workflow)
         self.assertNotIn("publisher.lock", workflow)
 
+
+    def test_recovery_publisher_is_globally_serialized(self):
+        workflow = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("concurrency:", workflow)
+        self.assertIn("group: animehighbo-single-publisher", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
         workflow = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
         self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
