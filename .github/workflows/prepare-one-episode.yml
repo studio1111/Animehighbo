@@ -127,7 +127,10 @@ jobs:
           EPISODE_ID: ${{ inputs.identity }}
           OUTCOME: ${{ job.status }}
         run: |
+          gh workflow run publish-prepared-queue.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            || echo "Publisher queue dispatch failed; the scheduled queue will retry."
           gh workflow run prepare-episodes.yml --repo "$GITHUB_REPOSITORY" --ref main \
             --field "completed_identity=$EPISODE_ID" \
-            --field "completed_conclusion=$OUTCOME"
+            --field "completed_conclusion=$OUTCOME" \
+            || echo "Preparation refill dispatch failed; the scheduled dispatcher will retry."
 
