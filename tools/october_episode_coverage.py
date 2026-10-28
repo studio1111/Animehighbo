@@ -13,12 +13,6 @@ import unicodedata
 from datetime import date
 from pathlib import Path
 
-try:
-    from tools.redistribution_rights import has_redistribution_authorization
-except ModuleNotFoundError:
-    from redistribution_rights import has_redistribution_authorization
-
-
 def normalize_series(value: object) -> str:
     text = unicodedata.normalize("NFKC", str(value or "")).casefold()
     text = re.sub(r"\([^)]*\b(?:1080|720|480)p\b[^)]*\)", " ", text)
@@ -155,7 +149,7 @@ def build_coverage_report(
                         "episode": row.get("episode"),
                         "release_date": str(row.get("release_date") or "")[:10],
                         **({"quality": row.get("quality")} if row.get("quality") else {}),
-                        **({"in_authorized_manifest": row.get("in_authorized_manifest") is True}
+                        **({"in_archive_manifest": row.get("in_archive_manifest") is True}
                            if source_name == "rss" else {}),
                     }
                     for _, row in sorted(distinct.items(), key=lambda item: (
@@ -167,12 +161,6 @@ def build_coverage_report(
         entry["review_required"] = any(
             coverage[source]["distinct_episodes"] > 0 for source in ("candidate_report", "rss")
         ) or coverage["manifest"]["distinct_episodes"] == 0
-        entry["rights_verified_episode_count"] = sum(
-            1 for row in manifest_rows
-            if _title_aliases(row) & aliases
-            and has_redistribution_authorization(row, today=today)
-        )
-
     titles = sorted(union.values(), key=lambda row: (
         not row.get("seasonal_title", False),
         (row.get("title_english") or row.get("title_romaji") or "").casefold(),
@@ -200,18 +188,16 @@ def build_coverage_report(
             "distinct_candidate_episodes": sum(row["source_coverage"]["candidate_report"]["distinct_episodes"] for row in titles),
             "distinct_rss_episodes": sum(row["source_coverage"]["rss"]["distinct_episodes"] for row in titles),
             "titles_needing_review": sum(1 for row in titles if row["review_required"]),
-            "rights_verified_episode_count": sum(row["rights_verified_episode_count"] for row in titles),
         },
         "limitations": [
             "AniList identifies seasonal titles, not a complete episode schedule or every episode aired in the date window.",
             "RSS is a partial release feed; absence from RSS does not prove an episode was not released.",
             "Title matching is normalized exact-alias matching; alternate spellings may remain unmatched.",
             "Raw rows are deduplicated by normalized title and episode number, so multiple quality encodes do not inflate episode counts.",
-            "Candidate and RSS matches are metadata-only and do not grant redistribution permission.",
+            "RSS is a partial release feed; episodes missing from the manifest need source reconciliation.",
             "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles.",
-            "A rights-evidence reference and review date must still be verified by a human rights reviewer.",
         ],
-        "policy": "Never dispatch or publish from this report. Only the existing fail-closed rights gate can authorize media processing.",
+        "policy": "This is a coverage report only; it does not publish messages or modify the queue."
         "titles": titles,
     }
 
@@ -221,16 +207,15 @@ def main() -> int:
     paths = {
         "seasonal": root / "data" / "seasonal_discovery_report.json",
         "manifest": root / "data" / "archive_manifest.json",
-        "candidates": root / "data" / "archive_candidates.json",
         "rss": root / "data" / "subsplease_release_report.json",
     }
     output = root / "data" / "october_episode_coverage_report.json"
     try:
         data = {key: json.loads(path.read_text(encoding="utf-8")) for key, path in paths.items()}
-        if not isinstance(data["manifest"], list) or not isinstance(data["candidates"], list):
-            raise ValueError("Manifest and candidate report must be JSON lists")
+        if not isinstance(data["manifest"], list):
+            raise ValueError("Archive manifest must be a JSON list")
         report = build_coverage_report(
-            data["seasonal"], data["manifest"], data["candidates"], data["rss"], date.today()
+            data["seasonal"], data["manifest"], [], data["rss"], date.today()
         )
         output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(report["summary"], ensure_ascii=False))
