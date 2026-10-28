@@ -477,7 +477,7 @@ def main() -> int:
     # The cap applies to all queued/running workers across dispatcher runs, not
     # merely to the number launched by this invocation.
     eligible_before_slots = len(entries)
-    entries = limit_to_available_slots(entries, active_identities, max_workers=1)
+    entries = limit_to_available_slots(entries, active_identities, max_workers=5)
     print(
         f"Queue plan: catalog_rows={len(manifest)}, "
         f"manually_excluded={exclusion_counts['excluded']}, "
