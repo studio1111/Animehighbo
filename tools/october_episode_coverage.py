@@ -197,7 +197,7 @@ def build_coverage_report(
             "RSS is a partial release feed; episodes missing from the manifest need source reconciliation.",
             "Only Fall 2026 AniList titles are treated as seasonal October titles; ongoing shows found in source metadata are included as source-only titles.",
         ],
-        "policy": "This is a coverage report only; it does not publish messages or modify the queue."
+        "policy": "This is a coverage report only; it does not publish messages or modify the queue.",
         "titles": titles,
     }
 
