@@ -5,33 +5,15 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 42,
-    "matched_in_archive_manifest": 17,
+    "matched_in_archive_manifest": 38,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 25
+    "missing_from_manifest": 4
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
-      "title": "Hotaru no Yomeiri",
-      "episode": 3,
-      "release_date": "2026-10-23",
-      "feed_quality": "720p",
-      "in_archive_manifest": false,
-      "in_candidate_report": false,
-      "missing_from_manifest": true
-    },
-    {
       "title": "Keroro Gunsou (2026)",
       "episode": 4,
-      "release_date": "2026-10-23",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Kusuriya no Hitorigoto",
-      "episode": 52,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -43,36 +25,27 @@
       "episode": 29,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
-    },
-    {
-      "title": "Toaru Anbu no Item",
-      "episode": 3,
-      "release_date": "2026-10-23",
-      "feed_quality": "720p",
-      "in_archive_manifest": false,
-      "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tougen Anki - Nikko Kegon no Taki-hen",
       "episode": 4,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Uchi no Otouto-domo ga Sumimasen",
       "episode": 16,
       "release_date": "2026-10-23",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Black Clover",
@@ -88,36 +61,36 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Kyoufu Collector",
       "episode": 3,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Magical Explorer",
       "episode": 5,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Meitantei Precure!",
       "episode": 39,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Romelia Senki",
@@ -133,9 +106,9 @@
       "episode": 3,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
@@ -151,9 +124,9 @@
       "episode": 4,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Yasei no Last Boss ga Arawareta!",
@@ -178,27 +151,27 @@
       "episode": 16,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Ao Ashi S2",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Dark Summoner to Dekiteiru",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Dragon Ball Super - Beerus",
@@ -214,72 +187,72 @@
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Kanata kara",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Ojisan wa Kawaii Mono ga Osuki.",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Saikyosoubi",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
       "episode": 3,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tempal - Item no Chikara",
       "episode": 5,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
       "episode": 29,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Yowaki Max",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Bleach - Sennen Kessen Hen",
@@ -295,9 +268,9 @@
       "episode": 4,
       "release_date": "2026-10-26",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "PSYREN",
@@ -313,9 +286,9 @@
       "episode": 5,
       "release_date": "2026-10-26",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Battle Spirits Re - Zekkai no Kuu",
@@ -388,6 +361,33 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": 4,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": 4,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tantei wa Mou, Shindeiru. S2",
+      "episode": 4,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
