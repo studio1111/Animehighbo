@@ -146,14 +146,14 @@ jobs:
                   continue
               title_key = series_title(row)
               raw_title = str(row.get("title") or "")
-              number_match = re.search(r"(?i)\\b(?:episode\\s*)?(\\d{1,4})(?:\\.\\d+)?\\b", raw_title)
+              number_match = re.search(r"(?i)\b(?:episode\s*)?(\d{1,4})(?:\.\d+)?\b", raw_title)
               try:
                   episode_no = int(row.get("episode") or (number_match.group(1) if number_match else 0))
               except (TypeError, ValueError):
                   episode_no = 0
-              clean_key = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw_title)
-              clean_key = re.sub(r"(?i)\\s+\\(?\\d{3,4}p\\)?\\s*$", "", clean_key)
-              title_match = re.match(r"^(.*?)\\s+-\\s+\\d{1,4}(?:\\.\\d+)?(?=\\s*(?:\\(|\\[|$))", clean_key)
+              clean_key = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw_title)
+              clean_key = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", clean_key)
+              title_match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", clean_key)
               exclusion_key = (title_match.group(1).strip() if title_match else clean_key).casefold()
               if exclusion_key in denied:
                   continue
