@@ -14,6 +14,7 @@ import re
 import shutil
 import subprocess
 import time
+from functools import lru_cache
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -678,6 +679,7 @@ def _safe_caption_text(value: str) -> str:
     return html.escape(value, quote=False)
 
 
+@lru_cache(maxsize=256)
 def translate_anime_synopsis(description: str) -> str:
     """Translate and localize an anime synopsis into fluent, conversational Persian."""
     source = html.unescape(re.sub(r"<[^>]+>", " ", str(description or "")))
