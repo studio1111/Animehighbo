@@ -226,6 +226,74 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
     return show_title, episodes
 
 
+
+def _direct_release_entry(
+    row: dict, cutoff: date, max_file_size_mb: int = 1800,
+) -> dict | None:
+    """Capture a current individual release directly from SubsPlease's latest feed.
+
+    The show-detail endpoint can lag behind the latest feed. When the latest feed
+    already includes an individual episode and its source magnet, retain it so a
+    newly released episode is not held back waiting for the show page to refresh.
+    Batch/range releases and ambiguous episode numbers are intentionally excluded.
+    """
+    if not isinstance(row, dict):
+        return None
+    title = str(row.get("title") or "").strip()
+    if re.search(r"(?i)\\b(batch|complete series)\\b|\\(\\s*\\d+\\s*[-–]\\s*\\d+\\s*\\)", title):
+        return None
+    raw_episode = str(row.get("episode") or "").strip()
+    if not re.fullmatch(r"\\d{1,4}", raw_episode):
+        return None
+    episode = int(raw_episode)
+    if episode < 1:
+        return None
+    released = parse_release_date(row.get("release_date") or "")
+    if released is None or released < cutoff:
+        return None
+    source = _preferred_download(row, max_file_size_mb)
+    if not source:
+        return None
+
+    show_title = str(row.get("show") or row.get("series_title") or "").strip()
+    if not show_title:
+        cleaned = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title)
+        cleaned = re.sub(r"(?i)\\.(?:mkv|mp4|webm)$", "", cleaned)
+        cleaned = re.sub(r"(?i)\\s*\\((?:1080|720|480)p\\)", "", cleaned)
+        cleaned = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", cleaned).strip()
+        match = re.match(
+            r"^(.*?)\\s+-\\s+(?:episode\\s*)?\\d{1,4}(?:\\.\\d+)?\\s*$",
+            cleaned, re.I,
+        )
+        show_title = match.group(1).strip(" -–—") if match else ""
+    if not show_title:
+        return None
+
+    quality, uri = source
+    return {
+        "title": f"{show_title} - {episode:02d} ({quality})",
+        "episode": episode,
+        "quality": quality,
+        "uri": uri,
+        "release_date": released.isoformat(),
+    }
+
+
+def _manifest_episode_key(row: dict) -> tuple[str, int] | None:
+    """Normalize one manifest row to a stable series-and-episode key."""
+    title = str(row.get("title") or "").strip()
+    title = re.sub(r"(?i)\\s+\\((?:1080|720|480)p\\)$", "", title)
+    number = _episode_number(row)
+    title = re.sub(
+        r"(?i)\\s+-\\s+(?:episode\\s*)?\\d{1,4}(?:\\.\\d+)?$",
+        "", title,
+    )
+    title = re.sub(r"\\s+", " ", title).strip(" -–—").casefold()
+    if not title or number is None:
+        return None
+    return title, number
+
+
 def build_archive_manifest(
     cutoff: date, max_pages: int = 100, session: requests.Session | None = None,
     max_file_size_mb: int = 1800,
@@ -237,6 +305,7 @@ def build_archive_manifest(
     client = session or requests.Session()
     client.headers.update({"User-Agent": USER_AGENT})
     show_pages: dict[str, dict] = {}
+    direct_releases: list[dict] = []
     try:
         for page_number in range(1, max_pages + 1):
             payload = _request_json(client, {"f": "latest", "tz": "Etc/GMT", "p": page_number})
@@ -244,13 +313,20 @@ def build_archive_manifest(
             if not releases:
                 break
             dates = [parse_release_date(item.get("release_date", "")) for item in releases if isinstance(item, dict)]
-            for item in releases:
+            for release_name, item in payload.items():
                 if not isinstance(item, dict):
                     continue
+                # The API key is the full release title; preserve it when the
+                # response value omits a separate title field.
+                item = dict(item)
+                item.setdefault("title", str(release_name))
                 released = parse_release_date(item.get("release_date", ""))
                 page_url = _show_page_url(item)
                 if released and released >= cutoff and page_url:
                     show_pages.setdefault(page_url, item)
+                direct = _direct_release_entry(item, cutoff, max_file_size_mb)
+                if direct:
+                    direct_releases.append(direct)
             valid_dates = [item for item in dates if item is not None]
             if valid_dates and max(valid_dates) < cutoff:
                 break
@@ -286,6 +362,19 @@ def build_archive_manifest(
                 row.pop("_quality", None)
                 manifest.append(row)
         # The processing queue is global by source upload/release date, not grouped by show.
+        manifest.sort(key=lambda row: (
+            row.get("release_date", "9999-12-31"),
+            str(row.get("title", "")).casefold(),
+            int(row.get("episode", 0) or 0),
+        ))
+        # Prefer direct latest-feed rows over potentially stale show-detail rows
+        # for the same series/episode, then deduplicate before validating source URIs.
+        combined: dict[tuple[str, int], dict] = {}
+        for row in direct_releases + manifest:
+            key = _manifest_episode_key(row)
+            if key is not None:
+                combined.setdefault(key, row)
+        manifest = list(combined.values())
         manifest.sort(key=lambda row: (
             row.get("release_date", "9999-12-31"),
             str(row.get("title", "")).casefold(),
