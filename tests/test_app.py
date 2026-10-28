@@ -66,6 +66,11 @@ class AnimeCatalogFallbackTests(unittest.TestCase):
                     "title": "Dark Machine – The Animation",
                     "poster_url": "https://cdn.example/official-poster.jpg",
                     "anilist_id": 179876,
+                    "metadata": {
+                        "description": "A verified cached synopsis.",
+                        "genres": ["Fantasy", "Action"],
+                        "seasonYear": 2026,
+                    },
                 }
             }}), encoding="utf-8")
             with patch.dict(os.environ, {"ANIMEHIGHBO_POSTER_CACHE": str(cache)}), \\
@@ -75,6 +80,9 @@ class AnimeCatalogFallbackTests(unittest.TestCase):
                 metadata = app.anime_catalog_metadata("Dark Machine - The Animation")
         self.assertEqual(metadata["coverImage"]["extraLarge"], "https://cdn.example/official-poster.jpg")
         self.assertEqual(metadata["anilist_id"], 179876)
+        self.assertEqual(metadata["description"], "A verified cached synopsis.")
+        self.assertEqual(metadata["genres"], ["Fantasy", "Action"])
+        self.assertEqual(metadata["seasonYear"], 2026)
 
 class JapaneseRomajiTitleTests(unittest.TestCase):
     def test_prefers_anilist_romaji_over_japanese_script(self):
