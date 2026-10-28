@@ -2832,17 +2832,40 @@
       "title": "Sasaki to Pii-chan S2",
       "message_id": "754",
       "anilist_id": null,
-      "poster_url": "https://media.kitsu.app/anime/48651/poster_image/07577794e3295b9d3ca29c9230b07d5e.jpg",
+      "poster_url": "https://cdn.myanimelist.net/images/anime/1655/159979.jpg",
       "published_at": "2026-10-25T10:39:03Z",
       "metadata": {
-        "coverImage": {
-          "extraLarge": "https://media.kitsu.app/anime/48651/poster_image/07577794e3295b9d3ca29c9230b07d5e.jpg"
-        },
         "title": {
-          "english": "Sasaki to Pii-chan S2",
-          "romaji": "Sasaki to Pii-chan S2"
-        }
-      }
+          "english": "Sasaki and Peeps Season 2",
+          "romaji": "Sasaki to Pii-chan Season 2",
+          "native": "佐々木とピーちゃん Season2"
+        },
+        "coverImage": {
+          "extraLarge": "https://cdn.myanimelist.net/images/anime/1655/159979.jpg"
+        },
+        "description": "Second season of Sasaki to Pii-chan.",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Adventure",
+          "Comedy",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {
+          "nodes": [
+            {
+              "name": "SILVER LINK."
+            }
+          ]
+        },
+        "isAdult": false,
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://myanimelist.net/anime/58518/Sasaki_to_Pii-chan_Season_2"
+      },
+      "poster_source": "MyAnimeList exact-season record",
+      "metadata_source_url": "https://myanimelist.net/anime/58518/Sasaki_to_Pii-chan_Season_2"
     },
     "tantei wa mou, shindeiru. s2": {
       "title": "Tantei wa Mou, Shindeiru. S2",
