@@ -51,10 +51,10 @@ jobs:
       - name: Refresh release coverage report
         run: python tools/subsplease_release_monitor.py
       # The RSS monitor is a safety net for any release the catalog scan missed.
-      # Only scheduled checks may request a catalog rebuild, preventing a
-      # workflow_dispatch loop when the catalog workflow refreshes this report.
+      # Scheduled and push-triggered checks may request a catalog rebuild, but
+      # workflow_dispatch checks are excluded to prevent a refresh loop.
       - name: Rebuild archive catalog when scheduled RSS check finds gaps
-        if: github.event_name == 'schedule'
+        if: github.event_name != 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
