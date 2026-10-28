@@ -114,6 +114,25 @@ def filter_by_manual_exclusions(
         counts["eligible"] += 1
     return allowed, counts
 
+def _episode_dedupe_key(title: object, season: object, episode: object) -> tuple[str, int, int] | None:
+    """Normalize series/season/episode independently of the release URI or date."""
+    name = re.sub(r"\s+", " ", str(title or "")).strip()
+    try:
+        episode_number = int(episode)
+        season_number = int(season or 1)
+    except (TypeError, ValueError):
+        return None
+    if not name or episode_number < 1 or season_number < 1:
+        return None
+    season_match = re.search(r"\s+(?:S|Season\s*)(\d{1,2})$", name, re.I)
+    if season_match:
+        season_number = int(season_match.group(1))
+        name = name[:season_match.start()].strip()
+    name = re.sub(r"[–—−]", "-", name)
+    name = re.sub(r"\s+", " ", name).strip().casefold()
+    return (name, season_number, episode_number)
+
+
 def _is_complete(record: object) -> bool:
     return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
         set(record.get("complete_qualities", []))
@@ -201,6 +220,15 @@ def select_next_upload_date(
     published = state.get("published", {}) if isinstance(state, dict) else {}
     if not isinstance(published, dict):
         published = {}
+    existing_episode_keys = set()
+    posters = state.get("posters", {}) if isinstance(state, dict) else {}
+    if isinstance(posters, dict):
+        for poster in posters.values():
+            if not isinstance(poster, dict):
+                continue
+            key = _episode_dedupe_key(poster.get("title"), poster.get("season"), poster.get("episode"))
+            if key:
+                existing_episode_keys.add(key)
     normalized = []
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
@@ -257,6 +285,8 @@ def select_next_upload_date(
         if series_key is None:
             continue
         if _is_complete(published.get(identity, {})):
+            continue
+        if _episode_dedupe_key(series_title, season_number, episode_number) in existing_episode_keys:
             continue
         normalized.append({
             "identity": identity,
