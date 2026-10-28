@@ -259,20 +259,20 @@ def _parse_rss_release_feed(
         )
         if not raw_title or not link.startswith("magnet:?xt=urn:btih:") or released is None or released < cutoff:
             continue
-        title = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw_title)
-        title = re.sub(r"(?i)\\.(?:mkv|mp4|webm)$", "", title)
-        title = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", title).strip()
-        title = re.sub(r"(?i)\\s*\\((?:1080|720|480)p\\)", "", title).strip()
-        if re.search(r"(?i)\\b(batch|complete series)\\b|\\(\\s*\\d+\\s*[-–]\\s*\\d+\\s*\\)", title):
+        title = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw_title)
+        title = re.sub(r"(?i)\.(?:mkv|mp4|webm)$", "", title)
+        title = re.sub(r"\s*\[[^\]]*\]\s*$", "", title).strip()
+        title = re.sub(r"(?i)\s*\((?:1080|720|480)p\)", "", title).strip()
+        if re.search(r"(?i)\b(batch|complete series)\b|\(\s*\d+\s*[-–]\s*\d+\s*\)", title):
             continue
-        match = re.match(r"^(.*?)\\s+-\\s+(?:episode\\s*)?(\\d{1,4})(?:\\.\\d+)?\\s*$", title, re.I)
+        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", title, re.I)
         if not match:
             continue
         series_title = match.group(1).strip(" -–—")
         episode = int(match.group(2))
         if not series_title or episode < 1:
             continue
-        declared_size = re.search(r"(?:[?&])xl=(\\d+)(?:&|$)", link)
+        declared_size = re.search(r"(?:[?&])xl=(\d+)(?:&|$)", link)
         if declared_size and int(declared_size.group(1)) > max_bytes:
             LOG.warning(
                 "Skipping RSS %s source for %s episode %d: declared size %.1f MiB exceeds %d MiB.",
