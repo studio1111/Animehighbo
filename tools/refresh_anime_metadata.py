@@ -11,7 +11,8 @@ LOG = logging.getLogger("animehighbo.metadata_refresh")
 def merge_nonempty(old: dict, new: dict) -> dict:
     """Merge verified non-empty catalog values without erasing useful cached fields."""
     result = dict(old) if isinstance(old, dict) else {}
-    curated = result.get("metadata_source") == "MyAnimeList exact-season record"
+    curated_source = str(result.get("metadata_source") or "").casefold()
+    curated = any(marker in curated_source for marker in ("exact-season record", "exact-series record", "current-season record", "official key art"))
     for key, value in (new.items() if isinstance(new, dict) else []):
         if isinstance(value, dict):
             current = result.get(key, {})
