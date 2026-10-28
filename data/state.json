@@ -6850,6 +6850,62 @@
       "source_quality": "1080p",
       "published_at": 1793185393,
       "release_date": "2026-10-09"
+    },
+    "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:1080p": {
+      "title": "Rilakkuma",
+      "episode": "28",
+      "group_id": "353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "poster_identity": "archive:353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "release_date": "2026-10-16",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4b674719027a31d40cf1674e16cdd4fb2f0e4e57581549c37e829c98911e0b0f",
+      "message_id": "1487",
+      "published_at": 1793185808,
+      "bilingual_subtitles": true
+    },
+    "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:720p": {
+      "title": "Rilakkuma",
+      "episode": "28",
+      "group_id": "353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "poster_identity": "archive:353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "release_date": "2026-10-16",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2fd70855387696e6ffb565082cb2fa9635dad61c941d2f2e37c788b85c70ea64",
+      "message_id": "1488",
+      "published_at": 1793185809,
+      "bilingual_subtitles": true
+    },
+    "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:480p": {
+      "title": "Rilakkuma",
+      "episode": "28",
+      "group_id": "353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "poster_identity": "archive:353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "release_date": "2026-10-16",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4ef72fad4712edd5074dfb0a94d88da907ccadefb46f1f8b982d1c3da5fe636f",
+      "message_id": "1489",
+      "published_at": 1793185810,
+      "bilingual_subtitles": true
+    },
+    "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b": {
+      "title": "Rilakkuma",
+      "episode": "28",
+      "group_id": "353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "poster_identity": "archive:353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793185810,
+      "release_date": "2026-10-16"
     }
   },
   "seen": {
@@ -7890,7 +7946,10 @@
     "37957e637b00ddced8c476b8293a03dacdb7e0f79122e93428de28e91ab4532b": "ed434d5472d9c7efddd236cc8a37507acaa48ec358d56a1212918499e31e418c:480p",
     "7f259a4368e6baa5c2ceba812208ef8d7b6ad120dc2c87b1ccb94a612e3dbefd": "5e56d26b45f48712a9ef6416af78dc40d522c2aad041357178d6ebc75cca038a:1080p",
     "b4158afb5e791e78a0c26e332bc826f9fe301a329a82835053003d306003d97b": "5e56d26b45f48712a9ef6416af78dc40d522c2aad041357178d6ebc75cca038a:720p",
-    "226f513f436ecfeb72dd49b93c7b168c6788644964607fa6090c3434c8caba5a": "5e56d26b45f48712a9ef6416af78dc40d522c2aad041357178d6ebc75cca038a:480p"
+    "226f513f436ecfeb72dd49b93c7b168c6788644964607fa6090c3434c8caba5a": "5e56d26b45f48712a9ef6416af78dc40d522c2aad041357178d6ebc75cca038a:480p",
+    "4b674719027a31d40cf1674e16cdd4fb2f0e4e57581549c37e829c98911e0b0f": "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:1080p",
+    "2fd70855387696e6ffb565082cb2fa9635dad61c941d2f2e37c788b85c70ea64": "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:720p",
+    "4ef72fad4712edd5074dfb0a94d88da907ccadefb46f1f8b982d1c3da5fe636f": "8b95ec28c5c7a7a691c83991f5d2a1f8852d5895e1f86aa288797ebd2708d18b:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -8915,6 +8974,12 @@
       "episode": "27",
       "message_id": "1482",
       "published_at": 1793185387
+    },
+    "archive:353378234a4555b5137c90f5a7f13b9daf91706e2078fdf0116bc55e4cbae7a4": {
+      "title": "Rilakkuma",
+      "episode": "28",
+      "message_id": "1486",
+      "published_at": 1793185806
     }
   }
 }
