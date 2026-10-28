@@ -119,4 +119,15 @@ jobs:
           path: prepared/${{ inputs.identity }}
           if-no-files-found: error
           retention-days: 7
+      - name: Refill episode preparation slots
+        if: always() && github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EPISODE_ID: ${{ inputs.identity }}
+          OUTCOME: ${{ job.status }}
+        run: |
+          gh workflow run prepare-episodes.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            --field "completed_identity=$EPISODE_ID" \
+            --field "completed_conclusion=$OUTCOME"
 
