@@ -4,8 +4,8 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 42,
-    "matched_in_archive_manifest": 42,
+    "feed_releases": 41,
+    "matched_in_archive_manifest": 41,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
@@ -50,15 +50,6 @@
     {
       "title": "Meitantei Precure!",
       "episode": 39,
-      "release_date": "2026-10-24",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
-      "episode": 5,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
       "in_archive_manifest": true,
