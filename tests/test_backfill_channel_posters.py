@@ -48,4 +48,33 @@ class ChannelPosterBackfillTests(unittest.TestCase):
         catalog = {"description": "Verified catalog synopsis.", "genres": ["Sports"]}
         self.assertEqual(merge_cached_metadata(catalog, {}), catalog)
 
+
+    def test_public_channel_html_discovers_photo_anchors_and_pagination(self):
+        from tools.backfill_channel_posters import discover_channel_anchors_from_html
+        html = '''
+        <div class="tgme_widget_message_wrap" data-post="animehighbo/1470">
+          <div class="tgme_widget_message_photo_wrap"></div>
+          <div class="tgme_widget_message_text"><b>English:</b> The Apothecary Diaries <b>فارسی:</b> خاطرات داروخانه <b>قسمت</b> 49</div>
+        </div>
+        <div class="tgme_widget_message_wrap" data-post="animehighbo/1471">
+          <div class="tgme_widget_message_video_player"></div>
+          <div class="tgme_widget_message_text">EP 49 1080p</div>
+        </div>
+        <a class="tme_messages_more" href="/s/Animehighbo?before=1400">Load more</a>
+        '''
+        anchors, next_url = discover_channel_anchors_from_html(html)
+        self.assertEqual(anchors, [{"message_id": "1470", "title": "The Apothecary Diaries", "episode": "49"}])
+        self.assertEqual(next_url, "/s/Animehighbo?before=1400")
+
+    def test_poster_index_includes_cached_english_title_aliases_and_season_base(self):
+        index = build_poster_index({"published": {
+            "kusuriya no hitorigoto": {
+                "title": "Kusuriya no Hitorigoto",
+                "poster_url": "https://cdn.example/season3.jpg",
+                "metadata": {"title": {"english": "The Apothecary Diaries Season 3", "romaji": "Kusuriya no Hitorigoto 3rd Season"}},
+            }
+        }})
+        self.assertIn("the apothecary diaries", index)
+        self.assertIn("kusuriya no hitorigoto", index)
+
 if __name__ == "__main__": unittest.main()
