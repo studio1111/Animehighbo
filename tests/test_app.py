@@ -236,6 +236,61 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertIn("archive:group-episode-a", state["posters"])
         self.assertIn("archive:group-episode-b", state["posters"])
 
+    def test_replaces_deleted_poster_anchor_and_retries_video_reply(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            self._write_episode_artifact(root, "episode-a", "Series A", "2026-10-05")
+            state_path = Path(temp) / "state.json"
+            state = {
+                "published": {}, "seen": {},
+                "posters": {"archive:group-episode-a": {"message_id": "deleted-poster"}},
+            }
+            thumbnail = Path(temp) / "poster.jpg"
+            thumbnail.write_bytes(b"compressed-jpeg")
+            attempts = []
+            poster_ids = iter(["replacement-poster"])
+
+            def send_file(_token, _chat, path, caption, thumbnail_path=None, reply_to_message_id=None):
+                attempts.append(reply_to_message_id)
+                if len(attempts) == 1:
+                    raise RuntimeError(
+                        "Telegram sendDocument failed (HTTP 400): Bad Request: "
+                        "message to be replied not found"
+                    )
+                return f"video-{len(attempts)}"
+
+            def send_poster(_token, _chat, title, episode, _metadata, fallback_image_path=None):
+                return next(poster_ids)
+
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
+            }), patch.object(app, "anime_catalog_metadata", return_value={}), \
+                 patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
+                 patch.object(app, "telegram_send_anime_poster", side_effect=send_poster) as poster, \
+                 patch.object(app, "telegram_upload_and_send", side_effect=send_file):
+                app.publish_prepared_episodes(
+                    {"state_file": str(state_path), "max_file_size_mb": 1800,
+                     "bilingual_subtitles": True},
+                    state, False, "token", "@channel",
+                )
+
+        self.assertEqual(poster.call_count, 1)
+        self.assertEqual(attempts[0], "deleted-poster")
+        self.assertEqual(attempts[1:], ["replacement-poster"] * 3)
+        self.assertEqual(
+            state["posters"]["archive:group-episode-a"]["message_id"],
+            "replacement-poster",
+        )
+        self.assertEqual(state["published"]["episode-a"]["complete_qualities"],
+                         ["1080p", "720p", "480p"])
+
     def test_invalid_manifest_returns_failure_instead_of_green_success(self):
         import os
         import tempfile
