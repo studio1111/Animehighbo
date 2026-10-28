@@ -8810,6 +8810,62 @@
       "source_quality": "1080p",
       "published_at": 1793213560,
       "release_date": "2026-10-25"
+    },
+    "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:1080p": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "50",
+      "group_id": "61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "poster_identity": "archive:61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "release_date": "2026-10-26",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d6e086ef769b1fa9467eaaea84ebf13faff9b207659e489de9df6a647c38005a",
+      "message_id": "1627",
+      "published_at": 1793213678,
+      "bilingual_subtitles": true
+    },
+    "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:720p": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "50",
+      "group_id": "61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "poster_identity": "archive:61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "release_date": "2026-10-26",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6ed7b1029b1ff946b59951e9bf4bc22ac0645e94da4c4d2bd4c297b90da303a6",
+      "message_id": "1628",
+      "published_at": 1793213685,
+      "bilingual_subtitles": true
+    },
+    "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:480p": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "50",
+      "group_id": "61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "poster_identity": "archive:61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "release_date": "2026-10-26",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "04fb19baf2114a92e7a19a1ba9aa1cb02ca33b3b9ce6b70d060eff3d51ed5cc2",
+      "message_id": "1629",
+      "published_at": 1793213691,
+      "bilingual_subtitles": true
+    },
+    "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "50",
+      "group_id": "61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "poster_identity": "archive:61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793213691,
+      "release_date": "2026-10-26"
     }
   },
   "seen": {
@@ -9955,7 +10011,10 @@
     "1ee7d16e674229a9a01a0847c52dbae3b961903246bc6135fbdcdbb89860975b": "fd52be02e39097732bed8e8a0992ba96f9e8b7843dab873936e3c6f1af8b6000:480p",
     "cc69aac324cb7ec1bf7411727c9a072f80351a5e68184dc67a5e3826bf661ab6": "6a8b45ecd2944b7cc49a3e37c9f89f2c2a280ec583a4655dba849f6bbb396363:1080p",
     "4d5a0015f551564fbc54e1c2c41e19c8157779a99ab410d59db170bfdfcebb55": "6a8b45ecd2944b7cc49a3e37c9f89f2c2a280ec583a4655dba849f6bbb396363:720p",
-    "1a7624312a7bf26170268282eef5946bbf0a5f3e7206b35693ff72c18e0c9330": "6a8b45ecd2944b7cc49a3e37c9f89f2c2a280ec583a4655dba849f6bbb396363:480p"
+    "1a7624312a7bf26170268282eef5946bbf0a5f3e7206b35693ff72c18e0c9330": "6a8b45ecd2944b7cc49a3e37c9f89f2c2a280ec583a4655dba849f6bbb396363:480p",
+    "d6e086ef769b1fa9467eaaea84ebf13faff9b207659e489de9df6a647c38005a": "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:1080p",
+    "6ed7b1029b1ff946b59951e9bf4bc22ac0645e94da4c4d2bd4c297b90da303a6": "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:720p",
+    "04fb19baf2114a92e7a19a1ba9aa1cb02ca33b3b9ce6b70d060eff3d51ed5cc2": "3d1534e6900fa8f099347773c8a2df57d075c5e31126dd3f70d990266008e72f:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -11190,6 +11249,12 @@
       "episode": "04",
       "message_id": "1622",
       "published_at": 1793213543
+    },
+    "archive:61b3d8a54bbdb2d5dec10817bdaad8aa26c2b1673decc6377cef1e7d890e50d2": {
+      "title": "Bleach - Sennen Kessen Hen",
+      "episode": "50",
+      "message_id": "1626",
+      "published_at": 1793213666
     }
   }
 }
