@@ -604,6 +604,16 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
             LOG.warning("%s metadata lookup failed for %r: %s", source_name, title, exc)
     cached = _cached_anime_poster(title) or _cached_anime_poster(search_title)
     if cached:
+        cached_metadata = cached.get("metadata")
+        if isinstance(cached_metadata, dict):
+            for key, value in cached_metadata.items():
+                if key in {"title", "coverImage", "studios"} and isinstance(value, dict):
+                    current = merged.setdefault(key, {})
+                    for subkey, subvalue in value.items():
+                        if not current.get(subkey) and subvalue:
+                            current[subkey] = subvalue
+                elif merged.get(key) in (None, "", [], {}) and value not in (None, "", [], {}):
+                    merged[key] = value
         # Use the repository's established poster when live catalogs have no usable cover.
         cover = merged.setdefault("coverImage", {})
         if not any(str(cover.get(key) or "").strip() for key in ("extraLarge", "large", "medium")):
