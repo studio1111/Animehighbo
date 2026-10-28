@@ -61,6 +61,23 @@ class AnimeCatalogFallbackTests(unittest.TestCase):
         self.assertEqual(metadata["description"], "Sample synopsis")
 
 
+    def test_cached_poster_lookup_matches_curated_aliases(self):
+        import app
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp) / "anime_poster_state.json"
+            cache.write_text(json.dumps({"published": {
+                "paw and palaces": {
+                    "title": "Paw and Palaces",
+                    "aliases": ["Paw & Palaces", "Paws & Palaces"],
+                    "poster_url": "https://cdn.example/paws-palaces.jpg",
+                    "metadata": {"description": "Verified synopsis."},
+                }
+            }}), encoding="utf-8")
+            with patch.dict(os.environ, {"ANIMEHIGHBO_POSTER_CACHE": str(cache)}):
+                cached = app._cached_anime_poster("Paw & Palaces 🇮🇷")
+        self.assertEqual(cached["poster_url"], "https://cdn.example/paws-palaces.jpg")
+        self.assertEqual(cached["metadata"]["description"], "Verified synopsis.")
+
     def test_cached_poster_is_used_when_live_catalogs_fail(self):
         import app
         with tempfile.TemporaryDirectory() as temp:
