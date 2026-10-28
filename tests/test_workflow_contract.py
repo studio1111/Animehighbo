@@ -30,7 +30,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}", dispatcher)
         self.assertIn("workflow_call:", worker)
         self.assertIn("ANIMEHIGHBO_PREPARE_ONLY: 'true'", worker)
-        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", worker)
+        self.assertIn("ANIMEHIGHBO_PUBLISH_PREPARED: 'true'", (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8"))
         self.assertIn("GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}", worker)
         self.assertNotIn("GH_WORKFLOW_TOKEN", dispatcher + worker)
         self.assertNotIn("createDispatchEvent", dispatcher + worker)
@@ -42,13 +42,12 @@ class WorkflowContractTests(unittest.TestCase):
 
     def test_publisher_workflow_has_no_lock_or_permission_gate(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
-        publish = workflow.index("Publish the episode poster and three reply videos")
-        persist = workflow.index("Persist duplicate-prevention state without overwriting parallel workers")
-        self.assertLess(publish, persist)
-        self.assertNotIn("publisher_lock", workflow)
-        self.assertNotIn("publisher.lock", workflow)
-        self.assertFalse((ROOT / "tools/publisher_lock.py").exists())
-        self.assertIn("git reset --hard origin/main", workflow)
+        self.assertNotIn("Publish the episode poster and three reply videos", workflow)
+        self.assertIn("Upload this episode bundle", workflow)
+        queue = (ROOT / ".github/workflows/publish-prepared-queue.yml").read_text(encoding="utf-8")
+        self.assertIn("Exactly one publisher dispatched", queue)
+        self.assertIn("group: animehighbo-prepared-publication-planner", queue)
+        self.assertIn("git reset --hard origin/main", (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8"))
 
     def test_dispatcher_launches_independent_workers_and_skips_active_episodes(self):
         dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
@@ -75,14 +74,15 @@ class WorkflowContractTests(unittest.TestCase):
     def test_each_episode_publishes_independently_and_serializes_state_writes(self):
         workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
         self.assertIn("actions/upload-artifact@v4", workflow)
-        self.assertIn("actions/download-artifact@v4", workflow)
-        self.assertNotIn("concurrency:", workflow.split("  publish:", 1)[1].split("  refill:", 1)[0])
-        self.assertNotIn("publisher.lock", workflow)
-        self.assertNotIn("publisher-series-" + "${{ inputs.series_key }}", workflow)
-        self.assertIn("git fetch origin main", workflow)
-        self.assertIn("if key not in current_section:", workflow)
-        self.assertIn("git push origin HEAD:main", workflow)
-        self.assertNotIn("createDispatchEvent", workflow)
+        self.assertNotIn("  publish:", workflow)
+        queue = (ROOT / ".github/workflows/publish-prepared-queue.yml").read_text(encoding="utf-8")
+        publisher = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/download-artifact@v4", publisher)
+        self.assertIn("git fetch origin main", publisher)
+        self.assertIn("if key not in current_section:", publisher)
+        self.assertIn("git push origin HEAD:main", publisher)
+        self.assertIn("workflow_run:", queue)
+        self.assertNotIn("createDispatchEvent", workflow + queue + publisher)
         self.assertFalse((ROOT / ".github/workflows/publish.yml").exists())
 
     def test_recovery_publisher_reuses_prepared_artifact_without_locks(self):
@@ -98,7 +98,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("publisher.lock", workflow)
 
     def test_publisher_resolves_local_telegram_api_and_size_limit(self):
-        workflow = (ROOT / ".github/workflows/prepare-one-episode.yml").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
         self.assertIn("TELEGRAM_LOCAL_API_SECRET: ${{ secrets.TELEGRAM_LOCAL_API }}", workflow)
         self.assertIn("if [ -n \"$TELEGRAM_LOCAL_API_SECRET\" ]; then", workflow)
         self.assertIn("ANIMEHIGHBO_MAX_FILE_SIZE_MB_SECRET: ${{ secrets.ANIMEHIGHBO_MAX_FILE_SIZE_MB }}", workflow)
@@ -207,7 +207,7 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends ffmpeg aria2 fonts-noto-core", workflow)
         self.assertIn("timeout-minutes: 15", workflow)
         self.assertNotIn("command -v ffmpeg\n          sudo timeout 180 apt-get install", workflow)
-        publisher = workflow.split("  publish:", 1)[1]
+        publisher = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
         self.assertIn("Ensure FFmpeg is available for poster thumbnails", publisher)
         self.assertIn("if command -v ffmpeg >/dev/null 2>&1", publisher)
         self.assertIn("sudo timeout -k 5s 180 apt-get", publisher)
