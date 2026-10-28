@@ -20,8 +20,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 
 try:
-    from tools.redistribution_rights import has_redistribution_authorization
-except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
+    except ModuleNotFoundError:  # Direct script execution puts tools/ rather than repo root on sys.path.
     from redistribution_rights import has_redistribution_authorization
 
 LOG = logging.getLogger("animehighbo.archive_catalog")
@@ -104,15 +103,8 @@ def select_show_episodes(
     episodes: list[dict],
     cutoff: date,
     max_file_size_mb: int = 1800,
-    authorization_evidence: str = "",
-    authorization_reviewed_at: str = "",
 ) -> list[dict]:
-    """Select episode sources; unreviewed candidates remain metadata-only."""
-    rights_authorized = has_redistribution_authorization({
-        "authorization_evidence": authorization_evidence,
-        "authorization_reviewed_at": authorization_reviewed_at,
-    })
-
+    """Select eligible SubsPlease episode sources for the automatic archive queue."""
     parsed_rows = []
     for row in episodes:
         if not isinstance(row, dict):
@@ -123,11 +115,8 @@ def select_show_episodes(
             continue
         parsed_rows.append((row, number, released))
 
-    # Count distinct pre-cutoff episode numbers even when one lacks a usable
-    # source, so missing downloads cannot accidentally trigger a historical backfill.
     prior_episode_numbers = {number for _, number, released in parsed_rows if released < cutoff}
     include_prior = len(prior_episode_numbers) <= 3
-
     normalized = []
     for row, number, released in parsed_rows:
         if released < cutoff and not include_prior:
@@ -143,7 +132,6 @@ def select_show_episodes(
             "quality": quality,
             "uri": magnet,
         })
-    # Keep a single entry per episode, choosing the earliest dated valid source.
     normalized.sort(key=lambda item: (item["episode"], item["release_date"], item["quality"]))
     selected_by_episode = {}
     for item in normalized:
@@ -155,17 +143,13 @@ def select_show_episodes(
         "title": f"{show_title} - {item['episode']:02d} ({item['quality']})",
         "episode": item["episode"],
         "quality": item["quality"],
-        **({"uri": item["uri"]} if rights_authorized else {}),
-        "review_required": not rights_authorized,
-        **({
-            "authorization_evidence": authorization_evidence.strip(),
-            "authorization_reviewed_at": authorization_reviewed_at.strip(),
-        } if rights_authorized else {}),
+        "uri": item["uri"],
         "release_date": item["release_date"].isoformat(),
         "_episode": item["episode"],
         "_release_date": item["release_date"].isoformat(),
         "_quality": item["quality"],
     } for item in selected]
+
 
 
 def _request_json(session: requests.Session, params: dict) -> dict:
