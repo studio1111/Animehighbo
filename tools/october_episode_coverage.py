@@ -173,7 +173,7 @@ def build_coverage_report(
         "sources": {
             "seasonal_titles": "AniList seasonal discovery report",
             "manifest": "archive_manifest.json",
-            "candidates": "archive_candidates.json",
+            "candidates": "not used; archive_manifest.json is the automatic queue source",
             "rss": "subsplease_release_report.json",
         },
         "metadata_only": True,
