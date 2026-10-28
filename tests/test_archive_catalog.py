@@ -13,6 +13,8 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertIn("kusuriya-no-hitorigoto", REQUIRED_SHOW_SLUGS)
         self.assertIn("tensei-shitara-ken-deshita-s2", REQUIRED_SHOW_SLUGS)
         self.assertIn("tokyo-revengers", REQUIRED_SHOW_SLUGS)
+        self.assertIn("rilakkuma", REQUIRED_SHOW_SLUGS)
+        self.assertIn("uchi-no-otouto-domo-ga-sumimasen", REQUIRED_SHOW_SLUGS)
 
     def test_subsplease_show_slug_is_resolved_under_shows_path(self):
         self.assertEqual(
