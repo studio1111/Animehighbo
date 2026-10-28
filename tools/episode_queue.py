@@ -391,7 +391,7 @@ def empty_queue_reason(
         )
     if eligible_count <= 0:
         return (
-            "No incomplete episode is eligible after completion, series-order, lock, "
+            "No incomplete episode is eligible after completion, series-order, "
             "and retry-backoff checks."
         )
     if max_workers > 0 and active_count >= max_workers:
@@ -426,8 +426,7 @@ def exclude_recently_failed_series(
 ) -> list[dict]:
     """Back off a recently failing series while keeping unrelated anime eligible.
 
-    A retained global publisher lock is the exception: its owner must resume first
-    to finish the existing poster thread without duplicating or interleaving posts.
+    A failed episode only delays its own series; no global publisher lock is used.
     """
     failed = {identity for identity in failed_identities if isinstance(identity, str) and identity}
     if not entries or not failed:
@@ -482,7 +481,6 @@ def main() -> int:
     parser.add_argument("--state", default="data/state.json")
     parser.add_argument("--github-output", default="")
     parser.add_argument("--quota-cooldown", default="data/gemini_quota_cooldown.json")
-    parser.add_argument("--publisher-lock", default="data/publisher.lock")
     args = parser.parse_args()
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if not isinstance(manifest, list):
@@ -523,16 +521,6 @@ def main() -> int:
         upload_date, entries = select_next_upload_date(
             manifest, state, cutoff_date=cutoff, target_series=target_series or None
         )
-    # A retained lock represents an interrupted three-quality thread. Resume it
-    # before selecting unrelated episodes, otherwise every publisher can wait forever.
-    if entries or not cooldown_until:
-        entries = prioritize_locked_episode(entries, state, args.publisher_lock)
-    locked_identity = ""
-    lock_path = Path(args.publisher_lock)
-    if lock_path.exists():
-        lock_payload = json.loads(lock_path.read_text(encoding="utf-8"))
-        if isinstance(lock_payload, dict):
-            locked_identity = str(lock_payload.get("identity") or "").strip()
     try:
         failed_raw = os.environ.get("ANIMEHIGHBO_RECENT_FAILED_IDENTITIES", "[]")
         failed_value = json.loads(failed_raw)
@@ -542,17 +530,14 @@ def main() -> int:
     except (TypeError, ValueError, json.JSONDecodeError) as exc:
         raise RuntimeError("Could not safely determine recent episode failures; refusing to dispatch.") from exc
     before_failure_backoff = len(entries)
-    entries = exclude_recently_failed_series(
-        entries, recent_failed_identities, locked_identity=locked_identity or None
-    )
+    entries = exclude_recently_failed_series(entries, recent_failed_identities)
     if len(entries) < before_failure_backoff:
         print(
             f"Temporarily backing off {before_failure_backoff - len(entries)} episode candidate(s) "
             "from recently failing series; unrelated anime remain eligible."
         )
     # Upload date is a priority only, not a barrier: later dates may run as soon
-    # as their own series is eligible, without waiting for the slowest earlier date.
-    # The repository-wide publisher lock keeps each poster and its three replies contiguous.
+    # as their own series is eligible, without a stale global lock blocking dispatch.
     if entries:
         upload_date = min(_day(entry.get("release_date")) for entry in entries)
     # Do not redispatch work that already has a queued or running worker. The
