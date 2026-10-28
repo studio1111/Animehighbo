@@ -6,7 +6,6 @@ on:
   workflow_run:
     workflows:
       - Animehighbo single-episode worker
-      - Animehighbo prepared publication queue
       - Recover and publish prepared episode
     types: [completed]
   schedule:
