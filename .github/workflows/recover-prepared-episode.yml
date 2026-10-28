@@ -25,6 +25,10 @@ permissions:
   contents: write
   actions: read
 
+concurrency:
+  group: animehighbo-single-publisher
+  cancel-in-progress: false
+
 jobs:
   publish:
     name: Publish one already-prepared episode
