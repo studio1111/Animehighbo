@@ -46,7 +46,7 @@ concurrency:
 
 jobs:
   queue:
-    name: Select up to five eligible episodes
+    name: Select one eligible episode at a time
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -128,7 +128,7 @@ jobs:
             f"recently failing series are backed off for {int(cooldown.total_seconds() // 60)} minutes."
           )
           PY
-      - name: Plan up to five independently publishable episodes
+      - name: Plan the next single episode publication
         id: plan
         run: python tools/episode_queue.py --github-output "$GITHUB_OUTPUT"
       - name: Report planned independent workers
@@ -138,7 +138,7 @@ jobs:
           python - <<'PY'
           import json, os
           entries = json.loads(os.environ["MATRIX"]).get("include", [])
-          print(f"Planned independent episode workers: {len(entries)} (maximum 5)")
+          print(f"Planned independent episode workers: {len(entries)} (maximum 1)")
           for entry in entries:
               print(f"- {entry.get('title')} [{entry.get('identity')}]")
           PY
@@ -150,7 +150,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 1
       matrix: ${{ fromJSON(needs.queue.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
