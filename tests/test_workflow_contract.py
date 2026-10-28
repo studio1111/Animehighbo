@@ -230,5 +230,38 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("command -v ffmpeg", publisher)
 
 
+    def test_new_subsplease_releases_reach_catalog_refresh_and_final_queue(self):
+        catalog = (ROOT / ".github/workflows/build-archive-catalog.yml").read_text(encoding="utf-8")
+        monitor = (ROOT / ".github/workflows/subsplease-release-monitor.yml").read_text(encoding="utf-8")
+        dispatcher = (ROOT / ".github/workflows/prepare-episodes.yml").read_text(encoding="utf-8")
+        queue = (ROOT / "tools/episode_queue.py").read_text(encoding="utf-8")
+
+        # Frequent catalog scans are the primary discovery path.
+        self.assertIn("cron: '*/15 * * * *'", catalog)
+        self.assertIn("data/archive_manifest.json", catalog)
+        self.assertIn("name: Refresh complete archive manifest", catalog)
+
+        # The RSS monitor is a fallback if the catalog missed a newly released episode.
+        self.assertIn('cron: "0 */2 * * *"', monitor)
+        self.assertIn("Rebuild archive catalog when scheduled RSS check finds gaps", monitor)
+        self.assertIn("if: github.event_name == 'schedule'", monitor)
+        self.assertIn('"missing_from_manifest"', monitor)
+        self.assertIn('"build-archive-catalog.yml"', monitor)
+        self.assertIn("actions: write", monitor)
+
+        # Catalog completion or a manifest push wakes the dispatcher.
+        self.assertIn("Refresh complete archive manifest", dispatcher)
+        self.assertIn("types: [completed]", dispatcher)
+        self.assertIn("'data/archive_manifest.json'", dispatcher)
+        self.assertIn("python tools/episode_queue.py --github-output", dispatcher)
+
+        # The durable manifest is the final queue input; no approval/lock gate is used.
+        self.assertIn('default="data/archive_manifest.json"', queue)
+        self.assertIn("select_next_upload_date(", queue)
+        self.assertIn("exclude_prepared_identities(", queue)
+        self.assertNotIn("publisher approval", queue.casefold())
+        self.assertNotIn("authorization_evidence", queue)
+
+
 if __name__ == "__main__":
     unittest.main()
