@@ -43,18 +43,16 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             [row["release_date"] for row in selected],
             ["2026-09-05", "2026-09-12", "2026-09-19"],
         )
-        self.assertTrue(all("uri" not in row for row in selected))
-        self.assertTrue(all("magnet" not in json.dumps(row).lower() for row in selected))
+        self.assertTrue(all(row.get("uri") for row in selected))
+        self.assertTrue(all("magnet:" in str(row.get("uri", "")).lower() for row in selected))
 
-    def test_preserves_curated_authorized_entries_missing_from_catalog_api(self):
+    def test_preserves_valid_existing_entries_missing_from_catalog_api(self):
         generated = [{
             "title": "New Saga - 01 (1080p)",
             "episode": 1,
             "quality": "1080p",
             "uri": "magnet:?xt=urn:btih:new",
             "release_date": "2026-10-10",
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
         }]
         existing = [
             {
@@ -63,8 +61,6 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
                 "quality": "1080p",
                 "uri": "magnet:?xt=urn:btih:curated",
                 "release_date": "2026-10-07",
-                "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-                "authorization_reviewed_at": "2026-10-24",
             },
             {
                 "title": "Old Saga - 01 (1080p)",
@@ -88,9 +84,9 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
 
         self.assertEqual(
             [row["title"] for row in merged],
-            ["Curated Saga - 01 (1080p)", "New Saga - 01 (1080p)"],
+            ["Curated Saga - 01 (1080p)", "Unapproved Saga - 01 (1080p)", "New Saga - 01 (1080p)"],
         )
-        self.assertEqual([row["release_date"] for row in merged], ["2026-10-07", "2026-10-10"])
+        self.assertEqual([row["release_date"] for row in merged], ["2026-10-07", "2026-10-08", "2026-10-10"])
 
     def test_ongoing_series_keeps_all_episodes_released_since_cutoff(self):
         rows = [
@@ -171,7 +167,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         selected = select_show_episodes("Sasaki to Pii-chan S2", rows, date(2026, 10, 1), 1800)
         self.assertEqual(len(selected), 1)
         self.assertEqual(selected[0]["quality"], "720p")
-        self.assertNotIn("uri", selected[0])
+        self.assertIn("uri", selected[0])
 
     def test_oversized_sources_are_skipped_when_no_lower_quality_fits(self):
         rows = [{
@@ -209,30 +205,21 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(merged[0]["quality"], "720p")
 
 
-    def test_authorized_catalog_entry_requires_evidence_and_review_date(self):
+    def test_discovered_episode_includes_source_uri_without_approval_fields(self):
         rows = [{
             "title": "Licensed Candidate - 01",
             "episode": "1",
             "release_date": "2026-10-07T10:00:00Z",
-            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:authorizedcandidate"}],
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:automaticcandidate"}],
         }]
-        without_evidence = select_show_episodes("Licensed Candidate", rows, date(2026, 10, 1))
-        self.assertTrue(without_evidence[0]["review_required"])
-        self.assertNotIn("uri", without_evidence[0])
-        self.assertNotIn("authorized_for_redistribution", without_evidence[0])
+        selected = select_show_episodes("Licensed Candidate", rows, date(2026, 10, 1))
+        self.assertEqual(len(selected), 1)
+        self.assertIn("automaticcandidate", selected[0]["uri"])
+        self.assertNotIn("review_required", selected[0])
+        self.assertNotIn("authorization_evidence", selected[0])
+        self.assertNotIn("authorization_reviewed_at", selected[0])
 
-        selected = select_show_episodes(
-            "Licensed Candidate", rows, date(2026, 10, 1),
-            authorization_evidence="https://rights.example.org/licenses/animehighbo",
-            authorization_reviewed_at="2026-10-24",
-        )
-        self.assertFalse(selected[0]["review_required"])
-        self.assertNotIn("authorized_for_redistribution", selected[0])
-        self.assertEqual(selected[0]["authorization_reviewed_at"], "2026-10-24")
-        self.assertTrue(selected[0]["authorization_evidence"])
-        self.assertIn("authorizedcandidate", selected[0]["uri"])
-
-    def test_builder_returns_metadata_only_candidates_without_source_uris(self):
+    def test_builder_returns_manifest_entries_with_source_uris(self):
         session = Mock()
         session.headers = {}
         latest_page = {
@@ -242,7 +229,7 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             "title": "Candidate Saga - 01",
             "episode": "1",
             "release_date": "2026-10-07T10:00:00Z",
-            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:secret"}],
+            "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:sourceuri"}],
         }]
         with (
             patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
@@ -250,28 +237,25 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
             patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
             patch("tools.archive_catalog.time.sleep"),
         ):
-            candidates = build_archive_manifest(
-                date(2026, 10, 1), max_pages=5, session=session
-            )
-        self.assertEqual(len(candidates), 1)
-        self.assertNotIn("authorized_for_redistribution", candidates[0])
-        self.assertTrue(candidates[0]["review_required"])
-        self.assertNotIn("uri", candidates[0])
-        self.assertNotIn("magnet", json.dumps(candidates).lower())
+            manifest = build_archive_manifest(date(2026, 10, 1), max_pages=5, session=session)
+        self.assertEqual(len(manifest), 1)
+        self.assertIn("sourceuri", manifest[0]["uri"])
+        self.assertNotIn("review_required", manifest[0])
+        self.assertNotIn("authorization_evidence", manifest[0])
+        self.assertIn("magnet:", json.dumps(manifest).lower())
 
-    def test_discovered_episodes_are_unapproved_candidates_by_default(self):
+    def test_discovered_episodes_are_automatically_eligible_without_review_gate(self):
         rows = [{
             "title": "Candidate Saga - 01",
             "episode": "1",
             "release_date": "2026-10-07T10:00:00Z",
             "downloads": [{"res": "1080", "magnet": "magnet:?xt=urn:btih:candidate"}],
         }]
-
         selected = select_show_episodes("Candidate Saga", rows, date(2026, 10, 1))
-
         self.assertEqual(len(selected), 1)
-        self.assertNotIn("authorized_for_redistribution", selected[0])
-        self.assertTrue(selected[0].get("review_required"))
+        self.assertIn("candidate", selected[0]["uri"])
+        self.assertNotIn("review_required", selected[0])
+
 
 if __name__ == "__main__":
     unittest.main()
