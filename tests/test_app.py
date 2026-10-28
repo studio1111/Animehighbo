@@ -1025,9 +1025,9 @@ class PosterFallbackTests(unittest.TestCase):
             video = Path(temp) / "episode.mkv"
             video.write_bytes(b"video")
             output = Path(temp) / "thumbnail.jpg"
-            with patch.object(app, "search_poster_image_urls", return_value=[]), \\
-                 patch.object(app, "download_poster", side_effect=OSError("image services unavailable")), \\
-                 patch.object(app.shutil, "which", return_value="/usr/bin/ffmpeg"), \\
+            with patch.object(app, "search_poster_image_urls", return_value=[]), \
+                 patch.object(app, "download_poster", side_effect=OSError("image services unavailable")), \
+                 patch.object(app.shutil, "which", return_value="/usr/bin/ffmpeg"), \
                  patch.object(app.subprocess, "run") as run:
                 with self.assertRaisesRegex(RuntimeError, "No verified anime poster"):
                     app.create_anime_video_thumbnail(
@@ -1044,8 +1044,8 @@ class PosterFallbackTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             fallback = Path(temp) / "thumbnail.jpg"
             fallback.write_bytes(bytes.fromhex("ffd8ff") + b"x" * 1024)
-            with patch.object(app, "build_episode_caption", return_value="caption"), \\
-                 patch.object(app, "search_poster_image_urls", return_value=[]), \\
+            with patch.object(app, "build_episode_caption", return_value="caption"), \
+                 patch.object(app, "search_poster_image_urls", return_value=[]), \
                  patch.object(app.requests, "post") as post:
                 with self.assertRaisesRegex(RuntimeError, "No verified poster"):
                     app.telegram_send_anime_poster(
