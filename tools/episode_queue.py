@@ -1,4 +1,4 @@
-"""Select episode candidates with manual denylist control and no automatic authorization lock."""
+"""Select episode candidates with manual denylist control and lock-free dispatch."""
 from __future__ import annotations
 
 import argparse
@@ -353,7 +353,7 @@ def exclude_recently_failed_series(
 ) -> list[dict]:
     """Back off a recently failing series while keeping unrelated anime eligible.
 
-    A failed episode only delays its own series; no global publisher lock is used.
+    A failed episode only delays its own series; unrelated series remain eligible.
     """
     failed = {identity for identity in failed_identities if isinstance(identity, str) and identity}
     if not entries or not failed:
@@ -461,7 +461,7 @@ def main() -> int:
             "from recently failing series; unrelated anime remain eligible."
         )
     # Upload date is a priority only, not a barrier: later dates may run as soon
-    # as their own series is eligible, without a stale global lock blocking dispatch.
+    # as their own series is eligible, without stale global state blocking dispatch.
     if entries:
         upload_date = min(_day(entry.get("release_date")) for entry in entries)
     # Do not redispatch work that already has a queued or running worker. The
