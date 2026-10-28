@@ -248,6 +248,9 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn('"missing_from_manifest"', monitor)
         self.assertIn('"build-archive-catalog.yml"', monitor)
         self.assertIn("actions: write", monitor)
+        self.assertIn("git fetch origin main", monitor)
+        self.assertIn("git rebase origin/main", monitor)
+        self.assertIn("git push origin HEAD:main", monitor)
 
         # Catalog completion or a manifest push wakes the dispatcher.
         self.assertIn("Refresh complete archive manifest", dispatcher)
