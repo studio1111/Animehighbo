@@ -341,6 +341,68 @@ class PreparedEpisodePublisherTests(unittest.TestCase):
         self.assertEqual(events, [])
         self.assertNotIn("new-source-id", state["published"])
 
+    def test_partial_episode_retry_skips_qualities_already_published_for_same_group(self):
+        import json
+        import os
+        import tempfile
+        from unittest.mock import patch
+        import app
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "prepared-artifacts"
+            root.mkdir()
+            self._write_episode_artifact(root, "new-source-id", "Series A", "2026-10-05")
+            manifest_path = next(root.glob("episode-*/manifest.json"))
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["group_id"] = "stable-series-episode-01"
+            manifest["poster_identity"] = "archive:stable-series-episode-01"
+            for row in manifest["files"]:
+                row["output_identity"] = f"new-source-id:{row['quality']}"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            state_path = Path(temp) / "state.json"
+            state = {
+                "published": {
+                    "old-source-id:1080p": {
+                        "title": "Series A", "episode": "01",
+                        "group_id": "stable-series-episode-01",
+                        "poster_identity": "archive:stable-series-episode-01",
+                        "release_date": "2026-10-05", "quality": "1080p",
+                        "message_id": "old-1080p", "published_at": 1005,
+                    }
+                },
+                "seen": {},
+                "posters": {
+                    "archive:stable-series-episode-01": {
+                        "title": "Series A", "episode": "01", "message_id": "existing-poster",
+                        "published_at": 1000,
+                    }
+                },
+            }
+            events = []
+            thumbnail = Path(temp) / "poster.jpg"
+            thumbnail.write_bytes(b"compressed-jpeg")
+
+            with patch.dict(os.environ, {
+                "ANIMEHIGHBO_PREPARED_DIR": str(root),
+                "ANIMEHIGHBO_RELEASE_DATE": "2026-10-05",
+            }), patch.object(app, "anime_catalog_metadata", return_value={}), \
+                 patch.object(app, "create_anime_video_thumbnail", return_value=thumbnail), \
+                 patch.object(app, "telegram_send_anime_poster", side_effect=lambda *a, **k: events.append("poster")), \
+                 patch.object(app, "telegram_upload_and_send", side_effect=lambda _t, _c, _p, caption, **k: events.append(caption) or str(len(events))):
+                result = app.publish_prepared_episodes(
+                    {"state_file": str(state_path), "max_file_size_mb": 1800,
+                     "bilingual_subtitles": True},
+                    state, False, "token", "@channel",
+                )
+
+        self.assertEqual(result, 0)
+        self.assertEqual(len(events), 2)
+        self.assertTrue(all("720p" in event or "480p" in event for event in events))
+        self.assertFalse(any("1080p" in event for event in events))
+        self.assertEqual(state["published"]["new-source-id"]["complete_qualities"],
+                         ["1080p", "720p", "480p"])
+
     def test_replaces_deleted_poster_anchor_and_retries_video_reply(self):
         import os
         import tempfile
