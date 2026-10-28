@@ -31,7 +31,10 @@ REQUIRED_SHOW_SLUGS = (
     "uchi-no-otouto-domo-ga-sumimasen",
     "doumo-suki-na-hito-ni-horegusuri-wo-irai-sareta-majo-desu",
     "tensei-goblin-dakedo-shitsumon-aru",
-    "bleach-sennen-kessen-hen-kashin-tan",
+    "sasaki-to-pii-chan-s2",
+    "sekai-saikyou-no-majo-hajimemashita",
+    "tantei-wa-mou-shindeiru-s2",
+    "bleach-sennen-kessen-hen",
 )
 
 
