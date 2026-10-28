@@ -9482,6 +9482,62 @@
       "source_quality": "1080p",
       "published_at": 1793220588,
       "release_date": "2026-10-27"
+    },
+    "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:1080p": {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": "04",
+      "group_id": "d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "poster_identity": "archive:d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "release_date": "2026-10-27",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d26caab0ccb18ebab38c6eb6a15d2f7aeb0ff5ea734bad01a1b63faedea5462d",
+      "message_id": "1675",
+      "published_at": 1793220735,
+      "bilingual_subtitles": true
+    },
+    "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:720p": {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": "04",
+      "group_id": "d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "poster_identity": "archive:d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "release_date": "2026-10-27",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6398b9e8dc292896d01c8e17ec8e22ea520ade34cbf2f9a743d3fff60b268dfe",
+      "message_id": "1676",
+      "published_at": 1793220740,
+      "bilingual_subtitles": true
+    },
+    "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:480p": {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": "04",
+      "group_id": "d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "poster_identity": "archive:d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "release_date": "2026-10-27",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bc8de718ffa886edd8e4662871ecdd27c6db80e268ecd61f9fc92c2d57ffa26f",
+      "message_id": "1677",
+      "published_at": 1793220743,
+      "bilingual_subtitles": true
+    },
+    "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d": {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": "04",
+      "group_id": "d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "poster_identity": "archive:d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793220743,
+      "release_date": "2026-10-27"
     }
   },
   "seen": {
@@ -10663,7 +10719,10 @@
     "763f329981730d45b129d3f8f24af2a0dfdc94d31a6f9e89de35c4fe5efc1036": "2bbba2f8c5f6e6412605260e40cd0f018c4cdfbf1262c37cfc8fdbddd09db6da:480p",
     "27d8dc35b50aa6a50f428c8c636910e69853b95ccdfe25660a6d5e5936507122": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:1080p",
     "952735fbf3e10733b135a50e02b3b6ef5cd3009edd56df4af21348bac5695c0e": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:720p",
-    "1deecc78e99d016edde85061b6e3e9777b78b4b2d75ac06a7e1468f42b8f5023": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:480p"
+    "1deecc78e99d016edde85061b6e3e9777b78b4b2d75ac06a7e1468f42b8f5023": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:480p",
+    "d26caab0ccb18ebab38c6eb6a15d2f7aeb0ff5ea734bad01a1b63faedea5462d": "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:1080p",
+    "6398b9e8dc292896d01c8e17ec8e22ea520ade34cbf2f9a743d3fff60b268dfe": "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:720p",
+    "bc8de718ffa886edd8e4662871ecdd27c6db80e268ecd61f9fc92c2d57ffa26f": "c6cac5e614cf6822c12bd5be1ccc0c82c652fda8c188f34ced6c30ceca4b568d:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -11970,6 +12029,12 @@
       "episode": "04",
       "message_id": "1670",
       "published_at": 1793220571
+    },
+    "archive:d003f2ce9502db518e3643e88eab151ae5e023b33c28f454dbdcc1145a315036": {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": "04",
+      "message_id": "1674",
+      "published_at": 1793220725
     }
   }
 }
