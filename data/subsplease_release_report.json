@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 42,
-    "matched_in_archive_manifest": 42,
+    "matched_in_archive_manifest": 40,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 2
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -50,24 +50,6 @@
     {
       "title": "Meitantei Precure!",
       "episode": 39,
-      "release_date": "2026-10-24",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Romelia Senki",
-      "episode": 4,
-      "release_date": "2026-10-24",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Shuiro no Kamen",
-      "episode": 3,
       "release_date": "2026-10-24",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -325,6 +307,24 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Juuou Mujin Dandivine",
+      "episode": 4,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Kikansha no Mahou wa Tokubetsu desu",
+      "episode": 16,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     },
     {
       "title": "Magic Knight Rayearth (2026)",
