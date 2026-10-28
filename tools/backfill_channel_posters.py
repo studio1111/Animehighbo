@@ -4,6 +4,8 @@ import json, logging, os, time
 from pathlib import Path
 from urllib.parse import urlparse
 import requests
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app import anime_catalog_metadata, build_episode_caption, download_poster, telegram_api_endpoint
 LOG = logging.getLogger("animehighbo.poster_backfill")
 
