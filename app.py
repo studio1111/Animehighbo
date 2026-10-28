@@ -604,9 +604,10 @@ def anime_catalog_metadata(title: str, timeout: int = 12) -> dict:
             LOG.warning("%s metadata lookup failed for %r: %s", source_name, title, exc)
     cached = _cached_anime_poster(title) or _cached_anime_poster(search_title)
     if cached:
-        # Prefer the repository's established series poster if live catalogs fail or disagree.
+        # Use the repository's established poster when live catalogs have no usable cover.
         cover = merged.setdefault("coverImage", {})
-        cover["extraLarge"] = cached["poster_url"]
+        if not any(str(cover.get(key) or "").strip() for key in ("extraLarge", "large", "medium")):
+            cover["extraLarge"] = cached["poster_url"]
         if not merged.get("title"):
             merged["title"] = {
                 "english": cached.get("title") or search_title,
