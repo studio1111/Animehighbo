@@ -6,6 +6,7 @@ on:
     paths:
       - 'tools/backfill_channel_posters.py'
       - '.github/workflows/backfill-channel-posters.yml'
+      - 'data/anime_poster_state.json'
   workflow_dispatch:
 
 permissions:
