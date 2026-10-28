@@ -34,7 +34,9 @@ on:
   # Refill worker slots whenever an episode worker finishes, including failures,
   # so queued episodes do not wait for the next five-minute poll.
   workflow_run:
-    workflows: ["Animehighbo single-episode worker"]
+    workflows:
+      - Animehighbo single-episode worker
+      - Refresh complete archive manifest
     types: [completed]
 
 permissions:
