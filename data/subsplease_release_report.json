@@ -4,10 +4,10 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 42,
-    "matched_in_archive_manifest": 40,
+    "feed_releases": 43,
+    "matched_in_archive_manifest": 42,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 2
+    "missing_from_manifest": 1
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -15,7 +15,7 @@
       "title": "Keroro Gunsou (2026)",
       "episode": 4,
       "release_date": "2026-10-23",
-      "feed_quality": "720p",
+      "feed_quality": "1080p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
@@ -340,18 +340,18 @@
       "episode": 4,
       "release_date": "2026-10-28",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Paw and Palaces",
       "episode": 7,
       "release_date": "2026-10-28",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Sasaki to Pii-chan S2",
@@ -388,6 +388,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "The Prince of Tennis II - U-17 World Cup Final Member Selection Match",
+      "episode": 5,
+      "release_date": "2026-10-28",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
