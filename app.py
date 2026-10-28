@@ -854,6 +854,31 @@ def _episode_record_complete(record: dict) -> bool:
     return {"1080p", "720p", "480p"}.issubset(set(record.get("complete_qualities", [])))
 
 
+def _episode_group_complete(state: dict, group_id: str, poster_identity: str,
+                            title: str, episode: str, release_date: str) -> bool:
+    """Prevent a changed source URL from republishing an already-complete episode."""
+    target_title = re.sub(r"\\s+", " ", str(title or "")).strip().casefold()
+    poster = (state.get("posters") or {}).get(poster_identity, {})
+    poster_time = int(poster.get("published_at") or 0) if isinstance(poster, dict) else 0
+    for record in (state.get("published") or {}).values():
+        if not isinstance(record, dict) or not _episode_record_complete(record):
+            continue
+        if record.get("group_id") == group_id or record.get("poster_identity") == poster_identity:
+            return True
+        if str(record.get("title") or "").strip().casefold() != target_title:
+            continue
+        if str(record.get("episode") or "") == str(episode or "") and str(record.get("release_date") or "") == str(release_date or ""):
+            return True
+        # Legacy completion records did not store episode/group IDs. The saved poster
+        # timestamp safely associates them with the episode anchor created just before
+        # the three videos, without confusing another episode of the same series.
+        record_time = int(record.get("published_at") or 0)
+        if (poster_time and record_time >= poster_time and record_time - poster_time <= 600
+                and str(record.get("release_date") or "") == str(release_date or "")):
+            return True
+    return False
+
+
 def _episode_group(title: str) -> tuple[str, str, str]:
     anime_title, episode = episode_details(title)
     normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
@@ -1457,7 +1482,13 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode manifest is missing series/season identity: {manifest_path}")
             if not str(manifest.get("poster_identity") or "").strip() or not str(manifest.get("group_id") or "").strip():
                 raise ValueError(f"Prepared episode manifest is missing poster/group identity: {manifest_path}")
-            if _episode_record_complete(state["published"].get(identity, {})):
+            if (_episode_record_complete(state["published"].get(identity, {}))
+                    or _episode_group_complete(
+                        state, str(manifest["group_id"]), str(manifest["poster_identity"]),
+                        str(manifest.get("title") or ""), str(manifest.get("episode") or ""), day,
+                    )):
+                LOG.info("Skipping already-complete episode group %s (%s EP %s), despite source identity %s.",
+                         manifest["group_id"], manifest.get("title"), manifest.get("episode"), identity)
                 continue
             files = {}
             for row in manifest.get("files", []):
@@ -1614,6 +1645,10 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
                     "title": title,
+                    "episode": episode_number,
+                    "group_id": group_id,
+                    "poster_identity": poster_identity,
+                    "release_date": episode["release_date"],
                     "quality": quality,
                     "source_quality": episode.get("source_quality", "1080p"),
                     "feed": episode.get("feed", "episode archive manifest"),
@@ -1628,6 +1663,9 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
 
             state["published"][identity] = {
                 "title": title,
+                "episode": episode_number,
+                "group_id": group_id,
+                "poster_identity": poster_identity,
                 "complete_qualities": ["1080p", "720p", "480p"],
                 "source_quality": episode.get("source_quality", "1080p"),
                 "published_at": int(time.time()),
