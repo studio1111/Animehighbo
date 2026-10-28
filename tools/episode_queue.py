@@ -182,78 +182,6 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
 
 
 
-def prioritize_locked_episode(
-    entries: list[dict],
-    state: dict,
-    lock_path: str | Path = "data/publisher.lock",
-) -> list[dict]:
-    """Resume an interrupted episode before allowing unrelated Telegram posts."""
-    path = Path(lock_path)
-    if not path.exists():
-        return entries
-    try:
-        lock = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError) as exc:
-        raise RuntimeError("Publisher lock is malformed; refusing to queue unrelated episodes.") from exc
-    if not isinstance(lock, dict):
-        raise RuntimeError("Publisher lock is malformed; refusing to queue unrelated episodes.")
-    identity = str(lock.get("identity") or "").strip()
-    if not identity:
-        raise RuntimeError("Publisher lock has no episode identity; refusing to queue unrelated episodes.")
-
-    matching = [entry for entry in entries if episode_identity(entry) == identity]
-    if matching:
-        # A retained lock means the previous episode may have a partial poster thread.
-        # Retry it first so the three files stay together and the lock can be released.
-        return matching + [entry for entry in entries if episode_identity(entry) != identity]
-
-    published = state.get("published", {}) if isinstance(state, dict) else {}
-    if _is_complete(published.get(identity) if isinstance(published, dict) else None):
-        # The next publisher will verify completion and remove this stale lock.
-        return entries
-
-    raise RuntimeError(
-        f"Publisher lock is held by incomplete episode {identity}, but that episode "
-        "is not eligible in the current archive queue. Refusing to start unrelated publishers."
-    )
-
-
-
-def select_upload_date_group(
-    entries: list[dict],
-    upload_date: str | None,
-    state: dict,
-    lock_path: str | Path = "data/publisher.lock",
-) -> list[dict]:
-    """Keep normal dispatches on one source-upload date; resume an interrupted thread first."""
-    if not entries:
-        return []
-    path = Path(lock_path)
-    if path.exists():
-        try:
-            lock = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError, TypeError) as exc:
-            raise RuntimeError("Publisher lock is malformed; refusing to cross upload-date groups.") from exc
-        if not isinstance(lock, dict):
-            raise RuntimeError("Publisher lock is malformed; refusing to cross upload-date groups.")
-        identity = str(lock.get("identity") or "").strip()
-        if not identity:
-            raise RuntimeError("Publisher lock has no episode identity; refusing to cross upload-date groups.")
-        published = state.get("published", {}) if isinstance(state, dict) else {}
-        record = published.get(identity, {}) if isinstance(published, dict) else {}
-        if not _is_complete(record):
-            matching = [entry for entry in entries if episode_identity(entry) == identity]
-            if not matching:
-                raise RuntimeError(
-                    f"Publisher lock is held by incomplete episode {identity}, but it is not eligible."
-                )
-            # Do not let another date or poster thread overtake an interrupted publication.
-            return [matching[0]]
-    if not upload_date:
-        return []
-    return [entry for entry in entries if _day(entry.get("release_date")) == upload_date]
-
-
 def select_next_upload_date(
     manifest: list[dict],
     state: dict,
@@ -422,7 +350,6 @@ def limit_to_available_slots(
 def exclude_recently_failed_series(
     entries: list[dict],
     failed_identities: set[str],
-    locked_identity: str | None = None,
 ) -> list[dict]:
     """Back off a recently failing series while keeping unrelated anime eligible.
 
@@ -438,11 +365,8 @@ def exclude_recently_failed_series(
     }
     return [
         entry for entry in entries
-        if str(entry.get("identity") or "") == locked_identity
-        or (
-            str(entry.get("identity") or "") not in failed
-            and str(entry.get("series_key") or "") not in blocked_series
-        )
+        if str(entry.get("identity") or "") not in failed
+        and str(entry.get("series_key") or "") not in blocked_series
     ]
 
 
