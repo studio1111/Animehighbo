@@ -886,6 +886,37 @@ def _episode_group_complete(state: dict, group_id: str, poster_identity: str,
     return False
 
 
+def _episode_group_published_qualities(state: dict, group_id: str, poster_identity: str,
+                                                title: str, episode: str, release_date: str) -> set[str]:
+    """Find quality posts already sent for this episode, even under an older source URI."""
+    target_title = re.sub(r"\s+", " ", str(title or "")).strip().casefold()
+    poster = (state.get("posters") or {}).get(poster_identity, {})
+    poster_time = int(poster.get("published_at") or 0) if isinstance(poster, dict) else 0
+    qualities = set()
+    for record in (state.get("published") or {}).values():
+        if not isinstance(record, dict):
+            continue
+        quality = str(record.get("quality") or "")
+        if quality not in {"1080p", "720p", "480p"}:
+            continue
+        if record.get("group_id") == group_id or record.get("poster_identity") == poster_identity:
+            qualities.add(quality)
+            continue
+        if str(record.get("title") or "").strip().casefold() != target_title:
+            continue
+        if (str(record.get("episode") or "") == str(episode or "")
+                and str(record.get("release_date") or "") == str(release_date or "")):
+            qualities.add(quality)
+            continue
+        # Legacy quality records have no episode ID; associate them with the
+        # existing poster only when they were sent immediately after that anchor.
+        record_time = int(record.get("published_at") or 0)
+        if (poster_time and record_time >= poster_time and record_time - poster_time <= 600
+                and str(record.get("release_date") or "") == str(release_date or "")):
+            qualities.add(quality)
+    return qualities
+
+
 def _episode_group(title: str) -> tuple[str, str, str]:
     anime_title, episode = episode_details(title)
     normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
@@ -1489,7 +1520,12 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Prepared episode manifest is missing series/season identity: {manifest_path}")
             if not str(manifest.get("poster_identity") or "").strip() or not str(manifest.get("group_id") or "").strip():
                 raise ValueError(f"Prepared episode manifest is missing poster/group identity: {manifest_path}")
+            group_published_qualities = _episode_group_published_qualities(
+                state, str(manifest["group_id"]), str(manifest["poster_identity"]),
+                str(manifest.get("title") or ""), str(manifest.get("episode") or ""), day,
+            )
             if (_episode_record_complete(state["published"].get(identity, {}))
+                    or {"1080p", "720p", "480p"}.issubset(group_published_qualities)
                     or _episode_group_complete(
                         state, str(manifest["group_id"]), str(manifest["poster_identity"]),
                         str(manifest.get("title") or ""), str(manifest.get("episode") or ""), day,
@@ -1523,7 +1559,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 raise ValueError(f"Duplicate quality in prepared manifest: {manifest_path}")
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
-                if output_identity not in state["published"] and quality not in files:
+                if output_identity not in state["published"] and quality not in files and quality not in group_published_qualities:
                     raise ValueError(
                         f"Prepared episode {manifest.get('title')} is missing required {quality}."
                     )
@@ -1602,6 +1638,9 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
             for quality in ("1080p", "720p", "480p"):
                 output_identity = f"{identity}:{quality}"
                 if output_identity in state["published"]:
+                    group_published_qualities.add(quality)
+                    continue
+                if quality in group_published_qualities:
                     continue
                 output = episode["files"].get(quality)
                 if output is None:
@@ -1666,6 +1705,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
+                group_published_qualities.add(quality)
                 LOG.info("Published quality video as a reply to poster anchor: %s %s (poster message %s)", title, quality, poster_message_id)
 
             state["published"][identity] = {
@@ -1673,7 +1713,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 "episode": episode_number,
                 "group_id": group_id,
                 "poster_identity": poster_identity,
-                "complete_qualities": ["1080p", "720p", "480p"],
+                "complete_qualities": [q for q in ("1080p", "720p", "480p") if q in group_published_qualities],
                 "source_quality": episode.get("source_quality", "1080p"),
                 "published_at": int(time.time()),
                 "release_date": episode["release_date"],
