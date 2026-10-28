@@ -9146,6 +9146,62 @@
       "source_quality": "1080p",
       "published_at": 1793216682,
       "release_date": "2026-10-27"
+    },
+    "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:1080p": {
+      "title": "Chii Fuyo",
+      "episode": "04",
+      "group_id": "9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "poster_identity": "archive:9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "release_date": "2026-10-27",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e0f01d26224822eae412207d6fd1bced2e22f0d08d66a384b41148bcbc6ee0df",
+      "message_id": "1651",
+      "published_at": 1793217180,
+      "bilingual_subtitles": true
+    },
+    "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:720p": {
+      "title": "Chii Fuyo",
+      "episode": "04",
+      "group_id": "9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "poster_identity": "archive:9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "release_date": "2026-10-27",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d2dad4ee102d7b0009f78d558fc592f4f8506feb7ac775a53c17f05f5385df5f",
+      "message_id": "1652",
+      "published_at": 1793217185,
+      "bilingual_subtitles": true
+    },
+    "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:480p": {
+      "title": "Chii Fuyo",
+      "episode": "04",
+      "group_id": "9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "poster_identity": "archive:9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "release_date": "2026-10-27",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4be5c17524613806a14a7a83b24061a03a1c47706437fac5cc207e72e699f9f9",
+      "message_id": "1653",
+      "published_at": 1793217189,
+      "bilingual_subtitles": true
+    },
+    "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4": {
+      "title": "Chii Fuyo",
+      "episode": "04",
+      "group_id": "9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "poster_identity": "archive:9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793217189,
+      "release_date": "2026-10-27"
     }
   },
   "seen": {
@@ -10309,7 +10365,10 @@
     "11a0b97b7d0ad46801a673d86638cf76e5db5e7e7b2f72ab8f4b0a3a36d446de": "174ada889808ac1ad93d22b643e42bdf6ef07a60a7c1405a13fddac6964fbcc5:480p",
     "98aa112417fdcb260078402c79807a08e47cd22bb5a4c10005b0c2c84804ab60": "b40ec2b40db17b15e9a45810ba1487e21de51387e17002872282773267407950:1080p",
     "027e1e2467fc3cdf92978eb3b662edf3cb7de4c504160b710b42dcb8e69900ae": "b40ec2b40db17b15e9a45810ba1487e21de51387e17002872282773267407950:720p",
-    "1a616748175ca02d96a6a5eb6f1238a983f5b60a2748e4dc9e65b00af8716b39": "b40ec2b40db17b15e9a45810ba1487e21de51387e17002872282773267407950:480p"
+    "1a616748175ca02d96a6a5eb6f1238a983f5b60a2748e4dc9e65b00af8716b39": "b40ec2b40db17b15e9a45810ba1487e21de51387e17002872282773267407950:480p",
+    "e0f01d26224822eae412207d6fd1bced2e22f0d08d66a384b41148bcbc6ee0df": "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:1080p",
+    "d2dad4ee102d7b0009f78d558fc592f4f8506feb7ac775a53c17f05f5385df5f": "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:720p",
+    "4be5c17524613806a14a7a83b24061a03a1c47706437fac5cc207e72e699f9f9": "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -11580,6 +11639,12 @@
       "episode": "04",
       "message_id": "1646",
       "published_at": 1793216667
+    },
+    "archive:9ec0b9241cacbe5c340e958e2afdcb0a6e9aa19d11cbd3d8cbf6bbe1f8ff0875": {
+      "title": "Chii Fuyo",
+      "episode": "04",
+      "message_id": "1650",
+      "published_at": 1793217173
     }
   }
 }
