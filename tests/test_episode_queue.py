@@ -275,5 +275,48 @@ class UploadDateQueueTests(unittest.TestCase):
         self.assertEqual([entry["identity"] for entry in selected], ["healthy-episode"])
 
 
+    def test_archive_episode_is_skipped_when_same_series_episode_already_has_poster(self):
+        existing = {
+            "posters": {
+                "archive:old-source": {
+                    "title": "Tensei Shitara Ken Deshita S2",
+                    "episode": "01",
+                    "message_id": "1466",
+                }
+            },
+            "published": {},
+        }
+        duplicate_source = row(
+            "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
+            1,
+            "2026-10-28",
+            uri="magnet:?xt=urn:btih:DIFFERENTSOURCE123",
+        )
+        upload_date, selected = select_next_upload_date([duplicate_source], existing)
+        self.assertIsNone(upload_date)
+        self.assertEqual(selected, [])
+
+    def test_episode_deduplication_normalizes_dash_variants(self):
+        existing = {
+            "posters": {
+                "archive:old-source": {
+                    "title": "Dragon Ball Super – Beerus",
+                    "episode": "03",
+                    "message_id": "1076",
+                }
+            },
+            "published": {},
+        }
+        duplicate_source = row(
+            "Dragon Ball Super - Beerus - 03 (1080p)",
+            3,
+            "2026-10-28",
+            uri="magnet:?xt=urn:btih:ANOTHERSOURCE123",
+        )
+        upload_date, selected = select_next_upload_date([duplicate_source], existing)
+        self.assertIsNone(upload_date)
+        self.assertEqual(selected, [])
+
+
 if __name__ == "__main__":
     unittest.main()
