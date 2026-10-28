@@ -5,21 +5,152 @@
       "message_id": "701",
       "anilist_id": 187990,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx187990-tNyQPmr9TkYi.png",
-      "published_at": "2026-10-25T10:09:09Z"
+      "published_at": "2026-10-25T10:09:09Z",
+      "metadata": {
+        "title": {
+          "english": "Battle Spirits [Re] Zekkai No Ku",
+          "romaji": "Battle Spirits [Re] Zekkai no Kuu",
+          "native": "Battle Spirits [Re] 絶界の空"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx187990-tNyQPmr9TkYi.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187990-tNyQPmr9TkYi.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187990-tNyQPmr9TkYi.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 51,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Bandai Namco Pictures"
+            },
+            {
+              "name": "Bandai Namco Pictures"
+            },
+            {
+              "name": "Bandai"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Keio 3, Hinomoto, Eito. As the Bakumatsu throws Japan into turmoil, young Kuu Bashin dreams of becoming stronger through Standard Battle Spirits. His world changes when he encounters Ajara Zetsu, a wandering samurai and formidable Eternal Battler pursued by anti-shogunate forces. As the worlds of Standard and Eternal Battle collide, Kuu is pulled into Zetsu’s journey—and sets history in motion.<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 187990
+      }
     },
     "black clover": {
       "title": "Black Clover",
       "message_id": "702",
       "anilist_id": 97940,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97940-fyh8o7gNbha0.png",
-      "published_at": "2026-10-25T10:09:12Z"
+      "published_at": "2026-10-25T10:09:12Z",
+      "metadata": {
+        "title": {
+          "english": "Black Clover",
+          "romaji": "Black Clover",
+          "native": "ブラッククローバー"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97940-fyh8o7gNbha0.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2017,
+        "episodes": 170,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 79,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio Pierrot"
+            },
+            {
+              "name": "Funimation"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "Shueisha"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "In a world where magic is everything, Asta and Yuno are both found abandoned at a church on the same day. While Yuno is gifted with exceptional magical powers, Asta is the only one in this world without any. At the age of fifteen, both receive grimoires, magic books that amplify their holder’s magic. Asta’s is a rare Grimoire of Anti-Magic that negates and repels his opponent’s spells. Being opposite but good rivals, Yuno and Asta are ready for the hardest of challenges to achieve their common dream: to be the Wizard King. Giving up is never an option!<br>\n<br>\n(Source: Crunchyroll)",
+        "anilist_id": 97940
+      }
     },
     "bleach – sennen kessen hen": {
       "title": "Bleach – Sennen Kessen Hen",
       "message_id": "703",
       "anilist_id": 116674,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx116674-p3zK4PUX2Aag.jpg",
-      "published_at": "2026-10-25T10:09:14Z"
+      "published_at": "2026-10-25T10:09:14Z",
+      "metadata": {
+        "title": {
+          "english": "BLEACH: Thousand-Year Blood War",
+          "romaji": "BLEACH: Sennen Kessen-hen",
+          "native": "BLEACH 千年血戦篇"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx116674-p3zK4PUX2Aag.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116674-p3zK4PUX2Aag.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116674-p3zK4PUX2Aag.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2022,
+        "episodes": 13,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Supernatural"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 88,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio Pierrot"
+            },
+            {
+              "name": "Shueisha"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Dentsu"
+            },
+            {
+              "name": "Aniplex"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Was it all just a coincidence, or was it inevitable?\n<br><br>\nIchigo Kurosaki gained the powers of a Soul Reaper through a chance encounter. As a Substitute\nSoul Reaper, Ichigo became caught in the turmoil of the Soul Society, a place where deceased\nsouls gather. But with help from his friends, Ichigo overcame every challenge to become even\nstronger.\n<br><br>\nWhen new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps\nback into the battlefield with his Zanpakuto to help those in need. Meanwhile, the Soul Society\nis observing a sudden surge in the number of Hollows being destroyed in the World of the Living.\nThey also receive separate reports of residents in the Rukon District having gone missing. Finally,\nthe Seireitei, home of the Soul Reapers, comes under attack by a group calling themselves the\nWandenreich.\n<br><br>\nLed by Yhwach, the father of all Quincies, the Wandenreich declare war against the Soul Reapers\nwith the following message: <i>\"Five days from now, the Soul Society will be annihilated by the\nWandenreich.\"</i>\n<br><br>\nThe history and truth kept hidden by the Soul Reapers for a thousand long years is finally brought\nto light.\n<br><br>\nAll things must come to an end as Ichigo Kurosaki's final battle begins!",
+        "anilist_id": 116674
+      }
     },
     "chii fuyo": {
       "title": "Chii Fuyo",
@@ -27,98 +158,794 @@
       "anilist_id": 207329,
       "poster_url": "https://cdn.myanimelist.net/s/common/uploaded_files/1781063784-13b0aaf8270bd50a53970d35571e0c28.jpeg",
       "published_at": "2026-10-25T10:09:16Z",
-      "poster_source": "MyAnimeList news promotional visual, verified 2026-10-28"
+      "poster_source": "MyAnimeList news promotional visual, verified 2026-10-28",
+      "metadata": {
+        "title": {
+          "english": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
+          "romaji": "Tsuihou Sareta Cheat Fuyo Majutsushi wa Kimama na Second Life wo Ouka Suru.: Ore wa Buki dake ja Naku, Arayuru Mono ni \"Kyouka Point\" wo Fuyo Dekiru shi, Ore no Ishi de Itsudemo Kouka wo Kaijo Dekiru kedo, Nokotta Hitotachi Daijoubu?",
+          "native": "追放されたチート付与魔術師は気ままなセカンドライフを謳歌する。　～俺は武器だけじゃなく、あらゆるものに『強化ポイント』を付与できるし、俺の意思でいつでも効果を解除できるけど、残った人たち大丈夫？～"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b207329-6VPeZIDfF4Sr.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b207329-6VPeZIDfF4Sr.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b207329-6VPeZIDfF4Sr.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Adventure",
+          "Comedy",
+          "Fantasy",
+          "Slice of Life"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 73,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "P.A.WORKS"
+            },
+            {
+              "name": "Shouchiku"
+            },
+            {
+              "name": "Kodansha"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "Good Smile Company"
+            },
+            {
+              "name": "JR Toukai Agency"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Rein, an enchanter, is suddenly expelled from his guild one day. But instead of despairing, he declares, “Now I can do anything!” and begins reclaiming the massive number of enhancement points he once poured into his guildmates’ gear, setting off on a brand-new path as an adventurer.<br><br>\nGathering around him are people carrying wounds that don’t fade easily: a genius adventurer who shut her heart after her party was slaughtered, a warrior who lost her family, and an assassin raised from childhood to kill. Yet Rein never rejects their pasts or their scars—he accepts them all with bright, straightforward warmth.<br><br>\nThe stage is a unique fantasy world where Uzis, slingshots, and even yakuza exist side by side. But in this world, the more people rely on convenient technology, the more their magic weakens, and adventurers grow fragile.<br><br>\nIntelligent, vicious monsters roam freely, while in the underworld, outlaws bare their greed and ambition as schemes and betrayals intertwine. In a world where ideals and justice are easily crushed, adventurers fight on with nothing but their magic and their convictions.<br><br>\nThis is the story of those who have lost their place in the world finding a new way to live. Rein and his companions’ wild, free-spirited second life begins now!\n<br><br>(Source: The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life Site)",
+        "anilist_id": 207329
+      }
     },
     "chitose-kun wa ramune bin no naka": {
       "title": "Chitose-kun wa Ramune Bin no Naka",
       "message_id": "705",
       "anilist_id": 180082,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180082-IZAlf06G2VVm.png",
-      "published_at": "2026-10-25T10:09:19Z"
+      "published_at": "2026-10-25T10:09:19Z",
+      "metadata": {
+        "title": {
+          "english": "Chitose Is in the Ramune Bottle",
+          "romaji": "Chitose-kun wa Ramune Bin no Naka",
+          "native": "千歳くんはラムネ瓶のなか"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180082-IZAlf06G2VVm.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180082-IZAlf06G2VVm.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180082-IZAlf06G2VVm.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2025,
+        "episodes": 13,
+        "genres": [
+          "Comedy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 73,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "feel."
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "Good Smile Company"
+            },
+            {
+              "name": "Good Smile Film"
+            },
+            {
+              "name": "REMOW"
+            },
+            {
+              "name": "Shogakukan"
+            },
+            {
+              "name": "newgin"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "AT-X"
+            },
+            {
+              "name": "Kadokawa Media House"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Being popular isn’t easy. It’s hard to beat Saku Chitose. The most popular kid in his high school? Check. An ironclad reputation that can weather even vicious online attacks? Check. A group of friends as attractive on the outside as they are inside? Check. But when a teacher asks for his help bringing back a student who has been shut away in his room for months, Saku’s perfect world will never be the same. What is this, some kind of normie harem story...?<br>\n<br>\n(Source: Yen Press)\n<br><br>\n<i>Note: The first episode has an extended runtime of ~34 minutes.</i>",
+        "anilist_id": 180082
+      }
     },
     "choujun! choujou-senpai": {
       "title": "Choujun! Choujou-senpai",
       "message_id": "706",
       "anilist_id": 200294,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx200294-E6KIgkFaJOfG.jpg",
-      "published_at": "2026-10-25T10:09:21Z"
+      "published_at": "2026-10-25T10:09:21Z",
+      "metadata": {
+        "title": {
+          "english": "Super Psychic Policeman Chojo",
+          "romaji": "Choujun! Choujou Senpai",
+          "native": "超巡！超条先輩"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx200294-E6KIgkFaJOfG.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200294-E6KIgkFaJOfG.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200294-E6KIgkFaJOfG.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Comedy",
+          "Slice of Life"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 65,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Arvo Animation"
+            },
+            {
+              "name": "Good Smile Company"
+            },
+            {
+              "name": "Dentsu"
+            },
+            {
+              "name": "Kansai TV"
+            },
+            {
+              "name": "Victor Entertainment"
+            },
+            {
+              "name": "GAGA"
+            },
+            {
+              "name": "Mixi"
+            },
+            {
+              "name": "Arvo Animation"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "The ultimate police duo is here to keep the peace! Rookie officer Nao just joined the force. She’s got a black belt in judo and earned the nickname “Gorilla” for her insane strength. Then there’s her partner Chojo, who wields every psychic power imaginable. But for a guy who can read minds, he still can’t seem to read the room. Now, these two are taking on crime together in Chinjuku.\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 200294
+      }
     },
     "dark machine – the animation": {
       "title": "Dark Machine – The Animation",
       "message_id": "707",
       "anilist_id": 179876,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx179876-Wg62CAzp5WQ1.jpg",
-      "published_at": "2026-10-25T10:09:23Z"
+      "published_at": "2026-10-25T10:09:23Z",
+      "metadata": {
+        "title": {
+          "english": "DARK MACHINE THE ANIMATION",
+          "romaji": "DARK MACHINE: The Animation",
+          "native": "DARK MACHINE -The Animation-"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx179876-Wg62CAzp5WQ1.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179876-Wg62CAzp5WQ1.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179876-Wg62CAzp5WQ1.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 11,
+        "genres": [
+          "Mecha",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 54,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Production +h"
+            },
+            {
+              "name": "Fuji TV"
+            },
+            {
+              "name": "flying DOG"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Following his grandfather’s will to “seek out the Senki,” the protagonist Kairi visits Golden Valley, a special Dark Machine economic zone. There, he meets a mysterious girl named Rudra. Dragged into becoming a Dark Machine player by Rudra, Kairi’s talent gradually blossoms over the course of many intense battles.\n<br><br>\n(Source: Fuji Creative)\n<br><br>\n<i>Note: Part of the \"DARK MACHINE\" Web3 cross-media project where the story of the Game and its anime adaptation intertwine.</i>",
+        "anilist_id": 179876
+      }
     },
     "dark summoner to dekiteiru": {
       "title": "Dark Summoner to Dekiteiru",
       "message_id": "708",
       "anilist_id": 208025,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx208025-JKvqWNr8rz8l.jpg",
-      "published_at": "2026-10-25T10:09:25Z"
+      "published_at": "2026-10-25T10:09:25Z",
+      "metadata": {
+        "title": {
+          "english": "I'm Dating a Dark Summoner",
+          "romaji": "Dark Summoner to Dekiteiru",
+          "native": "ダークサモナーとデキている"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx208025-JKvqWNr8rz8l.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208025-JKvqWNr8rz8l.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Comedy",
+          "Ecchi",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "TV_SHORT",
+        "status": "RELEASING",
+        "averageScore": 67,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "WWWave"
+            },
+            {
+              "name": "AtoriE"
+            },
+            {
+              "name": "Nyan Pollution-ω-"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Amona’s a dark summoner with demonic powers. Roni’s a devout priest who’s way too uptight. By all rights, they should hate each other. Instead, they end up fast-tracking their enemies-to-lovers arc with a one-night stand that somehow insists on becoming a recurring event. Now they must hide their situationship from the rest of the party while denying their growing attraction to one another, all while dealing with an imp who’s far too invested in their love life.\n<br><br>\n(Source: HIDIVE)",
+        "anilist_id": 208025
+      }
     },
     "detective conan": {
       "title": "Detective Conan",
       "message_id": "709",
       "anilist_id": 235,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx235-MyYT7K3chBdO.jpg",
-      "published_at": "2026-10-25T10:09:27Z"
+      "published_at": "2026-10-25T10:09:27Z",
+      "metadata": {
+        "title": {
+          "english": "Detective Conan",
+          "romaji": "Meitantei Conan",
+          "native": "名探偵コナン"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx235-MyYT7K3chBdO.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx235-MyYT7K3chBdO.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx235-MyYT7K3chBdO.jpg"
+        },
+        "season": "WINTER",
+        "seasonYear": 1996,
+        "genres": [
+          "Adventure",
+          "Comedy",
+          "Mystery",
+          "Psychological"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 82,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "TMS Entertainment"
+            },
+            {
+              "name": "Animax"
+            },
+            {
+              "name": "YTV"
+            },
+            {
+              "name": "TMS Entertainment"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Kudo Shinichi is a seventeen year-old high school detective whom people call the \"Modern Sherlock Holmes.\" However, one night after a date with his childhood sweetheart, Ran, Shinichi witnessed an illegal trade and, caught off his guard, was knocked unconscious and fed a drug that was supposed to kill him... but he woke up and found himself shrunken to a seven year-old. In order to track down the men who did this to him, Shinichi hid his identity and lived with Ran, whose father happened to be a hopeless detective, and with that came a series of murders and mysteries that he must solve. <br><br>\n(Source: Anime News Network)\n<br><br>\n<i>Note:<br>\n- Includes Keisatsu Gakkou-hen - Wild Police Story in episodes 1029, 1038, 1042, 1061<br>\n- Episodes 11, 52, 76, 118, 162, 184, 208, 342, 356, 449, 452, 487, 488, 489, 490, 515, 516, 521, 522, 651, 734, 804, 805, 927, 928, 1187 aired with a runtime of ~50 minutes as opposed to the standard 25 minute long episode.<br>\n- Episodes 96, 129, 174, 219, 263, 304, 383, 479 aired with a runtime of ~90 minutes as opposed to the standard 25 minute long episode.<br>\n- Episode 345, 425 aired with a runtime of ~115 minutes as opposed to the standard 25 minute long episode.<br>\n</i>",
+        "anilist_id": 235
+      }
     },
     "doumo, suki na hito ni horegusuri wo irai sareta majo desu.": {
       "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
       "message_id": "710",
       "anilist_id": 207191,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx207191-VgkIzfH92WoZ.jpg",
-      "published_at": "2026-10-25T10:09:30Z"
+      "published_at": "2026-10-25T10:09:30Z",
+      "metadata": {
+        "title": {
+          "english": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
+          "romaji": "Doumo, Suki na Hito ni Horegusuri wo Irai Sareta Majo desu.",
+          "native": "どうも、好きな人に惚れ薬を依頼された魔女です。"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx207191-VgkIzfH92WoZ.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207191-VgkIzfH92WoZ.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207191-VgkIzfH92WoZ.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 72,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "diomedéa"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "Futabasha"
+            },
+            {
+              "name": "diomedéa"
+            },
+            {
+              "name": "Mainichi Broadcasting System"
+            },
+            {
+              "name": "AT-X"
+            },
+            {
+              "name": "BS Nittele"
+            },
+            {
+              "name": "SAND B"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "<b>“Make me a love potion.”</b>\n<br><br>\nAnd with that single sentence, the Good Witch of the Lake’s secret crush on the dashing Sir Harij ends in heartbreak. Still, when he promises to help her gather the ingredients, Rose is thrilled at the chance to gaze upon a man she’d normally never get to interact with. She learns to brace her pounding heart for their usual stilted conversations…but what is she to do when he inexplicably shows up at her doorstep with bread and a jar of apple butter?\n<br><br>\n(Source: Yen Press)",
+        "anilist_id": 207191
+      }
     },
     "dragon ball super – beerus": {
       "title": "Dragon Ball Super – Beerus",
       "message_id": "711",
       "anilist_id": 206814,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206814-PVVzRbf1IQpe.jpg",
-      "published_at": "2026-10-25T10:09:32Z"
+      "published_at": "2026-10-25T10:09:32Z",
+      "metadata": {
+        "title": {
+          "english": "Dragon Ball Super: Beerus",
+          "romaji": "Dragon Ball Super: Beerus",
+          "native": "ドラゴンボール超 ビルス"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206814-PVVzRbf1IQpe.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206814-PVVzRbf1IQpe.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206814-PVVzRbf1IQpe.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 81,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Toei Animation"
+            },
+            {
+              "name": "Shueisha"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Several years have passed since the fierce battle against Majin Buu, and Earth has finally regained a brief moment of peace. At the same time, Beerus, the God of Destruction, awakens from his long, deep sleep.<br>\nEven Kai and Supreme Kai, aware of Beerus's overwhelming power to destroy entire planets, watch his awakening with great fear… Meanwhile, Beerus hears rumors of a Saiyan who defeated Frieza—and suddenly appears before Goku.<br>\nTargeted by Beerus, the strongest being in the universe, Earth is in grave danger. Thus begins an earth-shattering cosmic battle between the God of Destruction and Goku and his alliesa—a conflict that will shake the entire universe.\n<br><br>\n(Source: Official Site)\n<br><br>\n<i>Note: “Enhanced” edition of Dragon Ball Super, featuring a large volume of newly added and redrawn cuts, a reconstructed narrative, and updated visuals for a more immersive and faithful representation of Akira Toriyama’s original manga.</i>",
+        "episodes": 19,
+        "anilist_id": 206814
+      }
     },
     "fx senshi kurumi-chan": {
       "title": "FX Senshi Kurumi-chan",
       "message_id": "712",
       "anilist_id": 206401,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206401-8cAebkI0i8BA.png",
-      "published_at": "2026-10-25T10:09:35Z"
+      "published_at": "2026-10-25T10:09:35Z",
+      "metadata": {
+        "title": {
+          "english": "FX Fighter Kurumi-chan",
+          "romaji": "FX Senshi Kurumi-chan",
+          "native": "FX戦士くるみちゃん"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206401-8cAebkI0i8BA.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206401-8cAebkI0i8BA.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Drama",
+          "Slice of Life"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 67,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Passione"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "Docomo Anime Store"
+            },
+            {
+              "name": "AT-X"
+            },
+            {
+              "name": "D-techno"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "arma bianca"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "Kansai TV"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "University student Kurumi Fukuga has finally fulfilled her long-held desire of starting foreign exchange (FX) trading, motivated by recouping the 20 million yen her late mother lost in trading. \"I'll easily make it back,\" she thought, but the world she enters can become heaven or hell in an instant. Unrealized losses, loss-cutting, unstoppable fluctuations… but she still wants to buy, sell and make money! With fellow FX addicts Mochiko, Mebuki and Yasuko along for the ride, the market heats up! Joy, despair, joy, despair — this is an endearing, yet slightly risky money game. Can Kurumi and her friends survive this turbulent world?<br>\n<br>\n(Source: Crunchyroll)",
+        "anilist_id": 206401
+      }
     },
     "hotaru no yomeiri": {
       "title": "Hotaru no Yomeiri",
       "message_id": "713",
       "anilist_id": 205909,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205909-DM0fAzNQulod.jpg",
-      "published_at": "2026-10-25T10:09:37Z"
+      "published_at": "2026-10-25T10:09:37Z",
+      "metadata": {
+        "title": {
+          "english": "Firefly Wedding",
+          "romaji": "Hotaru no Yomeiri",
+          "native": "ホタルの嫁入り"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205909-DM0fAzNQulod.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205909-DM0fAzNQulod.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Drama",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 75,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "david production"
+            },
+            {
+              "name": "Fuji TV"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "On the surface, Satoko has it all—she’s beautiful, the daughter of a nobleman, and at a prime age for marriage. Unfortunately, she is also quite ill and only has a short time left to live. Before she can secure a marriage that will redeem her worth in her family’s eyes, she finds herself the target of the mysterious assassin Shinpei, and her plans are put in jeopardy. In order to save herself, she makes a desperate proposal—of marriage! When it comes to love, however, Shinpei takes “until death do we part” seriously.<br>\n<br>\n(Source: VIZ Media)",
+        "anilist_id": 205909
+      }
     },
     "kanata kara": {
       "title": "Kanata kara",
       "message_id": "714",
       "anilist_id": 209463,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209463-Yxk2q10RXgg8.jpg",
-      "published_at": "2026-10-25T10:09:39Z"
+      "published_at": "2026-10-25T10:09:39Z",
+      "metadata": {
+        "title": {
+          "english": "From Far Away",
+          "romaji": "Kanata Kara",
+          "native": "彼方から"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209463-Yxk2q10RXgg8.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209463-Yxk2q10RXgg8.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209463-Yxk2q10RXgg8.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Adventure",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 67,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio DEEN"
+            },
+            {
+              "name": "Rakuten"
+            },
+            {
+              "name": "NBCUniversal Entertainment Japan"
+            },
+            {
+              "name": "Hakusensha"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "ABC Animation"
+            },
+            {
+              "name": "Studio DEEN"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "WOWOW"
+            },
+            {
+              "name": "KLOCKWORX"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "On her way home from school one day, Noriko is unexpectedly plunged into a strange and extraordinary fantasy world. Her troubles compound exponentially when she is rescued and befriended by a handsome young man by the name of Izark. He may be brave and courageous, but inside Izark lurks the darkest evil imaginable. And according to an ancient prophecy, Noriko possesses the power to unleash that evil. Now, inexorably bound together, these two unlikely allies must navigate a world both wondrous and hostile.\n<br><br>\n(Source: VIZ Media)",
+        "anilist_id": 209463
+      }
     },
     "kashita maryoku wa revo barai de kyousei choushuu": {
       "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
       "message_id": "715",
       "anilist_id": 202250,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx202250-mpm2cvr92Au2.jpg",
-      "published_at": "2026-10-25T10:09:41Z"
+      "published_at": "2026-10-25T10:09:41Z",
+      "metadata": {
+        "title": {
+          "english": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
+          "romaji": "Kashita Maryoku wa [Revo Barai] de Kyousei Choushuu",
+          "native": "貸した魔力は【リボ払い】で強制徴収"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx202250-mpm2cvr92Au2.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202250-mpm2cvr92Au2.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202250-mpm2cvr92Au2.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 61,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "SynergySP"
+            },
+            {
+              "name": "TV Asahi"
+            },
+            {
+              "name": "TV Asahi Music"
+            },
+            {
+              "name": "Flex Comics"
+            },
+            {
+              "name": "SynergySP"
+            },
+            {
+              "name": "Kotobukiya"
+            },
+            {
+              "name": "BS Asahi"
+            },
+            {
+              "name": "Bushiroad Move"
+            },
+            {
+              "name": "AbemaTV"
+            },
+            {
+              "name": "Ray"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "If there's one thing you can never have enough of in a world of RPG-style swords and sorcery, it's magic points! Whether you're fueling spells, techniques, or showing off an incredible ability, you've gotta spend those points to do real damage. But what if you run out?\n<br><br>\nLent is part of the up-and-coming party known as the “Skypiercers,” and thanks to his unique Gift, he can loan massive amounts of magic to others. No MP? No problem with Lent around! Except, now that his companions have become formidable heroes (thanks to his skill), his usefulness is questioned. Kicked out of the group, Lent is furious…until he discovers a hidden power to his Gift. Now, with his adorably devious fairy partner, he's going to claw back every last scrap of magic from his former party—with interest!<br><br>\n(Source: Seven Seas Entertainment)",
+        "anilist_id": 202250
+      }
     },
     "kikansha no mahou wa tokubetsu desu": {
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "message_id": "716",
       "anilist_id": 163142,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163142-RjFeJrTnDA2B.png",
-      "published_at": "2026-10-25T10:09:44Z"
+      "published_at": "2026-10-25T10:09:44Z",
+      "metadata": {
+        "title": {
+          "english": "A Returner's Magic Should Be Special",
+          "romaji": "Kikansha no Mahou wa Tokubetsu desu",
+          "native": "帰還者の魔法は特別です"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163142-RjFeJrTnDA2B.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163142-RjFeJrTnDA2B.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163142-RjFeJrTnDA2B.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2023,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 69,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "Arvo Animation"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "D&C WEBTOON Biz"
+            },
+            {
+              "name": "Kakao piccoma"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Another dimension that continues to taint our world, the Shadow World. Humanity is faced with the worst calamity, known as the Shadow Labyrinth. In spite of their desperate attacks, Desir Herrman and his friends lose their battle to the Destruction Dragon, Boromir Napolitan, and the world comes to an end. When Desir is convinced of his end, he opens his eyes... to find himself 13 years in the past. Desir has gone back in time to the enrollment ceremony of Hebrion Academy, the top school for mages in the Empire.<br>\n<br>\nTo change the future of impending doom, Desir reassembles his friends once again to save the world!\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 163142
+      }
     },
     "kusuriya no hitorigoto": {
       "title": "Kusuriya no Hitorigoto",
       "message_id": "717",
       "anilist_id": 161645,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-QLbzHXiYRgV2.jpg",
-      "published_at": "2026-10-25T10:09:46Z"
+      "published_at": "2026-10-25T10:09:46Z",
+      "metadata": {
+        "title": {
+          "english": "The Apothecary Diaries",
+          "romaji": "Kusuriya no Hitorigoto",
+          "native": "薬屋のひとりごと"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-QLbzHXiYRgV2.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2023,
+        "episodes": 24,
+        "genres": [
+          "Drama",
+          "Mystery"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 88,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Toho"
+            },
+            {
+              "name": "OLM"
+            },
+            {
+              "name": "TOHO animation STUDIO"
+            },
+            {
+              "name": "Nippon Television Network"
+            },
+            {
+              "name": "Imagica Infos"
+            },
+            {
+              "name": "Dentsu"
+            },
+            {
+              "name": "Shogakukan"
+            },
+            {
+              "name": "Square Enix"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Maomao lived a peaceful life with her apothecary father. Until one day, she’s sold as a lowly servant to the emperor’s palace. But she wasn’t meant for a compliant life among royalty. So when imperial heirs fall ill, she decides to step in and find a cure! This catches the eye of Jinshi, a handsome palace official who promotes her. Now, she’s making a name for herself solving medical mysteries!\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 161645
+      }
     },
     "kyoufu collector": {
       "title": "Kyoufu Collector",
@@ -126,287 +953,1803 @@
       "anilist_id": 203473,
       "poster_url": "https://img.animeschedule.net/production/assets/public/img/anime/jpg/default/kyoufu-collector-2b3d6ee60f8c9d13846d410879264c44.jpg",
       "published_at": "2026-10-25T10:09:48Z",
-      "poster_source": "AnimeSchedule official promotional poster, verified 2026-10-28"
+      "poster_source": "AnimeSchedule official promotional poster, verified 2026-10-28",
+      "metadata": {
+        "title": {
+          "english": "HORROR COLLECTOR",
+          "romaji": "Kyoufu Collector",
+          "native": "恐怖コレクター"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b203473-pzyaqV432Qko.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b203473-pzyaqV432Qko.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b203473-pzyaqV432Qko.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Horror",
+          "Mystery",
+          "Supernatural"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 51,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "NHK"
+            },
+            {
+              "name": "Studio Palette"
+            },
+            {
+              "name": "NHK Enterprises"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Urban legends come to life…Everyone’s heard an urban legend before, but few have ever come face-to-face with one. These phenomena are everywhere, existing in the shadows of reality. More and more of them have been appearing in the wake of the faceless kid sighted all over Japan. If you see her or one of the urban legends she brings―pray the boy in the red hood finds you before it’s too late. You won’t stand a chance on your own. But with his help, you may just live to see another day…\n<br><br>\n(Source: Yen Press)",
+        "anilist_id": 203473
+      }
     },
     "kyouran reijou nia liston": {
       "title": "Kyouran Reijou Nia Liston",
       "message_id": "719",
       "anilist_id": 206949,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206949-4HYI3YuP0eLI.png",
-      "published_at": "2026-10-25T10:09:50Z"
+      "published_at": "2026-10-25T10:09:50Z",
+      "metadata": {
+        "title": {
+          "english": "Nia Liston: The Merciless Maiden",
+          "romaji": "Kyouran Reijou Nia Liston",
+          "native": "凶乱令嬢ニア・リストン"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx206949-4HYI3YuP0eLI.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206949-4HYI3YuP0eLI.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 25,
+        "genres": [
+          "Action",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 76,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "KONAMI animation"
+            },
+            {
+              "name": "Mainichi Broadcasting System"
+            },
+            {
+              "name": "SANKYO"
+            },
+            {
+              "name": "JR Higashi Nihon Kikaku"
+            },
+            {
+              "name": "Konami Digital Entertainment"
+            },
+            {
+              "name": "VAP"
+            },
+            {
+              "name": "BS Nittele"
+            },
+            {
+              "name": "Pia"
+            },
+            {
+              "name": "Hobby Japan"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "TO Books"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "A great hero lies undefeated on her deathbed, regretting that she never found a foe who could take her down. She never intended to meet her fate anywhere other than on the battlefield, and her peaceful demise has her wishing desperately that things could have been different... But when she suddenly comes to in the body of the young, frail Nia Liston, she’s got an all-new fight ahead of her. Nia is a sickly child, meaning she has a long way to go before she’s in fighting form. Now that she’s been given a second shot at life, however, she’s determined to get what she wants. She’s going to live—and die—for battle this time! Make way for the Merciless Maiden!<br>\n<br>\n(Source: J-Novel Club)",
+        "anilist_id": 206949
+      }
     },
     "magic knight rayearth (2026)": {
       "title": "Magic Knight Rayearth (2026)",
       "message_id": "720",
       "anilist_id": 178868,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx178868-mfp0HIHNJNAm.jpg",
-      "published_at": "2026-10-25T10:09:52Z"
+      "published_at": "2026-10-25T10:09:52Z",
+      "metadata": {
+        "title": {
+          "english": "Magic Knight Rayearth",
+          "romaji": "Magic Knight Rayearth",
+          "native": "魔法騎士（マジックナイト）レイアース"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx435-WO3USrR2jB5u.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx435-WO3USrR2jB5u.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx435-WO3USrR2jB5u.png"
+        },
+        "season": "FALL",
+        "seasonYear": 1994,
+        "episodes": 20,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Drama",
+          "Fantasy",
+          "Mahou Shoujo",
+          "Mecha"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 72,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Tokyo Movie Shinsha"
+            },
+            {
+              "name": "Discotek"
+            },
+            {
+              "name": "Yomiuri TV"
+            },
+            {
+              "name": "Dentsu"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Three young girls, Hikaru, Umi, and Fuu, are transported to a magical world called Cephiro during a field trip to Tokyo Tower. They are soon greeted by Master Mage Clef, who explains to them that they have been summoned to become the Legendary Magic Knights and save Cephiro. The girls are less than enthusiastic about this idea, and only want to return home. Clef further explains that they must seek out the three Rune Gods to help them fight. He bestows armor and magical powers to each of them. They learn from Clef that High Priest Zagato has kidnapped the Pillar of Cephiro, Princess Emeraude. The Pillar of Cephiro has the sole responsibility of keeping Cephiro alive and in balance with her prayers. Without Princess Emeraude, Cephiro would fall into ruin. Hikaru, Umi, and Fuu must fight off Zagato's henchman and find the Rune Gods if they ever want to get back home. They soon learn that friendship and loyalty are the only things they can rely on in the crumbling Cephiro.<br><br>\n(Source: Anime News Network)",
+        "anilist_id": 178868
+      }
     },
     "magical explorer": {
       "title": "Magical Explorer",
       "message_id": "721",
       "anilist_id": 169581,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx169581-UlAviVH36Hxi.png",
-      "published_at": "2026-10-25T10:26:55Z"
+      "published_at": "2026-10-25T10:26:55Z",
+      "metadata": {
+        "title": {
+          "english": "Magical Explorer",
+          "romaji": "Magical★Explorer: Eroge no Yuujin Chara ni Tensei Shitakedo, Game Chishiki Tsukatte Jiyuu ni Ikiru",
+          "native": "マジカル★エクスプローラー　エロゲの友人キャラに転生したけど、ゲーム知識使って自由に生きる"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx169581-UlAviVH36Hxi.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169581-UlAviVH36Hxi.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169581-UlAviVH36Hxi.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 13,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Ecchi",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "ONA",
+        "status": "RELEASING",
+        "averageScore": 69,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "WHITE FOX"
+            },
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "JR Higashi Nihon Kikaku"
+            },
+            {
+              "name": "Contents Seed"
+            },
+            {
+              "name": "SYSTEM SERVICE"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "Yomiuri TV"
+            },
+            {
+              "name": "SANKYO"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Few titles are more revered among horndogs-(ahem) connoisseurs of Japanese erotic video games-than Magical Explorer. One day, our smut-loving hero wakes up to find he has been reincarnated into the body of the game’s dreamboat protagonist! Or rather, his hapless comic-relief best friend, Kousuke Takioto. But with his unparalleled knowledge of Magical Explorer and Kousuke’s unorthodox abilities (a scarf that doubles as a fist?), our hero vows to turn the game’s unluckiest loser into its mightiest heartthrob. In this world, nothing is out of reach when you’ve got the know-how!\n<br><br>\n(Source: Yen Press)\n<br><br>\n<i>Note: Each episode streamed 1 week early on ABEMA and d anime store. The original TV broadcast started on October 4th, 2026.<i>",
+        "anilist_id": 169581
+      }
     },
     "meitantei precure!": {
       "title": "Meitantei Precure!",
       "message_id": "722",
       "anilist_id": 202957,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx202957-fxZGgJTvwXzP.jpg",
-      "published_at": "2026-10-25T10:26:59Z"
+      "published_at": "2026-10-25T10:26:59Z",
+      "metadata": {
+        "title": {
+          "english": "Star Detective Precure!",
+          "romaji": "Meitantei Precure!",
+          "native": "名探偵プリキュア！"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx202957-fxZGgJTvwXzP.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202957-fxZGgJTvwXzP.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202957-fxZGgJTvwXzP.jpg"
+        },
+        "season": "WINTER",
+        "seasonYear": 2026,
+        "episodes": 51,
+        "genres": [
+          "Mahou Shoujo",
+          "Mystery"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 76,
+        "source": "ORIGINAL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Toei Animation"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Anna Akechi is a second-year junior high student living in Makoto Mirai Town. On her 14th birthday, she has a chance encounter with a fairy named Pochitan, and a magical pendant caused her to travel back in time from 2027 to 1999! In the Makoto Mirai Town 28 years in the past, Anna meets Mikuru Kobayashi, a girl her age who wants to become a great detective.<br>\n<br>\nMeanwhile, people in town are in trouble as their prized possessions are being stolen from under their noses - the cause being a group of Phantom Thieves. To stop them, Anna and Mikuru turn into Precures! Maybe if they solve these mysteries, Anna can find her way back to her own time?<br>\n<br>\n(Source: Official Website, translated)",
+        "anilist_id": 202957
+      }
     },
     "paw and palaces": {
       "title": "Paw and Palaces",
       "message_id": "723",
       "anilist_id": 166443,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx166443-0DPdxpZYHRWk.jpg",
-      "published_at": "2026-10-25T10:27:04Z"
+      "published_at": "2026-10-25T10:27:04Z",
+      "metadata": {
+        "title": {
+          "english": "Paw & Palaces",
+          "romaji": "Zi Jin: Yu Miao Fang",
+          "native": "紫禁·御喵房"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx166443-0DPdxpZYHRWk.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166443-0DPdxpZYHRWk.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166443-0DPdxpZYHRWk.jpg"
+        },
+        "episodes": 16,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "ONA",
+        "status": "FINISHED",
+        "averageScore": 57,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "iQIYI"
+            },
+            {
+              "name": "Colored Pencil Animation"
+            },
+            {
+              "name": "Kuaikan Manhua"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "The Forbidden City is home to six cats with a secret mission: protect the memories held within China’s cultural relics. When the destructive force known as Black Owl threatens Wuhua, the world within those relics, the six guardians enter its realm to fight back. Armed with courage and teamwork, these feline guardians must defeat Black Owl before he erases the history they swore to protect.\n<br><br>(Source: Crunchyroll)",
+        "anilist_id": 166443
+      }
     },
     "psyren": {
       "title": "PSYREN",
       "message_id": "724",
       "anilist_id": 204011,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx204011-j45RZoqYbdZK.jpg",
-      "published_at": "2026-10-25T10:27:09Z"
+      "published_at": "2026-10-25T10:27:09Z",
+      "metadata": {
+        "title": {
+          "english": "PSYREN",
+          "romaji": "PSYЯEN",
+          "native": "PSYREN -サイレン-"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx204011-j45RZoqYbdZK.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204011-j45RZoqYbdZK.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204011-j45RZoqYbdZK.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 69,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Satelight"
+            },
+            {
+              "name": "Shueisha"
+            },
+            {
+              "name": "REMOW"
+            },
+            {
+              "name": "Studio Pierrot"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "Kadokawa Media House"
+            },
+            {
+              "name": "KLOCKWORX"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "One day, high schooler Ageha Yoshina picks up a mysterious “red phone card” left behind in a public telephone booth.\nA few days later, his childhood friend and classmate, Sakurako Amamiya—who possessed the same card—suddenly vanishes without a trace. In search of her, Ageha finds himself drawn into the rumors surrounding a nationwide string of mysterious disappearances, said to be the work of a secret organization known only as “Psyren.”<br><br>\nWhen he accesses the group, a deadly game begins—one that will change his fate forever.\n<br><br>\n(Source: PSYЯEN Official Site)",
+        "anilist_id": 204011
+      }
     },
     "romelia senki": {
       "title": "Romelia Senki",
       "message_id": "725",
       "anilist_id": 180894,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180894-o3pz4DWFm3je.png",
-      "published_at": "2026-10-25T10:27:13Z"
+      "published_at": "2026-10-25T10:27:13Z",
+      "metadata": {
+        "title": {
+          "english": "Romelia War Chronicle",
+          "romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
+          "native": "ロメリア戦記 〜魔王を倒した後も人類やばそうだから軍隊組織した〜"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180894-o3pz4DWFm3je.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180894-o3pz4DWFm3je.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180894-o3pz4DWFm3je.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 24,
+        "genres": [
+          "Adventure",
+          "Drama",
+          "Fantasy"
+        ],
+        "format": "ONA",
+        "status": "RELEASING",
+        "averageScore": 71,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Pony Canyon"
+            },
+            {
+              "name": "Atra"
+            },
+            {
+              "name": "Rakuten"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "SANKYO"
+            },
+            {
+              "name": "Bit grooove promotion"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Romelia and her party succeed in defeating the Demon King Zelgis, though Prince Henri’s reckless charge forces them into a grueling battle. In the aftermath, Romelia is branded \"dead weight\" for not fighting directly, and the Prince unilaterally breaks off their engagement. Denied a place in the victory celebrations, Romelia returns home, only to be met with cold indifference from her family and society. Yet, she refuses to break. She has already set her sights on the path that lies ahead.\n<br><br>\n(Source: Crunchyroll)\n<br><br>\n<i>Note: Romelia War Chronicle was streamed 2 days in advance of the TV broadcast on AnimeTimes, U-NEXT, and Netflix beginning October 3, 2026. Regular broadcasting began on October 5, 2026.</i>",
+        "anilist_id": 180894
+      }
     },
     "saikyosoubi": {
       "title": "Saikyosoubi",
       "message_id": "726",
       "anilist_id": 186541,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx186541-caYpLsLmbCh7.jpg",
-      "published_at": "2026-10-25T10:27:18Z"
+      "published_at": "2026-10-25T10:27:18Z",
+      "metadata": {
+        "title": {
+          "english": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
+          "romaji": "Mezametara Saikyou Soubi to Uchuusen-mochi datta node, Ikkodate Mezashite Youhei to shite Jiyuu ni Ikitai",
+          "native": "目覚めたら最強装備と宇宙船持ちだったので、一戸建て目指して傭兵として自由に生きたい"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx186541-caYpLsLmbCh7.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186541-caYpLsLmbCh7.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186541-caYpLsLmbCh7.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 13,
+        "genres": [
+          "Action",
+          "Comedy",
+          "Drama",
+          "Mecha",
+          "Romance",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 69,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "studio A-CAT"
+            },
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "Good Smile Company"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "Yomiuri TV"
+            },
+            {
+              "name": "Sansei R&D"
+            },
+            {
+              "name": "Docomo Anime Store"
+            },
+            {
+              "name": "WOWOW"
+            },
+            {
+              "name": "HAYATE"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Sato Takahiro was an ordinary office worker and hobbyist gamer until the day he woke up on a spaceship–one that strangely resembled a craft from a favorite space-shooter game. With a decked-out ship, a crew full of babes, and a fantastic universe to explore, he's going to make the most of his good luck and create the life he's always dreamed of!<br><br>\n\n(Source: Seven Seas Entertainment)",
+        "anilist_id": 186541
+      }
     },
     "seihantai na kimi to boku": {
       "title": "Seihantai na Kimi to Boku",
       "message_id": "727",
       "anilist_id": 184951,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx184951-s8Lg2muPBhdX.jpg",
-      "published_at": "2026-10-25T10:27:23Z"
+      "published_at": "2026-10-25T10:27:23Z",
+      "metadata": {
+        "title": {
+          "english": "You and I Are Polar Opposites",
+          "romaji": "Seihantai na Kimi to Boku",
+          "native": "正反対な君と僕"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx184951-s8Lg2muPBhdX.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184951-s8Lg2muPBhdX.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184951-s8Lg2muPBhdX.jpg"
+        },
+        "season": "WINTER",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Comedy",
+          "Romance",
+          "Slice of Life"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 83,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Lapin Track"
+            },
+            {
+              "name": "Shouchiku"
+            },
+            {
+              "name": "Dentsu"
+            },
+            {
+              "name": "Shueisha"
+            },
+            {
+              "name": "AbemaTV"
+            },
+            {
+              "name": "Mainichi Broadcasting System"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Suzuki’s a high school girl in love, but the guy she’s fallen for is nothing like her! While she’s cheerful, outgoing, and always trying to fit in, her classmate Yusuke Tani is stoic, quiet, and doesn’t seem to care what people think of him. Will Suzuki be able to overcome her anxieties and ask him out, or will she discover that opposites really don’t attract?\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 184951
+      }
     },
     "sekai saikyou no majo, hajimemashita": {
       "title": "Sekai Saikyou no Majo, Hajimemashita",
       "message_id": "728",
       "anilist_id": 211778,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx211778-0MXK5HqVFBYH.jpg",
-      "published_at": "2026-10-25T10:27:27Z"
+      "published_at": "2026-10-25T10:27:27Z",
+      "metadata": {
+        "title": {
+          "english": "The World's Strongest Witch",
+          "romaji": "Sekai Saikyou no Majo, Hajimemashita",
+          "native": "世界最強の魔女、始めました"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx211778-0MXK5HqVFBYH.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx211778-0MXK5HqVFBYH.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Comedy",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 70,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Bridge"
+            },
+            {
+              "name": "Aisle"
+            },
+            {
+              "name": "Pony Canyon"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "After using her SSS-Rank skill, Internet, to crush her former family’s ambitions, Lorna is free to travel the world. Her next stop is the port town of Aquas, where she hopes to see the sights and chow down on some fresh seafood. But when she arrives, the place is on the brink of destruction thanks to a certain Weekly Quest… Good thing Lorna has the gods on her side!\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 211778
+      }
     },
     "shinja zero no megami-sama to hajimeru isekai kouryaku": {
       "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
       "message_id": "729",
       "anilist_id": 205896,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205896-ElrV8oVAsuax.jpg",
-      "published_at": "2026-10-25T10:27:33Z"
+      "published_at": "2026-10-25T10:27:33Z",
+      "metadata": {
+        "title": {
+          "english": "Full Clearing Another World under a Goddess with Zero Believers",
+          "romaji": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+          "native": "信者ゼロの女神サマと始める異世界攻略"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205896-ElrV8oVAsuax.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205896-ElrV8oVAsuax.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 65,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "HORNETS"
+            },
+            {
+              "name": "Hakuhodo DY Music & Pictures"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "RPG player Makoto Takatsuki is hurled into another world with awful skills and stats. But he soon meets a goddess named Noah, who asks him to become her 1st believer in return for blessings.<br>\n<br>\n(Source: J-Novel Club)",
+        "anilist_id": 205896
+      }
     },
     "shiotaiou no satou-san ga ore ni dake amai": {
       "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
       "message_id": "730",
       "anilist_id": 209502,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209502-C81oN8M4Smlo.jpg",
-      "published_at": "2026-10-25T10:27:38Z"
+      "published_at": "2026-10-25T10:27:38Z",
+      "metadata": {
+        "title": {
+          "english": "The Cold Sato-san is Only Sweet to Me",
+          "romaji": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+          "native": "塩対応の佐藤さんが俺にだけ甘い"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209502-C81oN8M4Smlo.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209502-C81oN8M4Smlo.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Comedy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 69,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Tezuka Productions"
+            },
+            {
+              "name": "Shouchiku"
+            },
+            {
+              "name": "Good Smile Company"
+            },
+            {
+              "name": "Pony Canyon"
+            },
+            {
+              "name": "arma bianca"
+            },
+            {
+              "name": "AT-X"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "81 Produce"
+            },
+            {
+              "name": "WOWOW"
+            },
+            {
+              "name": "BS-TBS"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Sato-san is the unattainable flower of the class. She is always cold and curt with classmates, but only I know she's actually very cute when she smiles, even if she's not much of a photographer.\n<br><br>\nOshio-kun is friendly and lively, but only I know he works at his family's cafe after school. He does a great job with the cafe's SNS account, and his mischievous smile makes my heart skip a beat!\n<br><br>\nInnocent and sweet, but sometimes frustrating, this is a 120%-pure fluffy story about two people falling in love for the first time.",
+        "anilist_id": 209502
+      }
     },
     "shuiro no kamen": {
       "title": "Shuiro no Kamen",
       "message_id": "731",
       "anilist_id": 195571,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx195571-fvj7u5GI7BRT.jpg",
-      "published_at": "2026-10-25T10:27:42Z"
+      "published_at": "2026-10-25T10:27:42Z",
+      "metadata": {
+        "title": {
+          "english": "The Vermilion Mask",
+          "romaji": "Shuiro no Kamen",
+          "native": "朱色の仮面"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx195571-fvj7u5GI7BRT.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195571-fvj7u5GI7BRT.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195571-fvj7u5GI7BRT.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Drama",
+          "Supernatural"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 68,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Yomiuri TV"
+            },
+            {
+              "name": "100studio"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "\"The Mask” gives power to anyone who wears it.<br><br>\n\nAt times, that means endless possibility, or unimaginable tragedy…<br><br>\n\nPeru, pupil of the legendary mask maker Gaston Roux, becomes controlled by the “Mask of the Warrior God,” and unintentionally kills his friends, and even his own master.\n<br><br>\nIn order to prevent this type of tragedy from reoccurring, Peru swears to destroy all of Gaston’s masks that are spread around the world. Confronting the sins that he has committed, he embarks on his voyage. Meeting new friends, then confronting powerful foes. The boy continues on. Until the day he can atone for his sins against his master.\n<br><br>\n(Source: The Vermillion Mask English Site)",
+        "anilist_id": 195571
+      }
     },
     "sora wa akai kawa no hotori": {
       "title": "Sora wa Akai Kawa no Hotori",
       "message_id": "732",
       "anilist_id": 207809,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx207809-cpS7CAyjN7iP.jpg",
-      "published_at": "2026-10-25T10:27:47Z"
+      "published_at": "2026-10-25T10:27:47Z",
+      "metadata": {
+        "title": {
+          "english": "Red River",
+          "romaji": "Sora wa Akai Kawa no Hotori",
+          "native": "天は赤い河のほとり"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx207809-cpS7CAyjN7iP.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207809-cpS7CAyjN7iP.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207809-cpS7CAyjN7iP.jpg"
+        },
+        "season": "SUMMER",
+        "seasonYear": 2026,
+        "episodes": 24,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Drama",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 62,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Tatsunoko Production"
+            },
+            {
+              "name": "Nippon Television Network"
+            },
+            {
+              "name": "VAP"
+            },
+            {
+              "name": "BS Nittele"
+            },
+            {
+              "name": "NTV Music"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "After a mysterious hand drags her beneath a puddle, modern Japanese teenager Yuri awakens in the Hittite Empire of the 14th century BCE. Thrust into a deadly struggle for the throne, she joins Prince Kail to battle assassins, outwit royal conspiracies, and survive a world at war. As her exploits earn her renown as the goddess Ishtar, Yuri must choose between her old life and an uncertain future.\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 207809
+      }
     },
     "tempal – item no chikara": {
       "title": "Tempal – Item no Chikara",
       "message_id": "733",
       "anilist_id": 212888,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx212888-NhyvqPt5aIuJ.jpg",
-      "published_at": "2026-10-25T10:27:52Z"
+      "published_at": "2026-10-25T10:27:52Z",
+      "metadata": {
+        "title": {
+          "english": "Overgeared",
+          "romaji": "Tempal: Item no Chikara",
+          "native": "テムパル～アイテムの力～"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx212888-NhyvqPt5aIuJ.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212888-NhyvqPt5aIuJ.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212888-NhyvqPt5aIuJ.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Fantasy"
+        ],
+        "format": "ONA",
+        "status": "RELEASING",
+        "averageScore": 76,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "J.C.STAFF"
+            },
+            {
+              "name": "Pony Canyon"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "REDICE STUDIO"
+            },
+            {
+              "name": "Kakao piccoma"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "EGG FIRM"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Sin Yeong-U (a.k.a. Grid), an unlucky man in life and a low-level player in the popular VR game “Satisfy,” finds a powerful item that earns him a rare legendary class title: “Pagma’s Successor.” He’s now a skilled blacksmith who can forge unique weapons and equip the game’s most powerful gear. Grid resolves to use his new abilities to achieve fame and fortune, but as his very existence begins to stir up trouble in Satisfy, he realizes that life as a legend may be more than he bargained for….<br><br>\n\n(Source: Tapas, edited)<br><br>\n\n<i>Note: Tempal: Item no Chikara is streaming a week in advance of the TV broadcast on Prime Video and Crunchyroll beginning September 27th, 2026. Regular broadcasting began on October 2nd, 2026.</i>",
+        "anilist_id": 212888
+      }
     },
     "tensei goblin dakedo shitsumon aru": {
       "title": "Tensei Goblin dakedo Shitsumon Aru",
       "message_id": "734",
       "anilist_id": 209219,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209219-3yhKlRx0LX3p.jpg",
-      "published_at": "2026-10-25T10:27:56Z"
+      "published_at": "2026-10-25T10:27:56Z",
+      "metadata": {
+        "title": {
+          "english": "So What's Wrong with Getting Reborn as a Goblin?",
+          "romaji": "Tensei Goblin Dakedo Shitsumon Aru?",
+          "native": "転生ゴブリンだけど質問ある？"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209219-3yhKlRx0LX3p.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209219-3yhKlRx0LX3p.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Drama",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "ONA",
+        "status": "RELEASING",
+        "averageScore": 66,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "BAKKKA"
+            },
+            {
+              "name": "Hakuhodo DY Music & Pictures"
+            },
+            {
+              "name": "INCS toenter"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "AbemaTV"
+            },
+            {
+              "name": "SANKYO"
+            },
+            {
+              "name": "Bushiroad Move"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Office worker Akira Yagami’s altruistic nature usually gets him the short end of the stick. When he dies after saving a kid from oncoming traffic...he reincarnates in another world as a goblin?! Normally, goblins only live for seven days, but Akira’s newfound powers let him defy the species’ normal life span...and are the key to his path to becoming the strongest goblin ever!\n<br><br>\n(Source: Yen Press)<br><br>\n\n<i>Note: Tensei Goblin Dakedo Shitsumon Aru? is streaming 1 week in advance of the TV broadcast on ABEMA and Prime Video beginning with episode 2 on October 5th, 2026</i>",
+        "anilist_id": 209219
+      }
     },
     "tensei kizoku, kantei skill de nariagaru": {
       "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
       "message_id": "735",
       "anilist_id": 164702,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx164702-FjpM96MPdzVm.jpg",
-      "published_at": "2026-10-25T10:28:01Z"
+      "published_at": "2026-10-25T10:28:01Z",
+      "metadata": {
+        "title": {
+          "english": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World",
+          "romaji": "Tensei Kizoku, Kantei Skill de Nariagaru",
+          "native": "転生貴族、鑑定スキルで成り上がる"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx164702-FjpM96MPdzVm.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx164702-FjpM96MPdzVm.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx164702-FjpM96MPdzVm.jpg"
+        },
+        "season": "SPRING",
+        "seasonYear": 2024,
+        "episodes": 12,
+        "genres": [
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 71,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "studio MOTHER"
+            },
+            {
+              "name": "Bandai Namco Filmworks"
+            },
+            {
+              "name": "Kodansha"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "Tencent"
+            },
+            {
+              "name": "Bandai Namco Music Live"
+            },
+            {
+              "name": "Bushiroad Move"
+            },
+            {
+              "name": "U-NEXT"
+            },
+            {
+              "name": "CBC TV"
+            },
+            {
+              "name": "Dentsu"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Our protagonist, Ars Louvent, was reincarnated in another world as the young son of a minor noble who owns a small domain. Ars was not particularly strong or intelligent, but he was born with the Appraisal Skill that's able to see others' abilities and statuses. He uses his skill to find the best hidden talents in the world to make their small, weak domain into the best. An isekai tale about unification is about to start, featuring the kind-hearted Ars and the unique talents he manages to find!<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 164702
+      }
     },
     "tetsuryou! meet with tetsudou musume": {
       "title": "Tetsuryou! Meet with Tetsudou Musume",
       "message_id": "736",
       "anilist_id": 199594,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199594-moYKzlfIH03U.jpg",
-      "published_at": "2026-10-25T10:28:05Z"
+      "published_at": "2026-10-25T10:28:05Z",
+      "metadata": {
+        "title": {
+          "english": "TETSURYO! Meet With Tetsudou Musume",
+          "romaji": "Tetsuryou! meet with Tetsudou Musume",
+          "native": "てつりょー！meet with 鉄道むすめ"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199594-moYKzlfIH03U.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199594-moYKzlfIH03U.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199594-moYKzlfIH03U.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Slice of Life"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 60,
+        "source": "OTHER",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Pony Canyon"
+            },
+            {
+              "name": "East Fish Studio"
+            },
+            {
+              "name": "TOMYTEC"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Misaki has often felt the urge to break free from everyday life and set out on a journey somewhere far away. Even though she doesn’t yet know what she wants to become, she longs to find something she can truly be passionate about.<br><br>\nAt the start of a new chapter on a lively campus, she meets the members of the Railway Travel Research Club—known as the “Tetsuryo Club.” As her world unfolds along the railway lines, Misaki’s heart begins to race with excitement!<br><br>\nAs TETSUDOU MUSUME celebrates its 20th anniversary, the Tetsuryo Club sets off on a journey through the world where the Railway Girls work, in search of moments of wonder.\n<br><br>\n(Source: Pony Canyon Anime)",
+        "anilist_id": 199594
+      }
     },
     "the prince of tennis ii – u-17 world cup final member selection match": {
       "title": "The Prince of Tennis II – U-17 World Cup Final Member Selection Match",
       "message_id": "737",
       "anilist_id": 199068,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199068-2afNaytl50Ko.png",
-      "published_at": "2026-10-25T10:28:10Z"
+      "published_at": "2026-10-25T10:28:10Z",
+      "metadata": {
+        "title": {
+          "english": "The Prince of Tennis II U-17 WORLD CUP: Final Member Selection Match",
+          "romaji": "Shin Tennis no Ouji-sama: U-17 WORLD CUP Kesshou Member Ketteisen",
+          "native": "新テニスの王子様 U-17 WORLD CUP 決勝メンバー決定戦"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199068-2afNaytl50Ko.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199068-2afNaytl50Ko.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199068-2afNaytl50Ko.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Comedy",
+          "Sports"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 57,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "M.S.C"
+            },
+            {
+              "name": "NAS"
+            },
+            {
+              "name": "Production I.G"
+            },
+            {
+              "name": "Bandai Namco Filmworks"
+            },
+            {
+              "name": "Marvelous"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Shueisha"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Old rivalries reignite as Team Japan players face off to earn spots in the lineup for the World Cup final.\n<br><br>\n(Source: Crunchyroll News)",
+        "anilist_id": 199068
+      }
     },
     "toaru anbu no item": {
       "title": "Toaru Anbu no Item",
       "message_id": "738",
       "anilist_id": 186742,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx186742-v7yfbefc8fuO.png",
-      "published_at": "2026-10-25T10:28:15Z"
+      "published_at": "2026-10-25T10:28:15Z",
+      "metadata": {
+        "title": {
+          "english": "A Certain Dark Item",
+          "romaji": "Toaru Anbu no ITEM",
+          "native": "とある暗部の少女共棲"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx186742-v7yfbefc8fuO.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186742-v7yfbefc8fuO.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186742-v7yfbefc8fuO.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 69,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "J.C.STAFF"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "This is a story of four girls living in the \"Dark Side\" of Academy City.<br>\n<br>\nIn Academy City where \"ESP\" has been recognized as a general science. Behind the peace, there is a Dark Side organization that undertakes missions that cannot be made public.<br>\n<br>\n\"ITEM\" is an elite unit consisting of four girls. Takitsubo Rikou is able to read and track the AIM fields emitted by those with abilities. Frenda Seivelun, who excels in combat using explosives and traps.<br>\n<br>\nKinuhata Saiai, who can manipulate nitrogen at will and plays a defensive role. And one of the 7 Espers that Academy City is proud of: Mugino Shizuri. They live freely in the darkness of the Academy City, and quietly set their sights on their target...!<br>\n<br>\nThis is a story of encounter, friendship, and darkness that eventually leads to a terrible incident!<br>\n<br>\n(Source: Kadokawa, translated)",
+        "anilist_id": 186742
+      }
     },
     "tougen anki – nikko kegon no taki-hen": {
       "title": "Tougen Anki – Nikko Kegon no Taki-hen",
       "message_id": "739",
       "anilist_id": 204650,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx204650-cAQOzQ84Lwk8.png",
-      "published_at": "2026-10-25T10:28:20Z"
+      "published_at": "2026-10-25T10:28:20Z",
+      "metadata": {
+        "title": {
+          "english": "TOUGEN ANKI: Nikko Kegon Falls Arc",
+          "romaji": "Tougen Anki: Nikko・Kegon no Taki-hen",
+          "native": "桃源暗鬼 日光・華厳の滝編"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx204650-cAQOzQ84Lwk8.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204650-cAQOzQ84Lwk8.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204650-cAQOzQ84Lwk8.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Mystery",
+          "Supernatural"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 72,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio Hibari"
+            },
+            {
+              "name": "Pony Canyon"
+            },
+            {
+              "name": "Dentsu"
+            },
+            {
+              "name": "Nippon Television Network"
+            },
+            {
+              "name": "Akita Shoten"
+            },
+            {
+              "name": "Studio Hibari"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "After battling in Kyoto and Nerima, the Rasetsu Academy students have grown stronger. But Yaoroshi leaves the academy to join the Oni Brigade for their \"the total eradication of the Momotaro.\"\n<br><br>\nWhen Shiki realizes that they also target noncombatants, he sets out after Yaoroshi to bring him back. Meanwhile in Nikko, there's a research facility for horrific experiments atop the old Kegon Falls…\n<br><br>\n(Source: REMOW)",
+        "anilist_id": 204650
+      }
     },
     "tsuihou sareta tensei juukishi wa game chishiki de musou suru": {
       "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
       "message_id": "740",
       "anilist_id": 180136,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180136-gtMTCRlOD4OE.jpg",
-      "published_at": "2026-10-25T10:28:24Z"
+      "published_at": "2026-10-25T10:28:24Z",
+      "metadata": {
+        "title": {
+          "english": "The Exiled Heavy Knight Knows How to Game the System",
+          "romaji": "Tsuihou Sareta Tensei Juukishi wa Game Chishiki de Musou Suru",
+          "native": "追放された転生重騎士はゲーム知識で無双する"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180136-gtMTCRlOD4OE.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180136-gtMTCRlOD4OE.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180136-gtMTCRlOD4OE.jpg"
+        },
+        "season": "SUMMER",
+        "seasonYear": 2026,
+        "episodes": 26,
+        "genres": [
+          "Action",
+          "Fantasy"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 67,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "GoHands"
+            },
+            {
+              "name": "Shouchiku"
+            },
+            {
+              "name": "Kodansha"
+            },
+            {
+              "name": "MUSE"
+            },
+            {
+              "name": "Crunchyroll"
+            },
+            {
+              "name": "Mainichi Broadcasting System"
+            },
+            {
+              "name": "GoHands"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Born into a prestigious family of master swordsmen, Elymas Edvaughn’s future shatters when he awakens the so-called “defective” Heavy Knight class. Disowned and cast out, he regains memories of another life—and realizes this world mirrors a VR game he once mastered. Armed with knowledge no one else possesses, he sets out to rewrite his fate and prove the strength of the “weakest” class.<br>\n<br>\n(Source: Crunchyroll)",
+        "anilist_id": 180136
+      }
     },
     "vertex force": {
       "title": "VERTEX FORCE",
       "message_id": "741",
       "anilist_id": 209562,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209562-kQQbTKDuql9p.jpg",
-      "published_at": "2026-10-25T10:28:29Z"
+      "published_at": "2026-10-25T10:28:29Z",
+      "metadata": {
+        "title": {
+          "english": "VERTEX FORCE",
+          "romaji": "Vertex Force",
+          "native": "バーテックスフォース"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209562-kQQbTKDuql9p.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209562-kQQbTKDuql9p.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209562-kQQbTKDuql9p.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "genres": [
+          "Action",
+          "Mecha"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 55,
+        "source": "ORIGINAL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Aniplex"
+            },
+            {
+              "name": "Shogakukan Music & Digital Entertainment"
+            },
+            {
+              "name": "U-NEXT"
+            },
+            {
+              "name": "SANKYO"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "BS11"
+            },
+            {
+              "name": "Movic"
+            },
+            {
+              "name": "ABC Animation"
+            },
+            {
+              "name": "Nagoya TV Housou"
+            },
+            {
+              "name": "Shogakukan Music & Digital Entertainment"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Akira lives a peaceful life with his older sister Haruka and his mother, who runs a cafe. The family however harbors a secret — Haruka has inherited a power from her father called \"Engine,\" and she hides that power from others. Akira on the other hand has not inherited his father's power, and he has an inferiority complex about it. Amidst this, strange events start happening around the world.\n<br><br>\n(Source: Anime News Network)",
+        "anilist_id": 209562
+      }
     },
     "yasei no last boss ga arawareta!": {
       "title": "Yasei no Last Boss ga Arawareta!",
       "message_id": "742",
       "anilist_id": 180523,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180523-FjvW1XByUNMK.jpg",
-      "published_at": "2026-10-25T10:28:34Z"
+      "published_at": "2026-10-25T10:28:34Z",
+      "metadata": {
+        "title": {
+          "english": "A Wild Last Boss Appeared!",
+          "romaji": "Yasei no Last Boss ga Arawareta!",
+          "native": "野生のラスボスが現れた！"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180523-FjvW1XByUNMK.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180523-FjvW1XByUNMK.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180523-FjvW1XByUNMK.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2025,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Adventure",
+          "Fantasy"
+        ],
+        "format": "ONA",
+        "status": "FINISHED",
+        "averageScore": 74,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "NBCUniversal Entertainment Japan"
+            },
+            {
+              "name": "WAO World"
+            },
+            {
+              "name": "Sun Electronics"
+            },
+            {
+              "name": "Touhouku Shinsha"
+            },
+            {
+              "name": "Earth Star Entertainment"
+            },
+            {
+              "name": "Kansai TV"
+            },
+            {
+              "name": "BS Asahi"
+            },
+            {
+              "name": "Bushiroad Move"
+            },
+            {
+              "name": "KLOCKWORX"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "An MMO gamer awakens as the Black-Winged Tyrant, Lufas Maphaahl, rising from her sealed fate—only to find this is very real. Her defeat 200 years ago unleashed monsters of death, and the legend is one of terror. Now, trapped in the body of history’s most feared conqueror, he must survive a world that wants her dead…and uncover why he’s here.\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 180523
+      }
     },
     "yowaki max": {
       "title": "Yowaki Max",
       "message_id": "743",
       "anilist_id": 200455,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx200455-P3XStRQMJ7Di.png",
-      "published_at": "2026-10-25T10:28:38Z"
+      "published_at": "2026-10-25T10:28:38Z",
+      "metadata": {
+        "title": {
+          "english": "Even Though I'm a Super Timid Noble Girl, I Accepted the Bet From My Cunning Fiancé",
+          "romaji": "Yowaki MAX Reijou Nano ni, Ratsuwan Konyakusha-sama no Kake ni Notte Shimatta",
+          "native": "弱気MAX令嬢なのに、辣腕婚約者様の賭けに乗ってしまった"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx200455-P3XStRQMJ7Di.png",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200455-P3XStRQMJ7Di.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200455-P3XStRQMJ7Di.png"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Comedy",
+          "Fantasy",
+          "Romance"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 67,
+        "source": "LIGHT_NOVEL",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Jumondou"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "Docomo Anime Store"
+            },
+            {
+              "name": "Studio Flag"
+            },
+            {
+              "name": "BS Asahi"
+            },
+            {
+              "name": "AT-X"
+            },
+            {
+              "name": "TOKYO MX"
+            },
+            {
+              "name": "Sumiseki"
+            },
+            {
+              "name": "Nippon Columbia"
+            },
+            {
+              "name": "Sun Television"
+            },
+            {
+              "name": "Jumondou"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "I was reborn as a villainous daughter in a reverse harem otome game. \n<br><br>\nAfter being sick with a high fever at the age of 10, Pia Rockwell suddenly remembered her past life as a university student in Japan. But far from going down the villainess route, all this super timid girl wants is to finally use her knowledge from when she was a grad student studying to get her doctorate in paleontology. Her ultimate goal is to become a commoner, excavate fossils, build a museum and then become a curator.\n<br><br>\nSo in order to escape the villainess route and avoid being deported by her fiancé during the graduation ball, Pia decides to avoid the upcoming hurt and heartache and asks to break off her engagement to Rufus, the Prime Minister's son.\n<br><br>\nBut will her cunning fiancé let her go that easily?",
+        "anilist_id": 200455
+      }
     },
     "zombie sagashitemasu": {
       "title": "Zombie Sagashitemasu",
       "message_id": "744",
       "anilist_id": 199007,
       "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199007-8R1HsnflnHJE.jpg",
-      "published_at": "2026-10-25T10:28:43Z"
+      "published_at": "2026-10-25T10:28:43Z",
+      "metadata": {
+        "title": {
+          "english": "#I'm Looking For a Zombie",
+          "romaji": "#Zombie Sagashitemasu",
+          "native": "#ゾンビさがしてます"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199007-8R1HsnflnHJE.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199007-8R1HsnflnHJE.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199007-8R1HsnflnHJE.jpg"
+        },
+        "season": "FALL",
+        "seasonYear": 2026,
+        "episodes": 12,
+        "genres": [
+          "Action",
+          "Comedy",
+          "Horror",
+          "Mystery",
+          "Supernatural"
+        ],
+        "format": "TV",
+        "status": "RELEASING",
+        "averageScore": 61,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Studio Comet"
+            },
+            {
+              "name": "KADOKAWA"
+            },
+            {
+              "name": "TV Asahi"
+            },
+            {
+              "name": "arma bianca"
+            },
+            {
+              "name": "Studio Comet"
+            },
+            {
+              "name": "Jinnan Studio"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "It may be a ruined city ravaged by zombies, but to Aki and her friends, it’s amazing! Having grown up only hearing stories of the old world and the mysterious outbreak that wiped out humanity, she sets off with her childhood friends in search of her missing father. Things quickly become a fight for survival outside the safety of their small village, yet they’ve never felt more alive.\n<br><br>\n(Source: Crunchyroll)",
+        "anilist_id": 199007
+      }
     },
     "ace of diamond act ii s2": {
       "title": "Ace of Diamond Act II S2",
       "message_id": "745",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/42160/original.jpeg",
-      "published_at": "2026-10-25T10:38:16Z"
+      "published_at": "2026-10-25T10:38:16Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/poster_images/42160/original.jpeg"
+        },
+        "title": {
+          "english": "Ace of Diamond Act II S2",
+          "romaji": "Ace of Diamond Act II S2"
+        }
+      }
     },
     "ao ashi s2": {
       "title": "Ao Ashi S2",
       "message_id": "746",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/44629/poster_image/4f89be2f85a04bab7fcd8bcaaca511bc.jpg",
-      "published_at": "2026-10-25T10:38:21Z"
+      "published_at": "2026-10-25T10:38:21Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/44629/poster_image/4f89be2f85a04bab7fcd8bcaaca511bc.jpg"
+        },
+        "title": {
+          "english": "Ao Ashi S2",
+          "romaji": "Ao Ashi S2"
+        }
+      }
     },
     "honzuki no gekokujou s4": {
       "title": "Honzuki no Gekokujou S4",
       "message_id": "747",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/42241/original.jpg",
-      "published_at": "2026-10-25T10:38:26Z"
+      "published_at": "2026-10-25T10:38:26Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/poster_images/42241/original.jpg"
+        },
+        "title": {
+          "english": "Honzuki no Gekokujou S4",
+          "romaji": "Honzuki no Gekokujou S4"
+        }
+      }
     },
     "hotel inhumans s2": {
       "title": "Hotel Inhumans S2",
       "message_id": "748",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/49898/poster_image/eca6d704b5c87d7931e0cef7ecc33312.jpg",
-      "published_at": "2026-10-25T10:38:31Z"
+      "published_at": "2026-10-25T10:38:31Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/49898/poster_image/eca6d704b5c87d7931e0cef7ecc33312.jpg"
+        },
+        "title": {
+          "english": "Hotel Inhumans S2",
+          "romaji": "Hotel Inhumans S2"
+        }
+      }
     },
     "hyouken no majutsushi ga sekai wo suberu s2": {
       "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
       "message_id": "749",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/46088/poster_image/79e26986549abab9e593d4574d790911.jpg",
-      "published_at": "2026-10-25T10:38:36Z"
+      "published_at": "2026-10-25T10:38:36Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/46088/poster_image/79e26986549abab9e593d4574d790911.jpg"
+        },
+        "title": {
+          "english": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+          "romaji": "Hyouken no Majutsushi ga Sekai wo Suberu S2"
+        }
+      }
     },
     "juuou mujin dandivine": {
       "title": "Juuou Mujin Dandivine",
       "message_id": "750",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/8649/original.jpg",
-      "published_at": "2026-10-25T10:38:42Z"
+      "published_at": "2026-10-25T10:38:42Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/poster_images/8649/original.jpg"
+        },
+        "title": {
+          "english": "Juuou Mujin Dandivine",
+          "romaji": "Juuou Mujin Dandivine"
+        }
+      }
     },
     "keroro gunsou (2026)": {
       "title": "Keroro Gunsou (2026)",
       "message_id": "751",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/475/original.jpg",
-      "published_at": "2026-10-25T10:38:47Z"
+      "published_at": "2026-10-25T10:38:47Z",
+      "metadata": {
+        "title": {
+          "english": "Sgt. Frog",
+          "romaji": "Keroro Gunsou",
+          "native": "ケロロ軍曹"
+        },
+        "coverImage": {
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx516-ofBmeR4TcbKb.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx516-ofBmeR4TcbKb.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx516-ofBmeR4TcbKb.jpg"
+        },
+        "season": "SPRING",
+        "seasonYear": 2004,
+        "episodes": 358,
+        "genres": [
+          "Comedy",
+          "Sci-Fi"
+        ],
+        "format": "TV",
+        "status": "FINISHED",
+        "averageScore": 75,
+        "source": "MANGA",
+        "studios": {
+          "nodes": [
+            {
+              "name": "Sunrise"
+            },
+            {
+              "name": "TV Tokyo"
+            },
+            {
+              "name": "Funimation"
+            },
+            {
+              "name": "NAS"
+            },
+            {
+              "name": "Rakuonsha"
+            }
+          ]
+        },
+        "isAdult": false,
+        "description": "Keroro is a frog-like alien sent from his home planet on a mission to conquer Earth. But when his cover is blown, his battalion abandons him and he ends up in the home of the Hinata family. There, he's forced to do household chores and sleep in a dark basement that was once supposedly a prison cell haunted by the ghost of an innocent girl. He even spends his free time assembling Gundam model kits. During his stay, Keroro meets up with subordinates who were also stranded during their failed invasion. <br>\n<br>\n(Source: Anime News Network)"
+      }
     },
     "nige jouzu no wakagimi s2": {
       "title": "Nige Jouzu no Wakagimi S2",
       "message_id": "752",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/47197/poster_image/bfc9552e494d660985b9d6e4e4f3e43c.jpg",
-      "published_at": "2026-10-25T10:38:52Z"
+      "published_at": "2026-10-25T10:38:52Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/47197/poster_image/bfc9552e494d660985b9d6e4e4f3e43c.jpg"
+        },
+        "title": {
+          "english": "Nige Jouzu no Wakagimi S2",
+          "romaji": "Nige Jouzu no Wakagimi S2"
+        }
+      }
     },
     "ojisan wa kawaii mono ga osuki.": {
       "title": "Ojisan wa Kawaii Mono ga Osuki.",
       "message_id": "753",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/51021/poster_image/6e7eb2663defc1c226fde76ee280bffa.jpg",
-      "published_at": "2026-10-25T10:38:57Z"
+      "published_at": "2026-10-25T10:38:57Z",
+      "metadata": {
+        "title": {
+          "english": "Uncle's Obsession with Cute Things",
+          "romaji": "Oji-san wa Kawaii Mono ga Osuki.",
+          "native": "おじさんはカワイイものがお好き。"
+        },
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/51021/poster_image/large-c8fe655ec7485f57d39dbcbe894397ce.jpeg"
+        },
+        "seasonYear": 2026,
+        "format": "TV",
+        "status": "RELEASING",
+        "studios": {},
+        "isAdult": false,
+        "description": "The manga centers on Mitsutaka Oji, a 40-year-old man who by all appearances is attractive and cool and is excellent at his job. However, he has a secret: he absolutely loves small and cute things. The comedy manga follows his everyday life.\n\n(Source: Anime News Network)"
+      }
     },
     "sasaki to pii-chan s2": {
       "title": "Sasaki to Pii-chan S2",
       "message_id": "754",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/48651/poster_image/07577794e3295b9d3ca29c9230b07d5e.jpg",
-      "published_at": "2026-10-25T10:39:03Z"
+      "published_at": "2026-10-25T10:39:03Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/48651/poster_image/07577794e3295b9d3ca29c9230b07d5e.jpg"
+        },
+        "title": {
+          "english": "Sasaki to Pii-chan S2",
+          "romaji": "Sasaki to Pii-chan S2"
+        }
+      }
     },
     "tantei wa mou, shindeiru. s2": {
       "title": "Tantei wa Mou, Shindeiru. S2",
       "message_id": "755",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/44022/original.jpg",
-      "published_at": "2026-10-25T10:39:08Z"
+      "published_at": "2026-10-25T10:39:08Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/poster_images/44022/original.jpg"
+        },
+        "title": {
+          "english": "Tantei wa Mou, Shindeiru. S2",
+          "romaji": "Tantei wa Mou, Shindeiru. S2"
+        }
+      }
     },
     "tensei shita daiseijo wa, seijo de aru koto wo hitakakusu": {
       "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
       "message_id": "756",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/50850/poster_image/17ed41a9bd88d39379b46922dd065545.jpg",
-      "published_at": "2026-10-25T10:39:13Z"
+      "published_at": "2026-10-25T10:39:13Z",
+      "metadata": {
+        "title": {
+          "english": "A Tale of the Secret Saint",
+          "romaji": "Tensei shita Dai Seijo wa, Seijo de Aru Koto wo Hita Kakusu",
+          "native": "転生した大聖女は、聖女であることをひた隠す"
+        },
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/50850/poster_image/large-eec4d1d89df41fa255c7619aea435642.jpeg"
+        },
+        "seasonYear": 2026,
+        "format": "ONA",
+        "status": "RELEASING",
+        "studios": {},
+        "isAdult": false,
+        "description": "Fia always dreamed of becoming a knight. Born into a family of knights, she’s the least talented among them, but she still clutches to her hope and trains with everything she has. When the day comes for her to slay a small demon and prove her worth, she ends up face to face with a dragon instead! A deadly injury makes her life flash before her eyes…and she suddenly remembers her former life, when she was a powerful Saint in a bygone era who defeated the Demon King. That life ended in pain because of who she was, making her fear ever becoming a Saint again. Now that the magic from her previous life has been rekindled, she may become a more powerful knight than she ever dreamed–if only she can survive long enough!\n\n(Source: Seven Seas Entertainment)\n\nNote: The series streamed a week in advance on ABEMA, Prime Video, and Crunchyroll starting with episode 2 released alongside episode 1."
+      }
     },
     "tensei shitara ken deshita s2": {
       "title": "Tensei Shitara Ken Deshita S2",
       "message_id": "757",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/45242/poster_image/72240fce0cca784af8dd52244d69703d.jpg",
-      "published_at": "2026-10-25T10:39:18Z"
+      "published_at": "2026-10-25T10:39:18Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/45242/poster_image/72240fce0cca784af8dd52244d69703d.jpg"
+        },
+        "title": {
+          "english": "Tensei Shitara Ken Deshita S2",
+          "romaji": "Tensei Shitara Ken Deshita S2"
+        }
+      }
     },
     "toukutsu ou": {
       "title": "Toukutsu Ou",
       "message_id": "758",
       "anilist_id": null,
       "poster_url": "https://media.kitsu.app/anime/poster_images/3061/original.jpg",
-      "published_at": "2026-10-25T10:39:23Z"
+      "published_at": "2026-10-25T10:39:23Z",
+      "metadata": {
+        "coverImage": {
+          "extraLarge": "https://media.kitsu.app/anime/poster_images/3061/original.jpg"
+        },
+        "title": {
+          "english": "Toukutsu Ou",
+          "romaji": "Toukutsu Ou"
+        }
+      }
     }
   }
 }
