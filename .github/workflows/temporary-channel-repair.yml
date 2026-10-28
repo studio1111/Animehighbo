@@ -179,7 +179,7 @@ jobs:
                   if not mid or mid in missing:
                       absent.append(quality)
               if absent:
-                  repairs.append({**meta, "missing": absent})
+                  repairs.append({**episode_meta[identity], "missing": absent})
 
           Path("/tmp/animehighbo-repair-identities.json").write_text(
               json.dumps(repairs, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -256,7 +256,8 @@ jobs:
               if not parsed:
                   raise SystemExit(f"Cannot map poster key for {entry.get('title')}")
               title, episode = parsed
-              group = hashlib.sha256(f"{re.sub(r'\s+', ' ', title).strip().casefold()}|{episode}".encode("utf-8")).hexdigest()
+              normalized = re.sub(r"\s+", " ", title).strip().casefold()
+              group = hashlib.sha256(f"{normalized}|{episode}".encode("utf-8")).hexdigest()
               posters.pop(f"archive:{group}", None)
           path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
