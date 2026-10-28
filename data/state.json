@@ -6518,6 +6518,47 @@
       "source_quality": "1080p",
       "published_at": 1793170069,
       "release_date": "2026-10-01"
+    },
+    "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:1080p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "5fcb5ab7b457a80272006b904df86b6c912cf9c839d2d98dc1f85562086a392e",
+      "message_id": "1459",
+      "published_at": 1793170078,
+      "bilingual_subtitles": true
+    },
+    "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:720p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7b894ba5f775c60a6abd1b599fa77142abd57a68379f48750404dfb3452fb10f",
+      "message_id": "1460",
+      "published_at": 1793170088,
+      "bilingual_subtitles": true
+    },
+    "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:480p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8e73d7969c8949ea325dd9a5a038d55003393c243fe21ba66df809a65d48eeab",
+      "message_id": "1461",
+      "published_at": 1793170094,
+      "bilingual_subtitles": true
+    },
+    "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793170094,
+      "release_date": "2026-10-01"
     }
   },
   "seen": {
@@ -7537,7 +7578,10 @@
     "b0179c6376dfb48c8b3c647c224eb1923d5e42f370482578ace3d742ef791cd7": "3add071ba6b8571d0e1be9cdd61c3730754f5be0396e71f1f8aaac4d01b87d9d:480p",
     "57922cfa9266d27b5d702f02c963ac567238eb0497dda5b09f8fef47b15714d0": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:1080p",
     "b864c65fda10d71f913e6f3a1443a9b8f60e88df82320471c6b7ac19c967e156": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:720p",
-    "f90bc53b779ffd2ef7027d9af232913285bf91c2cfb61daf4859bae7f235a02a": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:480p"
+    "f90bc53b779ffd2ef7027d9af232913285bf91c2cfb61daf4859bae7f235a02a": "aef01f6260fd2e572fab661de7580d918348a709cd119099b024842eb16b97a5:480p",
+    "5fcb5ab7b457a80272006b904df86b6c912cf9c839d2d98dc1f85562086a392e": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:1080p",
+    "7b894ba5f775c60a6abd1b599fa77142abd57a68379f48750404dfb3452fb10f": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:720p",
+    "8e73d7969c8949ea325dd9a5a038d55003393c243fe21ba66df809a65d48eeab": "18515234feb2176ff479e69936cf1c49135c71268c510ab3f3459af58b5494d9:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
