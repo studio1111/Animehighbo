@@ -24,6 +24,7 @@ on:
         type: string
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -102,3 +103,9 @@ jobs:
           git fetch origin "${GITHUB_REF_NAME}"
           git rebase "origin/${GITHUB_REF_NAME}"
           git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Refresh release metadata coverage report after catalog update
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: gh workflow run subsplease-release-monitor.yml --repo "$GITHUB_REPOSITORY" --ref main
