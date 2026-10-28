@@ -15,6 +15,9 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertIn("tokyo-revengers", REQUIRED_SHOW_SLUGS)
         self.assertIn("rilakkuma", REQUIRED_SHOW_SLUGS)
         self.assertIn("uchi-no-otouto-domo-ga-sumimasen", REQUIRED_SHOW_SLUGS)
+        self.assertIn("doumo-suki-na-hito-ni-horegusuri-wo-irai-sareta-majo-desu", REQUIRED_SHOW_SLUGS)
+        self.assertIn("tensei-goblin-dakedo-shitsumon-aru", REQUIRED_SHOW_SLUGS)
+        self.assertIn("bleach-sennen-kessen-hen-kashin-tan", REQUIRED_SHOW_SLUGS)
 
     def test_subsplease_show_slug_is_resolved_under_shows_path(self):
         self.assertEqual(
