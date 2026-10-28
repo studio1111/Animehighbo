@@ -285,6 +285,63 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertIn("latest-episode", episode_four["uri"])
         self.assertEqual(episode_four["release_date"], "2026-10-28")
 
+    def test_rss_parser_adds_individual_episode_sources_and_skips_batches(self):
+        from tools.archive_catalog import _parse_rss_release_feed
+
+        rss = """<rss><channel>
+        <item><title>[SubsPlease] Magic Knight Rayearth (2026) - 04 (720p) [326F3681].mkv</title>
+        <link>magnet:?xt=urn:btih:magic4&amp;xl=721420000</link>
+        <pubDate>Wed, 28 Oct 2026 08:33:22 +0000</pubDate></item>
+        <item><title>[SubsPlease] Jujutsu Kaisen (48-59) (720p) [Batch].mkv</title>
+        <link>magnet:?xt=urn:btih:batch&amp;xl=1000</link>
+        <pubDate>Wed, 28 Oct 2026 08:30:00 +0000</pubDate></item>
+        </channel></rss>"""
+        rows = _parse_rss_release_feed(rss, "720p", date(2026, 10, 1))
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["title"], "Magic Knight Rayearth (2026) - 04 (720p)")
+        self.assertEqual(rows[0]["episode"], 4)
+        self.assertEqual(rows[0]["release_date"], "2026-10-28")
+        self.assertIn("magic4", rows[0]["uri"])
+
+    def test_rss_release_enters_manifest_when_show_detail_api_is_stale(self):
+        session = Mock()
+        session.headers = {}
+        latest_page = {
+            "Magic Knight Rayearth (2026) - 03": {
+                "release_date": "2026-10-21T10:00:00Z",
+                "page": "magic-knight-rayearth-2026",
+            }
+        }
+        stale_show_rows = [
+            {
+                "title": f"Magic Knight Rayearth (2026) - {number:02d}",
+                "episode": str(number),
+                "release_date": f"2026-10-{number * 7:02d}T10:00:00Z",
+                "downloads": [{"res": "1080", "magnet": f"magnet:?xt=urn:btih:old{number}"}],
+            }
+            for number in (1, 2, 3)
+        ]
+        rss_episode = {
+            "title": "Magic Knight Rayearth (2026) - 04 (720p)",
+            "episode": 4,
+            "quality": "720p",
+            "uri": "magnet:?xt=urn:btih:rss-magic-4",
+            "release_date": "2026-10-28",
+        }
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=[latest_page, {}]),
+            patch("tools.archive_catalog._fetch_show_episodes", return_value=("Magic Knight Rayearth (2026)", stale_show_rows)),
+            patch("tools.archive_catalog._fetch_rss_release_entries", return_value=[rss_episode]),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
+            manifest = build_archive_manifest(date(2026, 10, 1), max_pages=5, session=session)
+
+        episode_four = next(row for row in manifest if row["episode"] == 4)
+        self.assertEqual(episode_four["release_date"], "2026-10-28")
+        self.assertIn("rss-magic-4", episode_four["uri"])
+
     def test_episode_key_normalizes_dash_variants_in_series_titles(self):
         from tools.archive_catalog import _manifest_episode_key
 
