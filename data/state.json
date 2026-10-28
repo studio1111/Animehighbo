@@ -9426,6 +9426,62 @@
       "source_quality": "1080p",
       "published_at": 1793219303,
       "release_date": "2026-10-27"
+    },
+    "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:1080p": {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": "04",
+      "group_id": "d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "poster_identity": "archive:d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "release_date": "2026-10-27",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "27d8dc35b50aa6a50f428c8c636910e69853b95ccdfe25660a6d5e5936507122",
+      "message_id": "1671",
+      "published_at": 1793220579,
+      "bilingual_subtitles": true
+    },
+    "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:720p": {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": "04",
+      "group_id": "d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "poster_identity": "archive:d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "release_date": "2026-10-27",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "952735fbf3e10733b135a50e02b3b6ef5cd3009edd56df4af21348bac5695c0e",
+      "message_id": "1672",
+      "published_at": 1793220584,
+      "bilingual_subtitles": true
+    },
+    "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:480p": {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": "04",
+      "group_id": "d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "poster_identity": "archive:d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "release_date": "2026-10-27",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1deecc78e99d016edde85061b6e3e9777b78b4b2d75ac06a7e1468f42b8f5023",
+      "message_id": "1673",
+      "published_at": 1793220588,
+      "bilingual_subtitles": true
+    },
+    "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac": {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": "04",
+      "group_id": "d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "poster_identity": "archive:d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793220588,
+      "release_date": "2026-10-27"
     }
   },
   "seen": {
@@ -10604,7 +10660,10 @@
     "eb6585e0bb2019016bec96d8300a80d82c8bc6326d9d8ddabf319d5b63d9c35b": "7b4205404ae2e41e075cea2110df55a81a4a56975789c526da939cf21f4db778:480p",
     "19423e1456cde732707daf7e2d7b50aa379d98ad2b4595f0ecf133486f6dc8a4": "2bbba2f8c5f6e6412605260e40cd0f018c4cdfbf1262c37cfc8fdbddd09db6da:1080p",
     "a5405e18742ca211a4eed30d2612c48aeccb31631550509f6e19d84fbdc6a5d1": "2bbba2f8c5f6e6412605260e40cd0f018c4cdfbf1262c37cfc8fdbddd09db6da:720p",
-    "763f329981730d45b129d3f8f24af2a0dfdc94d31a6f9e89de35c4fe5efc1036": "2bbba2f8c5f6e6412605260e40cd0f018c4cdfbf1262c37cfc8fdbddd09db6da:480p"
+    "763f329981730d45b129d3f8f24af2a0dfdc94d31a6f9e89de35c4fe5efc1036": "2bbba2f8c5f6e6412605260e40cd0f018c4cdfbf1262c37cfc8fdbddd09db6da:480p",
+    "27d8dc35b50aa6a50f428c8c636910e69853b95ccdfe25660a6d5e5936507122": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:1080p",
+    "952735fbf3e10733b135a50e02b3b6ef5cd3009edd56df4af21348bac5695c0e": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:720p",
+    "1deecc78e99d016edde85061b6e3e9777b78b4b2d75ac06a7e1468f42b8f5023": "6f4e82947e72d77ace68f3a0d8b2e2aebce197debaa7566d13e2fc75931a21ac:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -11905,6 +11964,12 @@
       "episode": "03",
       "message_id": "1666",
       "published_at": 1793219285
+    },
+    "archive:d02cd06d5bb0cf496773801867e7622fd387f2b799170ffcd42393f367db31c2": {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": "04",
+      "message_id": "1670",
+      "published_at": 1793220571
     }
   }
 }
