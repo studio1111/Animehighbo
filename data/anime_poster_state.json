@@ -894,7 +894,9 @@
           "native": "薬屋のひとりごと 第3期"
         },
         "coverImage": {
-          "extraLarge": "https://contents.oricon.co.jp/anime/img/1000/1168/base/img1200/tv-program-image-80f9c48f8959330c2792405010feb2851682e972fea8bde3e8ebfb6baee22abc.jpg"
+          "extraLarge": "https://contents.oricon.co.jp/anime/img/1000/1168/base/img1200/tv-program-image-80f9c48f8959330c2792405010feb2851682e972fea8bde3e8ebfb6baee22abc.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg"
         },
         "description": "After the Shi Clan rebellion settles, Maomao returns to her work as a pharmacist in the pleasure district. A strange clue prompts a new investigation, while Jinshi faces the duties of his true position as the Emperor's younger brother and worries about a warning of disaster. Rumors of a mysterious shrine maiden add another layer of danger to the country of Li.",
         "seasonYear": 2026,
@@ -918,7 +920,10 @@
         },
         "isAdult": false,
         "metadata_source": "Oricon current-season record",
-        "metadata_source_url": "https://www.oricon.co.jp/anime/1168/"
+        "metadata_source_url": "https://www.oricon.co.jp/anime/1168/",
+        "season": "FALL",
+        "source": "LIGHT_NOVEL",
+        "anilist_id": 161645
       },
       "poster_source": "Oricon News current-season key visual",
       "metadata_source_url": "https://www.oricon.co.jp/anime/1168/"
