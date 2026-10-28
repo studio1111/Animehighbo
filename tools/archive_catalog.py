@@ -240,10 +240,10 @@ def _direct_release_entry(
     if not isinstance(row, dict):
         return None
     title = str(row.get("title") or "").strip()
-    if re.search(r"(?i)\\b(batch|complete series)\\b|\\(\\s*\\d+\\s*[-–]\\s*\\d+\\s*\\)", title):
+    if re.search(r"(?i)\b(batch|complete series)\b|\(\s*\d+\s*[-–]\s*\d+\s*\)", title):
         return None
     raw_episode = str(row.get("episode") or "").strip()
-    if not re.fullmatch(r"\\d{1,4}", raw_episode):
+    if not re.fullmatch(r"\d{1,4}", raw_episode):
         return None
     episode = int(raw_episode)
     if episode < 1:
@@ -257,12 +257,12 @@ def _direct_release_entry(
 
     show_title = str(row.get("show") or row.get("series_title") or "").strip()
     if not show_title:
-        cleaned = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title)
-        cleaned = re.sub(r"(?i)\\.(?:mkv|mp4|webm)$", "", cleaned)
-        cleaned = re.sub(r"(?i)\\s*\\((?:1080|720|480)p\\)", "", cleaned)
-        cleaned = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", cleaned).strip()
+        cleaned = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title)
+        cleaned = re.sub(r"(?i)\.(?:mkv|mp4|webm)$", "", cleaned)
+        cleaned = re.sub(r"(?i)\s*\((?:1080|720|480)p\)", "", cleaned)
+        cleaned = re.sub(r"\s*\[[^\]]*\]\s*$", "", cleaned).strip()
         match = re.match(
-            r"^(.*?)\\s+-\\s+(?:episode\\s*)?\\d{1,4}(?:\\.\\d+)?\\s*$",
+            r"^(.*?)\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?\s*$",
             cleaned, re.I,
         )
         show_title = match.group(1).strip(" -–—") if match else ""
@@ -282,13 +282,13 @@ def _direct_release_entry(
 def _manifest_episode_key(row: dict) -> tuple[str, int] | None:
     """Normalize one manifest row to a stable series-and-episode key."""
     title = str(row.get("title") or "").strip()
-    title = re.sub(r"(?i)\\s+\\((?:1080|720|480)p\\)$", "", title)
+    title = re.sub(r"(?i)\s+\((?:1080|720|480)p\)$", "", title)
     number = _episode_number(row)
     title = re.sub(
-        r"(?i)\\s+-\\s+(?:episode\\s*)?\\d{1,4}(?:\\.\\d+)?$",
+        r"(?i)\s+-\s+(?:episode\s*)?\d{1,4}(?:\.\d+)?$",
         "", title,
     )
-    title = re.sub(r"\\s+", " ", title).strip(" -–—").casefold()
+    title = re.sub(r"\s+", " ", title).strip(" -–—").casefold()
     if not title or number is None:
         return None
     return title, number
