@@ -9,6 +9,28 @@ class RefreshAnimeMetadataTests(unittest.TestCase):
         self.assertEqual(merged["genres"], ["Action"])
         self.assertEqual(merged["description"], "A verified synopsis.")
 
+    def test_curated_exact_season_records_skip_slow_fuzzy_lookups(self):
+        records = {
+            "curated": {
+                "title": "Verified Season 2",
+                "poster_url": "https://cdn.example/season2.jpg",
+                "metadata": {
+                    "metadata_source": "MyAnimeList exact-season record",
+                    "description": "Verified season-specific synopsis.",
+                    "seasonYear": 2026,
+                    "genres": ["Fantasy"],
+                    "status": "RELEASING",
+                    "studios": {"nodes": [{"name": "Studio Example"}]},
+                    "coverImage": {"extraLarge": "https://cdn.example/season2.jpg"},
+                },
+            }
+        }
+        calls = []
+        refreshed, with_synopsis = refresh_records(records, lambda title: calls.append(title) or {})
+        self.assertEqual(calls, [])
+        self.assertEqual(refreshed, 0)
+        self.assertEqual(with_synopsis, 1)
+
     def test_one_lookup_failure_does_not_stop_other_series(self):
         records = {"failed": {"title": "Unavailable Anime", "poster_url": "https://example.org/poster.jpg"},
                    "good": {"title": "Known Anime", "poster_url": "https://example.org/known.jpg"}}
