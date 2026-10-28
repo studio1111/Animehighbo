@@ -1,13 +1,13 @@
 {
-  "generated_on": "2026-10-27",
+  "generated_on": "2026-10-28",
   "source": "SubsPlease RSS metadata (1080p and 720p feeds)",
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 45,
+    "feed_releases": 44,
     "matched_in_authorized_manifest": 0,
     "found_in_candidate_report": 28,
-    "review_required": 45
+    "review_required": 44
   },
   "policy": "This report contains metadata only. Only entries with an evidence-backed rights-review record count as authorized-manifest matches; candidate or RSS matches are not permission to redistribute. No media URLs are stored or published.",
   "releases": [
@@ -23,15 +23,6 @@
     {
       "title": "Link Click S3",
       "episode": 12,
-      "release_date": "2026-10-22",
-      "feed_quality": "720p",
-      "in_authorized_manifest": false,
-      "in_candidate_report": true,
-      "review_required": true
-    },
-    {
-      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
-      "episode": 17,
       "release_date": "2026-10-22",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
@@ -296,7 +287,7 @@
       "release_date": "2026-10-25",
       "feed_quality": "720p",
       "in_authorized_manifest": false,
-      "in_candidate_report": false,
+      "in_candidate_report": true,
       "review_required": true
     },
     {
