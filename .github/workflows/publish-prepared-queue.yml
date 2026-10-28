@@ -129,39 +129,40 @@ jobs:
                   failed_recent.add(title[len(prefix):].strip())
 
           rows = []
+          catalog_pending = []
           for row in manifest:
               if not isinstance(row, dict):
                   continue
               item_identity = identity(row)
               if not item_identity or complete(published.get(item_identity)):
                   continue
-              if item_identity not in artifact_by_identity or item_identity in failed_recent:
-                  continue
               title_key = series_title(row)
               raw_title = str(row.get("title") or "")
-              number_match = re.search(r"(?i)\b(?:episode\s*)?(\d{1,4})(?:\.\d+)?\b", raw_title)
+              number_match = re.search(r"(?i)\\b(?:episode\\s*)?(\\d{1,4})(?:\\.\\d+)?\\b", raw_title)
               try:
                   episode_no = int(row.get("episode") or (number_match.group(1) if number_match else 0))
               except (TypeError, ValueError):
                   episode_no = 0
-              release_date = str(row.get("release_date") or "")
-              # Exclusions are explicit only; unknown title formats remain visible for review.
-              clean_key = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw_title)
-              clean_key = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", clean_key)
-              title_match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", clean_key)
+              clean_key = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw_title)
+              clean_key = re.sub(r"(?i)\\s+\\(?\\d{3,4}p\\)?\\s*$", "", clean_key)
+              title_match = re.match(r"^(.*?)\\s+-\\s+\\d{1,4}(?:\\.\\d+)?(?=\\s*(?:\\(|\\[|$))", clean_key)
               exclusion_key = (title_match.group(1).strip() if title_match else clean_key).casefold()
               if exclusion_key in denied:
                   continue
-              rows.append({
+              pending = {
                   "identity": item_identity,
                   "title": raw_title,
                   "series": title_key,
                   "episode": episode_no,
-                  "release_date": release_date,
-                  **artifact_by_identity[item_identity],
-              })
+                  "release_date": str(row.get("release_date") or ""),
+              }
+              catalog_pending.append(pending)
+              if item_identity not in artifact_by_identity or item_identity in failed_recent:
+                  continue
+              rows.append({**pending, **artifact_by_identity[item_identity]})
 
-          # Enforce episode order within each series while allowing other series through.
+          # Enforce episode order using the full manifest, including episodes whose
+          # preparation is still running or has not succeeded yet.
           rows.sort(key=lambda x: (x["release_date"], x["title"].casefold(), x["identity"]))
           ready = []
           for row in rows:
@@ -169,7 +170,7 @@ jobs:
                   other["series"] == row["series"]
                   and 0 < other["episode"] < row["episode"]
                   and not complete(published.get(other["identity"]))
-                  for other in rows
+                  for other in catalog_pending
               )
               if not earlier_pending:
                   ready.append(row)
