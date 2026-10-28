@@ -22,7 +22,7 @@ def episode(title, number, identity, season=1, status="prepared"):
 class EmptyQueueReasonTests(unittest.TestCase):
     def test_reports_active_episode_as_reason_when_all_eligible_work_is_running(self):
         self.assertEqual(
-            empty_queue_reason(eligible_count=1, active_count=1, max_workers=5),
+            empty_queue_reason(eligible_count=1, active_count=1, max_workers=1),
             "All currently eligible episodes are already queued or running.",
         )
 
@@ -37,7 +37,7 @@ class EmptyQueueReasonTests(unittest.TestCase):
             empty_queue_reason(
                 eligible_count=0,
                 active_count=0,
-                max_workers=5,
+                max_workers=1,
                 cooldown_until="2026-10-26T00:00:00Z",
             ),
             "Automatic dispatch is paused by the recorded translation quota cooldown until 2026-10-26T00:00:00Z.",
@@ -45,28 +45,25 @@ class EmptyQueueReasonTests(unittest.TestCase):
 
     def test_reports_full_worker_capacity(self):
         self.assertEqual(
-            empty_queue_reason(eligible_count=2, active_count=5, max_workers=5),
-            "Global worker capacity is full (5/5); the scheduled dispatcher will retry.",
+            empty_queue_reason(eligible_count=2, active_count=1, max_workers=1),
+            "Global worker capacity is full (1/1); the scheduled dispatcher will retry.",
         )
 
 
 class WorkerSlotLimitTests(unittest.TestCase):
-    def test_only_fills_remaining_global_worker_slots(self):
+    def test_only_one_episode_can_be_dispatched_at_a_time(self):
         entries = [episode(f"A{i} - 01", 1, f"a{i}") for i in range(1, 6)]
-        selected = limit_to_available_slots(entries, {"running-1", "running-2", "running-3"})
-        self.assertEqual([row["identity"] for row in selected], ["a1", "a2"])
+        selected = limit_to_available_slots(entries, set(), max_workers=1)
+        self.assertEqual([row["identity"] for row in selected], ["a1"])
 
-    def test_does_not_dispatch_more_when_five_workers_are_already_active(self):
+    def test_does_not_dispatch_more_when_one_worker_is_already_active(self):
         entries = [episode("A - 01", 1, "a1")]
-        self.assertEqual(
-            limit_to_available_slots(entries, {"one", "two", "three", "four", "five"}),
-            [],
-        )
+        self.assertEqual(limit_to_available_slots(entries, {"one"}, max_workers=1), [])
 
     def test_does_not_redispatch_an_active_identity(self):
         entries = [episode("A - 01", 1, "a1"), episode("B - 01", 1, "b1")]
-        selected = limit_to_available_slots(entries, {"a1"})
-        self.assertEqual([row["identity"] for row in selected], ["b1"])
+        selected = limit_to_available_slots(entries, {"a1"}, max_workers=1)
+        self.assertEqual([row["identity"] for row in selected], [])
 
 
 class IndependentEpisodeQueueTests(unittest.TestCase):
