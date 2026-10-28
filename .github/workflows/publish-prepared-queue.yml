@@ -1,0 +1,190 @@
+name: Animehighbo prepared publication queue
+run-name: Animehighbo prepared publication queue
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Animehighbo single-episode worker
+      - Animehighbo prepared publication queue
+      - Recover and publish prepared episode
+    types: [completed]
+  schedule:
+    - cron: '*/2 * * * *'
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: animehighbo-prepared-publication-planner
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Dispatch the next ready episode
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Find a prepared episode and dispatch only one publisher
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+
+          def api(path):
+              result = subprocess.run(
+                  ["gh", "api", path],
+                  check=True, capture_output=True, text=True,
+              )
+              return json.loads(result.stdout)
+
+          def complete(record):
+              return isinstance(record, dict) and {
+                  "1080p", "720p", "480p"
+              }.issubset(set(record.get("complete_qualities", [])))
+
+          def identity(row):
+              uri = str(row.get("uri") or row.get("url") or "").strip()
+              if not uri:
+                  return ""
+              return hashlib.sha256(("archive:" + uri).encode("utf-8")).hexdigest()
+
+          def series_title(row):
+              explicit = str(row.get("series_title") or "").strip()
+              if explicit:
+                  return explicit.casefold()
+              title = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", str(row.get("title") or ""))
+              title = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", title)
+              match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", title)
+              return (match.group(1).strip() if match else title.strip()).casefold()
+
+          # Do not start another publisher while one is queued or running.
+          for status in ("queued", "in_progress"):
+              active = api(f"repos/{repo}/actions/workflows/recover-prepared-episode.yml/runs?status={status}&per_page=100")
+              if active.get("workflow_runs"):
+                  print(f"Publisher already {status}; durable prepared artifacts remain available for the next queue pass.")
+                  raise SystemExit(0)
+
+          manifest = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
+          state = json.loads(Path("data/state.json").read_text(encoding="utf-8")) if Path("data/state.json").exists() else {}
+          published = state.get("published", {}) if isinstance(state, dict) else {}
+          exclusions_path = Path("data/archive_exclusions.json")
+          exclusions = json.loads(exclusions_path.read_text(encoding="utf-8")) if exclusions_path.exists() else []
+          denied = {re.sub(r"\s+", " ", str(x)).strip().casefold() for x in exclusions if str(x).strip()}
+
+          # Index successful preparation runs and their available artifacts.
+          prep_runs = api(f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100").get("workflow_runs", [])
+          artifact_by_identity = {}
+          for run in prep_runs:
+              if run.get("conclusion") != "success":
+                  continue
+              title = str(run.get("display_title") or "")
+              prefix = "Animehighbo worker "
+              if not title.startswith(prefix):
+                  continue
+              item_identity = title[len(prefix):].strip()
+              if not item_identity or item_identity in artifact_by_identity:
+                  continue
+              artifacts = api(f"repos/{repo}/actions/runs/{run['id']}/artifacts").get("artifacts", [])
+              artifact_name = f"episode-{item_identity}"
+              if any(a.get("name") == artifact_name and not a.get("expired") for a in artifacts):
+                  artifact_by_identity[item_identity] = {
+                      "run_id": str(run["id"]),
+                      "artifact_name": artifact_name,
+                      "created_at": str(run.get("created_at") or ""),
+                  }
+
+          # Failed recent publication attempts get a short cooldown, so one broken
+          # bundle cannot spin continuously or block unrelated prepared episodes.
+          failed_recent = set()
+          failed_runs = api(f"repos/{repo}/actions/workflows/recover-prepared-episode.yml/runs?status=completed&per_page=100").get("workflow_runs", [])
+          from datetime import datetime, timedelta, timezone
+          now = datetime.now(timezone.utc)
+          for run in failed_runs:
+              if run.get("conclusion") not in {"failure", "timed_out"}:
+                  continue
+              title = str(run.get("display_title") or "")
+              prefix = "Publish prepared episode "
+              if not title.startswith(prefix):
+                  continue
+              try:
+                  updated = datetime.fromisoformat(str(run.get("updated_at")).replace("Z", "+00:00"))
+                  age = now - updated.astimezone(timezone.utc)
+              except (TypeError, ValueError):
+                  continue
+              if timedelta(0) <= age <= timedelta(minutes=15):
+                  failed_recent.add(title[len(prefix):].strip())
+
+          rows = []
+          for row in manifest:
+              if not isinstance(row, dict):
+                  continue
+              item_identity = identity(row)
+              if not item_identity or complete(published.get(item_identity)):
+                  continue
+              if item_identity not in artifact_by_identity or item_identity in failed_recent:
+                  continue
+              title_key = series_title(row)
+              raw_title = str(row.get("title") or "")
+              number_match = re.search(r"(?i)\b(?:episode\s*)?(\d{1,4})(?:\.\d+)?\b", raw_title)
+              try:
+                  episode_no = int(row.get("episode") or (number_match.group(1) if number_match else 0))
+              except (TypeError, ValueError):
+                  episode_no = 0
+              release_date = str(row.get("release_date") or "")
+              # Exclusions are explicit only; unknown title formats remain visible for review.
+              clean_key = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw_title)
+              clean_key = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", clean_key)
+              title_match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", clean_key)
+              exclusion_key = (title_match.group(1).strip() if title_match else clean_key).casefold()
+              if exclusion_key in denied:
+                  continue
+              rows.append({
+                  "identity": item_identity,
+                  "title": raw_title,
+                  "series": title_key,
+                  "episode": episode_no,
+                  "release_date": release_date,
+                  **artifact_by_identity[item_identity],
+              })
+
+          # Enforce episode order within each series while allowing other series through.
+          rows.sort(key=lambda x: (x["release_date"], x["title"].casefold(), x["identity"]))
+          ready = []
+          for row in rows:
+              earlier_pending = any(
+                  other["series"] == row["series"]
+                  and 0 < other["episode"] < row["episode"]
+                  and not complete(published.get(other["identity"]))
+                  for other in rows
+              )
+              if not earlier_pending:
+                  ready.append(row)
+
+          if not ready:
+              print("No prepared, uncompleted episode is currently eligible for publication.")
+              raise SystemExit(0)
+
+          selected = ready[0]
+          print(f"Dispatching the next prepared episode: {selected['title']} [{selected['identity']}]")
+          subprocess.run([
+              "gh", "workflow", "run", "recover-prepared-episode.yml", "--ref", "main",
+              "--field", f"run_id={selected['run_id']}",
+              "--field", f"artifact_name={selected['artifact_name']}",
+              "--field", f"identity={selected['identity']}",
+          ], check=True)
+          print("Exactly one publisher dispatched. It will request the next queue pass when complete.")
+          PY
