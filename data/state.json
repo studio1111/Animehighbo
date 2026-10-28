@@ -9258,6 +9258,62 @@
       "source_quality": "1080p",
       "published_at": 1793217968,
       "release_date": "2026-10-27"
+    },
+    "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:1080p": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "04",
+      "group_id": "af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "poster_identity": "archive:af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "release_date": "2026-10-27",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a9d44e2678c4ab7b58d10c590b472ebc5ec58ca7e7d9a7c910f9c4d966a84a75",
+      "message_id": "1659",
+      "published_at": 1793218352,
+      "bilingual_subtitles": true
+    },
+    "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:720p": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "04",
+      "group_id": "af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "poster_identity": "archive:af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "release_date": "2026-10-27",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "608bcd3824316abf843948b9ffe88e6ffe1826fce5f586366fdb3b0348c656a3",
+      "message_id": "1660",
+      "published_at": 1793218356,
+      "bilingual_subtitles": true
+    },
+    "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:480p": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "04",
+      "group_id": "af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "poster_identity": "archive:af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "release_date": "2026-10-27",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ef4c71fd572c64f8a22e207bde3b118aa5431eb20b7d00304fd298421f9b3553",
+      "message_id": "1661",
+      "published_at": 1793218360,
+      "bilingual_subtitles": true
+    },
+    "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "04",
+      "group_id": "af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "poster_identity": "archive:af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793218360,
+      "release_date": "2026-10-27"
     }
   },
   "seen": {
@@ -10427,7 +10483,10 @@
     "4be5c17524613806a14a7a83b24061a03a1c47706437fac5cc207e72e699f9f9": "dd9ce69f93de28ff933f4a4208f75fd4c0d3d947d6829fc5585fe10f0a4826e4:480p",
     "ed35d512755f4e3b76d6049f9e419d50fa3f112b437a9b2b0b9720282c268dcd": "2697d80dd81d5f9c2eafdf4ec3cda52e8e35369d58664072a4f9c9f979ae6a5a:1080p",
     "a27467f4e3d95ac5a2fd1671f988da51ee1f7a12cc297bc81d0556521312992c": "2697d80dd81d5f9c2eafdf4ec3cda52e8e35369d58664072a4f9c9f979ae6a5a:720p",
-    "3cb6fdf3004d560a851c2c33f486c27e37a59abf969850c3b41f9241d07f586e": "2697d80dd81d5f9c2eafdf4ec3cda52e8e35369d58664072a4f9c9f979ae6a5a:480p"
+    "3cb6fdf3004d560a851c2c33f486c27e37a59abf969850c3b41f9241d07f586e": "2697d80dd81d5f9c2eafdf4ec3cda52e8e35369d58664072a4f9c9f979ae6a5a:480p",
+    "a9d44e2678c4ab7b58d10c590b472ebc5ec58ca7e7d9a7c910f9c4d966a84a75": "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:1080p",
+    "608bcd3824316abf843948b9ffe88e6ffe1826fce5f586366fdb3b0348c656a3": "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:720p",
+    "ef4c71fd572c64f8a22e207bde3b118aa5431eb20b7d00304fd298421f9b3553": "882943c716e76519602708563d90f48f5b4593ca757de1951957a6a6a56487ad:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -11710,6 +11769,12 @@
       "episode": "16",
       "message_id": "1654",
       "published_at": 1793217956
+    },
+    "archive:af8de1a6c4305c36e060ffed98d504959ca40c5de897795a5eae8d4483767202": {
+      "title": "Choujun! Choujou-senpai",
+      "episode": "04",
+      "message_id": "1658",
+      "published_at": 1793218345
     }
   }
 }
