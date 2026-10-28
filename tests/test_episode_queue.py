@@ -20,6 +20,17 @@ def row(title, episode, day, uri=None):
 
 
 class ManualExclusionTests(unittest.TestCase):
+    def test_completed_prepared_artifacts_are_not_dispatched_again(self):
+        from tools.episode_queue import exclude_prepared_identities
+        entries = [
+            {"identity": "artifact-ready", "title": "Already Prepared - 03 (1080p)"},
+            {"identity": "needs-preparation", "title": "Next Series - 01 (1080p)"},
+        ]
+        self.assertEqual(
+            exclude_prepared_identities(entries, {"artifact-ready"}),
+            [entries[1]],
+        )
+
     def test_all_series_are_allowed_except_explicit_manual_exclusions(self):
         manifest = [
             {"title": "Approved Saga - 01 (1080p)", "episode": 1},
