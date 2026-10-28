@@ -53,32 +53,32 @@ jobs:
 
           def episode_details(title):
               patterns = [
-                  r"(?i)\\b(?:episode|ep)\\s*[-.#:]?\\s*(\\d{1,4}(?:\\.\\d+)?)\\b",
-                  r"第\\s*(\\d{1,4}(?:\\.\\d+)?)\\s*[話话集期]",
-                  r"(?i)\\bS\\d{1,2}\\s*E(\\d{1,4})\\b",
-                  r"\\s[-–]\\s*(\\d{1,4})(?=\\s*(?:\\(|\\[|$))",
+                  r"(?i)\b(?:episode|ep)\s*[-.#:]?\s*(\d{1,4}(?:\.\d+)?)\b",
+                  r"第\s*(\d{1,4}(?:\.\d+)?)\s*[話话集期]",
+                  r"(?i)\bS\d{1,2}\s*E(\d{1,4})\b",
+                  r"\s[-–]\s*(\d{1,4})(?=\s*(?:\(|\[|$))",
               ]
               episode = ""
-              clean = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title.strip())
+              clean = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title.strip())
               for pattern in patterns:
                   match = re.search(pattern, clean)
                   if match:
                       episode = match.group(1)
                       clean = re.sub(pattern, " ", clean).strip(" -|:[]")
                       break
-              clean = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", clean)
-              clean = re.sub(r"(?i)\\.(?:mkv|mp4|webm|mov)$", " ", clean)
-              clean = re.sub(r"\\[[^\\]]*\\]", " ", clean)
-              clean = re.sub(r"\\(\\s*\\)", " ", clean)
-              clean = re.sub(r"\\s+", " ", clean).strip(" -|:[]")
-              return (re.sub(r"\\s+", " ", clean) or title.strip(), episode)
+              clean = re.sub(r"(?i)\b(?:480|720|1080|1440|2160)p\b", " ", clean)
+              clean = re.sub(r"(?i)\.(?:mkv|mp4|webm|mov)$", " ", clean)
+              clean = re.sub(r"\[[^\]]*\]", " ", clean)
+              clean = re.sub(r"\(\s*\)", " ", clean)
+              clean = re.sub(r"\s+", " ", clean).strip(" -|:[]")
+              return (re.sub(r"\s+", " ", clean) or title.strip(), episode)
 
           # Fail closed unless the public channel preview is reachable and identifies posts.
           session = requests.Session()
           session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; AnimehighboChannelAudit/1.0)"})
           preview = session.get(f"https://t.me/s/{CHANNEL}", timeout=25)
           preview.raise_for_status()
-          if not re.search(r'data-post=["\\']' + re.escape(CHANNEL) + r'/\\d+', preview.text):
+          if not re.search(r'data-post="' + re.escape(CHANNEL) + r'/\d+', preview.text):
               raise SystemExit("Channel preview did not expose a verifiable post. No state was changed.")
 
           expected = {}
@@ -92,14 +92,14 @@ jobs:
               anime_title, episode = episode_details(title)
               if not episode:
                   raise SystemExit(f"Could not parse episode number safely: {title}")
-              normalized = re.sub(r"\\s+", " ", anime_title).strip().casefold()
+              normalized = re.sub(r"\s+", " ", anime_title).strip().casefold()
               group_id = hashlib.sha256(f"{normalized}|{episode}".encode("utf-8")).hexdigest()
               poster_key = f"archive:{group_id}"
               episode_meta[identity] = {
                   "identity": identity, "title": anime_title, "episode": episode,
                   "poster_key": poster_key, "series_key": normalized + "::season-" +
-                      str((re.search(r"(?i)\\bS(\\d{1,2})\\b", anime_title).group(1)
-                           if re.search(r"(?i)\\bS(\\d{1,2})\\b", anime_title) else "1")),
+                      str((re.search(r"(?i)\bS(\d{1,2})\b", anime_title).group(1)
+                           if re.search(r"(?i)\bS(\d{1,2})\b", anime_title) else "1")),
               }
               expected[identity] = {
                   "poster": str(posters.get(poster_key, {}).get("message_id") or ""),
@@ -131,7 +131,7 @@ jobs:
                           return mid, None, f"HTTP {response.status_code}"
                       body = response.text
                       exact = re.search(
-                          r'data-post=["\\']' + re.escape(CHANNEL) + r'/' + re.escape(mid) + r'["\\']',
+                          r'data-post="' + re.escape(CHANNEL) + r'/' + re.escape(mid) + r'"',
                           body,
                       )
                       if exact:
@@ -185,14 +185,14 @@ jobs:
           )
           summary = Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
           with summary.open("a", encoding="utf-8") as out:
-              out.write("# Animehighbo channel audit\\n\\n")
-              out.write(f"- Manifest episodes checked: **{len(expected)}**\\n")
-              out.write(f"- Saved Telegram message IDs verified: **{len(message_ids)}**\\n")
-              out.write(f"- Messages present: **{len(present)}**\\n")
-              out.write(f"- Messages missing: **{len(missing)}**\\n")
-              out.write(f"- Episodes requiring repair: **{len(repairs)}**\\n\\n")
+              out.write("# Animehighbo channel audit\n\n")
+              out.write(f"- Manifest episodes checked: **{len(expected)}**\n")
+              out.write(f"- Saved Telegram message IDs verified: **{len(message_ids)}**\n")
+              out.write(f"- Messages present: **{len(present)}**\n")
+              out.write(f"- Messages missing: **{len(missing)}**\n")
+              out.write(f"- Episodes requiring repair: **{len(repairs)}**\n\n")
               for row in repairs:
-                  out.write(f"- {row['title']} EP {row['episode']}: missing {', '.join(row['missing'])}\\n")
+                  out.write(f"- {row['title']} EP {row['episode']}: missing {', '.join(row['missing'])}\n")
           print(f"Verified {len(present)} messages; {len(missing)} missing; {len(repairs)} episodes need repair.")
           PY
 
@@ -204,12 +204,12 @@ jobs:
           from pathlib import Path
           rows = json.loads(Path("/tmp/animehighbo-repair-identities.json").read_text(encoding="utf-8"))
           Path("/tmp/animehighbo-repair-identities.txt").write_text(
-              "\\n".join(row["identity"] for row in rows) + ("\\n" if rows else ""),
+              "\n".join(row["identity"] for row in rows) + ("\n" if rows else ""),
               encoding="utf-8",
           )
           print(f"episodes_to_repair={len(rows)}")
           with open(__import__("os").environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-              out.write(f"episodes_to_repair={len(rows)}\\n")
+              out.write(f"episodes_to_repair={len(rows)}\n")
           PY
           if [ ! -s /tmp/animehighbo-repair-identities.txt ]; then
             echo "The live channel audit found no missing episode messages; nothing will be republished."
@@ -236,15 +236,15 @@ jobs:
           manifest = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
           import hashlib, re
           def details(title):
-              clean = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", title.strip())
-              m = re.search(r"\\s[-–]\\s*(\\d{1,4})(?=\\s*(?:\\(|\\[|$))", clean)
+              clean = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", title.strip())
+              m = re.search(r"\s[-–]\s*(\d{1,4})(?=\s*(?:\(|\[|$))", clean)
               if not m:
                   return None
               ep = m.group(1)
-              clean = re.sub(r"\\s[-–]\\s*\\d{1,4}(?=\\s*(?:\\(|\\[|$))", " ", clean)
-              clean = re.sub(r"(?i)\\b(?:480|720|1080|1440|2160)p\\b", " ", clean)
-              clean = re.sub(r"\\[[^\\]]*\\]", " ", clean)
-              clean = re.sub(r"\\s+", " ", clean).strip(" -|:[]")
+              clean = re.sub(r"\s[-–]\s*\d{1,4}(?=\s*(?:\(|\[|$))", " ", clean)
+              clean = re.sub(r"(?i)\b(?:480|720|1080|1440|2160)p\b", " ", clean)
+              clean = re.sub(r"\[[^\]]*\]", " ", clean)
+              clean = re.sub(r"\s+", " ", clean).strip(" -|:[]")
               return clean, ep
           for entry in manifest:
               uri = str(entry.get("uri") or entry.get("url") or "").strip()
@@ -255,9 +255,9 @@ jobs:
               if not parsed:
                   raise SystemExit(f"Cannot map poster key for {entry.get('title')}")
               title, episode = parsed
-              group = hashlib.sha256(f"{re.sub(r'\\s+', ' ', title).strip().casefold()}|{episode}".encode("utf-8")).hexdigest()
+              group = hashlib.sha256(f"{re.sub(r'\s+', ' ', title).strip().casefold()}|{episode}".encode("utf-8")).hexdigest()
               posters.pop(f"archive:{group}", None)
-          path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
             git add data/state.json
             if git diff --cached --quiet; then
