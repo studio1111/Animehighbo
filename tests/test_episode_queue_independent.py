@@ -23,7 +23,7 @@ class EmptyQueueReasonTests(unittest.TestCase):
     def test_reports_active_episode_as_reason_when_all_eligible_work_is_running(self):
         self.assertEqual(
             empty_queue_reason(eligible_count=1, active_count=1, max_workers=1),
-            "All currently eligible episodes are already queued or running.",
+            "Global worker capacity is full (1/1); the scheduled dispatcher will retry.",
         )
 
     def test_reports_series_order_or_completion_when_no_episode_is_eligible(self):
