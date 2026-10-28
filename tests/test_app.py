@@ -1131,3 +1131,25 @@ class NoAutomaticRightsGateTests(unittest.TestCase):
         self.assertEqual(second, first)
         post.assert_called_once()
         app.translate_anime_synopsis.cache_clear()
+
+
+    def test_curated_season_cache_overrides_fuzzy_live_catalog_metadata(self):
+        import app
+        live = {
+            "title": {"english": "Old Season"},
+            "coverImage": {"extraLarge": "https://cdn.example/old.jpg"},
+            "description": "Old season synopsis.",
+            "seasonYear": 2023,
+        }
+        cached = {
+            "title": {"english": "Verified Season 2", "romaji": "Verified II"},
+            "coverImage": {"extraLarge": "https://cdn.example/season2.jpg"},
+            "description": "Verified season-two synopsis.",
+            "seasonYear": 2026,
+            "metadata_source": "MyAnimeList exact-season record",
+        }
+        merged = app.apply_cached_anime_metadata(live, cached)
+        self.assertEqual(merged["title"]["english"], "Verified Season 2")
+        self.assertEqual(merged["coverImage"]["extraLarge"], "https://cdn.example/season2.jpg")
+        self.assertEqual(merged["description"], "Verified season-two synopsis.")
+        self.assertEqual(merged["seasonYear"], 2026)
