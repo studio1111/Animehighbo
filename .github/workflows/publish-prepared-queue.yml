@@ -3,6 +3,15 @@ run-name: Animehighbo prepared publication queue
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/archive_manifest.json'
+      - 'data/archive_exclusions.json'
+      - 'data/state.json'
+      - '.github/workflows/publish-prepared-queue.yml'
+      - '.github/workflows/prepare-one-episode.yml'
+      - '.github/workflows/recover-prepared-episode.yml'
   workflow_run:
     workflows:
       - Animehighbo single-episode worker
