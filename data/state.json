@@ -8194,6 +8194,62 @@
       "source_quality": "1080p",
       "published_at": 1793202586,
       "release_date": "2026-10-25"
+    },
+    "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:1080p": {
+      "title": "Ao Ashi S2",
+      "episode": "04",
+      "group_id": "caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "poster_identity": "archive:caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "release_date": "2026-10-25",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ef07aa27cbe9e3a91b4475fc9cb86536a8ad4c002df6f8bf829e4a06c87303f9",
+      "message_id": "1583",
+      "published_at": 1793202836,
+      "bilingual_subtitles": true
+    },
+    "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:720p": {
+      "title": "Ao Ashi S2",
+      "episode": "04",
+      "group_id": "caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "poster_identity": "archive:caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "release_date": "2026-10-25",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6303ed0be6f7ce9159c69ea256ebe91ead64b6a7d36dc64f45d97f300e7dd446",
+      "message_id": "1584",
+      "published_at": 1793202841,
+      "bilingual_subtitles": true
+    },
+    "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:480p": {
+      "title": "Ao Ashi S2",
+      "episode": "04",
+      "group_id": "caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "poster_identity": "archive:caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "release_date": "2026-10-25",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "698c89dd87aaff87c8474a88a6ee840d17bb0a1f4c788f9d4a212a14f7cc9569",
+      "message_id": "1585",
+      "published_at": 1793202846,
+      "bilingual_subtitles": true
+    },
+    "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0": {
+      "title": "Ao Ashi S2",
+      "episode": "04",
+      "group_id": "caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "poster_identity": "archive:caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793202846,
+      "release_date": "2026-10-25"
     }
   },
   "seen": {
@@ -9306,7 +9362,10 @@
     "45e5b2ea0322c46283c746cddfbe3cde03f6b1e317b12c4c6032162e8fe5f87f": "7ada93119644f25ab56c7a9f3e5763b9f6186db8689b5914e1db4dd7e171ce76:480p",
     "1e835ca4c9cb5fb88d45fc8073fea5c17f4d45da69b947ff0c1ff028a3749e5a": "ce33842c2d28f7692b133f055d81e1a9196d18f32f8e9711f0ea6736dfba98b7:1080p",
     "6e5b7b53cdd5f6efe86fac532e66f2ac46ad2d3fc23467ac21440fae5a1732dc": "ce33842c2d28f7692b133f055d81e1a9196d18f32f8e9711f0ea6736dfba98b7:720p",
-    "ca0ca2dfe909aba93f93f16f4e02da69fbaad980c460a1cf66b2ef4da9de524b": "ce33842c2d28f7692b133f055d81e1a9196d18f32f8e9711f0ea6736dfba98b7:480p"
+    "ca0ca2dfe909aba93f93f16f4e02da69fbaad980c460a1cf66b2ef4da9de524b": "ce33842c2d28f7692b133f055d81e1a9196d18f32f8e9711f0ea6736dfba98b7:480p",
+    "ef07aa27cbe9e3a91b4475fc9cb86536a8ad4c002df6f8bf829e4a06c87303f9": "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:1080p",
+    "6303ed0be6f7ce9159c69ea256ebe91ead64b6a7d36dc64f45d97f300e7dd446": "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:720p",
+    "698c89dd87aaff87c8474a88a6ee840d17bb0a1f4c788f9d4a212a14f7cc9569": "90451d5c38bb33b6100fa75ba33bfffca5a230e91d310d1b6a031667bd8704f0:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -10475,6 +10534,12 @@
       "episode": "04",
       "message_id": "1578",
       "published_at": 1793202576
+    },
+    "archive:caa89e8c65b0d6dade7de66c7d494ca03eb78170ba1f7a77c5e5323c98987089": {
+      "title": "Ao Ashi S2",
+      "episode": "04",
+      "message_id": "1582",
+      "published_at": 1793202828
     }
   }
 }
