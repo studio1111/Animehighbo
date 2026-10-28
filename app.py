@@ -1275,7 +1275,7 @@ def telegram_method_for_file(filename: str) -> str:
 
 
 def telegram_upload_and_send(token: str, chat_id: str, path: Path, caption: str, thumbnail_path: Path | None = None, reply_to_message_id: str | None = None) -> str:
-    """Upload a verified media file as a standalone post with its poster thumbnail."""
+    """Upload a verified media file with its thumbnail, optionally replying to a poster anchor."""
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is not configured.")
     if not chat_id:
@@ -1589,7 +1589,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 }
                 save_state(config["state_file"], state)
                 published_count += 1
-                LOG.info("Published standalone video with poster thumbnail and full anime metadata: %s %s", title, quality)
+                LOG.info("Published quality video as a reply to poster anchor: %s %s (poster message %s)", title, quality, poster_message_id)
 
             state["published"][identity] = {
                 "title": title,
