@@ -122,6 +122,23 @@ def merge_cached_metadata(catalog: dict, cached: dict) -> dict:
     return merged
 
 
+def resolve_metadata(title: str, poster: dict, catalog_lookup=None) -> dict:
+    """Reuse title-matched cached metadata and avoid slow fuzzy calls when a synopsis exists."""
+    cached = poster.get("metadata") if isinstance(poster, dict) else None
+    if isinstance(cached, dict) and str(cached.get("description") or "").strip():
+        metadata = dict(cached)
+    else:
+        lookup = catalog_lookup or anime_catalog_metadata
+        metadata = lookup(title)
+        if not isinstance(metadata, dict):
+            metadata = {}
+        if isinstance(cached, dict):
+            metadata = merge_cached_metadata(metadata, cached)
+    metadata = dict(metadata) if isinstance(metadata, dict) else {}
+    metadata["coverImage"] = {"extraLarge": str(poster.get("poster_url") or "")}
+    return metadata
+
+
 def select_anchors(state: dict) -> list[dict]:
     posters = state.get("posters", {}) if isinstance(state, dict) else {}
     anchors = []
@@ -182,14 +199,9 @@ def main() -> int:
             continue
         try:
             if key not in metadata_by_title:
-                metadata = anime_catalog_metadata(title, timeout=15)
-                metadata.setdefault("coverImage", {})
-                metadata["coverImage"]["extraLarge"] = str(poster["poster_url"])
-                cached_metadata = poster.get("metadata")
-                if isinstance(cached_metadata, dict):
-                    metadata = merge_cached_metadata(metadata, cached_metadata)
-                metadata["coverImage"] = {"extraLarge": str(poster["poster_url"])}
-                metadata_by_title[key] = metadata
+                metadata_by_title[key] = resolve_metadata(
+                    title, poster, lambda value: anime_catalog_metadata(value, timeout=15)
+                )
             if key not in image_by_title:
                 image_by_title[key] = download_poster(str(poster["poster_url"]), timeout=25)
             image_data, image_type = image_by_title[key]
