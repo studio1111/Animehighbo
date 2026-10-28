@@ -17,6 +17,7 @@ on:
       - "config.json"
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -49,6 +50,43 @@ jobs:
           fi
       - name: Refresh release coverage report
         run: python tools/subsplease_release_monitor.py
+      # The RSS monitor is a safety net for any release the catalog scan missed.
+      # Only scheduled checks may request a catalog rebuild, preventing a
+      # workflow_dispatch loop when the catalog workflow refreshes this report.
+      - name: Rebuild archive catalog when scheduled RSS check finds gaps
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          report_path = Path("data/subsplease_release_report.json")
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          summary = report.get("summary", {})
+          missing = int(summary.get("missing_from_manifest", 0))
+          if missing <= 0:
+              print("RSS coverage matches the archive manifest; no rebuild is needed.")
+              raise SystemExit(0)
+
+          print(
+              f"RSS coverage found {missing} release(s) missing from the archive manifest; "
+              "requesting an immediate catalog refresh."
+          )
+          subprocess.run(
+              [
+                  "gh", "workflow", "run", "build-archive-catalog.yml",
+                  "--repo", os.environ["GITHUB_REPOSITORY"],
+                  "--ref", "main",
+              ],
+              check=True,
+          )
+          print("Catalog refresh requested; its completion triggers the episode dispatcher.")
+          PY
       - name: Notify Telegram about newly detected release metadata
         env:
           TELEGRAM_ALERT_BOT_TOKEN: ${{ secrets.TELEGRAM_ALERT_BOT_TOKEN }}
