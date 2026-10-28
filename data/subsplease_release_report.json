@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 42,
-    "matched_in_archive_manifest": 38,
+    "matched_in_archive_manifest": 42,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 4
+    "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -259,9 +259,9 @@
       "episode": 50,
       "release_date": "2026-10-26",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
@@ -367,27 +367,27 @@
       "episode": 4,
       "release_date": "2026-10-28",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Sekai Saikyou no Majo, Hajimemashita",
       "episode": 4,
       "release_date": "2026-10-28",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tantei wa Mou, Shindeiru. S2",
       "episode": 4,
       "release_date": "2026-10-28",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     }
   ]
 }
