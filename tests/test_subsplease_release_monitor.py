@@ -1,11 +1,7 @@
 import unittest
 from datetime import date
 
-from tools.subsplease_release_monitor import (
-    build_report,
-    parse_feed,
-    release_key,
-)
+from tools.subsplease_release_monitor import build_report, parse_feed, release_key
 
 RSS = """<?xml version="1.0"?>
 <rss version="2.0"><channel><title>SubsPlease RSS</title>
@@ -31,55 +27,29 @@ class SubsPleaseReleaseMonitorTests(unittest.TestCase):
         self.assertNotIn("magnet", str(rows[0]).casefold())
         self.assertNotIn("SECRET_HASH", str(rows))
 
-    def test_report_marks_manifest_coverage_without_granting_rights(self):
+    def test_report_matches_manifest_without_approval_metadata(self):
         feed_rows = parse_feed(RSS, "1080p")
         manifest = [{
             "title": "Kashita Maryoku - 04 (1080p)",
             "episode": 4,
             "release_date": "2026-10-24",
-            "authorized_for_redistribution": True,
-            "authorization_evidence": "https://rights.example.org/licenses/animehighbo",
-            "authorization_reviewed_at": "2026-10-24",
+            "uri": "magnet:?xt=urn:btih:SOURCE",
         }]
         report = build_report(feed_rows, manifest, date(2026, 10, 25), "2026-10-01")
         self.assertEqual(report["summary"]["feed_releases"], 1)
-        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 1)
-        self.assertEqual(report["summary"]["found_in_candidate_report"], 0)
-        self.assertEqual(report["summary"]["review_required"], 0)
-        self.assertTrue(report["releases"][0]["in_authorized_manifest"])
-        self.assertFalse(report["releases"][0]["in_candidate_report"])
-        self.assertNotIn("authorized_for_redistribution", report["releases"][0])
+        self.assertEqual(report["summary"]["matched_in_archive_manifest"], 1)
+        self.assertEqual(report["summary"]["missing_from_manifest"], 0)
+        self.assertTrue(report["releases"][0]["in_archive_manifest"])
+        self.assertNotIn("review_required", report["releases"][0])
         self.assertNotIn("uri", report["releases"][0])
 
-    def test_legacy_boolean_only_manifest_entry_is_not_a_rights_match(self):
+    def test_unmatched_rss_episode_is_reported_as_missing_from_manifest(self):
         feed_rows = parse_feed(RSS, "1080p")
-        legacy_manifest = [{
-            "title": "Kashita Maryoku - 04 (1080p)",
-            "episode": 4,
-            "release_date": "2026-10-24",
-            "authorized_for_redistribution": True,
-        }]
-        report = build_report(feed_rows, legacy_manifest, date(2026, 10, 25), "2026-10-01")
-        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 0)
-        self.assertEqual(report["summary"]["review_required"], 1)
-        self.assertFalse(report["releases"][0]["in_authorized_manifest"])
-
-    def test_candidate_report_match_is_visible_but_still_needs_rights_review(self):
-        feed_rows = parse_feed(RSS, "1080p")
-        candidates = [{
-            "title": "Kashita Maryoku - 04 (1080p)",
-            "episode": 4,
-            "release_date": "2026-10-24",
-            "quality": "1080p",
-            "authorized_for_redistribution": False,
-            "review_required": True,
-        }]
-        report = build_report(feed_rows, [], date(2026, 10, 25), "2026-10-01", candidates)
-        self.assertEqual(report["summary"]["matched_in_authorized_manifest"], 0)
-        self.assertEqual(report["summary"]["found_in_candidate_report"], 1)
-        self.assertEqual(report["summary"]["review_required"], 1)
-        self.assertTrue(report["releases"][0]["in_candidate_report"])
-        self.assertFalse(report["releases"][0]["in_authorized_manifest"])
+        report = build_report(feed_rows, [], date(2026, 10, 25), "2026-10-01")
+        self.assertEqual(report["summary"]["matched_in_archive_manifest"], 0)
+        self.assertEqual(report["summary"]["missing_from_manifest"], 1)
+        self.assertFalse(report["releases"][0]["in_archive_manifest"])
+        self.assertTrue(report["releases"][0]["missing_from_manifest"])
 
     def test_release_key_uses_series_and_episode_not_quality(self):
         self.assertEqual(
