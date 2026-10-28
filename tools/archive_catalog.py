@@ -300,7 +300,7 @@ def _fetch_rss_release_entries(
             response = session.get(url, timeout=(10, 30), allow_redirects=True)
             response.raise_for_status()
             rows = _parse_rss_release_feed(response.text, quality, cutoff, max_file_size_mb)
-        except (requests.RequestException, ET.ParseError, ValueError) as exc:
+        except (requests.RequestException, ET.ParseError, ValueError, TypeError) as exc:
             LOG.warning("Could not refresh SubsPlease %s RSS feed: %s", quality, exc)
             continue
         for row in rows:
