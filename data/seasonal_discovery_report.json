@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-10-27",
+  "generated_on": "2026-10-28",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 189,
+    "seasonal_titles": 190,
     "matched_in_manifest": 29,
-    "review_required": 160
+    "review_required": 161
   },
   "rights_policy": "Metadata discovery does not grant rights. Never add a media source or publish without verified redistribution permission.",
   "titles": [
@@ -1744,6 +1744,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/187303",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219063,
+      "title_english": null,
+      "title_romaji": "Girls und Panzer: Motto Love Love Sakusen desu! Mini Anime",
+      "title_native": "ガールズ＆パンツァー もっとらぶらぶ作戦です！ ミニアニメ",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "OVA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219063",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
