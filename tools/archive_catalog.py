@@ -7,6 +7,7 @@ import json
 import logging
 import re
 import time
+import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -227,6 +228,91 @@ def _fetch_show_episodes(session: requests.Session, page_url: str) -> tuple[str,
 
 
 
+
+RSS_FEEDS = {
+    "1080p": "https://subsplease.org/rss/?r=1080",
+    "720p": "https://subsplease.org/rss/?r=720",
+}
+
+
+def _parse_rss_release_feed(
+    xml_text: str, quality: str, cutoff: date, max_file_size_mb: int = 1800,
+) -> list[dict]:
+    """Parse individual SubsPlease RSS episodes into queueable source entries."""
+    if quality not in {"1080p", "720p"}:
+        return []
+    root = ET.fromstring(xml_text)
+    entries = []
+    max_bytes = max(1, int(max_file_size_mb)) * 1024 * 1024
+    for item in root.iter():
+        if item.tag.rsplit("}", 1)[-1].casefold() not in {"item", "entry"}:
+            continue
+        fields = {}
+        for child in list(item):
+            name = child.tag.rsplit("}", 1)[-1].casefold()
+            if name not in fields:
+                fields[name] = " ".join("".join(child.itertext()).split())
+        raw_title = fields.get("title", "").strip()
+        link = fields.get("link", "").strip()
+        released = parse_release_date(
+            fields.get("pubdate") or fields.get("published") or fields.get("updated") or ""
+        )
+        if not raw_title or not link.startswith("magnet:?xt=urn:btih:") or released is None or released < cutoff:
+            continue
+        title = re.sub(r"(?i)^\\s*\\[SubsPlease\\]\\s*", "", raw_title)
+        title = re.sub(r"(?i)\\.(?:mkv|mp4|webm)$", "", title)
+        title = re.sub(r"\\s*\\[[^\\]]*\\]\\s*$", "", title).strip()
+        title = re.sub(r"(?i)\\s*\\((?:1080|720|480)p\\)", "", title).strip()
+        if re.search(r"(?i)\\b(batch|complete series)\\b|\\(\\s*\\d+\\s*[-–]\\s*\\d+\\s*\\)", title):
+            continue
+        match = re.match(r"^(.*?)\\s+-\\s+(?:episode\\s*)?(\\d{1,4})(?:\\.\\d+)?\\s*$", title, re.I)
+        if not match:
+            continue
+        series_title = match.group(1).strip(" -–—")
+        episode = int(match.group(2))
+        if not series_title or episode < 1:
+            continue
+        declared_size = re.search(r"(?:[?&])xl=(\\d+)(?:&|$)", link)
+        if declared_size and int(declared_size.group(1)) > max_bytes:
+            LOG.warning(
+                "Skipping RSS %s source for %s episode %d: declared size %.1f MiB exceeds %d MiB.",
+                quality, series_title, episode,
+                int(declared_size.group(1)) / (1024 * 1024), max_file_size_mb,
+            )
+            continue
+        entries.append({
+            "title": f"{series_title} - {episode:02d} ({quality})",
+            "episode": episode,
+            "quality": quality,
+            "uri": link,
+            "release_date": released.isoformat(),
+        })
+    return entries
+
+
+def _fetch_rss_release_entries(
+    session: requests.Session, cutoff: date, max_file_size_mb: int = 1800,
+) -> list[dict]:
+    """Use SubsPlease RSS as a fresh-release fallback when show-detail data lags."""
+    selected: dict[tuple[str, int], dict] = {}
+    for quality, url in RSS_FEEDS.items():
+        try:
+            response = session.get(url, timeout=(10, 30), allow_redirects=True)
+            response.raise_for_status()
+            rows = _parse_rss_release_feed(response.text, quality, cutoff, max_file_size_mb)
+        except (requests.RequestException, ET.ParseError, ValueError) as exc:
+            LOG.warning("Could not refresh SubsPlease %s RSS feed: %s", quality, exc)
+            continue
+        for row in rows:
+            key = _manifest_episode_key(row)
+            if key is not None:
+                # Feed order prefers 1080p; oversized 1080p entries are discarded
+                # by the parser, allowing the corresponding 720p row to win.
+                selected.setdefault(key, row)
+    return list(selected.values())
+
+
+
 def _direct_release_entry(
     row: dict, cutoff: date, max_file_size_mb: int = 1800,
 ) -> dict | None:
@@ -308,6 +394,9 @@ def build_archive_manifest(
     show_pages: dict[str, dict] = {}
     direct_releases: list[dict] = []
     try:
+        # RSS is the freshest fallback for individual episode source links when
+        # the latest API or a show's episode-detail endpoint has not caught up.
+        rss_releases = _fetch_rss_release_entries(client, cutoff, max_file_size_mb)
         for page_number in range(1, max_pages + 1):
             payload = _request_json(client, {"f": "latest", "tz": "Etc/GMT", "p": page_number})
             releases = list(payload.values())
@@ -372,7 +461,7 @@ def build_archive_manifest(
         # for the same series/episode, then deduplicate before validating source URIs.
         combined: dict[tuple[str, int], dict] = {}
         seen_source_uris: set[str] = set()
-        for row in direct_releases + manifest:
+        for row in rss_releases + direct_releases + manifest:
             key = _manifest_episode_key(row)
             if key is None or key in combined:
                 continue
