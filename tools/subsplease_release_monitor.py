@@ -157,7 +157,7 @@ def build_report(
                 "feed_quality": str(row.get("quality") or ""),
                 "in_archive_manifest": key in manifest_keys,
                 "in_candidate_report": key in candidate_keys,
-                "review_required": key not in manifest_keys,
+                "missing_from_manifest": key not in manifest_keys,
             }
     releases = sorted(unique.values(), key=lambda row: (row["release_date"], row["title"].casefold(), row["episode"]))
     return {
@@ -169,7 +169,7 @@ def build_report(
             "feed_releases": len(releases),
             "matched_in_archive_manifest": sum(1 for row in releases if row["in_archive_manifest"]),
             "found_in_candidate_report": sum(1 for row in releases if row["in_candidate_report"]),
-            "review_required": sum(1 for row in releases if row["review_required"]),
+            "missing_from_manifest": sum(1 for row in releases if row["missing_from_manifest"]),
         },
         "policy": (
             "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report."
