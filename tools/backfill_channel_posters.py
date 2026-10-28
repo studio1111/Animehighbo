@@ -119,7 +119,7 @@ def main() -> int:
             edit_anchor(token, chat_id, record, image_data, image_type, caption)
             success += 1
             if success % 10 == 0: LOG.info("Refreshed %d/%d episode poster anchors.", success, len(anchors))
-            time.sleep(0.25)
+            time.sleep(3.2)  # Stay below Telegram edit rate limits across the full channel backfill.
         except Exception as exc:
             failures += 1
             LOG.exception("Could not refresh poster/caption for %s episode %s (message %s): %s", title, episode, record["message_id"], exc)
