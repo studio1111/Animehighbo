@@ -96,6 +96,12 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("publisher.lock", workflow)
 
 
+
+    def test_publication_planner_skips_series_episodes_already_in_poster_state(self):
+        queue = (ROOT / ".github/workflows/publish-prepared-queue.yml").read_text(encoding="utf-8")
+        self.assertIn("state.get(\"posters\", {})", queue)
+        self.assertIn("episode_dedupe_key", queue)
+
     def test_recovery_publisher_is_globally_serialized(self):
         workflow = (ROOT / ".github/workflows/recover-prepared-episode.yml").read_text(encoding="utf-8")
         self.assertIn("concurrency:", workflow)
