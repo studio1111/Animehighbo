@@ -1,8 +1,9 @@
 """Replace bot-owned episode anchor images with real series posters and refresh captions."""
 from __future__ import annotations
-import json, logging, os, time
+import json, logging, os, time, re
+from html import unescape
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 import requests
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -13,6 +14,74 @@ def normalize_title(value: str) -> str:
     import re
     return re.sub(r"[^a-z0-9]+", " ", str(value or "").casefold()).strip()
 
+def discover_channel_anchors_from_html(content: str) -> tuple[list[dict], str | None]:
+    """Parse real photo-message IDs from a public Telegram channel page."""
+    more_match = re.search(
+        r'<a\\b(?=[^>]*class=["\'][^"\']*tme_messages_more[^"\']*["\'])(?=[^>]*href=["\']([^"\']+)["\'])[^>]*>',
+        content,
+        re.I,
+    )
+    next_url = unescape(more_match.group(1)) if more_match else None
+    anchors = []
+    wrapper_pattern = re.compile(
+        r'<div\\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/(\\d+)["\'][^>]*>(.*?)(?=<div\\b[^>]*data-post=["\'](?:animehighbo|Animehighbo)/\\d+["\']|$)',
+        re.I | re.S,
+    )
+    for match in wrapper_pattern.finditer(content):
+        message_id, block = match.groups()
+        if "tgme_widget_message_photo_wrap" not in block and "tgme_widget_message_photo" not in block:
+            continue
+        caption_match = re.search(
+            r'<div\\b[^>]*class=["\'][^"\']*tgme_widget_message_text[^"\']*["\'][^>]*>(.*?)</div>',
+            block,
+            re.I | re.S,
+        )
+        if not caption_match:
+            continue
+        caption = unescape(re.sub(r"<[^>]+>", " ", caption_match.group(1)))
+        caption = re.sub(r"\\s+", " ", caption).strip()
+        title_match = re.search(
+            r"(?:English|🇬🇧)\\s*[:：]\\s*(.+?)(?=\\s+(?:فارسی|日本語|Japanese|قسمت|EP(?:ISODE)?)(?:\\s|[:：]|$))",
+            caption,
+            re.I,
+        )
+        episode_match = re.search(r"(?:قسمت|EP(?:ISODE)?)\\s*[:#：]?\\s*0*(\\d{1,4})", caption, re.I)
+        if not title_match or not episode_match:
+            continue
+        title = re.sub(r"\\s+", " ", title_match.group(1)).strip(" -–—:")
+        if title:
+            anchors.append({"message_id": message_id, "title": title, "episode": episode_match.group(1)})
+    anchors.sort(key=lambda row: int(row["message_id"]))
+    return anchors, next_url
+
+
+def discover_channel_anchors(channel_slug: str = "Animehighbo", max_pages: int = 100) -> list[dict]:
+    """Walk Telegram's public channel pagination and discover every live photo anchor."""
+    slug = str(channel_slug or "Animehighbo").strip().lstrip("@")
+    if not re.fullmatch(r"[A-Za-z0-9_]{4,64}", slug):
+        raise ValueError("Public Telegram channel name is invalid.")
+    url = f"https://t.me/s/{slug}"
+    visited_urls = set()
+    seen_ids = set()
+    anchors = []
+    for _ in range(max_pages):
+        if url in visited_urls:
+            break
+        visited_urls.add(url)
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 AnimehighboPosterAudit/1.0"}, timeout=(15, 30))
+        response.raise_for_status()
+        page_anchors, next_url = discover_channel_anchors_from_html(response.text)
+        for anchor in page_anchors:
+            if anchor["message_id"] not in seen_ids:
+                seen_ids.add(anchor["message_id"])
+                anchors.append(anchor)
+        if not next_url:
+            break
+        url = urljoin(url, next_url)
+    anchors.sort(key=lambda row: int(row["message_id"]))
+    return anchors
+
+
 def build_poster_index(payload: dict) -> dict:
     rows = payload.get("published", {}) if isinstance(payload, dict) else {}
     index = {}
@@ -21,9 +90,18 @@ def build_poster_index(payload: dict) -> dict:
         url = str(record.get("poster_url") or "").strip()
         parsed = urlparse(url)
         if parsed.scheme != "https" or not parsed.hostname: continue
-        for title in (key, record.get("title", "")):
+        titles = [key, record.get("title", "")]
+        aliases = record.get("aliases", [])
+        if isinstance(aliases, list): titles.extend(aliases)
+        metadata_title = (record.get("metadata") or {}).get("title", {})
+        if isinstance(metadata_title, dict):
+            titles.extend(metadata_title.get(field, "") for field in ("english", "romaji", "native"))
+        for title in titles:
             normalized = normalize_title(title)
             if normalized: index[normalized] = record
+            base = re.sub(r"(?i)\\s+(?:season\\s*\\d+|s\\d+|\\d+(?:st|nd|rd|th)\\s+season)$", "", str(title or "")).strip()
+            base_normalized = normalize_title(base)
+            if base_normalized: index[base_normalized] = record
     return index
 
 def merge_cached_metadata(catalog: dict, cached: dict) -> dict:
@@ -83,11 +161,11 @@ def main() -> int:
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if not token or not chat_id: raise SystemExit("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in repository secrets.")
-    state_path = Path(os.environ.get("ANIMEHIGHBO_STATE_FILE", "data/state.json"))
     poster_path = Path(os.environ.get("ANIMEHIGHBO_POSTER_CACHE", "data/anime_poster_state.json"))
-    state = json.loads(state_path.read_text(encoding="utf-8"))
     cache = json.loads(poster_path.read_text(encoding="utf-8"))
-    anchors = select_anchors(state)
+    channel_slug = os.environ.get("ANIMEHIGHBO_PUBLIC_CHANNEL", "Animehighbo")
+    anchors = discover_channel_anchors(channel_slug)
+    LOG.info("Discovered %d live photo anchors from the public @%s channel.", len(anchors), channel_slug.lstrip("@"))
     index = build_poster_index(cache)
     if not anchors: raise SystemExit("No bot-owned poster anchors were found in state.json.")
     if not index: raise SystemExit("No verified poster URLs were found in anime_poster_state.json.")
