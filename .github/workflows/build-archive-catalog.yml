@@ -1,4 +1,4 @@
-name: Discover archive candidates (metadata only)
+name: Refresh complete archive manifest
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt
-      - name: Generate metadata-only archive candidates
+      - name: Build full SubsPlease archive manifest
         env:
           ARCHIVE_SINCE: ${{ inputs.since || '2026-10-01' }}
           ARCHIVE_MAX_PAGES: ${{ inputs.max_pages || '100' }}
@@ -51,51 +51,54 @@ jobs:
             --since "$ARCHIVE_SINCE" \
             --max-pages "$ARCHIVE_MAX_PAGES" \
             --max-file-size-mb "$ARCHIVE_MAX_FILE_SIZE_MB" \
-            --output data/archive_candidates.json
-      - name: Validate candidates and run tests
+            --output data/archive_manifest.json
+      - name: Validate archive manifest and run tests
         run: |
           python -m unittest discover -s tests -v
           python -m compileall -q app.py tools tests
           python - <<'PY'
           import json
+          from datetime import date
           from pathlib import Path
-          rows = json.loads(Path("data/archive_candidates.json").read_text(encoding="utf-8"))
+          rows = json.loads(Path("data/archive_manifest.json").read_text(encoding="utf-8"))
           if not isinstance(rows, list) or not rows:
-              raise SystemExit("Candidate file is empty or invalid.")
-          if any(
-              "authorized_for_redistribution" in row
-              or row.get("review_required") is not True
-              for row in rows
-          ):
-              raise SystemExit("Discovered candidates must remain unapproved until rights are reviewed.")
-          if any(not row.get("release_date") for row in rows):
-              raise SystemExit("Candidate contains an entry without its source upload date.")
-          ordered = [row["release_date"] for row in rows]
-          if ordered != sorted(ordered):
-              raise SystemExit("Candidate list is not globally sorted by source upload date.")
-          print(f"Validated {len(rows)} date-ordered review candidates; none is authorized for publication.")
+              raise SystemExit("Archive manifest is empty or invalid.")
+          for row in rows:
+              if not isinstance(row, dict):
+                  raise SystemExit("Archive manifest contains a non-object row.")
+              if not row.get("title") or not row.get("uri") or not row.get("release_date"):
+                  raise SystemExit("Archive manifest row is missing title, source URI, or release date.")
+              if not row.get("episode"):
+                  raise SystemExit("Archive manifest row is missing episode number.")
+              if "review_required" in row or "authorization_evidence" in row or "authorization_reviewed_at" in row:
+                  raise SystemExit("Archive manifest contains obsolete approval-gate fields.")
+              if not str(row["uri"]).startswith(("magnet:", "https://")):
+                  raise SystemExit("Archive manifest contains an unsupported source URI.")
+          dates = [row["release_date"] for row in rows]
+          if dates != sorted(dates):
+              raise SystemExit("Archive manifest is not sorted by release date.")
+          print(f"Validated {len(rows)} ordered archive entries with source URIs.")
           PY
       - name: Upload candidate report for inspection
         uses: actions/upload-artifact@v4
         with:
-          name: animehighbo-archive-candidates
-          path: data/archive_candidates.json
+          name: animehighbo-archive-manifest
+          path: data/archive_manifest.json
           if-no-files-found: error
           retention-days: 7
       - name: Commit generated candidate report to this branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # git diff does not see an untracked first-run report; use status so
-          # the initial generated candidate file is committed as well.
-          if [ -z "$(git status --porcelain -- data/archive_candidates.json)" ]; then
-            echo "Candidate report is unchanged."
+          # Include the complete generated archive manifest when it changes.
+          if [ -z "$(git status --porcelain -- data/archive_manifest.json)" ]; then
+            echo "Archive manifest is unchanged."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/archive_candidates.json
-          git commit -m "data: refresh archive discovery candidates"
+          git add data/archive_manifest.json
+          git commit -m "data: refresh complete archive manifest"
           git fetch origin "${GITHUB_REF_NAME}"
           git rebase "origin/${GITHUB_REF_NAME}"
           git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin "HEAD:${GITHUB_REF_NAME}"
