@@ -308,10 +308,10 @@ def build_archive_manifest(
 
 
 def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cutoff: date) -> list[dict]:
-    """Keep authorized, dated entries already curated when the source API omits them."""
+    """Preserve valid existing archive entries when the live source API omits them."""
     merged = [
         dict(row) for row in manifest
-        if isinstance(row, dict) and has_redistribution_authorization(row)
+        if isinstance(row, dict) and str(row.get("uri") or row.get("url") or "").strip()
     ]
     seen_uris = {str(row.get("uri") or row.get("url") or "").strip() for row in merged}
 
@@ -323,8 +323,8 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
         return re.sub(r"\s+", " ", title).strip().casefold(), number
 
     generated_episode_keys = {episode_key(row) for row in merged if isinstance(row, dict)}
-    for index, row in enumerate(existing_rows):
-        if not isinstance(row, dict) or not has_redistribution_authorization(row):
+    for row in existing_rows:
+        if not isinstance(row, dict):
             continue
         title = str(row.get("title") or "").strip()
         uri = str(row.get("uri") or row.get("url") or "").strip()
@@ -344,6 +344,7 @@ def merge_existing_manifest(manifest: list[dict], existing_rows: list[dict], cut
         preserved["release_date"] = released.isoformat()
         merged.append(preserved)
         seen_uris.add(uri)
+        generated_episode_keys.add(episode_key(preserved))
 
     merged.sort(key=lambda row: (
         str(row.get("release_date") or "9999-12-31"),
