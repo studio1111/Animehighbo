@@ -142,7 +142,14 @@
         "anilist_id": 116674
       },
       "poster_source": "MyAnimeList exact-season record",
-      "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan"
+      "metadata_source_url": "https://myanimelist.net/anime/60636/Bleach__Sennen_Kessen-hen_-_Kashin-tan",
+      "aliases": [
+        "BLEACH: Thousand-Year Blood War",
+        "Bleach: Thousand-Year Blood War",
+        "BLEACH Thousand-Year Blood War Part 4",
+        "Bleach: Sennen Kessen-hen",
+        "Bleach: Sennen Kessen-hen - Kashin-tan"
+      ]
     },
     "chii fuyo": {
       "title": "Chii Fuyo",
@@ -1249,7 +1256,13 @@
         "anilist_id": 166443
       },
       "poster_source": "MyAnimeList exact-series record",
-      "metadata_source_url": "https://myanimelist.net/anime/61640/Zi_Jin__Yu_Miao_Fang"
+      "metadata_source_url": "https://myanimelist.net/anime/61640/Zi_Jin__Yu_Miao_Fang",
+      "aliases": [
+        "Paw & Palaces",
+        "Paws & Palaces",
+        "Zi Jin: Yu Miao Fang",
+        "Paw and Palaces"
+      ]
     },
     "psyren": {
       "title": "PSYREN",
@@ -2726,7 +2739,15 @@
         "source": "MANGA"
       },
       "poster_source": "MyAnimeList exact-season record",
-      "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86"
+      "metadata_source_url": "https://myanimelist.net/anime/63157/Keroro_Gunsou%E2%98%86",
+      "aliases": [
+        "Sgt. Frog",
+        "Sgt Frog",
+        "Keroro Gunso",
+        "Keroro Gunsou☆",
+        "Keroro☆",
+        "Keroro Gunsou (2026)"
+      ]
     },
     "nige jouzu no wakagimi s2": {
       "title": "Nige Jouzu no Wakagimi S2",
