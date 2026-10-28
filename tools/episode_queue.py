@@ -133,6 +133,20 @@ def _episode_dedupe_key(title: object, season: object, episode: object) -> tuple
     return (name, season_number, episode_number)
 
 
+def _existing_posted_episode_keys(state: dict) -> set[tuple[str, int, int]]:
+    """Return episodes already represented by a poster anchor, independent of source URI."""
+    posters = state.get("posters", {}) if isinstance(state, dict) else {}
+    keys: set[tuple[str, int, int]] = set()
+    if isinstance(posters, dict):
+        for poster in posters.values():
+            if not isinstance(poster, dict):
+                continue
+            key = _episode_dedupe_key(poster.get("title"), poster.get("season"), poster.get("episode"))
+            if key:
+                keys.add(key)
+    return keys
+
+
 def _is_complete(record: object) -> bool:
     return isinstance(record, dict) and {"1080p", "720p", "480p"}.issubset(
         set(record.get("complete_qualities", []))
@@ -150,6 +164,7 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
     published = state.get("published", {}) if isinstance(state, dict) else {}
     if not isinstance(published, dict):
         published = {}
+    existing_episode_keys = _existing_posted_episode_keys(state)
 
     parsed: list[tuple[dict, str, str, int]] = []
     counts: dict[tuple[str, int], int] = {}
@@ -176,6 +191,13 @@ def eligible_prepared_episodes(entries: list[dict], state: dict) -> list[dict]:
         if status not in {"prepared", "ready", "complete"}:
             continue
         if _is_complete(published.get(identity)):
+            continue
+        series_title, _, season_text = series.rpartition("::season-")
+        try:
+            season_number = int(season_text)
+        except ValueError:
+            season_number = 1
+        if _episode_dedupe_key(series_title, season_number, number) in existing_episode_keys:
             continue
         # Duplicate entries for the same series/episode are ambiguous and held.
         if counts[(series, number)] != 1:
@@ -220,15 +242,7 @@ def select_next_upload_date(
     published = state.get("published", {}) if isinstance(state, dict) else {}
     if not isinstance(published, dict):
         published = {}
-    existing_episode_keys = set()
-    posters = state.get("posters", {}) if isinstance(state, dict) else {}
-    if isinstance(posters, dict):
-        for poster in posters.values():
-            if not isinstance(poster, dict):
-                continue
-            key = _episode_dedupe_key(poster.get("title"), poster.get("season"), poster.get("episode"))
-            if key:
-                existing_episode_keys.add(key)
+    existing_episode_keys = _existing_posted_episode_keys(state)
     normalized = []
     for index, row in enumerate(manifest):
         if not isinstance(row, dict):
