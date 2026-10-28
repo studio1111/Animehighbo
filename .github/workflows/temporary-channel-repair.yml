@@ -78,7 +78,8 @@ jobs:
           session.headers.update({"User-Agent": "Mozilla/5.0 (compatible; AnimehighboChannelAudit/1.0)"})
           preview = session.get(f"https://t.me/s/{CHANNEL}", timeout=25)
           preview.raise_for_status()
-          if not re.search(r'data-post="' + re.escape(CHANNEL) + r'/\d+', preview.text):
+          if not re.search(r'data-post="[^"]*/\d+', preview.text, re.I) or CHANNEL.casefold() not in preview.text.casefold():
+              print("Telegram preview diagnostics:", preview.status_code, preview.url, preview.text[:1200])
               raise SystemExit("Channel preview did not expose a verifiable post. No state was changed.")
 
           expected = {}
@@ -132,7 +133,7 @@ jobs:
                       body = response.text
                       exact = re.search(
                           r'data-post="' + re.escape(CHANNEL) + r'/' + re.escape(mid) + r'"',
-                          body,
+                          body, re.I,
                       )
                       if exact:
                           return mid, True, None
