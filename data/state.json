@@ -7802,6 +7802,62 @@
       "source_quality": "1080p",
       "published_at": 1793197378,
       "release_date": "2026-10-24"
+    },
+    "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:1080p": {
+      "title": "Link Click S3",
+      "episode": "11",
+      "group_id": "888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "poster_identity": "archive:888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "release_date": "2026-10-16",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0dc7ffe3627c7c37762bb4b3e81630912580848729f27d90e27ce0476948227f",
+      "message_id": "1555",
+      "published_at": 1793198647,
+      "bilingual_subtitles": true
+    },
+    "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:720p": {
+      "title": "Link Click S3",
+      "episode": "11",
+      "group_id": "888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "poster_identity": "archive:888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "release_date": "2026-10-16",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "30c972536b8fd1e53e7f2b10619c2a5ca7d59123bec4d71ec9fafd251bbc8c92",
+      "message_id": "1556",
+      "published_at": 1793198653,
+      "bilingual_subtitles": true
+    },
+    "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:480p": {
+      "title": "Link Click S3",
+      "episode": "11",
+      "group_id": "888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "poster_identity": "archive:888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "release_date": "2026-10-16",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4759b1630bc58f34dc3c713a032e9efa4b2d14855ab539203feeb4df4db2ba15",
+      "message_id": "1557",
+      "published_at": 1793198656,
+      "bilingual_subtitles": true
+    },
+    "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b": {
+      "title": "Link Click S3",
+      "episode": "11",
+      "group_id": "888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "poster_identity": "archive:888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793198656,
+      "release_date": "2026-10-16"
     }
   },
   "seen": {
@@ -8893,7 +8949,10 @@
     "cafe1be0d27d0c2f2d647576a4add6c23d75660ce03fb1d68cb9f76c428ce4c1": "31500d2b3832c5af07a25617bc60926a12a3f689f9b7561d67a865bcdc4d91f2:480p",
     "d43eb0890451bd28bd6f08a5edd69c4cab6b2a44826c6bcd9627c3478265ccce": "c39ed85ec33362996835d62ccad0def54d993b989e149cf6d3cfe2857fa3d284:1080p",
     "8b1e24e9f25002f677937dd3c6d25eb90f5c41c4c23a7f20d90adf0d01555494": "c39ed85ec33362996835d62ccad0def54d993b989e149cf6d3cfe2857fa3d284:720p",
-    "7d402a941f370e2228e2d9f073ce625645a3f19792060a9319f885515fafa9e8": "c39ed85ec33362996835d62ccad0def54d993b989e149cf6d3cfe2857fa3d284:480p"
+    "7d402a941f370e2228e2d9f073ce625645a3f19792060a9319f885515fafa9e8": "c39ed85ec33362996835d62ccad0def54d993b989e149cf6d3cfe2857fa3d284:480p",
+    "0dc7ffe3627c7c37762bb4b3e81630912580848729f27d90e27ce0476948227f": "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:1080p",
+    "30c972536b8fd1e53e7f2b10619c2a5ca7d59123bec4d71ec9fafd251bbc8c92": "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:720p",
+    "4759b1630bc58f34dc3c713a032e9efa4b2d14855ab539203feeb4df4db2ba15": "0a286cccaee5f912ce33a3e4fe6e8b6c2957113b9bc5b08ea2facc60d291120b:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -10020,6 +10079,12 @@
       "episode": "03",
       "message_id": "1550",
       "published_at": 1793197360
+    },
+    "archive:888489d20bc5d47d0068fb455254badac3d613259658c2b3d3bafb918558a19b": {
+      "title": "Link Click S3",
+      "episode": "11",
+      "message_id": "1554",
+      "published_at": 1793198641
     }
   }
 }
