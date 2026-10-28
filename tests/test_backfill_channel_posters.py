@@ -22,4 +22,30 @@ class ChannelPosterBackfillTests(unittest.TestCase):
         }})
         self.assertEqual([row["message_id"] for row in rows], ["21", "22"])
 
+
+    def test_curated_cached_metadata_overrides_mismatched_catalog_result(self):
+        from tools.backfill_channel_posters import merge_cached_metadata
+        catalog = {
+            "title": {"english": "Wrong Previous Season"},
+            "description": "Synopsis for a different season.",
+            "seasonYear": 2023,
+            "coverImage": {"extraLarge": "https://cdn.example/old.jpg"},
+        }
+        cached = {
+            "title": {"english": "Correct Season 2", "romaji": "Correct Season II"},
+            "description": "Verified second-season synopsis.",
+            "seasonYear": 2026,
+            "coverImage": {"extraLarge": "https://cdn.example/season2.jpg"},
+        }
+        merged = merge_cached_metadata(catalog, cached)
+        self.assertEqual(merged["title"]["english"], "Correct Season 2")
+        self.assertEqual(merged["description"], "Verified second-season synopsis.")
+        self.assertEqual(merged["seasonYear"], 2026)
+        self.assertEqual(merged["coverImage"]["extraLarge"], "https://cdn.example/season2.jpg")
+
+    def test_empty_cached_metadata_does_not_erase_catalog_values(self):
+        from tools.backfill_channel_posters import merge_cached_metadata
+        catalog = {"description": "Verified catalog synopsis.", "genres": ["Sports"]}
+        self.assertEqual(merge_cached_metadata(catalog, {}), catalog)
+
 if __name__ == "__main__": unittest.main()
