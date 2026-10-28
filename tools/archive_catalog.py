@@ -27,6 +27,8 @@ REQUIRED_SHOW_SLUGS = (
     "kusuriya-no-hitorigoto",
     "tensei-shitara-ken-deshita-s2",
     "tokyo-revengers",
+    "rilakkuma",
+    "uchi-no-otouto-domo-ga-sumimasen",
 )
 
 
