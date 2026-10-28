@@ -1533,6 +1533,7 @@ def publish_prepared_episodes(config: dict, state: dict, dry_run: bool, token: s
                 message_id = telegram_upload_and_send(
                     token, chat_id, output["path"], video_caption,
                     thumbnail_path=thumbnail_path,
+                    reply_to_message_id=poster_message_id,
                 )
                 state["seen"][file_hash] = output_identity
                 state["published"][output_identity] = {
