@@ -26,6 +26,24 @@ def build_poster_index(payload: dict) -> dict:
             if normalized: index[normalized] = record
     return index
 
+def merge_cached_metadata(catalog: dict, cached: dict) -> dict:
+    """Treat curated, title-matched metadata as authoritative over fuzzy catalog matches."""
+    merged = dict(catalog) if isinstance(catalog, dict) else {}
+    for key, value in (cached.items() if isinstance(cached, dict) else []):
+        if value in (None, "", [], {}):
+            continue
+        if isinstance(value, dict):
+            current = merged.get(key, {})
+            current = dict(current) if isinstance(current, dict) else {}
+            for subkey, subvalue in value.items():
+                if subvalue not in (None, "", [], {}):
+                    current[subkey] = subvalue
+            merged[key] = current
+        else:
+            merged[key] = value
+    return merged
+
+
 def select_anchors(state: dict) -> list[dict]:
     posters = state.get("posters", {}) if isinstance(state, dict) else {}
     anchors = []
@@ -91,8 +109,8 @@ def main() -> int:
                 metadata["coverImage"]["extraLarge"] = str(poster["poster_url"])
                 cached_metadata = poster.get("metadata")
                 if isinstance(cached_metadata, dict):
-                    for field, value in cached_metadata.items():
-                        if metadata.get(field) in (None, "", [], {}) and value not in (None, "", [], {}): metadata[field] = value
+                    metadata = merge_cached_metadata(metadata, cached_metadata)
+                metadata["coverImage"] = {"extraLarge": str(poster["poster_url"])}
                 metadata_by_title[key] = metadata
             if key not in image_by_title:
                 image_by_title[key] = download_poster(str(poster["poster_url"]), timeout=25)
