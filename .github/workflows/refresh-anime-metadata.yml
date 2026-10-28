@@ -7,8 +7,10 @@ on:
       - 'app.py'
       - 'tools/refresh_anime_metadata.py'
       - '.github/workflows/refresh-anime-metadata.yml'
+  # Keep poster, synopsis, and series metadata aligned with the release catalogue.
+  # The release manifest scan runs separately every two hours at minute 17.
   schedule:
-    - cron: '23 */12 * * *'
+    - cron: '23 */2 * * *'
   workflow_dispatch:
 
 permissions:
