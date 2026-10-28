@@ -107,6 +107,12 @@ jobs:
                   print(f"Could not cancel legacy worker {run_id}; continuing: {result.stderr.strip()}")
           if not legacy:
               print("No stale pre-migration workers require cancellation.")
+          else:
+              subprocess.run(
+                  ["gh", "workflow", "run", "prepare-episodes.yml", "--ref", "main"],
+                  check=True,
+              )
+              print("Requeued episode preparation under the new parallel-preparation workflow.")
           PY
       - name: Find a prepared episode and dispatch only one publisher
         env:
