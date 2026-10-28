@@ -857,62 +857,43 @@
       "title": "Kusuriya no Hitorigoto",
       "message_id": "717",
       "anilist_id": 161645,
-      "poster_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-QLbzHXiYRgV2.jpg",
+      "poster_url": "https://contents.oricon.co.jp/anime/img/1000/1168/base/img1200/tv-program-image-80f9c48f8959330c2792405010feb2851682e972fea8bde3e8ebfb6baee22abc.jpg",
       "published_at": "2026-10-25T10:09:46Z",
       "metadata": {
         "title": {
-          "english": "The Apothecary Diaries",
-          "romaji": "Kusuriya no Hitorigoto",
-          "native": "薬屋のひとりごと"
+          "english": "The Apothecary Diaries Season 3",
+          "romaji": "Kusuriya no Hitorigoto 3rd Season",
+          "native": "薬屋のひとりごと 第3期"
         },
         "coverImage": {
-          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-QLbzHXiYRgV2.jpg",
-          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg",
-          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg"
+          "extraLarge": "https://contents.oricon.co.jp/anime/img/1000/1168/base/img1200/tv-program-image-80f9c48f8959330c2792405010feb2851682e972fea8bde3e8ebfb6baee22abc.jpg"
         },
-        "season": "FALL",
-        "seasonYear": 2023,
-        "episodes": 24,
+        "description": "After the Shi Clan rebellion settles, Maomao returns to her work as a pharmacist in the pleasure district. A strange clue prompts a new investigation, while Jinshi faces the duties of his true position as the Emperor's younger brother and worries about a warning of disaster. Rumors of a mysterious shrine maiden add another layer of danger to the country of Li.",
+        "seasonYear": 2026,
+        "episodes": 12,
         "genres": [
           "Drama",
-          "Mystery"
+          "Mystery",
+          "Medicine",
+          "Politics",
+          "Historical"
         ],
         "format": "TV",
-        "status": "FINISHED",
-        "averageScore": 88,
-        "source": "LIGHT_NOVEL",
+        "status": "RELEASING",
+        "averageScore": 85,
         "studios": {
           "nodes": [
             {
-              "name": "Toho"
-            },
-            {
               "name": "OLM"
-            },
-            {
-              "name": "TOHO animation STUDIO"
-            },
-            {
-              "name": "Nippon Television Network"
-            },
-            {
-              "name": "Imagica Infos"
-            },
-            {
-              "name": "Dentsu"
-            },
-            {
-              "name": "Shogakukan"
-            },
-            {
-              "name": "Square Enix"
             }
           ]
         },
         "isAdult": false,
-        "description": "Maomao lived a peaceful life with her apothecary father. Until one day, she’s sold as a lowly servant to the emperor’s palace. But she wasn’t meant for a compliant life among royalty. So when imperial heirs fall ill, she decides to step in and find a cure! This catches the eye of Jinshi, a handsome palace official who promotes her. Now, she’s making a name for herself solving medical mysteries!\n<br><br>\n(Source: Crunchyroll)",
-        "anilist_id": 161645
-      }
+        "metadata_source": "MyAnimeList exact-season record",
+        "metadata_source_url": "https://www.oricon.co.jp/anime/1168/"
+      },
+      "poster_source": "Oricon News current-season key visual",
+      "metadata_source_url": "https://www.oricon.co.jp/anime/1168/"
     },
     "kyoufu collector": {
       "title": "Kyoufu Collector",
