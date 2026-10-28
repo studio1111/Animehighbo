@@ -168,6 +168,23 @@ jobs:
               match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", title)
               return (match.group(1).strip() if match else title.strip()).casefold()
 
+          def episode_dedupe_key(title, episode, season=1):
+              name = re.sub(r"\s+", " ", str(title or "")).strip()
+              try:
+                  episode_number = int(episode)
+                  season_number = int(season or 1)
+              except (TypeError, ValueError):
+                  return None
+              if not name or episode_number < 1 or season_number < 1:
+                  return None
+              season_match = re.search(r"\s+(?:S|Season\s*)(\d{1,2})$", name, re.I)
+              if season_match:
+                  season_number = int(season_match.group(1))
+                  name = name[:season_match.start()].strip()
+              name = re.sub(r"[–—−]", "-", name)
+              name = re.sub(r"\s+", " ", name).strip().casefold()
+              return (name, season_number, episode_number)
+
           # Do not start another publisher while one is queued or running.
           for status in ("queued", "in_progress"):
               active = api(f"repos/{repo}/actions/workflows/recover-prepared-episode.yml/runs?status={status}&per_page=100")
@@ -181,6 +198,15 @@ jobs:
           exclusions_path = Path("data/archive_exclusions.json")
           exclusions = json.loads(exclusions_path.read_text(encoding="utf-8")) if exclusions_path.exists() else []
           denied = {re.sub(r"\s+", " ", str(x)).strip().casefold() for x in exclusions if str(x).strip()}
+          existing_episode_keys = set()
+          poster_state = state.get("posters", {}) if isinstance(state, dict) else {}
+          if isinstance(poster_state, dict):
+              for poster in poster_state.values():
+                  if not isinstance(poster, dict):
+                      continue
+                  key = episode_dedupe_key(poster.get("title"), poster.get("episode"), poster.get("season"))
+                  if key:
+                      existing_episode_keys.add(key)
 
           # Index successful preparation runs and their available artifacts.
           prep_runs = api_all_pages(f"repos/{repo}/actions/workflows/prepare-one-episode.yml/runs?status=completed&per_page=100")
@@ -240,6 +266,8 @@ jobs:
                   episode_no = int(row.get("episode") or (number_match.group(1) if number_match else 0))
               except (TypeError, ValueError):
                   episode_no = 0
+              if episode_dedupe_key(title_key, episode_no, row.get("season")) in existing_episode_keys:
+                  continue
               clean_key = re.sub(r"(?i)^\s*\[SubsPlease\]\s*", "", raw_title)
               clean_key = re.sub(r"(?i)\s+\(?\d{3,4}p\)?\s*$", "", clean_key)
               title_match = re.match(r"^(.*?)\s+-\s+\d{1,4}(?:\.\d+)?(?=\s*(?:\(|\[|$))", clean_key)
