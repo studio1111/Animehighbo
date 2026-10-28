@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timezone
 
-from tools.episode_queue import active_quota_cooldown, filter_by_manual_exclusions, select_next_upload_date
+from tools.episode_queue import active_quota_cooldown, eligible_prepared_episodes, filter_by_manual_exclusions, select_next_upload_date
 
 
 def row(title, episode, day, uri=None):
@@ -316,6 +316,27 @@ class UploadDateQueueTests(unittest.TestCase):
         upload_date, selected = select_next_upload_date([duplicate_source], existing)
         self.assertIsNone(upload_date)
         self.assertEqual(selected, [])
+
+
+    def test_prepared_duplicate_is_skipped_when_episode_is_already_in_poster_state(self):
+        existing = {
+            "posters": {
+                "archive:old-source": {
+                    "title": "Kusuriya no Hitorigoto",
+                    "episode": "49",
+                    "message_id": "1470",
+                }
+            },
+            "published": {},
+        }
+        duplicate_source = row(
+            "Kusuriya no Hitorigoto - 49 (1080p)",
+            49,
+            "2026-10-28",
+            uri="magnet:?xt=urn:btih:DIFFERENTKUSURIYASOURCE",
+        )
+        duplicate_source["series_title"] = "Kusuriya no Hitorigoto"
+        self.assertEqual(eligible_prepared_episodes([duplicate_source], existing), [])
 
 
 if __name__ == "__main__":
