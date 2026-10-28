@@ -285,6 +285,19 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertIn("latest-episode", episode_four["uri"])
         self.assertEqual(episode_four["release_date"], "2026-10-28")
 
+    def test_episode_key_normalizes_dash_variants_in_series_titles(self):
+        from tools.archive_catalog import _manifest_episode_key
+
+        left = {
+            "title": "Tougen Anki – Nikko Kegon no Taki-hen - 04 (1080p)",
+            "episode": 4,
+        }
+        right = {
+            "title": "Tougen Anki - Nikko Kegon no Taki-hen - 04 (1080p)",
+            "episode": 4,
+        }
+        self.assertEqual(_manifest_episode_key(left), _manifest_episode_key(right))
+
     def test_direct_latest_feed_does_not_queue_batch_ranges(self):
         from tools.archive_catalog import _direct_release_entry
 
