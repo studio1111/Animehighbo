@@ -19,7 +19,9 @@
     "distinct_manifest_episodes": 226,
     "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 39,
-    "titles_needing_review": 114
+    "titles_needing_review": 0,
+    "titles_with_unmatched_rss_episodes": 0,
+    "distinct_unmatched_rss_episodes": 0
   },
   "limitations": [
     "AniList identifies seasonal titles, not a complete episode schedule or every episode aired in the date window.",
@@ -73,7 +75,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -116,7 +119,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -143,11 +147,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 187402,
@@ -170,11 +175,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 204389,
@@ -197,11 +203,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 213658,
@@ -224,11 +231,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 191788,
@@ -251,11 +259,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 185756,
@@ -278,11 +287,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 197543,
@@ -305,11 +315,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 187990,
@@ -359,11 +370,12 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 195604,
@@ -386,11 +398,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 189123,
@@ -413,11 +426,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 214536,
@@ -440,11 +454,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 198727,
@@ -467,11 +482,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 195539,
@@ -494,11 +510,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 213068,
@@ -521,11 +538,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 179876,
@@ -570,11 +588,12 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 207217,
@@ -597,11 +616,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 203275,
@@ -624,11 +644,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 206814,
@@ -673,11 +694,12 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 208367,
@@ -700,11 +722,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 191656,
@@ -727,11 +750,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 200455,
@@ -754,11 +778,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 205909,
@@ -797,7 +822,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -824,11 +850,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209463,
@@ -878,11 +905,12 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 205896,
@@ -927,11 +955,12 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 206401,
@@ -975,7 +1004,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -1002,11 +1032,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 187316,
@@ -1029,11 +1060,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 188034,
@@ -1056,11 +1088,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 202390,
@@ -1083,11 +1116,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 178972,
@@ -1110,11 +1144,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 207191,
@@ -1164,11 +1199,12 @@
               "release_date": "2026-10-26",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 203473,
@@ -1213,11 +1249,12 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 218938,
@@ -1240,11 +1277,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 199426,
@@ -1267,11 +1305,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 208025,
@@ -1321,11 +1360,12 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 218217,
@@ -1348,11 +1388,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 216557,
@@ -1375,11 +1416,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 160275,
@@ -1402,11 +1444,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209642,
@@ -1429,11 +1472,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 178868,
@@ -1483,11 +1527,12 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 202250,
@@ -1537,11 +1582,12 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 169581,
@@ -1596,11 +1642,12 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 160803,
@@ -1623,11 +1670,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209032,
@@ -1650,11 +1698,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 218532,
@@ -1677,11 +1726,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 217577,
@@ -1704,11 +1754,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 213657,
@@ -1731,11 +1782,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 211877,
@@ -1758,11 +1810,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 217782,
@@ -1785,11 +1838,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 190054,
@@ -1812,11 +1866,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 214968,
@@ -1839,11 +1894,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 206949,
@@ -1893,11 +1949,12 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 205289,
@@ -1920,11 +1977,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 206774,
@@ -1947,11 +2005,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 212888,
@@ -2001,11 +2060,12 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 194207,
@@ -2028,11 +2088,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 217624,
@@ -2055,11 +2116,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 217787,
@@ -2082,11 +2144,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 204011,
@@ -2136,11 +2199,12 @@
               "release_date": "2026-10-26",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 216860,
@@ -2163,11 +2227,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 218011,
@@ -2190,11 +2255,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 157330,
@@ -2217,11 +2283,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209872,
@@ -2244,11 +2311,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 199340,
@@ -2271,11 +2339,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 186541,
@@ -2298,11 +2367,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 159042,
@@ -2325,11 +2395,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 180894,
@@ -2352,11 +2423,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 176314,
@@ -2379,11 +2451,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209709,
@@ -2406,11 +2479,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209219,
@@ -2465,11 +2539,12 @@
               "release_date": "2026-10-26",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 206163,
@@ -2492,11 +2567,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 210482,
@@ -2519,11 +2595,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 200294,
@@ -2573,11 +2650,12 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 218942,
@@ -2600,11 +2678,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 212539,
@@ -2627,11 +2706,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209499,
@@ -2654,11 +2734,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 199594,
@@ -2697,7 +2778,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -2724,11 +2806,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 200929,
@@ -2751,11 +2834,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209502,
@@ -2805,11 +2889,12 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 152677,
@@ -2832,11 +2917,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 212503,
@@ -2859,11 +2945,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 207329,
@@ -2886,11 +2973,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 199068,
@@ -2945,11 +3033,12 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 213805,
@@ -2972,11 +3061,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 212799,
@@ -2999,11 +3089,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 195571,
@@ -3042,7 +3133,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -3096,11 +3188,12 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 207327,
@@ -3123,11 +3216,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 178083,
@@ -3150,11 +3244,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 204650,
@@ -3198,7 +3293,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
@@ -3225,11 +3321,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 202079,
@@ -3252,11 +3349,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 209562,
@@ -3306,11 +3404,12 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 216895,
@@ -3333,11 +3432,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 143103,
@@ -3360,11 +3460,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 212144,
@@ -3387,11 +3488,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 214593,
@@ -3414,11 +3516,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": 213298,
@@ -3441,11 +3544,12 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "seasonal_title": true,
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3491,10 +3595,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3545,10 +3650,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3599,10 +3705,11 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3643,10 +3750,11 @@
               "release_date": "2026-10-26",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3697,10 +3805,11 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3746,10 +3855,11 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3789,7 +3899,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -3822,7 +3933,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -3876,10 +3988,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -3919,7 +4032,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -3973,10 +4087,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4021,7 +4136,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4075,10 +4191,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4123,7 +4240,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4171,7 +4289,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4225,10 +4344,11 @@
               "release_date": "2026-10-24",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4258,7 +4378,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4312,10 +4433,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4381,10 +4503,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4429,7 +4552,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4477,7 +4601,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4531,10 +4656,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4585,10 +4711,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4618,7 +4745,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4672,10 +4800,11 @@
               "release_date": "2026-10-27",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4726,10 +4855,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4780,10 +4910,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4833,7 +4964,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4892,10 +5024,11 @@
               "release_date": "2026-10-28",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     },
     {
       "anilist_id": null,
@@ -4925,7 +5058,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -4973,7 +5107,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -5021,7 +5156,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -5069,7 +5205,8 @@
         },
         "rss": {
           "distinct_episodes": 0,
-          "episodes": []
+          "episodes": [],
+          "unmatched_episodes": []
         }
       },
       "review_required": false
@@ -5123,10 +5260,11 @@
               "release_date": "2026-10-25",
               "in_archive_manifest": true
             }
-          ]
+          ],
+          "unmatched_episodes": []
         }
       },
-      "review_required": true
+      "review_required": false
     }
   ]
 }

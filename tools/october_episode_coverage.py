@@ -158,9 +158,20 @@ def build_coverage_report(
                 ],
             }
         entry["source_coverage"] = coverage
-        entry["review_required"] = any(
-            coverage[source]["distinct_episodes"] > 0 for source in ("candidate_report", "rss")
-        ) or coverage["manifest"]["distinct_episodes"] == 0
+        # An RSS entry is not a missing episode merely because it exists: the
+        # manifest is the queue source, and RSS rows already carry an explicit
+        # in_archive_manifest comparison. Only unmatched RSS episodes require
+        # reconciliation. AniList titles with no manifest entries are not proof
+        # of a gap because seasonal metadata is not a complete airing schedule.
+        unmatched_rss = [
+            episode for episode in coverage["rss"]["episodes"]
+            if episode.get("in_archive_manifest") is False
+        ]
+        coverage["rss"]["unmatched_episodes"] = [
+            {key: episode.get(key) for key in ("episode", "release_date", "quality")}
+            for episode in unmatched_rss
+        ]
+        entry["review_required"] = bool(unmatched_rss)
     titles = sorted(union.values(), key=lambda row: (
         not row.get("seasonal_title", False),
         (row.get("title_english") or row.get("title_romaji") or "").casefold(),
@@ -184,9 +195,11 @@ def build_coverage_report(
             "titles_with_manifest_episodes": sum(1 for row in titles if row["source_coverage"]["manifest"]["distinct_episodes"]),
             "titles_with_candidate_episodes": sum(1 for row in titles if row["source_coverage"]["candidate_report"]["distinct_episodes"]),
             "titles_with_rss_episodes": sum(1 for row in titles if row["source_coverage"]["rss"]["distinct_episodes"]),
+            "titles_with_unmatched_rss_episodes": sum(1 for row in titles if row["source_coverage"]["rss"]["unmatched_episodes"]),
             "distinct_manifest_episodes": sum(row["source_coverage"]["manifest"]["distinct_episodes"] for row in titles),
             "distinct_candidate_episodes": sum(row["source_coverage"]["candidate_report"]["distinct_episodes"] for row in titles),
             "distinct_rss_episodes": sum(row["source_coverage"]["rss"]["distinct_episodes"] for row in titles),
+            "distinct_unmatched_rss_episodes": sum(len(row["source_coverage"]["rss"]["unmatched_episodes"]) for row in titles),
             "titles_needing_review": sum(1 for row in titles if row["review_required"]),
         },
         "limitations": [
