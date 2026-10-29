@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 39,
-    "matched_in_archive_manifest": 36,
+    "matched_in_archive_manifest": 39,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 3
+    "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -340,27 +340,27 @@
       "episode": 4,
       "release_date": "2026-10-29",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tetsuryou! Meet with Tetsudou Musume",
       "episode": 4,
       "release_date": "2026-10-29",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
       "episode": 18,
       "release_date": "2026-10-29",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     }
   ]
 }
