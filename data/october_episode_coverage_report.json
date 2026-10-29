@@ -16,12 +16,12 @@
     "titles_with_manifest_episodes": 61,
     "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 39,
+    "titles_with_unmatched_rss_episodes": 0,
     "distinct_manifest_episodes": 226,
     "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 39,
-    "titles_needing_review": 0,
-    "titles_with_unmatched_rss_episodes": 0,
-    "distinct_unmatched_rss_episodes": 0
+    "distinct_unmatched_rss_episodes": 0,
+    "titles_needing_review": 0
   },
   "limitations": [
     "AniList identifies seasonal titles, not a complete episode schedule or every episode aired in the date window.",
