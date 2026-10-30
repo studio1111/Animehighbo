@@ -4,49 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 39,
-    "matched_in_archive_manifest": 39,
+    "feed_releases": 38,
+    "matched_in_archive_manifest": 38,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
-      "episode": 4,
-      "release_date": "2026-10-24",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Meitantei Precure!",
-      "episode": 39,
-      "release_date": "2026-10-24",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ace of Diamond Act II S2",
-      "episode": 16,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ao Ashi S2",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Dark Summoner to Dekiteiru",
       "episode": 4,
@@ -76,24 +40,6 @@
     },
     {
       "title": "Kanata kara",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ojisan wa Kawaii Mono ga Osuki.",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Saikyosoubi",
       "episode": 4,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
@@ -357,6 +303,51 @@
       "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
       "episode": 18,
       "release_date": "2026-10-29",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Hotaru no Yomeiri",
+      "episode": 4,
+      "release_date": "2026-10-30",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": 53,
+      "release_date": "2026-10-30",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Toaru Anbu no Item",
+      "episode": 4,
+      "release_date": "2026-10-30",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Tougen Anki - Nikko Kegon no Taki-hen",
+      "episode": 5,
+      "release_date": "2026-10-30",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": 17,
+      "release_date": "2026-10-30",
       "feed_quality": "720p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
