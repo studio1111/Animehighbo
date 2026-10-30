@@ -10434,6 +10434,62 @@
       "source_quality": "1080p",
       "published_at": 1793392182,
       "release_date": "2026-10-30"
+    },
+    "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:1080p": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "04",
+      "group_id": "13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "poster_identity": "archive:13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "release_date": "2026-10-30",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "6af2946a992ac8804888ff3820bef46421fbc3542c66d458e46f3377b9388d75",
+      "message_id": "1744",
+      "published_at": 1793392290,
+      "bilingual_subtitles": true
+    },
+    "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:720p": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "04",
+      "group_id": "13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "poster_identity": "archive:13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "release_date": "2026-10-30",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "cac6fd6c7a9ecf2be14bde8b08f9f67b1beade7931b3f6a7ace3d6149d03ac56",
+      "message_id": "1745",
+      "published_at": 1793392295,
+      "bilingual_subtitles": true
+    },
+    "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:480p": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "04",
+      "group_id": "13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "poster_identity": "archive:13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "release_date": "2026-10-30",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e24870173e03e50edba934e10ee71a13971c131b8656ba0b9a376e6c242eccf9",
+      "message_id": "1746",
+      "published_at": 1793392300,
+      "bilingual_subtitles": true
+    },
+    "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "04",
+      "group_id": "13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "poster_identity": "archive:13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793392300,
+      "release_date": "2026-10-30"
     }
   },
   "seen": {
@@ -11666,7 +11722,10 @@
     "af55ef35c1ae6955f98524f1cdaefdf191ec03f27dace8c959d308f08c1c9fcf": "4ced10a0b510a78f18e5acab6ba89916b4cfcbe67605dc594683fdc59211c0e4:480p",
     "4a7d305c89bb5dd3e53144d95b519aaccc046e6b0283f5fd014dd529d9e6eb5a": "0cf7cb88aedeec0abb6b90a6302b3246a9383c6ae69c4258fc9037f25e88f76b:1080p",
     "47cd4b029856d7bb8c7c968cf221320c064dd54ca58315a263af932d616fc5f0": "0cf7cb88aedeec0abb6b90a6302b3246a9383c6ae69c4258fc9037f25e88f76b:720p",
-    "0759ef26c8a18aba6caebee69a3da0eebf11a2771e3ef39ef3a5f781f77e17a8": "0cf7cb88aedeec0abb6b90a6302b3246a9383c6ae69c4258fc9037f25e88f76b:480p"
+    "0759ef26c8a18aba6caebee69a3da0eebf11a2771e3ef39ef3a5f781f77e17a8": "0cf7cb88aedeec0abb6b90a6302b3246a9383c6ae69c4258fc9037f25e88f76b:480p",
+    "6af2946a992ac8804888ff3820bef46421fbc3542c66d458e46f3377b9388d75": "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:1080p",
+    "cac6fd6c7a9ecf2be14bde8b08f9f67b1beade7931b3f6a7ace3d6149d03ac56": "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:720p",
+    "e24870173e03e50edba934e10ee71a13971c131b8656ba0b9a376e6c242eccf9": "56e4b53f5aa29c3b8ff0be77b5d3884f58e0c614a7490169d53231a0844eb1c0:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -13075,6 +13134,12 @@
       "episode": "05",
       "message_id": "1739",
       "published_at": 1793392165
+    },
+    "archive:13da8007994cb63113233fd827c60b98eb1a7aff8c30b3f433ed801b25592c0a": {
+      "title": "Hotaru no Yomeiri",
+      "episode": "04",
+      "message_id": "1743",
+      "published_at": 1793392283
     }
   }
 }
