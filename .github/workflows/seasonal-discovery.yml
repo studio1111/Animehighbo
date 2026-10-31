@@ -21,7 +21,7 @@ permissions:
 
 concurrency:
   group: seasonal-discovery
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   discover:
@@ -51,4 +51,18 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/seasonal_discovery_report.json data/october_episode_coverage_report.json
           git commit -m "chore: refresh seasonal and October episode coverage reports"
-          git push
+
+          # Other workflows may update main while this report is being built.
+          # Rebase this report commit onto the latest main and retry a normal
+          # fast-forward push; never force-push or overwrite concurrent changes.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push raced with another main update (attempt ${attempt}/5); retrying."
+            sleep $((attempt * 2))
+          done
+          echo "Unable to publish coverage reports after 5 safe retries." >&2
+          exit 1
