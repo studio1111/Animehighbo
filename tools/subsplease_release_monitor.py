@@ -69,7 +69,7 @@ def parse_feed(xml_text: str, quality: str) -> list[dict]:
         released = _release_date(_text(item, "pubDate") or _text(item, "published") or _text(item, "updated"))
         if not title or not released or re.search(r"(?i)\b(batch|complete series)\b|\(\s*\d+\s*[-–]\s*\d+\s*\)", title):
             continue
-        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", title, re.I)
+        match = re.match(r"^(.*?)\s*(?:-\s*|\bepisode\s+|\bep\.?\s*)(\d{1,4})(?:\.\d+)?\s*$", title, re.I)
         if not match:
             # Hold specials, movie posts and ambiguous release names for manual review.
             continue
@@ -104,7 +104,7 @@ def release_key(row: dict) -> str:
             series = normalize_series(explicit_series)
         else:
             raw = _clean_title(str(row.get("title") or ""))
-            match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", raw, re.I)
+            match = re.match(r"^(.*?)\s*(?:-\s*|\bepisode\s+|\bep\.?\s*)(\d{1,4})(?:\.\d+)?\s*$", raw, re.I)
             if match:
                 series = normalize_series(match.group(1))
                 episode = episode or int(match.group(2))

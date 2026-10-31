@@ -247,6 +247,29 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertNotIn("authorization_evidence", manifest[0])
         self.assertIn("magnet:", json.dumps(manifest).lower())
 
+    def test_rss_entries_survive_temporary_latest_api_failure(self):
+        import requests
+
+        session = Mock()
+        session.headers = {}
+        rss_episode = {
+            "title": "New RSS Series - 01 (1080p)",
+            "episode": 1,
+            "quality": "1080p",
+            "uri": "magnet:?xt=urn:btih:rss-survives-api-failure",
+            "release_date": "2026-10-30",
+        }
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=requests.RequestException("temporary API outage")),
+            patch("tools.archive_catalog._fetch_rss_release_entries", return_value=[rss_episode]),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
+            manifest = build_archive_manifest(date(2026, 10, 1), max_pages=5, session=session)
+
+        self.assertEqual(len(manifest), 1)
+        self.assertIn("rss-survives-api-failure", manifest[0]["uri"])
+
     def test_latest_feed_episode_is_kept_when_show_detail_api_is_stale(self):
         session = Mock()
         session.headers = {}
@@ -303,6 +326,21 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertEqual(rows[0]["episode"], 4)
         self.assertEqual(rows[0]["release_date"], "2026-10-28")
         self.assertIn("magic4", rows[0]["uri"])
+
+    def test_rss_parser_accepts_episode_word_without_hyphen_for_new_series(self):
+        from tools.archive_catalog import _parse_rss_release_feed
+
+        rss = """<rss><channel>
+        <item><title>[SubsPlease] Tokyo Revengers: War of the Three Titans Arc Episode 05 (1080p) [ABC12345].mkv</title>
+        <link>magnet:?xt=urn:btih:tokyo-arc-05&amp;xl=1000000000</link>
+        <pubDate>Fri, 30 Oct 2026 18:02:03 +0000</pubDate></item>
+        </channel></rss>"""
+        rows = _parse_rss_release_feed(rss, "1080p", date(2026, 10, 1))
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["episode"], 5)
+        self.assertEqual(rows[0]["title"], "Tokyo Revengers: War of the Three Titans Arc - 05 (1080p)")
+        self.assertIn("tokyo-arc-05", rows[0]["uri"])
 
     def test_rss_release_enters_manifest_when_show_detail_api_is_stale(self):
         session = Mock()

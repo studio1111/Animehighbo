@@ -27,6 +27,16 @@ class SubsPleaseReleaseMonitorTests(unittest.TestCase):
         self.assertNotIn("magnet", str(rows[0]).casefold())
         self.assertNotIn("SECRET_HASH", str(rows))
 
+    def test_parser_accepts_episode_word_without_hyphen_for_new_series(self):
+        rss = """<rss version="2.0"><channel>
+        <item><title>[SubsPlease] Tokyo Revengers: War of the Three Titans Arc Episode 05 (1080p) [ABC12345].mkv</title>
+        <pubDate>Fri, 30 Oct 2026 18:02:03 +0000</pubDate>
+        </item></channel></rss>"""
+        rows = parse_feed(rss, "1080p")
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["title"], "Tokyo Revengers: War of the Three Titans Arc")
+        self.assertEqual(rows[0]["episode"], 5)
+
     def test_report_matches_manifest_without_approval_metadata(self):
         feed_rows = parse_feed(RSS, "1080p")
         manifest = [{

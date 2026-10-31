@@ -237,12 +237,12 @@ class WorkflowContractTests(unittest.TestCase):
         queue = (ROOT / "tools/episode_queue.py").read_text(encoding="utf-8")
 
         # Frequent catalog scans are the primary discovery path.
-        self.assertIn("cron: '*/15 * * * *'", catalog)
+        self.assertIn("cron: '*/30 * * * *'", catalog)
         self.assertIn("data/archive_manifest.json", catalog)
         self.assertIn("name: Refresh complete archive manifest", catalog)
 
         # The RSS monitor is a fallback if the catalog missed a newly released episode.
-        self.assertIn('cron: "0 */2 * * *"', monitor)
+        self.assertIn('cron: "15,45 * * * *"', monitor)
         self.assertIn("Rebuild archive catalog when scheduled RSS check finds gaps", monitor)
         self.assertIn("if: github.event_name != 'workflow_dispatch'", monitor)
         self.assertIn('"missing_from_manifest"', monitor)
