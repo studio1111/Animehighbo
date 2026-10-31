@@ -4,10 +4,10 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 39,
-    "matched_in_archive_manifest": 39,
+    "feed_releases": 38,
+    "matched_in_archive_manifest": 37,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 1
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -41,24 +41,6 @@
     {
       "title": "Kanata kara",
       "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
-      "episode": 3,
-      "release_date": "2026-10-25",
-      "feed_quality": "1080p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tempal - Item no Chikara",
-      "episode": 5,
       "release_date": "2026-10-25",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -361,6 +343,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Shuiro no Kamen",
+      "episode": 4,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
