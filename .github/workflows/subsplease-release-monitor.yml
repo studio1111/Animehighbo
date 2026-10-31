@@ -5,6 +5,12 @@ on:
     # Offset the RSS coverage check by 15 minutes to detect gaps between catalog scans.
     - cron: "15,45 * * * *"
   workflow_dispatch:
+    inputs:
+      allow_rebuild:
+        description: "Allow one archive rebuild when the post-scan RSS check still finds gaps"
+        required: false
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths:
@@ -55,7 +61,7 @@ jobs:
       # Scheduled and push-triggered checks may request a catalog rebuild, but
       # workflow_dispatch checks are excluded to prevent a refresh loop.
       - name: Rebuild archive catalog when scheduled RSS check finds gaps
-        if: github.event_name != 'workflow_dispatch'
+        if: github.event_name != 'workflow_dispatch' || inputs.allow_rebuild
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}

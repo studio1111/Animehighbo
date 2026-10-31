@@ -108,4 +108,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: gh workflow run subsplease-release-monitor.yml --repo "$GITHUB_REPOSITORY" --ref main
+        run: gh workflow run subsplease-release-monitor.yml --repo "$GITHUB_REPOSITORY" --ref main --field "allow_rebuild=${{ github.event_name != 'workflow_dispatch' }}"
