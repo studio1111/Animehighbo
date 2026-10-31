@@ -5,69 +5,15 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 38,
-    "matched_in_archive_manifest": 38,
+    "matched_in_archive_manifest": 32,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 6
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
-      "title": "Dark Summoner to Dekiteiru",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Dragon Ball Super - Beerus",
-      "episode": 3,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Hotel Inhumans S2",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Kanata kara",
-      "episode": 4,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
-      "episode": 29,
-      "release_date": "2026-10-25",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Bleach - Sennen Kessen Hen",
       "episode": 50,
-      "release_date": "2026-10-26",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
-      "episode": 4,
       "release_date": "2026-10-26",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -345,6 +291,33 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Black Clover",
+      "episode": 175,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Detective Conan",
+      "episode": 1218,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Romelia Senki",
+      "episode": 5,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
       "title": "Shuiro no Kamen",
       "episode": 4,
       "release_date": "2026-10-31",
@@ -352,6 +325,33 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "episode": 6,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "episode": 18,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Zombie Sagashitemasu",
+      "episode": 5,
+      "release_date": "2026-10-31",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
