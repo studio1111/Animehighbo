@@ -247,6 +247,29 @@ class ArchiveCatalogSelectionTests(unittest.TestCase):
         self.assertNotIn("authorization_evidence", manifest[0])
         self.assertIn("magnet:", json.dumps(manifest).lower())
 
+    def test_rss_entries_survive_temporary_latest_api_failure(self):
+        import requests
+
+        session = Mock()
+        session.headers = {}
+        rss_episode = {
+            "title": "New RSS Series - 01 (1080p)",
+            "episode": 1,
+            "quality": "1080p",
+            "uri": "magnet:?xt=urn:btih:rss-survives-api-failure",
+            "release_date": "2026-10-30",
+        }
+        with (
+            patch("tools.archive_catalog._request_json", side_effect=requests.RequestException("temporary API outage")),
+            patch("tools.archive_catalog._fetch_rss_release_entries", return_value=[rss_episode]),
+            patch("tools.archive_catalog.REQUIRED_SHOW_SLUGS", ()),
+            patch("tools.archive_catalog.time.sleep"),
+        ):
+            manifest = build_archive_manifest(date(2026, 10, 1), max_pages=5, session=session)
+
+        self.assertEqual(len(manifest), 1)
+        self.assertIn("rss-survives-api-failure", manifest[0]["uri"])
+
     def test_latest_feed_episode_is_kept_when_show_detail_api_is_stale(self):
         session = Mock()
         session.headers = {}
