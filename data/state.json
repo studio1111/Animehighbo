@@ -11274,6 +11274,62 @@
       "source_quality": "1080p",
       "published_at": 1793479857,
       "release_date": "2026-10-31"
+    },
+    "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:1080p": {
+      "title": "VERTEX FORCE",
+      "episode": "05",
+      "group_id": "32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "poster_identity": "archive:32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "release_date": "2026-10-31",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "13a1b87d261a34712549c39721f7570d1d1dd159e4525fd0cf8f83089c879771",
+      "message_id": "1804",
+      "published_at": 1793488484,
+      "bilingual_subtitles": true
+    },
+    "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:720p": {
+      "title": "VERTEX FORCE",
+      "episode": "05",
+      "group_id": "32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "poster_identity": "archive:32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "release_date": "2026-10-31",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ad09b9cfddcf350b922344621003c70c491c1d3ff650354142980f2cc3669c88",
+      "message_id": "1805",
+      "published_at": 1793488491,
+      "bilingual_subtitles": true
+    },
+    "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:480p": {
+      "title": "VERTEX FORCE",
+      "episode": "05",
+      "group_id": "32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "poster_identity": "archive:32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "release_date": "2026-10-31",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "c08fad43452e9c1de8fe55e61c9d1985b94d885a6b7fe589f1bd76202cb1bcf5",
+      "message_id": "1806",
+      "published_at": 1793488495,
+      "bilingual_subtitles": true
+    },
+    "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8": {
+      "title": "VERTEX FORCE",
+      "episode": "05",
+      "group_id": "32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "poster_identity": "archive:32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793488495,
+      "release_date": "2026-10-31"
     }
   },
   "seen": {
@@ -12551,7 +12607,10 @@
     "ea26d0d8a838a540a2f5f554e4e03438916cc74bc9b627c2e41d9193dc2e779b": "f3d38e0d7fbf8029997acd17767858f43049f345fbc21feac74541c5dafe3fbe:480p",
     "3e285f052b7c06dfd81c834b78fb2181a49d4b8a64ee3086c6e421018e7e1d74": "8f19c6c7b865fcece2cc5c50fd21dcf19e6ee8d59635d801a15e4d09a68137f8:1080p",
     "126d772998e0d8dbd9fde4bd496828a4f5178f3ecc2780f29760b1b9c6054843": "8f19c6c7b865fcece2cc5c50fd21dcf19e6ee8d59635d801a15e4d09a68137f8:720p",
-    "a4c2caea30ba60dfa7aac46c6c0c71afa1c9f6e949831b158362dc9036c76750": "8f19c6c7b865fcece2cc5c50fd21dcf19e6ee8d59635d801a15e4d09a68137f8:480p"
+    "a4c2caea30ba60dfa7aac46c6c0c71afa1c9f6e949831b158362dc9036c76750": "8f19c6c7b865fcece2cc5c50fd21dcf19e6ee8d59635d801a15e4d09a68137f8:480p",
+    "13a1b87d261a34712549c39721f7570d1d1dd159e4525fd0cf8f83089c879771": "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:1080p",
+    "ad09b9cfddcf350b922344621003c70c491c1d3ff650354142980f2cc3669c88": "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:720p",
+    "c08fad43452e9c1de8fe55e61c9d1985b94d885a6b7fe589f1bd76202cb1bcf5": "239b8c2c4432f666698958397b6b449a38359dc65b2f563b67355012db608cc8:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -14050,6 +14109,12 @@
       "episode": "05",
       "message_id": "1799",
       "published_at": 1793479838
+    },
+    "archive:32d9904f6f893d5711a4b0a92455fd82658a4c081a8a86cc015e03f7d000888b": {
+      "title": "VERTEX FORCE",
+      "episode": "05",
+      "message_id": "1803",
+      "published_at": 1793488471
     }
   }
 }
