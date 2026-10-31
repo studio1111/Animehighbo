@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-10-30",
+  "generated_on": "2026-10-31",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -2664,7 +2664,7 @@
       "title_native": "乙女ゲームのヒロインで最強サバイバル",
       "season": "SUMMER",
       "season_year": 2027,
-      "format": null,
+      "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/186057",
       "in_episode_manifest": false,
