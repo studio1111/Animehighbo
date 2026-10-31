@@ -6,10 +6,9 @@ on:
     paths:
       - 'tools/archive_catalog.py'
       - '.github/workflows/build-archive-catalog.yml'
-  # Scan SubsPlease frequently so new episodes reach the durable queue quickly.
-  # This is intentionally more frequent than the requested two-hour maximum interval.
+  # Rebuild the durable archive every two hours from SubsPlease latest, show pages, and RSS.
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '0 */2 * * *'
   workflow_dispatch:
     inputs:
       since:
@@ -29,7 +28,8 @@ permissions:
 
 concurrency:
   group: archive-catalog-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a catalog scan mid-run; that can leave newly discovered releases out.
+  cancel-in-progress: false
 
 jobs:
   build:
