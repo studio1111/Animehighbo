@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 190,
+    "seasonal_titles": 191,
     "matched_in_manifest": 29,
-    "review_required": 161
+    "review_required": 162
   },
   "titles": [
     {
@@ -2191,6 +2191,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/211070",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219237,
+      "title_english": null,
+      "title_romaji": "Pole Princess!!: Croix du Nord",
+      "title_native": "ポールプリンセス!! -Croix du Nord-",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219237",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
