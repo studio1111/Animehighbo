@@ -108,4 +108,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: gh workflow run subsplease-release-monitor.yml --repo "$GITHUB_REPOSITORY" --ref main
+        run: gh workflow run subsplease-release-monitor.yml --repo "$GITHUB_REPOSITORY" --ref main -f catalog_refresh_completed=true
