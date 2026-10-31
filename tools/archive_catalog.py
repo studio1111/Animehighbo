@@ -17,7 +17,7 @@ import requests
 
 LOG = logging.getLogger("animehighbo.archive_catalog")
 BASE_URL = "https://subsplease.org"
-USER_AGENT = "AnimehighboArchiveCatalog/1.0 (+authorized-media-only)"
+USER_AGENT = "AnimehighboArchiveCatalog/1.1"
 # Explicitly check long-running series and known Fall 2026 shows even when the
 # latest-feed pagination window does not surface a series page (for example when
 # its first/only release is in late September). A page that has no eligible
@@ -265,7 +265,7 @@ def _parse_rss_release_feed(
         title = re.sub(r"(?i)\s*\((?:1080|720|480)p\)", "", title).strip()
         if re.search(r"(?i)\b(batch|complete series)\b|\(\s*\d+\s*[-–]\s*\d+\s*\)", title):
             continue
-        match = re.match(r"^(.*?)\s+-\s+(?:episode\s*)?(\d{1,4})(?:\.\d+)?\s*$", title, re.I)
+        match = re.match(r"^(.*?)\s*(?:-\s*|\bepisode\s+|\bep\.?\s*)(\d{1,4})(?:\.\d+)?\s*$", title, re.I)
         if not match:
             continue
         series_title = match.group(1).strip(" -–—")
