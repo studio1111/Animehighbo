@@ -6,9 +6,9 @@ on:
     paths:
       - 'tools/archive_catalog.py'
       - '.github/workflows/build-archive-catalog.yml'
-  # Rebuild the durable archive every two hours from SubsPlease latest, show pages, and RSS.
+  # Rebuild the durable archive every 30 minutes from SubsPlease latest, show pages, and RSS.
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
     inputs:
       since:
