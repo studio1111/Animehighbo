@@ -2,7 +2,8 @@ name: Monitor SubsPlease release metadata coverage
 
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    # Run after the archive scan window to detect any RSS releases the catalog missed.
+    - cron: "30 */2 * * *"
   workflow_dispatch:
   push:
     branches: [main]
