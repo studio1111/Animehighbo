@@ -398,7 +398,16 @@ def build_archive_manifest(
         # the latest API or a show's episode-detail endpoint has not caught up.
         rss_releases = _fetch_rss_release_entries(client, cutoff, max_file_size_mb)
         for page_number in range(1, max_pages + 1):
-            payload = _request_json(client, {"f": "latest", "tz": "Etc/GMT", "p": page_number})
+            try:
+                payload = _request_json(client, {"f": "latest", "tz": "Etc/GMT", "p": page_number})
+            except (requests.RequestException, ValueError, TypeError) as exc:
+                # The RSS feed is independently refreshed above. A transient latest-API
+                # outage must not discard releases already discovered from RSS.
+                LOG.warning(
+                    "SubsPlease latest API page %d failed; continuing with RSS and known show pages: %s",
+                    page_number, exc,
+                )
+                break
             releases = list(payload.values())
             if not releases:
                 break
