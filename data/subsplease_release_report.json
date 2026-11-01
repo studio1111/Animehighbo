@@ -4,22 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 41,
-    "matched_in_archive_manifest": 41,
+    "feed_releases": 42,
+    "matched_in_archive_manifest": 42,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Dark Machine - The Animation",
-      "episode": 3,
-      "release_date": "2026-10-27",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Juuou Mujin Dandivine",
       "episode": 4,
@@ -318,7 +309,25 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": 5,
+      "release_date": "2026-11-01",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
       "title": "Hotel Inhumans S2",
+      "episode": 5,
+      "release_date": "2026-11-01",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Kanata kara",
       "episode": 5,
       "release_date": "2026-11-01",
       "feed_quality": "720p",
