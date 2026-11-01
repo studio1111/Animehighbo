@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-10-31",
+  "generated_on": "2026-11-01",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 191,
-    "matched_in_manifest": 29,
-    "review_required": 162
+    "seasonal_titles": 193,
+    "matched_in_manifest": 30,
+    "review_required": 163
   },
   "titles": [
     {
@@ -1001,9 +1001,9 @@
       "format": "ONA",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/180894",
-      "in_episode_manifest": false,
-      "review_required": true,
-      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+      "in_episode_manifest": true,
+      "review_required": false,
+      "note": "Metadata match found; verify episode-level coverage."
     },
     {
       "anilist_id": 176314,
@@ -2560,6 +2560,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 219243,
+      "title_english": null,
+      "title_romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita Part II",
+      "title_native": "ロメリア戦記 〜魔王を倒した後も人類やばそうだから軍隊組織した〜 第IIクール",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219243",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 218439,
       "title_english": null,
       "title_romaji": "Shiawase Kanako no Koroshiya Seikatsu",
@@ -2681,6 +2695,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/186057",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219265,
+      "title_english": null,
+      "title_romaji": "Shibatsuki Bukken",
+      "title_native": "シバつき物件",
+      "season": "SUMMER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219265",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
