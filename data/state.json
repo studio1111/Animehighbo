@@ -12114,6 +12114,62 @@
       "source_quality": "1080p",
       "published_at": 1793571073,
       "release_date": "2026-11-01"
+    },
+    "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:1080p": {
+      "title": "Lord of Mysteries – Specials",
+      "episode": "03",
+      "group_id": "a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "poster_identity": "archive:a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "release_date": "2026-06-28",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4dafa4df6f4c730e4bc7499890f002f9276ecbbe682990c1b452eb9445904bc9",
+      "message_id": "1864",
+      "published_at": 1793571764,
+      "bilingual_subtitles": true
+    },
+    "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:720p": {
+      "title": "Lord of Mysteries – Specials",
+      "episode": "03",
+      "group_id": "a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "poster_identity": "archive:a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "release_date": "2026-06-28",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2c33d3e469b1d4b485ad7af6d4f9f88318a469f18728349a7a79eced0496f1b4",
+      "message_id": "1865",
+      "published_at": 1793571770,
+      "bilingual_subtitles": true
+    },
+    "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:480p": {
+      "title": "Lord of Mysteries – Specials",
+      "episode": "03",
+      "group_id": "a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "poster_identity": "archive:a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "release_date": "2026-06-28",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "11f2216c7b5b7eed7858216f71f54977299839c42547050314343f2810304532",
+      "message_id": "1866",
+      "published_at": 1793571773,
+      "bilingual_subtitles": true
+    },
+    "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b": {
+      "title": "Lord of Mysteries – Specials",
+      "episode": "03",
+      "group_id": "a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "poster_identity": "archive:a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793571773,
+      "release_date": "2026-06-28"
     }
   },
   "seen": {
@@ -13436,7 +13492,10 @@
     "06b6d52bae898a7e0113d59eede048315add26e2d3e4818fd0e17589562d5918": "490688bbb46daa471a18571d9221d196f2f1db50cc3d051bcd69b5048bf77a15:480p",
     "80c0c2c459f4d8266662cdb3afc0f21c9635dd8d3b4576d3e6a79f3976665225": "530c94008f121e2e20591434a034d754c2d474452b09a7ffa2b5e80d8c6f15d8:1080p",
     "565c9d7c90d5d29923001fc385f336850227e117ff855667937747ec544ed856": "530c94008f121e2e20591434a034d754c2d474452b09a7ffa2b5e80d8c6f15d8:720p",
-    "a6901df275b13648dd12072c03acecdd0c1a0496ada37f640ad883d1454e07b2": "530c94008f121e2e20591434a034d754c2d474452b09a7ffa2b5e80d8c6f15d8:480p"
+    "a6901df275b13648dd12072c03acecdd0c1a0496ada37f640ad883d1454e07b2": "530c94008f121e2e20591434a034d754c2d474452b09a7ffa2b5e80d8c6f15d8:480p",
+    "4dafa4df6f4c730e4bc7499890f002f9276ecbbe682990c1b452eb9445904bc9": "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:1080p",
+    "2c33d3e469b1d4b485ad7af6d4f9f88318a469f18728349a7a79eced0496f1b4": "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:720p",
+    "11f2216c7b5b7eed7858216f71f54977299839c42547050314343f2810304532": "d01adc206130f57c4e72c554310aa64a8b5ac33cff319d923354363e3b1fd98b:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -15025,6 +15084,12 @@
       "episode": "04",
       "message_id": "1859",
       "published_at": 1793571049
+    },
+    "archive:a47dd54ecb27c839c05499d3c01b8de4e590c2488e137c1c37ca04d0e8d1a5ae": {
+      "title": "Lord of Mysteries – Specials",
+      "episode": "03",
+      "message_id": "1863",
+      "published_at": 1793571756
     }
   }
 }
