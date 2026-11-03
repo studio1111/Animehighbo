@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 193,
+    "seasonal_titles": 194,
     "matched_in_manifest": 30,
-    "review_required": 163
+    "review_required": 164
   },
   "titles": [
     {
@@ -2471,6 +2471,20 @@
       "format": null,
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/187361",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 199152,
+      "title_english": null,
+      "title_romaji": "GIRLS BAND CRY THE MOVIE",
+      "title_native": "ガールズバンドクライ THE MOVIE",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "MOVIE",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/199152",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
