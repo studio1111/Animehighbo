@@ -12730,6 +12730,62 @@
       "source_quality": "1080p",
       "published_at": 1793754578,
       "release_date": "2026-11-03"
+    },
+    "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:1080p": {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": "05",
+      "group_id": "d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "poster_identity": "archive:d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "release_date": "2026-11-04",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "21b1ae92301d9e06cd63fe62ec8fbbf5f98aaeeb5a57d1147f8225565bc87d22",
+      "message_id": "1908",
+      "published_at": 1793809610,
+      "bilingual_subtitles": true
+    },
+    "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:720p": {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": "05",
+      "group_id": "d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "poster_identity": "archive:d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "release_date": "2026-11-04",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "85744a1bd688be28d130b2d37a847ca310a8f5b3afb66e27a6698f5941b23719",
+      "message_id": "1909",
+      "published_at": 1793809613,
+      "bilingual_subtitles": true
+    },
+    "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:480p": {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": "05",
+      "group_id": "d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "poster_identity": "archive:d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "release_date": "2026-11-04",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ca8c36feff59a32004197fb327d5c99b715ea7e08783dc42a3762613eccd6f19",
+      "message_id": "1910",
+      "published_at": 1793809616,
+      "bilingual_subtitles": true
+    },
+    "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8": {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": "05",
+      "group_id": "d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "poster_identity": "archive:d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793809616,
+      "release_date": "2026-11-04"
     }
   },
   "seen": {
@@ -14085,7 +14141,10 @@
     "1f951cbef65280e1a845571cd68a5a6d34e10ded652900620b6c0b56135a7cba": "0c0f4437f55a6f9e1390f6eafbb69cdcffe29585cb5b5b1f4623e9aebaa9e704:480p",
     "cda50ad0c0d2efabd42f72cd9aa01fe839a3b6c759c3abcb2000d25424cedd1b": "00febbf80ed574926267362dc5d39f44cd8f850dbf89305bd4356481344e6a3c:1080p",
     "dbaed6e0ed91b523ea6511d7c152e5a3d3417f9d91eaa7582dc1c712c327c027": "00febbf80ed574926267362dc5d39f44cd8f850dbf89305bd4356481344e6a3c:720p",
-    "99c44f93d21116a2539215f170f6189d9a2e0e821fc37d23af8b531d63830ecc": "00febbf80ed574926267362dc5d39f44cd8f850dbf89305bd4356481344e6a3c:480p"
+    "99c44f93d21116a2539215f170f6189d9a2e0e821fc37d23af8b531d63830ecc": "00febbf80ed574926267362dc5d39f44cd8f850dbf89305bd4356481344e6a3c:480p",
+    "21b1ae92301d9e06cd63fe62ec8fbbf5f98aaeeb5a57d1147f8225565bc87d22": "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:1080p",
+    "85744a1bd688be28d130b2d37a847ca310a8f5b3afb66e27a6698f5941b23719": "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:720p",
+    "ca8c36feff59a32004197fb327d5c99b715ea7e08783dc42a3762613eccd6f19": "570784861dec1817867ad32d5126834e11eb1a3d2ccd1ebf3a991ca2736901a8:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -15740,6 +15799,12 @@
       "episode": "18",
       "message_id": "1903",
       "published_at": 1793754562
+    },
+    "archive:d3aeec90cf1015176e727c1fc3ed6a31b3fd3b3e58b3bbf37e011f9f190ab1a2": {
+      "title": "Sasaki to Pii-chan S2",
+      "episode": "05",
+      "message_id": "1907",
+      "published_at": 1793809603
     }
   }
 }
