@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 194,
+    "seasonal_titles": 196,
     "matched_in_manifest": 30,
-    "review_required": 164
+    "review_required": 166
   },
   "titles": [
     {
@@ -819,6 +819,20 @@
       "format": "TV_SHORT",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/206774",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219507,
+      "title_english": null,
+      "title_romaji": "Ocha-ken: Chobitto Monogatari",
+      "title_native": "お茶犬 ーちょびっとものがたりー",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/219507",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -2191,6 +2205,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/211070",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219505,
+      "title_english": null,
+      "title_romaji": "Pero Pero★Sparkles",
+      "title_native": "ペロペロ★スパ～クルズ",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219505",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
