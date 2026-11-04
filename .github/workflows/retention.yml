@@ -34,7 +34,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Delete runs older than the latest 30
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             const runs = await github.paginate(
@@ -51,10 +51,20 @@ jobs:
             const obsolete = completed.slice(30);
             core.info(`Found ${runs.length} total runs and ${completed.length} completed runs; keeping ${Math.min(30, completed.length)} completed runs and deleting ${obsolete.length}. Active runs are never deleted.`);
             for (const run of obsolete) {
-              await github.rest.actions.deleteWorkflowRun({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: run.id
-              });
-              core.info(`Deleted run ${run.id} (${run.name}, ${run.created_at}).`);
+              try {
+                await github.rest.actions.deleteWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+                core.info(`Deleted run ${run.id} (${run.name}, ${run.created_at}).`);
+              } catch (error) {
+                // A concurrent cleanup or GitHub-side retention may remove a run
+                // after listWorkflowRunsForRepo returns it. Treat that as success.
+                if (error.status === 404 || error.status === 410) {
+                  core.info(`Skipped run ${run.id}; it was already removed before deletion.`);
+                  continue;
+                }
+                throw error;
+              }
             }
