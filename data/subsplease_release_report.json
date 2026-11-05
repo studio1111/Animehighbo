@@ -4,8 +4,8 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 43,
-    "matched_in_archive_manifest": 43,
+    "feed_releases": 42,
+    "matched_in_archive_manifest": 42,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
@@ -40,24 +40,6 @@
     },
     {
       "title": "Magical Explorer",
-      "episode": 6,
-      "release_date": "2026-10-31",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Romelia Senki",
-      "episode": 5,
-      "release_date": "2026-10-31",
-      "feed_quality": "1080p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
       "episode": 6,
       "release_date": "2026-10-31",
       "feed_quality": "720p",
@@ -374,6 +356,15 @@
     {
       "title": "FX Senshi Kurumi-chan",
       "episode": 6,
+      "release_date": "2026-11-05",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": 5,
       "release_date": "2026-11-05",
       "feed_quality": "720p",
       "in_archive_manifest": true,
