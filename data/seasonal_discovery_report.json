@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 196,
+    "seasonal_titles": 198,
     "matched_in_manifest": 30,
-    "review_required": 166
+    "review_required": 168
   },
   "titles": [
     {
@@ -481,7 +481,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "MOVIE",
-      "status": "NOT_YET_RELEASED",
+      "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/178972",
       "in_episode_manifest": false,
       "review_required": true,
@@ -2336,6 +2336,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 219548,
+      "title_english": "Spirit Circle",
+      "title_romaji": "Spirit Circle",
+      "title_native": "スピリットサークル",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219548",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 216624,
       "title_english": "SSS-Class Revival Hunter",
       "title_romaji": "Shishite Ikiru SSS-kyuu Hunter",
@@ -2443,6 +2457,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/98476",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 209247,
+      "title_english": null,
+      "title_romaji": "Boku no Kokoro no Yabai Yatsu 3rd Season",
+      "title_native": "僕の心のヤバイやつ 第3期",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/209247",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
