@@ -1485,7 +1485,7 @@
         ],
         "format": "TV",
         "status": "FINISHED",
-        "averageScore": 83,
+        "averageScore": 82,
         "source": "MANGA",
         "studios": {
           "nodes": [
@@ -1628,7 +1628,7 @@
         ],
         "format": "TV",
         "status": "RELEASING",
-        "averageScore": 69,
+        "averageScore": 68,
         "source": "LIGHT_NOVEL",
         "studios": {
           "nodes": [
@@ -2419,7 +2419,7 @@
         ],
         "format": "TV",
         "status": "RELEASING",
-        "averageScore": 59,
+        "averageScore": 58,
         "source": "MANGA",
         "studios": {
           "nodes": [
