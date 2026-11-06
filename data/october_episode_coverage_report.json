@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-11-05",
+  "generated_on": "2026-11-06",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-11-05",
+  "through_date": "2026-11-06",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -10,14 +10,14 @@
   },
   "metadata_only": true,
   "summary": {
-    "titles_total": 137,
-    "seasonal_titles": 103,
+    "titles_total": 138,
+    "seasonal_titles": 104,
     "source_only_titles": 34,
     "titles_with_manifest_episodes": 61,
     "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 42,
     "titles_with_unmatched_rss_episodes": 0,
-    "distinct_manifest_episodes": 281,
+    "distinct_manifest_episodes": 282,
     "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 42,
     "distinct_unmatched_rss_episodes": 0,
@@ -657,7 +657,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
-      "status": "NOT_YET_RELEASED",
+      "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/203275",
       "source_coverage": {
         "manifest": {
@@ -969,17 +969,17 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-11",
+              "release_date": "2026-10-12",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-18",
+              "release_date": "2026-10-19",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-25",
+              "release_date": "2026-10-26",
               "quality": "1080p"
             },
             {
@@ -2047,6 +2047,34 @@
               "in_archive_manifest": true
             }
           ],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 177636,
+      "title_english": null,
+      "title_romaji": "NINJA SKOOLER Pilot Film",
+      "title_native": "ニンジャ スクーラー パイロットフィルム",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/177636",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -4635,22 +4663,22 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-04",
+              "release_date": "2026-10-05",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-11",
+              "release_date": "2026-10-12",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-18",
+              "release_date": "2026-10-19",
               "quality": "1080p"
             },
             {
               "episode": 4,
-              "release_date": "2026-10-25",
+              "release_date": "2026-10-26",
               "quality": "1080p"
             },
             {
@@ -5256,7 +5284,7 @@
     },
     {
       "anilist_id": null,
-      "title_english": "Tensei Shitara Ken Deshita S2 - 02 (1080p)",
+      "title_english": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
       "title_romaji": null,
       "title_native": null,
       "season": null,
@@ -5267,8 +5295,13 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
             {
               "episode": 2,
               "release_date": "2026-10-07",

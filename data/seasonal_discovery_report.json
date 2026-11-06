@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-05",
+  "generated_on": "2026-11-06",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 198,
+    "seasonal_titles": 199,
     "matched_in_manifest": 30,
-    "review_required": 168
+    "review_required": 169
   },
   "titles": [
     {
@@ -285,7 +285,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
-      "status": "NOT_YET_RELEASED",
+      "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/203275",
       "in_episode_manifest": false,
       "review_required": true,
@@ -794,6 +794,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 177636,
+      "title_english": null,
+      "title_romaji": "NINJA SKOOLER Pilot Film",
+      "title_native": "ニンジャ スクーラー パイロットフィルム",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/177636",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 205289,
