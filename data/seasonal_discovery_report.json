@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 199,
+    "seasonal_titles": 203,
     "matched_in_manifest": 30,
-    "review_required": 169
+    "review_required": 173
   },
   "titles": [
     {
@@ -1804,6 +1804,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 219621,
+      "title_english": null,
+      "title_romaji": "Hagure Idol: Jigoku-hen",
+      "title_native": "はぐれアイドル 地獄変",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219621",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 216858,
       "title_english": null,
       "title_romaji": "Haru to Gen: 70-sai, Hajimete Kosodate",
@@ -1813,6 +1827,20 @@
       "format": "TV_SHORT",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/216858",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219618,
+      "title_english": "He Does a Body Good",
+      "title_romaji": "Karada ni Ii Otoko",
+      "title_native": "カラダにイイ男",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219618",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -2644,6 +2672,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 207692,
+      "title_english": null,
+      "title_romaji": "Namida Ame to Serenade",
+      "title_native": "涙雨とセレナーデ",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/207692",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 219243,
       "title_english": null,
       "title_romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita Part II",
@@ -2737,6 +2779,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/199597",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 184072,
+      "title_english": null,
+      "title_romaji": "Yuru Camp△ SEASON 4",
+      "title_native": "ゆるキャン△ SEASON４",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/184072",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
