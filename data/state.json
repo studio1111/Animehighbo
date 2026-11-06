@@ -13402,6 +13402,62 @@
       "source_quality": "1080p",
       "published_at": 1793949016,
       "release_date": "2026-11-05"
+    },
+    "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:1080p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": "19",
+      "group_id": "ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "poster_identity": "archive:ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "release_date": "2026-11-05",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4902640d6e4dd2b3aaff881c30d858d073958d0f91d988b29c17c5270f6074e9",
+      "message_id": "1958",
+      "published_at": 1793975634,
+      "bilingual_subtitles": true
+    },
+    "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:720p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": "19",
+      "group_id": "ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "poster_identity": "archive:ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "release_date": "2026-11-05",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "7e0cad0db97c76ad7b13c0b2924093f4f5512cac17e40643d4534f279cf21897",
+      "message_id": "1959",
+      "published_at": 1793975641,
+      "bilingual_subtitles": true
+    },
+    "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:480p": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": "19",
+      "group_id": "ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "poster_identity": "archive:ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "release_date": "2026-11-05",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "189bf46a78e32b13f27e1d83166058d40a7813c2ca006fa91a4e9813bfaddf28",
+      "message_id": "1960",
+      "published_at": 1793975646,
+      "bilingual_subtitles": true
+    },
+    "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": "19",
+      "group_id": "ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "poster_identity": "archive:ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1793975646,
+      "release_date": "2026-11-05"
     }
   },
   "seen": {
@@ -14793,7 +14849,10 @@
     "a16dfef4c2750ddee17f669939a53ca66513656cb35116db9a1f74b516ac2f21": "70816c512d51ee5d1ec05a9f5549d728bcd493bc3eeb7c2852c665a5fa0db7d5:480p",
     "85b0a305560bb66d83e0496fc7e29bda960dc242611b803bebac2628964e05d4": "8d84d0c898239446a389a6b11f502dd9e20ee3b930ac31bfaa695ded53f4434f:1080p",
     "0669db49116bd25b01a8324c35c4b58d8b0bd9caf7bf6d3727d9c5ed1d0c1c54": "8d84d0c898239446a389a6b11f502dd9e20ee3b930ac31bfaa695ded53f4434f:720p",
-    "ba94c9c57dd2726bb8e8825355cdfeb44bc0feefda9224382446aef5fc6d007a": "8d84d0c898239446a389a6b11f502dd9e20ee3b930ac31bfaa695ded53f4434f:480p"
+    "ba94c9c57dd2726bb8e8825355cdfeb44bc0feefda9224382446aef5fc6d007a": "8d84d0c898239446a389a6b11f502dd9e20ee3b930ac31bfaa695ded53f4434f:480p",
+    "4902640d6e4dd2b3aaff881c30d858d073958d0f91d988b29c17c5270f6074e9": "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:1080p",
+    "7e0cad0db97c76ad7b13c0b2924093f4f5512cac17e40643d4534f279cf21897": "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:720p",
+    "189bf46a78e32b13f27e1d83166058d40a7813c2ca006fa91a4e9813bfaddf28": "b2a37c49723ef7f9585593110c34a0657461222709f7cef1a6f04b25df876184:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -16520,6 +16579,12 @@
       "episode": "05",
       "message_id": "1953",
       "published_at": 1793949002
+    },
+    "archive:ac581ffdb59f9e50fce5b6b05410fb2d46851ee026eae55ae9289c62852a770d": {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": "19",
+      "message_id": "1957",
+      "published_at": 1793975620
     }
   }
 }
