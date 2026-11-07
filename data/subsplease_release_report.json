@@ -48,44 +48,8 @@
       "missing_from_manifest": false
     },
     {
-      "title": "Saikyosoubi",
-      "episode": 5,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
-      "episode": 4,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tempal - Item no Chikara",
-      "episode": 6,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
       "episode": 30,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Yowaki Max",
-      "episode": 5,
       "release_date": "2026-11-01",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -372,8 +336,44 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Detective Conan",
+      "episode": 1219,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Romelia Senki",
+      "episode": 6,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
       "title": "Shuiro no Kamen",
       "episode": 5,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "episode": 7,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "episode": 19,
       "release_date": "2026-11-07",
       "feed_quality": "720p",
       "in_archive_manifest": true,
