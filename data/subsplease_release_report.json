@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 41,
-    "matched_in_archive_manifest": 41,
+    "matched_in_archive_manifest": 39,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 2
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -30,26 +30,8 @@
       "missing_from_manifest": false
     },
     {
-      "title": "Hotel Inhumans S2",
-      "episode": 5,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Kanata kara",
       "episode": 5,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
-      "episode": 30,
       "release_date": "2026-11-01",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -336,6 +318,15 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Black Clover",
+      "episode": 176,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
       "title": "Detective Conan",
       "episode": 1219,
       "release_date": "2026-11-07",
@@ -370,6 +361,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "VERTEX FORCE",
+      "episode": 6,
+      "release_date": "2026-11-07",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     },
     {
       "title": "Yasei no Last Boss ga Arawareta!",
