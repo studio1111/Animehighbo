@@ -17,7 +17,7 @@
     "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 41,
     "titles_with_unmatched_rss_episodes": 0,
-    "distinct_manifest_episodes": 289,
+    "distinct_manifest_episodes": 297,
     "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 41,
     "distinct_unmatched_rss_episodes": 0,
@@ -467,7 +467,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
-      "status": "NOT_YET_RELEASED",
+      "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/214536",
       "source_coverage": {
         "manifest": {
@@ -698,17 +698,17 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-12",
+              "release_date": "2026-10-11",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-19",
+              "release_date": "2026-10-18",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-26",
+              "release_date": "2026-10-25",
               "quality": "1080p"
             },
             {
@@ -1010,14 +1010,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 4,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -1456,7 +1450,7 @@
     },
     {
       "anilist_id": 218217,
-      "title_english": null,
+      "title_english": "I’m Dating a Dark Summoner Omake Shorts",
       "title_romaji": "JK Dark Summoner to Deki......Dei Nai!?",
       "title_native": "JKダークサモナーとデキ。。。。。。でいない!?",
       "season": "FALL",
@@ -2209,14 +2203,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 6,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -3289,7 +3277,7 @@
       "anilist_url": "https://anilist.co/anime/195571",
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 4,
+          "distinct_episodes": 5,
           "episodes": [
             {
               "episode": 1,
@@ -3310,6 +3298,11 @@
               "episode": 4,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 5,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -3318,8 +3311,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 5,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -3575,7 +3574,7 @@
       "anilist_url": "https://anilist.co/anime/209562",
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
             {
               "episode": 1,
@@ -3601,6 +3600,11 @@
               "episode": 5,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 6,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -3609,8 +3613,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 6,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -3873,7 +3883,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
             {
               "episode": 171,
@@ -3899,6 +3909,11 @@
               "episode": 175,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 176,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -3907,8 +3922,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 176,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -4121,7 +4142,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 4,
+          "distinct_episodes": 5,
           "episodes": [
             {
               "episode": 1215,
@@ -4130,7 +4151,7 @@
             },
             {
               "episode": 1216,
-              "release_date": "2026-10-11",
+              "release_date": "2026-10-10",
               "quality": "1080p"
             },
             {
@@ -4142,6 +4163,11 @@
               "episode": 1218,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 1219,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -4150,8 +4176,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 1219,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -4238,14 +4270,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 5,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -4453,22 +4479,22 @@
           "episodes": [
             {
               "episode": 13,
-              "release_date": "2026-10-08",
+              "release_date": "2026-10-07",
               "quality": "1080p"
             },
             {
               "episode": 14,
-              "release_date": "2026-10-15",
+              "release_date": "2026-10-14",
               "quality": "1080p"
             },
             {
               "episode": 15,
-              "release_date": "2026-10-22",
+              "release_date": "2026-10-21",
               "quality": "1080p"
             },
             {
               "episode": 16,
-              "release_date": "2026-10-29",
+              "release_date": "2026-10-28",
               "quality": "1080p"
             },
             {
@@ -4740,14 +4766,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 5,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -4906,7 +4926,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
             {
               "episode": 1,
@@ -4932,6 +4952,11 @@
               "episode": 5,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 6,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -4940,8 +4965,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 6,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -4994,14 +5025,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 5,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -5268,14 +5293,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 30,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -5294,7 +5313,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 6,
+          "distinct_episodes": 7,
           "episodes": [
             {
               "episode": 1,
@@ -5325,6 +5344,11 @@
               "episode": 6,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 7,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -5333,8 +5357,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 7,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -5342,7 +5372,7 @@
     },
     {
       "anilist_id": null,
-      "title_english": "Tensei Shitara Ken Deshita S2 - 02 (1080p)",
+      "title_english": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
       "title_romaji": null,
       "title_native": null,
       "season": null,
@@ -5353,8 +5383,13 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
             {
               "episode": 2,
               "release_date": "2026-10-07",
@@ -5577,7 +5612,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 5,
+          "distinct_episodes": 6,
           "episodes": [
             {
               "episode": 14,
@@ -5603,6 +5638,11 @@
               "episode": 18,
               "release_date": "2026-10-31",
               "quality": "1080p"
+            },
+            {
+              "episode": 19,
+              "release_date": "2026-11-07",
+              "quality": "1080p"
             }
           ]
         },
@@ -5611,8 +5651,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 19,
+              "release_date": "2026-11-07",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -5665,14 +5711,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 5,
-              "release_date": "2026-11-01",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },

@@ -201,7 +201,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
-      "status": "NOT_YET_RELEASED",
+      "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/214536",
       "in_episode_manifest": false,
       "review_required": true,
@@ -559,7 +559,7 @@
     },
     {
       "anilist_id": 218217,
-      "title_english": null,
+      "title_english": "I’m Dating a Dark Summoner Omake Shorts",
       "title_romaji": "JK Dark Summoner to Deki......Dei Nai!?",
       "title_native": "JKダークサモナーとデキ。。。。。。でいない!?",
       "season": "FALL",
