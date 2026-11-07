@@ -5,30 +5,12 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 41,
-    "matched_in_archive_manifest": 41,
+    "matched_in_archive_manifest": 39,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 2
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Ace of Diamond Act II S2",
-      "episode": 17,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ao Ashi S2",
-      "episode": 5,
-      "release_date": "2026-11-01",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Dark Summoner to Dekiteiru",
       "episode": 5,
@@ -345,6 +327,15 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Keroro Gunsou (2026)",
+      "episode": 6,
+      "release_date": "2026-11-06",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
       "title": "Kusuriya no Hitorigoto",
       "episode": 54,
       "release_date": "2026-11-06",
@@ -352,6 +343,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Rilakkuma",
+      "episode": 31,
+      "release_date": "2026-11-06",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     },
     {
       "title": "Toaru Anbu no Item",
