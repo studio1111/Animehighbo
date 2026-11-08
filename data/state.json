@@ -14522,6 +14522,62 @@
       "source_quality": "1080p",
       "published_at": 1794131824,
       "release_date": "2026-11-08"
+    },
+    "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:1080p": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "18",
+      "group_id": "6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "poster_identity": "archive:6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "release_date": "2026-11-08",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b72276ffba788822d165e7353198aed22130993a688d0d0189fa2662a6f524ac",
+      "message_id": "2038",
+      "published_at": 1794156944,
+      "bilingual_subtitles": true
+    },
+    "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:720p": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "18",
+      "group_id": "6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "poster_identity": "archive:6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "release_date": "2026-11-08",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "447e261f425e73beee22ed39ff311cfe606a3854696a27dccd98eba2a662adbc",
+      "message_id": "2039",
+      "published_at": 1794156950,
+      "bilingual_subtitles": true
+    },
+    "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:480p": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "18",
+      "group_id": "6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "poster_identity": "archive:6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "release_date": "2026-11-08",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "c78fd0a145977c4d83f7a4ec8f8d6626f336e72562c682e4298c9a0c153e6726",
+      "message_id": "2040",
+      "published_at": 1794156956,
+      "bilingual_subtitles": true
+    },
+    "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "18",
+      "group_id": "6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "poster_identity": "archive:6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794156956,
+      "release_date": "2026-11-08"
     }
   },
   "seen": {
@@ -15973,7 +16029,10 @@
     "4fd0a972e8451560aaa7155b9a839d55bb7a773753ab005f454247f9ddcea847": "4efb3e9d77a1758f05462d5d1655caf8e652b0d76800fab5a079cf2006dbc61e:480p",
     "d3bf86f2b4179805af8b4f3fd63b3236ed4c648cd5bc504fe9628ff6b242c62e": "0f3c0abb53c26b4343de2239518132ac2dd5cfde3104cc22d4810e1c439aa3cf:1080p",
     "03dcfcd779c0a6fa217f08c578d4bf457238fb5524562ab26dbbeef1f258bfe6": "0f3c0abb53c26b4343de2239518132ac2dd5cfde3104cc22d4810e1c439aa3cf:720p",
-    "e1f872f1704aba962e68c32d36e2dd2f30ce26c1d944bbbdd9a301649fbafa99": "0f3c0abb53c26b4343de2239518132ac2dd5cfde3104cc22d4810e1c439aa3cf:480p"
+    "e1f872f1704aba962e68c32d36e2dd2f30ce26c1d944bbbdd9a301649fbafa99": "0f3c0abb53c26b4343de2239518132ac2dd5cfde3104cc22d4810e1c439aa3cf:480p",
+    "b72276ffba788822d165e7353198aed22130993a688d0d0189fa2662a6f524ac": "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:1080p",
+    "447e261f425e73beee22ed39ff311cfe606a3854696a27dccd98eba2a662adbc": "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:720p",
+    "c78fd0a145977c4d83f7a4ec8f8d6626f336e72562c682e4298c9a0c153e6726": "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -17820,6 +17879,12 @@
       "episode": "06",
       "message_id": "2033",
       "published_at": 1794131809
+    },
+    "archive:6e1520eeca00caa7f0cdd30676eda42a3aaadbadcb20fd699dcc7fdf03512b14": {
+      "title": "Ace of Diamond Act II S2",
+      "episode": "18",
+      "message_id": "2037",
+      "published_at": 1794156936
     }
   }
 }
