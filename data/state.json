@@ -14634,6 +14634,62 @@
       "source_quality": "1080p",
       "published_at": 1794157255,
       "release_date": "2026-11-08"
+    },
+    "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:1080p": {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": "05",
+      "group_id": "d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "poster_identity": "archive:d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "release_date": "2026-11-08",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0e6c638be0986ba4946d8f14b6741b36612d3a398e9dfbbe3cf288b70d9ab2eb",
+      "message_id": "2046",
+      "published_at": 1794158790,
+      "bilingual_subtitles": true
+    },
+    "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:720p": {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": "05",
+      "group_id": "d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "poster_identity": "archive:d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "release_date": "2026-11-08",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "15fe8238e4278ff087d903d4a10c33b9e41bd5368fe410d78825c0773a5fed6f",
+      "message_id": "2047",
+      "published_at": 1794158798,
+      "bilingual_subtitles": true
+    },
+    "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:480p": {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": "05",
+      "group_id": "d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "poster_identity": "archive:d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "release_date": "2026-11-08",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0cfc71c74bfd632c63c16a004c63ae9b19888fcf083854339b7e41a230d9368f",
+      "message_id": "2048",
+      "published_at": 1794158803,
+      "bilingual_subtitles": true
+    },
+    "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc": {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": "05",
+      "group_id": "d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "poster_identity": "archive:d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794158803,
+      "release_date": "2026-11-08"
     }
   },
   "seen": {
@@ -16091,7 +16147,10 @@
     "c78fd0a145977c4d83f7a4ec8f8d6626f336e72562c682e4298c9a0c153e6726": "74db013f6d89016b5ae9513b5ca549bfaa0f3f81762b566a354a67de8f552e2f:480p",
     "0a4e72cecb23a1b155fa8509ed3b7444d7db9978a3218b034a99ac6791a42933": "787a3af5b8424f494303b94328d0cb3ec8ec0813044d4bd9084f7eb5f6824292:1080p",
     "fa3f7c071f7cb3cb8a2883c8f63c99c65a8844eb0f5de90711ee0f9771c3cc91": "787a3af5b8424f494303b94328d0cb3ec8ec0813044d4bd9084f7eb5f6824292:720p",
-    "ba6b6accd9c0b40c071e2d2eb969666ab1a58cc86d1e0c51bac7aa4247add4bc": "787a3af5b8424f494303b94328d0cb3ec8ec0813044d4bd9084f7eb5f6824292:480p"
+    "ba6b6accd9c0b40c071e2d2eb969666ab1a58cc86d1e0c51bac7aa4247add4bc": "787a3af5b8424f494303b94328d0cb3ec8ec0813044d4bd9084f7eb5f6824292:480p",
+    "0e6c638be0986ba4946d8f14b6741b36612d3a398e9dfbbe3cf288b70d9ab2eb": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:1080p",
+    "15fe8238e4278ff087d903d4a10c33b9e41bd5368fe410d78825c0773a5fed6f": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:720p",
+    "0cfc71c74bfd632c63c16a004c63ae9b19888fcf083854339b7e41a230d9368f": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -17950,6 +18009,12 @@
       "episode": "06",
       "message_id": "2041",
       "published_at": 1794157237
+    },
+    "archive:d4dfeaf44516aaba7debb9f980595eecb7c6a5500fa813f9d3c95318f2f65d8b": {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": "05",
+      "message_id": "2045",
+      "published_at": 1794158775
     }
   }
 }
