@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 203,
+    "seasonal_titles": 205,
     "matched_in_manifest": 30,
-    "review_required": 173
+    "review_required": 175
   },
   "titles": [
     {
@@ -2518,6 +2518,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 216312,
+      "title_english": null,
+      "title_romaji": "Boku no Suki na Hito ga Suki na Hito",
+      "title_native": "ぼくの好きな人が好きな人",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/216312",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 216623,
       "title_english": null,
       "title_romaji": "Doraemon: Nobita no Jouki Jikansha",
@@ -2667,6 +2681,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/211304",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 179088,
+      "title_english": null,
+      "title_romaji": "Minami-ke: Korekara",
+      "title_native": "みなみけ これから",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/179088",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
