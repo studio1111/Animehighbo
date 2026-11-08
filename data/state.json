@@ -14690,6 +14690,62 @@
       "source_quality": "1080p",
       "published_at": 1794158803,
       "release_date": "2026-11-08"
+    },
+    "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:1080p": {
+      "title": "Kanata kara",
+      "episode": "06",
+      "group_id": "ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "poster_identity": "archive:ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "release_date": "2026-11-08",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "957f053cc3e3e43051d8677b0819e444344183755eb6f0411068ef0031e741a5",
+      "message_id": "2050",
+      "published_at": 1794159792,
+      "bilingual_subtitles": true
+    },
+    "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:720p": {
+      "title": "Kanata kara",
+      "episode": "06",
+      "group_id": "ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "poster_identity": "archive:ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "release_date": "2026-11-08",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1f0d707e02b4506363311481810e381a309dab3b60ee01e4a2fd9594c4838eca",
+      "message_id": "2051",
+      "published_at": 1794159798,
+      "bilingual_subtitles": true
+    },
+    "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:480p": {
+      "title": "Kanata kara",
+      "episode": "06",
+      "group_id": "ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "poster_identity": "archive:ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "release_date": "2026-11-08",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "36c38ace2f3b0f8dcfe31ea0fc67aaaccc3af419dc0b40e5975ed4be0f260762",
+      "message_id": "2052",
+      "published_at": 1794159801,
+      "bilingual_subtitles": true
+    },
+    "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419": {
+      "title": "Kanata kara",
+      "episode": "06",
+      "group_id": "ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "poster_identity": "archive:ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794159801,
+      "release_date": "2026-11-08"
     }
   },
   "seen": {
@@ -16150,7 +16206,10 @@
     "ba6b6accd9c0b40c071e2d2eb969666ab1a58cc86d1e0c51bac7aa4247add4bc": "787a3af5b8424f494303b94328d0cb3ec8ec0813044d4bd9084f7eb5f6824292:480p",
     "0e6c638be0986ba4946d8f14b6741b36612d3a398e9dfbbe3cf288b70d9ab2eb": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:1080p",
     "15fe8238e4278ff087d903d4a10c33b9e41bd5368fe410d78825c0773a5fed6f": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:720p",
-    "0cfc71c74bfd632c63c16a004c63ae9b19888fcf083854339b7e41a230d9368f": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:480p"
+    "0cfc71c74bfd632c63c16a004c63ae9b19888fcf083854339b7e41a230d9368f": "7bcbae48fd73d6960f19f7414c5b26a123c1355612e7aa11f5b52a5627f41acc:480p",
+    "957f053cc3e3e43051d8677b0819e444344183755eb6f0411068ef0031e741a5": "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:1080p",
+    "1f0d707e02b4506363311481810e381a309dab3b60ee01e4a2fd9594c4838eca": "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:720p",
+    "36c38ace2f3b0f8dcfe31ea0fc67aaaccc3af419dc0b40e5975ed4be0f260762": "d98de189fb2b140e0407d45c293a992d1546b0284aafa1a0ccc4e93cf4a94419:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -18015,6 +18074,12 @@
       "episode": "05",
       "message_id": "2045",
       "published_at": 1794158775
+    },
+    "archive:ed22764105737a83ed922a3e58ff0451c71ec32ac7110d5a914212a0e7c2a597": {
+      "title": "Kanata kara",
+      "episode": "06",
+      "message_id": "2049",
+      "published_at": 1794159786
     }
   }
 }
