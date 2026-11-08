@@ -14970,6 +14970,62 @@
       "source_quality": "1080p",
       "published_at": 1794169512,
       "release_date": "2026-11-08"
+    },
+    "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:1080p": {
+      "title": "Saikyosoubi",
+      "episode": "06",
+      "group_id": "7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "poster_identity": "archive:7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "release_date": "2026-11-08",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "bde2fcdc86f75765c528927dbd2c98c8566442106b286790db331050370f9eda",
+      "message_id": "2070",
+      "published_at": 1794181735,
+      "bilingual_subtitles": true
+    },
+    "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:720p": {
+      "title": "Saikyosoubi",
+      "episode": "06",
+      "group_id": "7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "poster_identity": "archive:7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "release_date": "2026-11-08",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "546392fd0ecf48eef1e6b96423265b2322d92e5024509ed2a4c7672681070680",
+      "message_id": "2071",
+      "published_at": 1794181739,
+      "bilingual_subtitles": true
+    },
+    "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:480p": {
+      "title": "Saikyosoubi",
+      "episode": "06",
+      "group_id": "7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "poster_identity": "archive:7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "release_date": "2026-11-08",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "746cdf36d525f1ffa0782bfaf8ae2577d6f41f23eccdba56b4136c063109ee1f",
+      "message_id": "2072",
+      "published_at": 1794181742,
+      "bilingual_subtitles": true
+    },
+    "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134": {
+      "title": "Saikyosoubi",
+      "episode": "06",
+      "group_id": "7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "poster_identity": "archive:7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794181742,
+      "release_date": "2026-11-08"
     }
   },
   "seen": {
@@ -16445,7 +16501,10 @@
     "88c952e9aa9e0c4089d6da3c7ea3054eb6bb4a6fc9582fdc3794b27d75871b4c": "f6b6789c15a47869d10c594687836902557650a764bc6f1978d1e7f3d9e03283:480p",
     "a5be22de08d8902e29c57ed20fd37cd1bee55bb34a74a449a51153893f499303": "2040958863b6a77a528a582dc80e4b6eb9625f65f621709cc7894550388666d0:1080p",
     "f5c9979f65b81e234dc80cdfd54fa534a8a4ef218007381a5cd89e48d206417e": "2040958863b6a77a528a582dc80e4b6eb9625f65f621709cc7894550388666d0:720p",
-    "e1ec17f67daca5eae2a41ec0d3fa3eb3784621bffb8a4314d5592313351c7ee9": "2040958863b6a77a528a582dc80e4b6eb9625f65f621709cc7894550388666d0:480p"
+    "e1ec17f67daca5eae2a41ec0d3fa3eb3784621bffb8a4314d5592313351c7ee9": "2040958863b6a77a528a582dc80e4b6eb9625f65f621709cc7894550388666d0:480p",
+    "bde2fcdc86f75765c528927dbd2c98c8566442106b286790db331050370f9eda": "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:1080p",
+    "546392fd0ecf48eef1e6b96423265b2322d92e5024509ed2a4c7672681070680": "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:720p",
+    "746cdf36d525f1ffa0782bfaf8ae2577d6f41f23eccdba56b4136c063109ee1f": "4fd870f8b78f4dfe36d2cdde838fc0cd0ab6601e4bf111929e73131c1bce2134:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -18340,6 +18399,12 @@
       "episode": "05",
       "message_id": "2065",
       "published_at": 1794169496
+    },
+    "archive:7b50f12d975fcb13ddbe3ae90067d10871ea712c4ce8e5aa96fca0fc1ec9c50e": {
+      "title": "Saikyosoubi",
+      "episode": "06",
+      "message_id": "2069",
+      "published_at": 1794181728
     }
   }
 }
