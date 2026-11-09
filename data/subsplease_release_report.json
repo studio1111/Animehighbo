@@ -4,8 +4,8 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 44,
-    "matched_in_archive_manifest": 44,
+    "feed_releases": 46,
+    "matched_in_archive_manifest": 46,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
@@ -51,7 +51,7 @@
       "title": "Sasaki to Pii-chan S2",
       "episode": 5,
       "release_date": "2026-11-04",
-      "feed_quality": "720p",
+      "feed_quality": "1080p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
@@ -402,6 +402,24 @@
       "title": "Yowaki Max",
       "episode": 6,
       "release_date": "2026-11-08",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+      "episode": 6,
+      "release_date": "2026-11-09",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "PSYREN",
+      "episode": 5,
+      "release_date": "2026-11-09",
       "feed_quality": "720p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
