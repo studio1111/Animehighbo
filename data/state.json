@@ -15194,6 +15194,62 @@
       "source_quality": "1080p",
       "published_at": 1794252210,
       "release_date": "2026-11-09"
+    },
+    "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:1080p": {
+      "title": "PSYREN",
+      "episode": "05",
+      "group_id": "d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "poster_identity": "archive:d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "release_date": "2026-11-09",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "f351f74b8bd60fdca758948e9c76bf5ea693bd5d3cc6255e59c3093ed98ef910",
+      "message_id": "2086",
+      "published_at": 1794307021,
+      "bilingual_subtitles": true
+    },
+    "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:720p": {
+      "title": "PSYREN",
+      "episode": "05",
+      "group_id": "d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "poster_identity": "archive:d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "release_date": "2026-11-09",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "586bc415ac79c78e4f9c959b25871753550791ebfec77e66f398e969b3e7aa5e",
+      "message_id": "2087",
+      "published_at": 1794307027,
+      "bilingual_subtitles": true
+    },
+    "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:480p": {
+      "title": "PSYREN",
+      "episode": "05",
+      "group_id": "d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "poster_identity": "archive:d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "release_date": "2026-11-09",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9c8c76b47d3405226ec4b6e1dc51cf6191ca6ad7b501aa9941996a534a2bf7e0",
+      "message_id": "2088",
+      "published_at": 1794307031,
+      "bilingual_subtitles": true
+    },
+    "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d": {
+      "title": "PSYREN",
+      "episode": "05",
+      "group_id": "d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "poster_identity": "archive:d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794307031,
+      "release_date": "2026-11-09"
     }
   },
   "seen": {
@@ -16681,7 +16737,10 @@
     "ac8f95cbdc892a0a2513f2e4ec3eb50d98d2e3fd9561246afc4b33a9f6bd36b1": "72418cb792fc265d5fd3598376033b54a7503a22e08859f86ae64f840b28c5ce:480p",
     "cf7f98936d64451437d0778b679bfee2ff3b9932a479eea8fd79004d0d418a9c": "c846f004864ecd39a43887c84e4d3d3172e22de3870d2571f6802974e2de44c7:1080p",
     "9532e6f4593f275a6e4e6f0fb6e2722b0552050a0cf5547bd0759114e3012449": "c846f004864ecd39a43887c84e4d3d3172e22de3870d2571f6802974e2de44c7:720p",
-    "b95f05a8ef01a1c17c9db2bf54e0ac4b108e2136f0eecb68d365469f81357deb": "c846f004864ecd39a43887c84e4d3d3172e22de3870d2571f6802974e2de44c7:480p"
+    "b95f05a8ef01a1c17c9db2bf54e0ac4b108e2136f0eecb68d365469f81357deb": "c846f004864ecd39a43887c84e4d3d3172e22de3870d2571f6802974e2de44c7:480p",
+    "f351f74b8bd60fdca758948e9c76bf5ea693bd5d3cc6255e59c3093ed98ef910": "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:1080p",
+    "586bc415ac79c78e4f9c959b25871753550791ebfec77e66f398e969b3e7aa5e": "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:720p",
+    "9c8c76b47d3405226ec4b6e1dc51cf6191ca6ad7b501aa9941996a534a2bf7e0": "a49e286118ee224311e862fd8d7bae308db12d401f2ff3425a87dea67aecd42d:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -18600,6 +18659,12 @@
       "episode": "06",
       "message_id": "2081",
       "published_at": 1794252197
+    },
+    "archive:d47d915de67d82454bc417c6952a2d0288c4910d1ba0466aa6d6d3ae88cac56a": {
+      "title": "PSYREN",
+      "episode": "05",
+      "message_id": "2085",
+      "published_at": 1794307010
     }
   }
 }
