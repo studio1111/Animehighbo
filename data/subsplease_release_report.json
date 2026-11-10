@@ -5,21 +5,12 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 45,
-    "matched_in_archive_manifest": 45,
+    "matched_in_archive_manifest": 44,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 1
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Juuou Mujin Dandivine",
-      "episode": 5,
-      "release_date": "2026-11-04",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "episode": 17,
@@ -415,6 +406,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "episode": 19,
+      "release_date": "2026-11-10",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
