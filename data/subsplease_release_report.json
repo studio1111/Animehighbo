@@ -12,15 +12,6 @@
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
-      "title": "Kikansha no Mahou wa Tokubetsu desu",
-      "episode": 17,
-      "release_date": "2026-11-04",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "FX Senshi Kurumi-chan",
       "episode": 6,
       "release_date": "2026-11-05",
@@ -383,6 +374,15 @@
     {
       "title": "Choujun! Choujou-senpai",
       "episode": 6,
+      "release_date": "2026-11-10",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Dark Machine - The Animation",
+      "episode": 5,
       "release_date": "2026-11-10",
       "feed_quality": "720p",
       "in_archive_manifest": true,
