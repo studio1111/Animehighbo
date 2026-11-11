@@ -15866,6 +15866,62 @@
       "source_quality": "1080p",
       "published_at": 1794422301,
       "release_date": "2026-11-11"
+    },
+    "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:1080p": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "06",
+      "group_id": "2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "poster_identity": "archive:2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "release_date": "2026-11-11",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9cbf5cd07bc039a9662c33b69da930b7a13941a3e0235ab41fc1d7508270d2ec",
+      "message_id": "2134",
+      "published_at": 1794423839,
+      "bilingual_subtitles": true
+    },
+    "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:720p": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "06",
+      "group_id": "2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "poster_identity": "archive:2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "release_date": "2026-11-11",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "ea78b5642d19cb4ed413bbe50ce554ce8d73b5556f0b97781d673cadb9124d05",
+      "message_id": "2135",
+      "published_at": 1794423844,
+      "bilingual_subtitles": true
+    },
+    "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:480p": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "06",
+      "group_id": "2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "poster_identity": "archive:2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "release_date": "2026-11-11",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1bd6d2ee6171f0311be09ee634da10ef28093b2e5924e9a52f4dd2cc674695e2",
+      "message_id": "2136",
+      "published_at": 1794423847,
+      "bilingual_subtitles": true
+    },
+    "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "06",
+      "group_id": "2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "poster_identity": "archive:2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794423847,
+      "release_date": "2026-11-11"
     }
   },
   "seen": {
@@ -17389,7 +17445,10 @@
     "a0f676e8008807ca317cbcb9df788cd72586d92902454e4a38d37c94b5b804e6": "a7bcd862982f741cade834cdfecc065052e5579f9a3e1d58f10ca39ea79014df:480p",
     "311854ef8a91a505971b60edd11dc5d69629d48cf7b932599dacd2c94690f3da": "22a66dc170cddefb73ed332548c64b9d05b2d7fbe3c4c9b2fca993c1d0f31a95:1080p",
     "56aa2eee168232a6254e5f0896b0150e37d047f20d213e8cb5789a910abbd03e": "22a66dc170cddefb73ed332548c64b9d05b2d7fbe3c4c9b2fca993c1d0f31a95:720p",
-    "ab4634909026627176dcff4f247c2a7e4b64a78f752c0013d0141e5ea46155e4": "22a66dc170cddefb73ed332548c64b9d05b2d7fbe3c4c9b2fca993c1d0f31a95:480p"
+    "ab4634909026627176dcff4f247c2a7e4b64a78f752c0013d0141e5ea46155e4": "22a66dc170cddefb73ed332548c64b9d05b2d7fbe3c4c9b2fca993c1d0f31a95:480p",
+    "9cbf5cd07bc039a9662c33b69da930b7a13941a3e0235ab41fc1d7508270d2ec": "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:1080p",
+    "ea78b5642d19cb4ed413bbe50ce554ce8d73b5556f0b97781d673cadb9124d05": "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:720p",
+    "1bd6d2ee6171f0311be09ee634da10ef28093b2e5924e9a52f4dd2cc674695e2": "70c6540c343322dab9166f61de50fa04bed401524011b6f4569d7b1528626a6d:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -19380,6 +19439,12 @@
       "episode": "09",
       "message_id": "2129",
       "published_at": 1794422282
+    },
+    "archive:2f6f5faa7abc7e50acd687478ad4f38bff92b7a0c980d9747a922d6003a4bf54": {
+      "title": "Juuou Mujin Dandivine",
+      "episode": "06",
+      "message_id": "2133",
+      "published_at": 1794423832
     }
   }
 }
