@@ -4,31 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 44,
-    "matched_in_archive_manifest": 44,
+    "feed_releases": 45,
+    "matched_in_archive_manifest": 45,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Keroro Gunsou (2026)",
-      "episode": 6,
-      "release_date": "2026-11-06",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Rilakkuma",
-      "episode": 31,
-      "release_date": "2026-11-06",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Black Clover",
       "episode": 176,
@@ -402,6 +384,33 @@
       "title": "The Prince of Tennis II - U-17 World Cup Final Member Selection Match",
       "episode": 7,
       "release_date": "2026-11-11",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": 7,
+      "release_date": "2026-11-12",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": 6,
+      "release_date": "2026-11-12",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": 20,
+      "release_date": "2026-11-12",
       "feed_quality": "720p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
