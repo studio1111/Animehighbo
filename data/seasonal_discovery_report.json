@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-11",
+  "generated_on": "2026-11-12",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 205,
+    "seasonal_titles": 206,
     "matched_in_manifest": 30,
-    "review_required": 175
+    "review_required": 176
   },
   "titles": [
     {
@@ -2485,6 +2485,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/174427",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 211495,
+      "title_english": "Berserk of Gluttony Season 2",
+      "title_romaji": "Boushoku no Berserk 2nd Season",
+      "title_native": "暴食のベルセルク第2期",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/211495",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
