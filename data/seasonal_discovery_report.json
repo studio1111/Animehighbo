@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-12",
+  "generated_on": "2026-11-13",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 206,
+    "seasonal_titles": 208,
     "matched_in_manifest": 30,
-    "review_required": 176
+    "review_required": 178
   },
   "titles": [
     {
@@ -2196,6 +2196,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 213498,
+      "title_english": null,
+      "title_romaji": "Nabe ni Dangan wo Ukenagara",
+      "title_native": "鍋に弾丸を受けながら",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/213498",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 207782,
       "title_english": null,
       "title_romaji": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
@@ -2471,6 +2485,20 @@
       "format": null,
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/171630",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 214055,
+      "title_english": null,
+      "title_romaji": "Toratsugumi: Tsugumi Project",
+      "title_native": "虎鶫　－ＴＳＵＧＵＭＩ　ＰＲＯＪＥＣＴ－",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/214055",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
