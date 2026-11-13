@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 208,
+    "seasonal_titles": 209,
     "matched_in_manifest": 30,
-    "review_required": 178
+    "review_required": 179
   },
   "titles": [
     {
@@ -1897,6 +1897,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/209980",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219866,
+      "title_english": null,
+      "title_romaji": "Isekai Douraku ni Akitara",
+      "title_native": "異世界道楽に飽きたら",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219866",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
