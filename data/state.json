@@ -16482,6 +16482,62 @@
       "source_quality": "1080p",
       "published_at": 1794597906,
       "release_date": "2026-11-13"
+    },
+    "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:1080p": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "55",
+      "group_id": "7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "poster_identity": "archive:7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "release_date": "2026-11-13",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "62d0f535607ce806cdcc98125e0a4afbefe112ca9c7a5f4c1f379ce30c5069e4",
+      "message_id": "2178",
+      "published_at": 1794598542,
+      "bilingual_subtitles": true
+    },
+    "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:720p": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "55",
+      "group_id": "7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "poster_identity": "archive:7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "release_date": "2026-11-13",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b064a2130ef6d4f3d41d762e9d1a76ed3305134e41edc773e1fa879bea1c0957",
+      "message_id": "2179",
+      "published_at": 1794598547,
+      "bilingual_subtitles": true
+    },
+    "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:480p": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "55",
+      "group_id": "7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "poster_identity": "archive:7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "release_date": "2026-11-13",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0cc0b341749ee549522386bd9c76b71c92afded5dcd97d68f36a8919c8e98097",
+      "message_id": "2180",
+      "published_at": 1794598549,
+      "bilingual_subtitles": true
+    },
+    "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "55",
+      "group_id": "7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "poster_identity": "archive:7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794598549,
+      "release_date": "2026-11-13"
     }
   },
   "seen": {
@@ -18038,7 +18094,10 @@
     "c4757914abd600e7b9a7005691073ea78f3e7b931b181a3b764bd1bcba4ea67c": "a096e50ac2860011527a692d04f4f97ecdeae57e7f4fc828b9b07cd6755301fe:480p",
     "b8ae2f5bade050b9f638e1666561a86088680f225f6be608e7971b4613c0e17d": "eba6ecb6f23152dbd8562cd1fa378644aaf2dd483378ece318d25f1dc13f9f98:1080p",
     "f9c273114d7a6c0f85bf7be6a6893f9bc94784798f798fbe5754d715974c3094": "eba6ecb6f23152dbd8562cd1fa378644aaf2dd483378ece318d25f1dc13f9f98:720p",
-    "f1b9008462a63420ebf820421d89f399b8b0aaf6370ef52b90fdf79d47b97f99": "eba6ecb6f23152dbd8562cd1fa378644aaf2dd483378ece318d25f1dc13f9f98:480p"
+    "f1b9008462a63420ebf820421d89f399b8b0aaf6370ef52b90fdf79d47b97f99": "eba6ecb6f23152dbd8562cd1fa378644aaf2dd483378ece318d25f1dc13f9f98:480p",
+    "62d0f535607ce806cdcc98125e0a4afbefe112ca9c7a5f4c1f379ce30c5069e4": "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:1080p",
+    "b064a2130ef6d4f3d41d762e9d1a76ed3305134e41edc773e1fa879bea1c0957": "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:720p",
+    "0cc0b341749ee549522386bd9c76b71c92afded5dcd97d68f36a8919c8e98097": "4209d09767b6e031b05da1558c3d6132ae0faadd921cc969717996bde9b33892:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -20095,6 +20154,12 @@
       "episode": "06",
       "message_id": "2173",
       "published_at": 1794597891
+    },
+    "archive:7f41a06b24702ee96e0ab1d8e5680c57a1955e3d8b3e9c3a9b7126a3a19be32f": {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": "55",
+      "message_id": "2177",
+      "published_at": 1794598536
     }
   }
 }
