@@ -5,21 +5,12 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 44,
-    "matched_in_archive_manifest": 44,
+    "matched_in_archive_manifest": 38,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 6
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Black Clover",
-      "episode": 176,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
       "episode": 6,
@@ -39,53 +30,8 @@
       "missing_from_manifest": false
     },
     {
-      "title": "Magical Explorer",
-      "episode": 7,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Meitantei Precure!",
       "episode": 40,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Romelia Senki",
-      "episode": 6,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
-      "episode": 7,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "VERTEX FORCE",
-      "episode": 6,
-      "release_date": "2026-11-07",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Yasei no Last Boss ga Arawareta!",
-      "episode": 19,
       "release_date": "2026-11-07",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -406,6 +352,60 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Dark Summoner to Dekiteiru - Omake Shorts",
+      "episode": 2,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Hotaru no Yomeiri",
+      "episode": 6,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Kusuriya no Hitorigoto",
+      "episode": 55,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Toaru Anbu no Item",
+      "episode": 6,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tougen Anki - Nikko Kegon no Taki-hen",
+      "episode": 7,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": 19,
+      "release_date": "2026-11-13",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
