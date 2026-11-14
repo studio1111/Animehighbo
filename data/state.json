@@ -17154,6 +17154,62 @@
       "source_quality": "1080p",
       "published_at": 1794686667,
       "release_date": "2026-11-14"
+    },
+    "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:1080p": {
+      "title": "Magical Explorer",
+      "episode": "08",
+      "group_id": "33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "poster_identity": "archive:33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "release_date": "2026-11-14",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e8c4d23848d567b9d82e71101fada7ab703cd03aa095757a457c01bed3e73146",
+      "message_id": "2226",
+      "published_at": 1794686790,
+      "bilingual_subtitles": true
+    },
+    "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:720p": {
+      "title": "Magical Explorer",
+      "episode": "08",
+      "group_id": "33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "poster_identity": "archive:33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "release_date": "2026-11-14",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b0eaeb25a5205d34a6e86af5ab83419c06799ab659b99b144adb803cdfc9feec",
+      "message_id": "2227",
+      "published_at": 1794686795,
+      "bilingual_subtitles": true
+    },
+    "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:480p": {
+      "title": "Magical Explorer",
+      "episode": "08",
+      "group_id": "33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "poster_identity": "archive:33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "release_date": "2026-11-14",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a647cba6349d0ccd2133a55bef81db0bec18b201ab03fded519574db5a683958",
+      "message_id": "2228",
+      "published_at": 1794686799,
+      "bilingual_subtitles": true
+    },
+    "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be": {
+      "title": "Magical Explorer",
+      "episode": "08",
+      "group_id": "33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "poster_identity": "archive:33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794686799,
+      "release_date": "2026-11-14"
     }
   },
   "seen": {
@@ -18746,7 +18802,10 @@
     "33a4980ce61ddd86991368f6dace8f9813219c64fa6eeff73892a23d81ddd2d8": "668fa158b1d712245eeb77ea71ad7bdabdd378826ec97558342f9ad38c741412:480p",
     "0d02f3dfe0c6a0ce01d578d372e05434235d8a30f2d37eeed74b08721da3f857": "6859ae54e4f530a62e5fcea544707de379b4494c7fea64b6bc1bf2e47f73f5d2:1080p",
     "df1f67dc07868c6eadf491c341cefae0c408fba1bcbe82b259345a0edf4082c6": "6859ae54e4f530a62e5fcea544707de379b4494c7fea64b6bc1bf2e47f73f5d2:720p",
-    "71197de2145df2f33f1e91f1709f9ee18159b5c7804b0bae1aa8fbae6282368a": "6859ae54e4f530a62e5fcea544707de379b4494c7fea64b6bc1bf2e47f73f5d2:480p"
+    "71197de2145df2f33f1e91f1709f9ee18159b5c7804b0bae1aa8fbae6282368a": "6859ae54e4f530a62e5fcea544707de379b4494c7fea64b6bc1bf2e47f73f5d2:480p",
+    "e8c4d23848d567b9d82e71101fada7ab703cd03aa095757a457c01bed3e73146": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:1080p",
+    "b0eaeb25a5205d34a6e86af5ab83419c06799ab659b99b144adb803cdfc9feec": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:720p",
+    "a647cba6349d0ccd2133a55bef81db0bec18b201ab03fded519574db5a683958": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -20875,6 +20934,12 @@
       "episode": "177",
       "message_id": "2221",
       "published_at": 1794686642
+    },
+    "archive:33fd705e4f901a0e0f42a573302fbfd1d42d3b085809b881e1820036ba7c1079": {
+      "title": "Magical Explorer",
+      "episode": "08",
+      "message_id": "2225",
+      "published_at": 1794686783
     }
   }
 }
