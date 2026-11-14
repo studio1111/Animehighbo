@@ -48,15 +48,6 @@
       "missing_from_manifest": false
     },
     {
-      "title": "Ojisan wa Kawaii Mono ga Osuki.",
-      "episode": 6,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Saikyosoubi",
       "episode": 6,
       "release_date": "2026-11-08",
@@ -410,6 +401,15 @@
     {
       "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
       "episode": 8,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "episode": 20,
       "release_date": "2026-11-14",
       "feed_quality": "720p",
       "in_archive_manifest": true,
