@@ -17210,6 +17210,62 @@
       "source_quality": "1080p",
       "published_at": 1794686799,
       "release_date": "2026-11-14"
+    },
+    "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:1080p": {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": "07",
+      "group_id": "633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "poster_identity": "archive:633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "release_date": "2026-11-14",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b483a0919cfa634569a034fbcb7f682abdedf6b4171f111a9824c09a5769453b",
+      "message_id": "2230",
+      "published_at": 1794687047,
+      "bilingual_subtitles": true
+    },
+    "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:720p": {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": "07",
+      "group_id": "633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "poster_identity": "archive:633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "release_date": "2026-11-14",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1a19ce586726213c0c1e15b455aac617561f41329efd42c144aca6a68d622784",
+      "message_id": "2231",
+      "published_at": 1794687052,
+      "bilingual_subtitles": true
+    },
+    "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:480p": {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": "07",
+      "group_id": "633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "poster_identity": "archive:633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "release_date": "2026-11-14",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "8d7a647b11ac7d554fe1517e295d4e51eecb13b661da4603ceb3849b688c7a58",
+      "message_id": "2232",
+      "published_at": 1794687057,
+      "bilingual_subtitles": true
+    },
+    "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d": {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": "07",
+      "group_id": "633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "poster_identity": "archive:633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794687057,
+      "release_date": "2026-11-14"
     }
   },
   "seen": {
@@ -18805,7 +18861,10 @@
     "71197de2145df2f33f1e91f1709f9ee18159b5c7804b0bae1aa8fbae6282368a": "6859ae54e4f530a62e5fcea544707de379b4494c7fea64b6bc1bf2e47f73f5d2:480p",
     "e8c4d23848d567b9d82e71101fada7ab703cd03aa095757a457c01bed3e73146": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:1080p",
     "b0eaeb25a5205d34a6e86af5ab83419c06799ab659b99b144adb803cdfc9feec": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:720p",
-    "a647cba6349d0ccd2133a55bef81db0bec18b201ab03fded519574db5a683958": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:480p"
+    "a647cba6349d0ccd2133a55bef81db0bec18b201ab03fded519574db5a683958": "0525932d4a4b12f4398d564633357b56ab89a055beb20809dcb0e20ff60060be:480p",
+    "b483a0919cfa634569a034fbcb7f682abdedf6b4171f111a9824c09a5769453b": "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:1080p",
+    "1a19ce586726213c0c1e15b455aac617561f41329efd42c144aca6a68d622784": "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:720p",
+    "8d7a647b11ac7d554fe1517e295d4e51eecb13b661da4603ceb3849b688c7a58": "57b0548e6b3c217ccd57c45abdecff6c013bb96d8cda1cd08c88b15cd13e219d:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -20940,6 +20999,12 @@
       "episode": "08",
       "message_id": "2225",
       "published_at": 1794686783
+    },
+    "archive:633485c1e80453b997cd95445860f169c7fe970f5ffa239a6ea3d4f668146495": {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": "07",
+      "message_id": "2229",
+      "published_at": 1794687040
     }
   }
 }
