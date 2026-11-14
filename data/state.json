@@ -16650,6 +16650,62 @@
       "source_quality": "1080p",
       "published_at": 1794615530,
       "release_date": "2026-11-13"
+    },
+    "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:1080p": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": "19",
+      "group_id": "183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "poster_identity": "archive:183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "release_date": "2026-11-13",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d6444794445bd375fc46272c5c30b6328b1b6620c0acc29bf133c67a1c56b049",
+      "message_id": "2190",
+      "published_at": 1794639565,
+      "bilingual_subtitles": true
+    },
+    "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:720p": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": "19",
+      "group_id": "183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "poster_identity": "archive:183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "release_date": "2026-11-13",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9079a78336cb4a287419dc9dcf20f291e18bf3b61b73929c44b34ac0b93bf9c7",
+      "message_id": "2191",
+      "published_at": 1794639570,
+      "bilingual_subtitles": true
+    },
+    "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:480p": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": "19",
+      "group_id": "183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "poster_identity": "archive:183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "release_date": "2026-11-13",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "2077b6c0654b7680c87fd043038d1b0576213e4d8afff0a432feb6ce9b58c205",
+      "message_id": "2192",
+      "published_at": 1794639573,
+      "bilingual_subtitles": true
+    },
+    "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": "19",
+      "group_id": "183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "poster_identity": "archive:183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794639573,
+      "release_date": "2026-11-13"
     }
   },
   "seen": {
@@ -18215,7 +18271,10 @@
     "c96ad28eab0e01809ab79acb9c05c7188883fa9170e0f118dc2f071639375f18": "d992076318de76c47f1402cdbf812bcd66f00173c37776d1025281d47df132a9:480p",
     "4249e2fabda815db1304b7345fc43a96997eada3b0f25d48fce3b15274eec03f": "6b39bd3211c9e5801bb466a7a99e050c74383d46e104cd4ac4ccedc7357f2bd8:1080p",
     "15f7fb2e96e4cf4b1b05542e67870ddc7858c7ac44b0885dfed30a1ede73423e": "6b39bd3211c9e5801bb466a7a99e050c74383d46e104cd4ac4ccedc7357f2bd8:720p",
-    "5e5c514211ffa07d90521d193a661707d4905860d2d08751e4c62d1a637e0b25": "6b39bd3211c9e5801bb466a7a99e050c74383d46e104cd4ac4ccedc7357f2bd8:480p"
+    "5e5c514211ffa07d90521d193a661707d4905860d2d08751e4c62d1a637e0b25": "6b39bd3211c9e5801bb466a7a99e050c74383d46e104cd4ac4ccedc7357f2bd8:480p",
+    "d6444794445bd375fc46272c5c30b6328b1b6620c0acc29bf133c67a1c56b049": "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:1080p",
+    "9079a78336cb4a287419dc9dcf20f291e18bf3b61b73929c44b34ac0b93bf9c7": "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:720p",
+    "2077b6c0654b7680c87fd043038d1b0576213e4d8afff0a432feb6ce9b58c205": "eccb6ace509c19036069f7edf6dde568c9e2e8317badc0b862441fa36a1dbc8c:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -20290,6 +20349,12 @@
       "episode": "07",
       "message_id": "2185",
       "published_at": 1794615509
+    },
+    "archive:183ca4d25534b45e0888f1ee9b4620fb59385688222025b58cba31bd22ca2d23": {
+      "title": "Uchi no Otouto-domo ga Sumimasen",
+      "episode": "19",
+      "message_id": "2189",
+      "published_at": 1794639555
     }
   }
 }
