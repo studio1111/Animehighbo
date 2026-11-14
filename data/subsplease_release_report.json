@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 45,
-    "matched_in_archive_manifest": 45,
+    "matched_in_archive_manifest": 39,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 6
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -30,61 +30,7 @@
       "missing_from_manifest": false
     },
     {
-      "title": "Hotel Inhumans S2",
-      "episode": 6,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Kanata kara",
-      "episode": 6,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Saikyosoubi",
-      "episode": 6,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
-      "episode": 5,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tempal - Item no Chikara",
-      "episode": 7,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
-      "episode": 31,
-      "release_date": "2026-11-08",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Yowaki Max",
       "episode": 6,
       "release_date": "2026-11-08",
       "feed_quality": "720p",
@@ -372,6 +318,15 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Black Clover",
+      "episode": 177,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
       "title": "Detective Conan",
       "episode": 1220,
       "release_date": "2026-11-14",
@@ -379,6 +334,33 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
+      "episode": 7,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Kyoufu Collector",
+      "episode": 6,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Magical Explorer",
+      "episode": 8,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     },
     {
       "title": "Romelia Senki",
@@ -408,6 +390,15 @@
       "missing_from_manifest": false
     },
     {
+      "title": "VERTEX FORCE",
+      "episode": 7,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
       "title": "Yasei no Last Boss ga Arawareta!",
       "episode": 20,
       "release_date": "2026-11-14",
@@ -415,6 +406,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Zombie Sagashitemasu",
+      "episode": 6,
+      "release_date": "2026-11-14",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
