@@ -4,97 +4,16 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 45,
-    "matched_in_archive_manifest": 45,
+    "feed_releases": 46,
+    "matched_in_archive_manifest": 36,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 10
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
-      "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
-      "episode": 6,
-      "release_date": "2026-11-09",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "PSYREN",
-      "episode": 5,
-      "release_date": "2026-11-09",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Battle Spirits Re - Zekkai no Kuu",
-      "episode": 6,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Chii Fuyo",
-      "episode": 6,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Chitose-kun wa Ramune Bin no Naka",
-      "episode": 18,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Choujun! Choujou-senpai",
-      "episode": 6,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Dark Machine - The Animation",
       "episode": 5,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Kyouran Reijou Nia Liston",
-      "episode": 6,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
-      "episode": 6,
-      "release_date": "2026-11-10",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Sora wa Akai Kawa no Hotori",
-      "episode": 19,
       "release_date": "2026-11-10",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -415,6 +334,96 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Dragon Ball Super - Beerus",
+      "episode": 6,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Hotel Inhumans S2",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Kanata kara",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Ojisan wa Kawaii Mono ga Osuki.",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Saikyosoubi",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+      "episode": 6,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tempal - Item no Chikara",
+      "episode": 8,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru",
+      "episode": 32,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Yowaki Max",
+      "episode": 7,
+      "release_date": "2026-11-15",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
