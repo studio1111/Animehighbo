@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 209,
+    "seasonal_titles": 211,
     "matched_in_manifest": 30,
-    "review_required": 179
+    "review_required": 181
   },
   "titles": [
     {
@@ -852,6 +852,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 203368,
+      "title_english": null,
+      "title_romaji": "Onegai☆Teacher OVA",
+      "title_native": "おねがい☆ティーチャー OVA",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "OVA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/203368",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 212888,
       "title_english": "Overgeared",
       "title_romaji": "Tempal: Item no Chikara",
@@ -1547,6 +1561,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/185697",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 219924,
+      "title_english": null,
+      "title_romaji": "Atashin’chi NEXT 3",
+      "title_native": "あたしンちNEXT 3",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/219924",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
