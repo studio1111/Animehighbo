@@ -17658,6 +17658,62 @@
       "source_quality": "1080p",
       "published_at": 1794767538,
       "release_date": "2026-11-15"
+    },
+    "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:1080p": {
+      "title": "Hotel Inhumans S2",
+      "episode": "07",
+      "group_id": "91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "poster_identity": "archive:91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "release_date": "2026-11-15",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "15c4e613fd6277fb26607603ae10a1f86a8dc5744f5d3f87bd2f58aeb114bf25",
+      "message_id": "2262",
+      "published_at": 1794768042,
+      "bilingual_subtitles": true
+    },
+    "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:720p": {
+      "title": "Hotel Inhumans S2",
+      "episode": "07",
+      "group_id": "91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "poster_identity": "archive:91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "release_date": "2026-11-15",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "00a662cf27ba85d5113e0a49f8554a4fbd22b4fcd3c5d627b075adae26086c17",
+      "message_id": "2263",
+      "published_at": 1794768049,
+      "bilingual_subtitles": true
+    },
+    "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:480p": {
+      "title": "Hotel Inhumans S2",
+      "episode": "07",
+      "group_id": "91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "poster_identity": "archive:91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "release_date": "2026-11-15",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "434b444a416a6359e713a64074aa8ffea5a3629f7835f95706783552e4156964",
+      "message_id": "2264",
+      "published_at": 1794768052,
+      "bilingual_subtitles": true
+    },
+    "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc": {
+      "title": "Hotel Inhumans S2",
+      "episode": "07",
+      "group_id": "91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "poster_identity": "archive:91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794768052,
+      "release_date": "2026-11-15"
     }
   },
   "seen": {
@@ -19277,7 +19333,10 @@
     "98ba1e02432097fcdb9db47a046312340b7254c8589d4be3f1246284a649654c": "32c009802923f3aef29380f81b5caeff7943927d943e22ff35ba4da265699183:480p",
     "88ad3f49cc5988cc10f3fd106b962c2a6c29d22d50569a6d9e5e415ec983f531": "8f3480127acc4e0071bf1bd8ccd42f9baa72512147be9522860bdde0c4a3a248:1080p",
     "50425d09b150862849547ceaf10d732be1c0d52826b42059c84db4f58d5e03cd": "8f3480127acc4e0071bf1bd8ccd42f9baa72512147be9522860bdde0c4a3a248:720p",
-    "9069dbda8c749722ee39a54c5f3191b0d69140520072872b7914cf820f9cdaf6": "8f3480127acc4e0071bf1bd8ccd42f9baa72512147be9522860bdde0c4a3a248:480p"
+    "9069dbda8c749722ee39a54c5f3191b0d69140520072872b7914cf820f9cdaf6": "8f3480127acc4e0071bf1bd8ccd42f9baa72512147be9522860bdde0c4a3a248:480p",
+    "15c4e613fd6277fb26607603ae10a1f86a8dc5744f5d3f87bd2f58aeb114bf25": "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:1080p",
+    "00a662cf27ba85d5113e0a49f8554a4fbd22b4fcd3c5d627b075adae26086c17": "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:720p",
+    "434b444a416a6359e713a64074aa8ffea5a3629f7835f95706783552e4156964": "a409d617718229bfb508a2f8a212b7ed8682759349dcff8e91b2c8c5e1c80abc:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -21460,6 +21519,12 @@
       "episode": "06",
       "message_id": "2257",
       "published_at": 1794767511
+    },
+    "archive:91ce6c389bf71361d0b3515e984c491e66698ac05864b51633a5ec9c81c38cbd": {
+      "title": "Hotel Inhumans S2",
+      "episode": "07",
+      "message_id": "2261",
+      "published_at": 1794768034
     }
   }
 }
