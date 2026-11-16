@@ -829,7 +829,8 @@
         },
         "isAdult": false,
         "description": "If there's one thing you can never have enough of in a world of RPG-style swords and sorcery, it's magic points! Whether you're fueling spells, techniques, or showing off an incredible ability, you've gotta spend those points to do real damage. But what if you run out?\n<br><br>\nLent is part of the up-and-coming party known as the “Skypiercers,” and thanks to his unique Gift, he can loan massive amounts of magic to others. No MP? No problem with Lent around! Except, now that his companions have become formidable heroes (thanks to his skill), his usefulness is questioned. Kicked out of the group, Lent is furious…until he discovers a hidden power to his Gift. Now, with his adorably devious fairy partner, he's going to claw back every last scrap of magic from his former party—with interest!<br><br>\n(Source: Seven Seas Entertainment)",
-        "anilist_id": 202250
+        "anilist_id": 202250,
+        "episodes": 12
       }
     },
     "kikansha no mahou wa tokubetsu desu": {
@@ -1628,7 +1629,7 @@
         ],
         "format": "TV",
         "status": "RELEASING",
-        "averageScore": 68,
+        "averageScore": 67,
         "source": "LIGHT_NOVEL",
         "studios": {
           "nodes": [
