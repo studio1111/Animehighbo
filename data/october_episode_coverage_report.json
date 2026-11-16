@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-11-15",
+  "generated_on": "2026-11-16",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-11-15",
+  "through_date": "2026-11-16",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -867,22 +867,22 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-10",
+              "release_date": "2026-10-09",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-17",
+              "release_date": "2026-10-16",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-24",
+              "release_date": "2026-10-23",
               "quality": "1080p"
             },
             {
               "episode": 4,
-              "release_date": "2026-10-31",
+              "release_date": "2026-10-30",
               "quality": "1080p"
             },
             {
