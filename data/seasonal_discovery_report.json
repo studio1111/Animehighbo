@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 211,
+    "seasonal_titles": 212,
     "matched_in_manifest": 30,
-    "review_required": 181
+    "review_required": 182
   },
   "titles": [
     {
@@ -2541,6 +2541,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/214055",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 173334,
+      "title_english": null,
+      "title_romaji": "Wanpaku! Touken Ranbu",
+      "title_native": "わんぱく！刀剣乱舞",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV_SHORT",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/173334",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
