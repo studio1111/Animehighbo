@@ -18498,6 +18498,62 @@
       "source_quality": "1080p",
       "published_at": 1794957941,
       "release_date": "2026-11-16"
+    },
+    "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:1080p": {
+      "title": "Dark Machine - The Animation",
+      "episode": "06",
+      "group_id": "ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "poster_identity": "archive:ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "release_date": "2026-11-17",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "283c534510cddaaa04765fb5e46493a260e323248ab0fbb888b5dd2f59fdaa9d",
+      "message_id": "2322",
+      "published_at": 1794958049,
+      "bilingual_subtitles": true
+    },
+    "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:720p": {
+      "title": "Dark Machine - The Animation",
+      "episode": "06",
+      "group_id": "ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "poster_identity": "archive:ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "release_date": "2026-11-17",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1b2ad757a85f0d810b5d072cdc829bc056ea4bc91e172c6b6f5cd66d5875dc1a",
+      "message_id": "2323",
+      "published_at": 1794958053,
+      "bilingual_subtitles": true
+    },
+    "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:480p": {
+      "title": "Dark Machine - The Animation",
+      "episode": "06",
+      "group_id": "ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "poster_identity": "archive:ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "release_date": "2026-11-17",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "78683bfc764885e136dff7bb7a58e88ae2c499dec2f8d94cdb731f7c036b5d9f",
+      "message_id": "2324",
+      "published_at": 1794958058,
+      "bilingual_subtitles": true
+    },
+    "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14": {
+      "title": "Dark Machine - The Animation",
+      "episode": "06",
+      "group_id": "ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "poster_identity": "archive:ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794958058,
+      "release_date": "2026-11-17"
     }
   },
   "seen": {
@@ -20162,7 +20218,10 @@
     "8da4fb7be7d84eab1b9b53a35b32d3d911fcd099ca71b5e027b416b9315a0647": "dbaeb7268594e0d94cad1a7f78a55f0412217c6445861d405fef2f5bf64e9cb6:480p",
     "b9d291962544e19a94b11cdd5b205ef10de1f1a45a9953a6a8195fa28374189f": "de5d80e70aed04c20c6a8e25baa28e61f1c8b4da31400a2b33ceecfab81b1342:1080p",
     "a68cef3c3c4a94bfeaef7dec136e7d8619937043247633f2d436d020c1ea5c83": "de5d80e70aed04c20c6a8e25baa28e61f1c8b4da31400a2b33ceecfab81b1342:720p",
-    "751dd9075e46f0f3a810e996879badf2ff11039aa7851817c32c0fb684f860d2": "de5d80e70aed04c20c6a8e25baa28e61f1c8b4da31400a2b33ceecfab81b1342:480p"
+    "751dd9075e46f0f3a810e996879badf2ff11039aa7851817c32c0fb684f860d2": "de5d80e70aed04c20c6a8e25baa28e61f1c8b4da31400a2b33ceecfab81b1342:480p",
+    "283c534510cddaaa04765fb5e46493a260e323248ab0fbb888b5dd2f59fdaa9d": "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:1080p",
+    "1b2ad757a85f0d810b5d072cdc829bc056ea4bc91e172c6b6f5cd66d5875dc1a": "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:720p",
+    "78683bfc764885e136dff7bb7a58e88ae2c499dec2f8d94cdb731f7c036b5d9f": "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -22435,6 +22494,12 @@
       "episode": "06",
       "message_id": "2317",
       "published_at": 1794957922
+    },
+    "archive:ccd490fc3e49b26827aa023d58dd233d5a51848afca27ee491c63ed5139c06c5": {
+      "title": "Dark Machine - The Animation",
+      "episode": "06",
+      "message_id": "2321",
+      "published_at": 1794958041
     }
   }
 }
