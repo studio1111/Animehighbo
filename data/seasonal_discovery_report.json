@@ -20,8 +20,8 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 212,
-    "matched_in_manifest": 30,
+    "seasonal_titles": 213,
+    "matched_in_manifest": 31,
     "review_required": 182
   },
   "titles": [
@@ -441,9 +441,9 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/187316",
-      "in_episode_manifest": false,
-      "review_required": true,
-      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+      "in_episode_manifest": true,
+      "review_required": false,
+      "note": "Metadata match found; verify episode-level coverage."
     },
     {
       "anilist_id": 188034,
@@ -1791,7 +1791,7 @@
     },
     {
       "anilist_id": 187303,
-      "title_english": null,
+      "title_english": "Giant Ojosama",
       "title_romaji": "Giant Ojou-sama",
       "title_native": "ジャイアントお嬢様",
       "season": "WINTER",
@@ -1981,6 +1981,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/204579",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 220004,
+      "title_english": null,
+      "title_romaji": "Josemaru",
+      "title_native": "じょせまる",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV_SHORT",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/220004",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
