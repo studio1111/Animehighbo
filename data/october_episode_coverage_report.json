@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-11-17",
+  "generated_on": "2026-11-18",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-11-17",
+  "through_date": "2026-11-18",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -114,22 +114,22 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-10",
+              "release_date": "2026-10-09",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-17",
+              "release_date": "2026-10-16",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-24",
+              "release_date": "2026-10-23",
               "quality": "1080p"
             },
             {
               "episode": 4,
-              "release_date": "2026-10-31",
+              "release_date": "2026-10-30",
               "quality": "1080p"
             },
             {
@@ -1181,56 +1181,6 @@
         "rss": {
           "distinct_episodes": 0,
           "episodes": [],
-          "unmatched_episodes": []
-        }
-      },
-      "seasonal_title": true,
-      "review_required": false
-    },
-    {
-      "anilist_id": 187316,
-      "title_english": null,
-      "title_romaji": "Gensou Suikoden",
-      "title_native": "幻想水滸伝",
-      "season": "FALL",
-      "season_year": 2026,
-      "format": "TV",
-      "status": "RELEASING",
-      "anilist_url": "https://anilist.co/anime/187316",
-      "source_coverage": {
-        "manifest": {
-          "distinct_episodes": 2,
-          "episodes": [
-            {
-              "episode": 2,
-              "release_date": "2026-11-17",
-              "quality": "1080p"
-            },
-            {
-              "episode": 7,
-              "release_date": "2026-11-17",
-              "quality": "1080p"
-            }
-          ]
-        },
-        "candidate_report": {
-          "distinct_episodes": 0,
-          "episodes": []
-        },
-        "rss": {
-          "distinct_episodes": 2,
-          "episodes": [
-            {
-              "episode": 2,
-              "release_date": "2026-11-17",
-              "in_archive_manifest": true
-            },
-            {
-              "episode": 7,
-              "release_date": "2026-11-17",
-              "in_archive_manifest": true
-            }
-          ],
           "unmatched_episodes": []
         }
       },
@@ -2979,6 +2929,56 @@
         "rss": {
           "distinct_episodes": 0,
           "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 187316,
+      "title_english": "Suikoden",
+      "title_romaji": "Gensou Suikoden",
+      "title_native": "幻想水滸伝",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/187316",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-11-17",
+              "quality": "1080p"
+            },
+            {
+              "episode": 7,
+              "release_date": "2026-11-17",
+              "quality": "1080p"
+            }
+          ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 2,
+          "episodes": [
+            {
+              "episode": 2,
+              "release_date": "2026-11-17",
+              "in_archive_manifest": true
+            },
+            {
+              "episode": 7,
+              "release_date": "2026-11-17",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },

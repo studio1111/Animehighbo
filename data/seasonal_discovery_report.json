@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-17",
+  "generated_on": "2026-11-18",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -430,20 +430,6 @@
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
-    },
-    {
-      "anilist_id": 187316,
-      "title_english": null,
-      "title_romaji": "Gensou Suikoden",
-      "title_native": "幻想水滸伝",
-      "season": "FALL",
-      "season_year": 2026,
-      "format": "TV",
-      "status": "RELEASING",
-      "anilist_url": "https://anilist.co/anime/187316",
-      "in_episode_manifest": true,
-      "review_required": false,
-      "note": "Metadata match found; verify episode-level coverage."
     },
     {
       "anilist_id": 188034,
@@ -1116,6 +1102,20 @@
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 187316,
+      "title_english": "Suikoden",
+      "title_romaji": "Gensou Suikoden",
+      "title_native": "幻想水滸伝",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/187316",
+      "in_episode_manifest": true,
+      "review_required": false,
+      "note": "Metadata match found; verify episode-level coverage."
     },
     {
       "anilist_id": 200294,
