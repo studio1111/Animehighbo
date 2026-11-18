@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 213,
+    "seasonal_titles": 216,
     "matched_in_manifest": 31,
-    "review_required": 182
+    "review_required": 185
   },
   "titles": [
     {
@@ -1538,6 +1538,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 216404,
+      "title_english": null,
+      "title_romaji": "Aoharu Once More",
+      "title_native": "アオハル・ワンスモア",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/216404",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 211258,
       "title_english": null,
       "title_romaji": "Arafou Kenja no Isekai Seikatsu Nikki",
@@ -1568,7 +1582,7 @@
     {
       "anilist_id": 219924,
       "title_english": null,
-      "title_romaji": "Atashin’chi NEXT 3",
+      "title_romaji": "Atashinchi NEXT 3",
       "title_native": "あたしンちNEXT 3",
       "season": "WINTER",
       "season_year": 2027,
@@ -2294,6 +2308,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 181951,
+      "title_english": null,
+      "title_romaji": "Ookami to Koushinryou: MERCHANT MEETS THE WISE WOLF 2nd Season",
+      "title_native": "狼と香辛料 MERCHANT MEETS THE WISE WOLF 2期",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/181951",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 188546,
       "title_english": null,
       "title_romaji": "Ore to Yuu-nii!",
@@ -2303,6 +2331,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/188546",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 183960,
+      "title_english": "Otherworldly Munchkin: Let's Speedrun the Dungeon with Only 1 HP!",
+      "title_romaji": "Isekai Munchkin: HP 1 no Mama de Saikyou Saisoku Dungeon Kouryaku",
+      "title_native": "異世界マンチキン ―HP1のままで最強最速ダンジョン攻略―",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/183960",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
