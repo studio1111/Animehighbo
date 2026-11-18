@@ -18610,6 +18610,62 @@
       "source_quality": "1080p",
       "published_at": 1794966662,
       "release_date": "2026-11-17"
+    },
+    "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:1080p": {
+      "title": "Gensou Suikoden",
+      "episode": "02",
+      "group_id": "1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "poster_identity": "archive:1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "release_date": "2026-11-17",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a4b2549091b57cc53e4b5b913d6b5e44a544ad552e8a46ffa9883177d4d4a87d",
+      "message_id": "2330",
+      "published_at": 1794969971,
+      "bilingual_subtitles": true
+    },
+    "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:720p": {
+      "title": "Gensou Suikoden",
+      "episode": "02",
+      "group_id": "1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "poster_identity": "archive:1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "release_date": "2026-11-17",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "30ba1a078718ffb15d7f75824d29eeb1508695fc539156f94a1cae6bcc09541a",
+      "message_id": "2331",
+      "published_at": 1794969977,
+      "bilingual_subtitles": true
+    },
+    "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:480p": {
+      "title": "Gensou Suikoden",
+      "episode": "02",
+      "group_id": "1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "poster_identity": "archive:1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "release_date": "2026-11-17",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "fe77021d0e99b751f6cdf8db10bcec046b63b3ce245b3671d486314babe3c86c",
+      "message_id": "2332",
+      "published_at": 1794969980,
+      "bilingual_subtitles": true
+    },
+    "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8": {
+      "title": "Gensou Suikoden",
+      "episode": "02",
+      "group_id": "1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "poster_identity": "archive:1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1794969980,
+      "release_date": "2026-11-17"
     }
   },
   "seen": {
@@ -20280,7 +20336,10 @@
     "78683bfc764885e136dff7bb7a58e88ae2c499dec2f8d94cdb731f7c036b5d9f": "2004e1ad144661f087f63185cf355b6a13df74694d20c925c1c829d40cc7dd14:480p",
     "9bb934789d268ad54af1e5cbd4394b904948de802704b5f68a13f48e84004ccd": "b88e5f1738d967c805b4f2e70a4f1078698c67f913d2deb21d24a9777b641672:1080p",
     "b8fde6493c05c213c880763744fcfd6a9de7c03ce10ce7bec360d52602ed271b": "b88e5f1738d967c805b4f2e70a4f1078698c67f913d2deb21d24a9777b641672:720p",
-    "148017ffe4909c192645c6795c24c7530b65b5c3207d6022aad746a68e4d2f80": "b88e5f1738d967c805b4f2e70a4f1078698c67f913d2deb21d24a9777b641672:480p"
+    "148017ffe4909c192645c6795c24c7530b65b5c3207d6022aad746a68e4d2f80": "b88e5f1738d967c805b4f2e70a4f1078698c67f913d2deb21d24a9777b641672:480p",
+    "a4b2549091b57cc53e4b5b913d6b5e44a544ad552e8a46ffa9883177d4d4a87d": "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:1080p",
+    "30ba1a078718ffb15d7f75824d29eeb1508695fc539156f94a1cae6bcc09541a": "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:720p",
+    "fe77021d0e99b751f6cdf8db10bcec046b63b3ce245b3671d486314babe3c86c": "97ee38c297b25303ee8f5d94239a298a2e05bc8380a67e73e1e99b9c7798bab8:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -22565,6 +22624,12 @@
       "episode": "07",
       "message_id": "2325",
       "published_at": 1794966641
+    },
+    "archive:1004eae166ab2ffa38d4703d7d5fe59e820a66a114c3fdebdd6133788faaa3bf": {
+      "title": "Gensou Suikoden",
+      "episode": "02",
+      "message_id": "2329",
+      "published_at": 1794969959
     }
   }
 }
