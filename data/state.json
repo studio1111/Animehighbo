@@ -19170,6 +19170,62 @@
       "source_quality": "1080p",
       "published_at": 1795058964,
       "release_date": "2026-11-18"
+    },
+    "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:1080p": {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": "07",
+      "group_id": "b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "poster_identity": "archive:b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "release_date": "2026-11-18",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "15e5d1cb7971e91812563fd7bd191d20960a4ae3aee61ede1e04aee0c9d868b4",
+      "message_id": "2370",
+      "published_at": 1795074087,
+      "bilingual_subtitles": true
+    },
+    "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:720p": {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": "07",
+      "group_id": "b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "poster_identity": "archive:b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "release_date": "2026-11-18",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d555247491c5d8596670c8e3ed11d46729fd90955149aed0094e4fae0978082d",
+      "message_id": "2371",
+      "published_at": 1795074092,
+      "bilingual_subtitles": true
+    },
+    "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:480p": {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": "07",
+      "group_id": "b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "poster_identity": "archive:b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "release_date": "2026-11-18",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "5c47f5ab8ba362a732967d5f6102501d06bb97de1c06f654e6cc26b76d2997b7",
+      "message_id": "2372",
+      "published_at": 1795074097,
+      "bilingual_subtitles": true
+    },
+    "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50": {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": "07",
+      "group_id": "b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "poster_identity": "archive:b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795074097,
+      "release_date": "2026-11-18"
     }
   },
   "seen": {
@@ -20870,7 +20926,10 @@
     "1ee3335079a0e791e72baaa8437cf07eab38cfdea232264f6c5b3398f947d686": "82a58535b2f303812fef3e16d14bd2486ea8810e636d60b14321363f008ed59c:480p",
     "9c343d50b583a39240badc2807ec8dcec16880b2aff56c70c58f2b5428dd367b": "63bfc83b453a0039f222484e8ddcda741a3e3d17f020729ea76edc959f9469d3:1080p",
     "25322c6dd92c73133f4c8b999628b9a576b97f6cb845cc7ffdf5681f48b4d86a": "63bfc83b453a0039f222484e8ddcda741a3e3d17f020729ea76edc959f9469d3:720p",
-    "5f80e9ac49ddd4e9676a7359ab29d1cc1c3b0ca5840bd121217674c326e0bdcf": "63bfc83b453a0039f222484e8ddcda741a3e3d17f020729ea76edc959f9469d3:480p"
+    "5f80e9ac49ddd4e9676a7359ab29d1cc1c3b0ca5840bd121217674c326e0bdcf": "63bfc83b453a0039f222484e8ddcda741a3e3d17f020729ea76edc959f9469d3:480p",
+    "15e5d1cb7971e91812563fd7bd191d20960a4ae3aee61ede1e04aee0c9d868b4": "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:1080p",
+    "d555247491c5d8596670c8e3ed11d46729fd90955149aed0094e4fae0978082d": "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:720p",
+    "5c47f5ab8ba362a732967d5f6102501d06bb97de1c06f654e6cc26b76d2997b7": "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -23215,6 +23274,12 @@
       "episode": "07",
       "message_id": "2365",
       "published_at": 1795058945
+    },
+    "archive:b6d3763dd95c7bd3f28e2240c963765c0adef2ac4256a685928e120bab0958f5": {
+      "title": "Sekai Saikyou no Majo, Hajimemashita",
+      "episode": "07",
+      "message_id": "2369",
+      "published_at": 1795074080
     }
   }
 }
