@@ -19450,6 +19450,62 @@
       "source_quality": "1080p",
       "published_at": 1795119854,
       "release_date": "2026-11-19"
+    },
+    "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:1080p": {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": "07",
+      "group_id": "0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "poster_identity": "archive:0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "release_date": "2026-11-19",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "051fbe2672fd59ab45db5d57442e319cc85cc30c38ab8572b9056a668f3159e2",
+      "message_id": "2390",
+      "published_at": 1795120000,
+      "bilingual_subtitles": true
+    },
+    "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:720p": {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": "07",
+      "group_id": "0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "poster_identity": "archive:0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "release_date": "2026-11-19",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9e7a99ecb621fef497e02b1defb47fd5fc77798f75b11581ef9d22ee5aa20d01",
+      "message_id": "2391",
+      "published_at": 1795120007,
+      "bilingual_subtitles": true
+    },
+    "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:480p": {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": "07",
+      "group_id": "0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "poster_identity": "archive:0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "release_date": "2026-11-19",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9a8724fe7a3db895843cb193d391e1f9cdb7ff48bd702ebe8c26abe286b3aca5",
+      "message_id": "2392",
+      "published_at": 1795120012,
+      "bilingual_subtitles": true
+    },
+    "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e": {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": "07",
+      "group_id": "0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "poster_identity": "archive:0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795120012,
+      "release_date": "2026-11-19"
     }
   },
   "seen": {
@@ -21165,7 +21221,10 @@
     "121c10345a5a4f5f29fef12db1047c009e4bc6d9036358ef8b0ad4af0b9d92e1": "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:480p",
     "cdc487b9ed1a874d14425bed76f5d0b911d9b22c2aab99d0cdfc8cd8d3a4cf5f": "7a2b58d218c52156fa7bf4604bfd8d7fd825a060dcff87432997fea0a02acd51:1080p",
     "e32d56d53c0b42a2055913bcf813fb75f430c0854793b6e92da6d5bfc63b75d1": "7a2b58d218c52156fa7bf4604bfd8d7fd825a060dcff87432997fea0a02acd51:720p",
-    "faddb394b72391b182ae559d1364bb839002634780e1ec3daaa20a594252ac55": "7a2b58d218c52156fa7bf4604bfd8d7fd825a060dcff87432997fea0a02acd51:480p"
+    "faddb394b72391b182ae559d1364bb839002634780e1ec3daaa20a594252ac55": "7a2b58d218c52156fa7bf4604bfd8d7fd825a060dcff87432997fea0a02acd51:480p",
+    "051fbe2672fd59ab45db5d57442e319cc85cc30c38ab8572b9056a668f3159e2": "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:1080p",
+    "9e7a99ecb621fef497e02b1defb47fd5fc77798f75b11581ef9d22ee5aa20d01": "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:720p",
+    "9a8724fe7a3db895843cb193d391e1f9cdb7ff48bd702ebe8c26abe286b3aca5": "3dde31971f08d41e6e138aea2ab21e572eb529725f41e6dee5d46b32c487fa1e:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -23540,6 +23599,12 @@
       "episode": "21",
       "message_id": "2385",
       "published_at": 1795119830
+    },
+    "archive:0c0e2113032d94facdd7db016d10e0699e71b724c4187c6977aa51f16c822821": {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": "07",
+      "message_id": "2389",
+      "published_at": 1795119989
     }
   }
 }
