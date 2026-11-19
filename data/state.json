@@ -19282,6 +19282,62 @@
       "source_quality": "1080p",
       "published_at": 1795107025,
       "release_date": "2026-11-18"
+    },
+    "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:1080p": {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": "07",
+      "group_id": "022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "poster_identity": "archive:022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "release_date": "2026-11-19",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a3aab286bff9b769d4ddd69377c1a029fbb015f377c1061ea9a61a6a25cd3742",
+      "message_id": "2378",
+      "published_at": 1795118486,
+      "bilingual_subtitles": true
+    },
+    "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:720p": {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": "07",
+      "group_id": "022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "poster_identity": "archive:022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "release_date": "2026-11-19",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "a84c8d2db518dae5ccf2be9d4c42b549add0777350754a4bb28a05b6f36d8123",
+      "message_id": "2379",
+      "published_at": 1795118489,
+      "bilingual_subtitles": true
+    },
+    "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:480p": {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": "07",
+      "group_id": "022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "poster_identity": "archive:022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "release_date": "2026-11-19",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1f9c219d678f13a755bab816c79167ab2b99e64d0fdb2aeb6657d146ac55f8ec",
+      "message_id": "2380",
+      "published_at": 1795118493,
+      "bilingual_subtitles": true
+    },
+    "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2": {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": "07",
+      "group_id": "022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "poster_identity": "archive:022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795118493,
+      "release_date": "2026-11-19"
     }
   },
   "seen": {
@@ -20988,7 +21044,10 @@
     "5c47f5ab8ba362a732967d5f6102501d06bb97de1c06f654e6cc26b76d2997b7": "20968666f7e9530a8f37bcfdb20293e12c15ef8c309c94d52faf9be5b652cd50:480p",
     "ff48d12b3c38df2ae89c0deab6c892f99a26dbd8a62fbb438084208efb15c96d": "c3f5d91c4e35d10a64600eb4286de9cd78c93277113d227e617001d1eb8ad97d:1080p",
     "a32b0a04505335c0d9a0a600e30d1fd833bdc80ffef964fa21d45989aa89d63c": "c3f5d91c4e35d10a64600eb4286de9cd78c93277113d227e617001d1eb8ad97d:720p",
-    "06f461b2ae78723993e5457a2a50efd480dffec806d0d372a28dcade45729e17": "c3f5d91c4e35d10a64600eb4286de9cd78c93277113d227e617001d1eb8ad97d:480p"
+    "06f461b2ae78723993e5457a2a50efd480dffec806d0d372a28dcade45729e17": "c3f5d91c4e35d10a64600eb4286de9cd78c93277113d227e617001d1eb8ad97d:480p",
+    "a3aab286bff9b769d4ddd69377c1a029fbb015f377c1061ea9a61a6a25cd3742": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:1080p",
+    "a84c8d2db518dae5ccf2be9d4c42b549add0777350754a4bb28a05b6f36d8123": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:720p",
+    "1f9c219d678f13a755bab816c79167ab2b99e64d0fdb2aeb6657d146ac55f8ec": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -23345,6 +23404,12 @@
       "episode": "19",
       "message_id": "2373",
       "published_at": 1795107002
+    },
+    "archive:022cc86cf6cd038804885d48f56bb0291a0fc5a8a27863efc636bc1ed463d178": {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": "07",
+      "message_id": "2377",
+      "published_at": 1795118477
     }
   }
 }
