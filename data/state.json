@@ -19338,6 +19338,62 @@
       "source_quality": "1080p",
       "published_at": 1795118493,
       "release_date": "2026-11-19"
+    },
+    "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:1080p": {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": "08",
+      "group_id": "609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "poster_identity": "archive:609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "release_date": "2026-11-19",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "da872a5a457527117b0ac4c7df91898408acc873e4dd99457f8e61a5bbf28dcd",
+      "message_id": "2382",
+      "published_at": 1795119443,
+      "bilingual_subtitles": true
+    },
+    "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:720p": {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": "08",
+      "group_id": "609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "poster_identity": "archive:609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "release_date": "2026-11-19",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0b12616b5e3c58b98bf183b3a79a1fd933cd8e48541e4af16902030024120f0b",
+      "message_id": "2383",
+      "published_at": 1795119448,
+      "bilingual_subtitles": true
+    },
+    "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:480p": {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": "08",
+      "group_id": "609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "poster_identity": "archive:609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "release_date": "2026-11-19",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "121c10345a5a4f5f29fef12db1047c009e4bc6d9036358ef8b0ad4af0b9d92e1",
+      "message_id": "2384",
+      "published_at": 1795119452,
+      "bilingual_subtitles": true
+    },
+    "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8": {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": "08",
+      "group_id": "609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "poster_identity": "archive:609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795119452,
+      "release_date": "2026-11-19"
     }
   },
   "seen": {
@@ -21047,7 +21103,10 @@
     "06f461b2ae78723993e5457a2a50efd480dffec806d0d372a28dcade45729e17": "c3f5d91c4e35d10a64600eb4286de9cd78c93277113d227e617001d1eb8ad97d:480p",
     "a3aab286bff9b769d4ddd69377c1a029fbb015f377c1061ea9a61a6a25cd3742": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:1080p",
     "a84c8d2db518dae5ccf2be9d4c42b549add0777350754a4bb28a05b6f36d8123": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:720p",
-    "1f9c219d678f13a755bab816c79167ab2b99e64d0fdb2aeb6657d146ac55f8ec": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:480p"
+    "1f9c219d678f13a755bab816c79167ab2b99e64d0fdb2aeb6657d146ac55f8ec": "165e168b86b5b9a084db64e3d266056637aa4b596da318881279c4dada0aa0a2:480p",
+    "da872a5a457527117b0ac4c7df91898408acc873e4dd99457f8e61a5bbf28dcd": "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:1080p",
+    "0b12616b5e3c58b98bf183b3a79a1fd933cd8e48541e4af16902030024120f0b": "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:720p",
+    "121c10345a5a4f5f29fef12db1047c009e4bc6d9036358ef8b0ad4af0b9d92e1": "b5fe305c2f708f29ca361d0861edaaa1b107cb47ea20c6ff1d7c6e643a29a9f8:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -23410,6 +23469,12 @@
       "episode": "07",
       "message_id": "2377",
       "published_at": 1795118477
+    },
+    "archive:609c7cb5117ca956d6696ca7a3ef96d91ad35f79aa5912b85c76abf6a459d245": {
+      "title": "FX Senshi Kurumi-chan",
+      "episode": "08",
+      "message_id": "2381",
+      "published_at": 1795119436
     }
   }
 }
