@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 216,
+    "seasonal_titles": 217,
     "matched_in_manifest": 31,
-    "review_required": 185
+    "review_required": 186
   },
   "titles": [
     {
@@ -2160,7 +2160,7 @@
       "title_native": "魔術を極めて旅に出た転生エルフ、持て余した寿命で生ける伝説となる",
       "season": "WINTER",
       "season_year": 2027,
-      "format": "TV",
+      "format": "ONA",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/202503",
       "in_episode_manifest": false,
@@ -2471,6 +2471,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/214461",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 217008,
+      "title_english": null,
+      "title_romaji": "Shin Oishinbo",
+      "title_native": "新 美味しんぼ",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/217008",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
