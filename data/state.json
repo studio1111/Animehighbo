@@ -20010,6 +20010,62 @@
       "source_quality": "1080p",
       "published_at": 1795276586,
       "release_date": "2026-11-20"
+    },
+    "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:1080p": {
+      "title": "Shuiro no Kamen",
+      "episode": "07",
+      "group_id": "efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "poster_identity": "archive:efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "release_date": "2026-11-21",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "9bf697926842afd7201fa750c197897c2cd7f0e802f145719b5080600bd67c86",
+      "message_id": "2430",
+      "published_at": 1795278664,
+      "bilingual_subtitles": true
+    },
+    "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:720p": {
+      "title": "Shuiro no Kamen",
+      "episode": "07",
+      "group_id": "efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "poster_identity": "archive:efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "release_date": "2026-11-21",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "0815c700db1355b178da502952a331a0f67bda3a3304983acc7b58042c242653",
+      "message_id": "2431",
+      "published_at": 1795278668,
+      "bilingual_subtitles": true
+    },
+    "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:480p": {
+      "title": "Shuiro no Kamen",
+      "episode": "07",
+      "group_id": "efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "poster_identity": "archive:efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "release_date": "2026-11-21",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "78452a6318fcec910fdae2fa94b2fd0901fcbca611c9c0037e1a0139a76d6514",
+      "message_id": "2432",
+      "published_at": 1795278672,
+      "bilingual_subtitles": true
+    },
+    "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a": {
+      "title": "Shuiro no Kamen",
+      "episode": "07",
+      "group_id": "efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "poster_identity": "archive:efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795278672,
+      "release_date": "2026-11-21"
     }
   },
   "seen": {
@@ -21755,7 +21811,10 @@
     "13bea9470b9f0bb18a39b2cdd01b15818378cb55da39f40e57a9674d4d778008": "0ac6ba38ddfb0a19049e42fc6012f0b5d505d9ffb47606266b52504bf409b118:480p",
     "1c3b40a867b3390f088dd804015e7d72f3924d71481de06837c469cbb0abe43d": "42f74f7c2e33513e95364e87e783a18438d34dd4fcc6f824a6976acf6eb2d998:1080p",
     "7e88205181a8a172111e24f9266fba16a44579f1fe4b82039b5a4840f464d09b": "42f74f7c2e33513e95364e87e783a18438d34dd4fcc6f824a6976acf6eb2d998:720p",
-    "04936c7bbbb8c3f416886faf0febcccd0f22e55ef0d165db6ed14f7a15d772be": "42f74f7c2e33513e95364e87e783a18438d34dd4fcc6f824a6976acf6eb2d998:480p"
+    "04936c7bbbb8c3f416886faf0febcccd0f22e55ef0d165db6ed14f7a15d772be": "42f74f7c2e33513e95364e87e783a18438d34dd4fcc6f824a6976acf6eb2d998:480p",
+    "9bf697926842afd7201fa750c197897c2cd7f0e802f145719b5080600bd67c86": "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:1080p",
+    "0815c700db1355b178da502952a331a0f67bda3a3304983acc7b58042c242653": "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:720p",
+    "78452a6318fcec910fdae2fa94b2fd0901fcbca611c9c0037e1a0139a76d6514": "deabf10cacbdf34bb58f452a917ae3580c029a591dc8a15c21ff1a280c7c339a:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -24190,6 +24249,12 @@
       "episode": "07",
       "message_id": "2425",
       "published_at": 1795276570
+    },
+    "archive:efd5b3e1854795875d4b689056d948fb6f060840a97d0a855f9b6b35ee1c10ee": {
+      "title": "Shuiro no Kamen",
+      "episode": "07",
+      "message_id": "2429",
+      "published_at": 1795278656
     }
   }
 }
