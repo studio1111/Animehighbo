@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 217,
+    "seasonal_titles": 218,
     "matched_in_manifest": 31,
-    "review_required": 186
+    "review_required": 187
   },
   "titles": [
     {
@@ -201,7 +201,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
-      "status": "RELEASING",
+      "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/214536",
       "in_episode_manifest": false,
       "review_required": true,
@@ -1659,6 +1659,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/197619",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 214537,
+      "title_english": null,
+      "title_romaji": "Cardfight!! Vanguard Veil Lift",
+      "title_native": "カードファイト!! ヴァンガード ベールリフト",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/214537",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
