@@ -5,24 +5,15 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 49,
-    "matched_in_archive_manifest": 49,
+    "matched_in_archive_manifest": 48,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 1
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
       "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
       "episode": 7,
-      "release_date": "2026-11-14",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Kyoufu Collector",
-      "episode": 6,
       "release_date": "2026-11-14",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -451,6 +442,15 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Shuiro no Kamen",
+      "episode": 7,
+      "release_date": "2026-11-21",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
