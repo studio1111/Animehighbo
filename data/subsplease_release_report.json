@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 49,
-    "matched_in_archive_manifest": 47,
+    "matched_in_archive_manifest": 49,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 2
+    "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -403,9 +403,9 @@
       "episode": 8,
       "release_date": "2026-11-20",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Kusuriya no Hitorigoto",
@@ -421,9 +421,9 @@
       "episode": 33,
       "release_date": "2026-11-20",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Toaru Anbu no Item",
