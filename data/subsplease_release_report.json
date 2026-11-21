@@ -12,42 +12,6 @@
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
     {
-      "title": "Kashita Maryoku wa Revo Barai de Kyousei Choushuu",
-      "episode": 7,
-      "release_date": "2026-11-14",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Meitantei Precure!",
-      "episode": 41,
-      "release_date": "2026-11-14",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ace of Diamond Act II S2",
-      "episode": 19,
-      "release_date": "2026-11-15",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Ao Ashi S2",
-      "episode": 7,
-      "release_date": "2026-11-15",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
       "title": "Dark Summoner to Dekiteiru",
       "episode": 7,
       "release_date": "2026-11-15",
@@ -444,8 +408,44 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Detective Conan",
+      "episode": 1221,
+      "release_date": "2026-11-21",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Romelia Senki",
+      "episode": 8,
+      "release_date": "2026-11-21",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
       "title": "Shuiro no Kamen",
       "episode": 7,
+      "release_date": "2026-11-21",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Tensei shita Daiseijo wa, Seijo de Aru Koto wo Hitakakusu",
+      "episode": 9,
+      "release_date": "2026-11-21",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Yasei no Last Boss ga Arawareta!",
+      "episode": 21,
       "release_date": "2026-11-21",
       "feed_quality": "720p",
       "in_archive_manifest": true,
