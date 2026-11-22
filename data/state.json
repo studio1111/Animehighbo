@@ -20682,6 +20682,62 @@
       "source_quality": "1080p",
       "published_at": 1795372448,
       "release_date": "2026-11-22"
+    },
+    "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:1080p": {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": "08",
+      "group_id": "3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "poster_identity": "archive:3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "release_date": "2026-11-22",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "b590c64b7c44efa312cd01c1313d97670ef05f45978d820a3fd169395f48cc56",
+      "message_id": "2478",
+      "published_at": 1795374709,
+      "bilingual_subtitles": true
+    },
+    "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:720p": {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": "08",
+      "group_id": "3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "poster_identity": "archive:3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "release_date": "2026-11-22",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "4d31871dbac0ea624298ba1582a8fda5154b55848278cdc61ac16732334d127d",
+      "message_id": "2479",
+      "published_at": 1795374712,
+      "bilingual_subtitles": true
+    },
+    "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:480p": {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": "08",
+      "group_id": "3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "poster_identity": "archive:3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "release_date": "2026-11-22",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "d5bb5f3f7c44ef8a44892dd59d31766f8cce7dd7ebac150d30fd111ef052bf3a",
+      "message_id": "2480",
+      "published_at": 1795374714,
+      "bilingual_subtitles": true
+    },
+    "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3": {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": "08",
+      "group_id": "3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "poster_identity": "archive:3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795374714,
+      "release_date": "2026-11-22"
     }
   },
   "seen": {
@@ -22463,7 +22519,10 @@
     "143ccb2a37b46ccfabc7fbf2b4aa302072c47ed16db8913f7b8937f7583ff829": "2f5335bd4d963de97994c8a7ce800397759e9378cf30c716de5bc32bd2267a3c:480p",
     "d5159a527036deac598c4b90157c24e751584f8c5db150e4721d1137775ccce7": "65e4806b591e41504c49b44581a5427e125f8ca115f8518d25de55d0be906a64:1080p",
     "0e4e1dc7906a9ec497ede60a7a7be0c57ec75f0ba5d122d3306c483b27d70ad3": "65e4806b591e41504c49b44581a5427e125f8ca115f8518d25de55d0be906a64:720p",
-    "418df462215502578d6f68da6b24700ad595c81fc4146e087c99a149e8de1c3d": "65e4806b591e41504c49b44581a5427e125f8ca115f8518d25de55d0be906a64:480p"
+    "418df462215502578d6f68da6b24700ad595c81fc4146e087c99a149e8de1c3d": "65e4806b591e41504c49b44581a5427e125f8ca115f8518d25de55d0be906a64:480p",
+    "b590c64b7c44efa312cd01c1313d97670ef05f45978d820a3fd169395f48cc56": "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:1080p",
+    "4d31871dbac0ea624298ba1582a8fda5154b55848278cdc61ac16732334d127d": "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:720p",
+    "d5bb5f3f7c44ef8a44892dd59d31766f8cce7dd7ebac150d30fd111ef052bf3a": "02cb00fcf1bc0d3eba51f74922ad035f4ec511c1331842f6008b0d55d632d6a3:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -24970,6 +25029,12 @@
       "episode": "08",
       "message_id": "2473",
       "published_at": 1795372431
+    },
+    "archive:3a5e36abf1de9da12f705d17771dfab30ade7ce22c375cad675e2840cb860abe": {
+      "title": "Dark Summoner to Dekiteiru",
+      "episode": "08",
+      "message_id": "2477",
+      "published_at": 1795374704
     }
   }
 }
