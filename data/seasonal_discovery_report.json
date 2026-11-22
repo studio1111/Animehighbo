@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 218,
+    "seasonal_titles": 219,
     "matched_in_manifest": 31,
-    "review_required": 187
+    "review_required": 188
   },
   "titles": [
     {
@@ -1894,7 +1894,7 @@
       "title_native": "カラダにイイ男",
       "season": "WINTER",
       "season_year": 2027,
-      "format": "TV",
+      "format": null,
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/219618",
       "in_episode_manifest": false,
@@ -2779,6 +2779,20 @@
       "format": "MOVIE",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/199152",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 220167,
+      "title_english": null,
+      "title_romaji": "Hidan no Aria Corto",
+      "title_native": "緋弾のアリア Corto",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "TV_SHORT",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/220167",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
