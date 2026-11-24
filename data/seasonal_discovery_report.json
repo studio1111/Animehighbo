@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 235,
+    "seasonal_titles": 236,
     "matched_in_manifest": 32,
-    "review_required": 203
+    "review_required": 204
   },
   "titles": [
     {
@@ -299,7 +299,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "ONA",
-      "status": "RELEASING",
+      "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/199353",
       "in_episode_manifest": false,
       "review_required": true,
@@ -2625,6 +2625,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/204363",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 220211,
+      "title_english": null,
+      "title_romaji": "San Ti Duan Pian Ji: Ping Xing Zhi Jing",
+      "title_native": "三体短篇集: 平行之境",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/220211",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
