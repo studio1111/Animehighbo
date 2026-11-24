@@ -4,40 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 50,
-    "matched_in_archive_manifest": 50,
+    "feed_releases": 51,
+    "matched_in_archive_manifest": 47,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 4
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Chitose-kun wa Ramune Bin no Naka",
-      "episode": 19,
-      "release_date": "2026-11-17",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Dark Machine - The Animation",
-      "episode": 6,
-      "release_date": "2026-11-17",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Sora wa Akai Kawa no Hotori",
-      "episode": 20,
-      "release_date": "2026-11-17",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Juuou Mujin Dandivine",
       "episode": 7,
@@ -87,7 +60,7 @@
       "title": "Sekai Saikyou no Majo, Hajimemashita",
       "episode": 7,
       "release_date": "2026-11-18",
-      "feed_quality": "720p",
+      "feed_quality": "1080p",
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
@@ -460,6 +433,42 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Battle Spirits Re - Zekkai no Kuu",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Choujun! Choujou-senpai",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Kyouran Reijou Nia Liston",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
