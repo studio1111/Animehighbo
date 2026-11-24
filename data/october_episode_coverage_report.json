@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-11-23",
+  "generated_on": "2026-11-24",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-11-23",
+  "through_date": "2026-11-24",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -10,14 +10,14 @@
   },
   "metadata_only": true,
   "summary": {
-    "titles_total": 140,
-    "seasonal_titles": 105,
+    "titles_total": 153,
+    "seasonal_titles": 118,
     "source_only_titles": 35,
     "titles_with_manifest_episodes": 63,
     "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 50,
     "titles_with_unmatched_rss_episodes": 0,
-    "distinct_manifest_episodes": 425,
+    "distinct_manifest_episodes": 427,
     "distinct_candidate_episodes": 0,
     "distinct_rss_episodes": 50,
     "distinct_unmatched_rss_episodes": 0,
@@ -342,6 +342,34 @@
       "review_required": false
     },
     {
+      "anilist_id": 219034,
+      "title_english": "Asura S2",
+      "title_romaji": "Kuang Wang 2",
+      "title_native": "狂王2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/219034",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
       "anilist_id": 197543,
       "title_english": null,
       "title_romaji": "BanG Dream! Ave Mujica: prima aurora",
@@ -419,6 +447,34 @@
               "quality": "1080p"
             }
           ]
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 219986,
+      "title_english": "Battle Through The Heavens: Battle Of The Two Emperors",
+      "title_romaji": "Doupo Cangqiong Movie: Shuang Di Zhi Zhan",
+      "title_native": "斗破苍穹剧场版 双帝之战",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/219986",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
         },
         "candidate_report": {
           "distinct_episodes": 0,
@@ -667,6 +723,34 @@
       "review_required": false
     },
     {
+      "anilist_id": 199353,
+      "title_english": null,
+      "title_romaji": "Dawang Raoming 3",
+      "title_native": "大王饶命 第三季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199353",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
       "anilist_id": 207217,
       "title_english": "Delivery Kitten Unyan (2026)",
       "title_romaji": "Koneko no Haitatsuin Uunyan (2026)",
@@ -892,32 +976,32 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-09",
+              "release_date": "2026-10-10",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-16",
+              "release_date": "2026-10-17",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-23",
+              "release_date": "2026-10-24",
               "quality": "1080p"
             },
             {
               "episode": 4,
-              "release_date": "2026-10-30",
+              "release_date": "2026-10-31",
               "quality": "1080p"
             },
             {
               "episode": 5,
-              "release_date": "2026-11-06",
+              "release_date": "2026-11-07",
               "quality": "1080p"
             },
             {
               "episode": 6,
-              "release_date": "2026-11-13",
+              "release_date": "2026-11-14",
               "quality": "1080p"
             },
             {
@@ -1318,7 +1402,7 @@
       "anilist_url": "https://anilist.co/anime/207191",
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 7,
+          "distinct_episodes": 8,
           "episodes": [
             {
               "episode": 1,
@@ -1354,6 +1438,11 @@
               "episode": 7,
               "release_date": "2026-11-16",
               "quality": "1080p"
+            },
+            {
+              "episode": 8,
+              "release_date": "2026-11-23",
+              "quality": "1080p"
             }
           ]
         },
@@ -1362,8 +1451,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 8,
+              "release_date": "2026-11-23",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -1600,6 +1695,34 @@
       "review_required": false
     },
     {
+      "anilist_id": 218679,
+      "title_english": null,
+      "title_romaji": "Jewel Star Catch! Tiniping",
+      "title_native": "쥬얼스타 캐치! 티니핑",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218679",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
       "anilist_id": 216557,
       "title_english": "KERORO☆",
       "title_romaji": "Keroro Gunsou☆",
@@ -1609,6 +1732,34 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/216557",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 206244,
+      "title_english": null,
+      "title_romaji": "Luo Xiaohei Zhan Ji: Xue Qian Pian",
+      "title_native": "罗小黑战记 学前篇",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206244",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -2030,6 +2181,34 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213657",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 220171,
+      "title_english": null,
+      "title_romaji": "Mu Shen Ji 5",
+      "title_native": "牧神记5",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/220171",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -2779,6 +2958,34 @@
       "review_required": false
     },
     {
+      "anilist_id": 217627,
+      "title_english": "Renegade Immortal: Slaying the Blood Progenitor",
+      "title_romaji": "Xian Ni Movie: Shi Xian Zhi Zhan",
+      "title_native": "仙逆剧场版 弑仙之战",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/217627",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
       "anilist_id": 180894,
       "title_english": "Romelia War Chronicle",
       "title_romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
@@ -2874,7 +3081,7 @@
       "anilist_url": "https://anilist.co/anime/209219",
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 7,
+          "distinct_episodes": 8,
           "episodes": [
             {
               "episode": 1,
@@ -2910,6 +3117,11 @@
               "episode": 7,
               "release_date": "2026-11-16",
               "quality": "1080p"
+            },
+            {
+              "episode": 8,
+              "release_date": "2026-11-23",
+              "quality": "1080p"
             }
           ]
         },
@@ -2918,8 +3130,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 8,
+              "release_date": "2026-11-23",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -2936,6 +3154,34 @@
       "format": "MOVIE",
       "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/206163",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 216620,
+      "title_english": "Spiritual Realm Walker",
+      "title_romaji": "Lingjing Xingzhe",
+      "title_native": "灵境行者",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/216620",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -3013,14 +3259,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 7,
-              "release_date": "2026-11-17",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },
@@ -3375,6 +3615,34 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/152677",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 214974,
+      "title_english": "The Guardian of Daxia",
+      "title_romaji": "Da Xia Shou Mu Ren",
+      "title_native": "大夏守墓人",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/214974",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -3978,6 +4246,62 @@
       "review_required": false
     },
     {
+      "anilist_id": 218493,
+      "title_english": null,
+      "title_romaji": "Wan Sheng Jie Specials: Gubao de Mimi",
+      "title_native": "万圣街特别篇 古堡的秘密",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "SPECIAL",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/218493",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 217628,
+      "title_english": null,
+      "title_romaji": "Wanmei Shijie 7",
+      "title_native": "完美世界 第七季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217628",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
       "anilist_id": 216895,
       "title_english": "Welsh & Shedar",
       "title_romaji": "Aoki Denshou: Welsh & Shedar",
@@ -3987,6 +4311,34 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/216895",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 168085,
+      "title_english": "White Cat Legend 3",
+      "title_romaji": "Dali Si Rizhi 3",
+      "title_native": "大理寺日志 第3季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/168085",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -4099,6 +4451,34 @@
       "format": "TV_SHORT",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213298",
+      "source_coverage": {
+        "manifest": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "candidate_report": {
+          "distinct_episodes": 0,
+          "episodes": []
+        },
+        "rss": {
+          "distinct_episodes": 0,
+          "episodes": [],
+          "unmatched_episodes": []
+        }
+      },
+      "seasonal_title": true,
+      "review_required": false
+    },
+    {
+      "anilist_id": 206189,
+      "title_english": null,
+      "title_romaji": "Zhu Xian Final",
+      "title_native": "诛仙 最终季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206189",
       "source_coverage": {
         "manifest": {
           "distinct_episodes": 0,
@@ -4354,12 +4734,12 @@
           "episodes": [
             {
               "episode": 49,
-              "release_date": "2026-10-20",
+              "release_date": "2026-10-19",
               "quality": "1080p"
             },
             {
               "episode": 50,
-              "release_date": "2026-10-27",
+              "release_date": "2026-10-26",
               "quality": "1080p"
             }
           ]
@@ -4433,14 +4813,8 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 7,
-              "release_date": "2026-11-17",
-              "in_archive_manifest": true
-            }
-          ],
+          "distinct_episodes": 0,
+          "episodes": [],
           "unmatched_episodes": []
         }
       },

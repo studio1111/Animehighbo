@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-23",
+  "generated_on": "2026-11-24",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 219,
+    "seasonal_titles": 235,
     "matched_in_manifest": 31,
-    "review_required": 188
+    "review_required": 204
   },
   "titles": [
     {
@@ -138,6 +138,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 219034,
+      "title_english": "Asura S2",
+      "title_romaji": "Kuang Wang 2",
+      "title_native": "狂王2",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/219034",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 197543,
       "title_english": null,
       "title_romaji": "BanG Dream! Ave Mujica: prima aurora",
@@ -164,6 +178,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 219986,
+      "title_english": "Battle Through The Heavens: Battle Of The Two Emperors",
+      "title_romaji": "Doupo Cangqiong Movie: Shuang Di Zhi Zhan",
+      "title_native": "斗破苍穹剧场版 双帝之战",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/219986",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 195604,
@@ -262,6 +290,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 199353,
+      "title_english": null,
+      "title_romaji": "Dawang Raoming 3",
+      "title_native": "大王饶命 第三季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/199353",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 207217,
@@ -558,6 +600,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 218679,
+      "title_english": null,
+      "title_romaji": "Jewel Star Catch! Tiniping",
+      "title_native": "쥬얼스타 캐치! 티니핑",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "TV_SHORT",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/218679",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 216557,
       "title_english": "KERORO☆",
       "title_romaji": "Keroro Gunsou☆",
@@ -570,6 +626,20 @@
       "in_episode_manifest": true,
       "review_required": false,
       "note": "Metadata match found; verify episode-level coverage."
+    },
+    {
+      "anilist_id": 206244,
+      "title_english": null,
+      "title_romaji": "Luo Xiaohei Zhan Ji: Xue Qian Pian",
+      "title_native": "罗小黑战记 学前篇",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206244",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
       "anilist_id": 160275,
@@ -707,6 +777,20 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213657",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 220171,
+      "title_english": null,
+      "title_romaji": "Mu Shen Ji 5",
+      "title_native": "牧神记5",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/220171",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -1020,6 +1104,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 217627,
+      "title_english": "Renegade Immortal: Slaying the Blood Progenitor",
+      "title_romaji": "Xian Ni Movie: Shi Xian Zhi Zhan",
+      "title_native": "仙逆剧场版 弑仙之战",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/217627",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 180894,
       "title_english": "Romelia War Chronicle",
       "title_romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
@@ -1085,6 +1183,20 @@
       "format": "MOVIE",
       "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/206163",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 216620,
+      "title_english": "Spiritual Realm Walker",
+      "title_romaji": "Lingjing Xingzhe",
+      "title_native": "灵境行者",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/216620",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -1239,6 +1351,20 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/152677",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 214974,
+      "title_english": "The Guardian of Daxia",
+      "title_romaji": "Da Xia Shou Mu Ren",
+      "title_native": "大夏守墓人",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/214974",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -1426,6 +1552,34 @@
       "note": "Metadata match found; verify episode-level coverage."
     },
     {
+      "anilist_id": 218493,
+      "title_english": null,
+      "title_romaji": "Wan Sheng Jie Specials: Gubao de Mimi",
+      "title_native": "万圣街特别篇 古堡的秘密",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "SPECIAL",
+      "status": "FINISHED",
+      "anilist_url": "https://anilist.co/anime/218493",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 217628,
+      "title_english": null,
+      "title_romaji": "Wanmei Shijie 7",
+      "title_native": "完美世界 第七季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/217628",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 216895,
       "title_english": "Welsh & Shedar",
       "title_romaji": "Aoki Denshou: Welsh & Shedar",
@@ -1435,6 +1589,20 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/216895",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 168085,
+      "title_english": "White Cat Legend 3",
+      "title_romaji": "Dali Si Rizhi 3",
+      "title_native": "大理寺日志 第3季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/168085",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -1491,6 +1659,20 @@
       "format": "TV_SHORT",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213298",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 206189,
+      "title_english": null,
+      "title_romaji": "Zhu Xian Final",
+      "title_native": "诛仙 最终季",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": "ONA",
+      "status": "RELEASING",
+      "anilist_url": "https://anilist.co/anime/206189",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -2406,6 +2588,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 202846,
+      "title_english": "RAKSHASA STREET 5",
+      "title_romaji": "Zhen Hun Jie 5",
+      "title_native": "镇魂街 第五季",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/202846",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 185699,
       "title_english": null,
       "title_romaji": "Ramen Aka Neko: Sono ni",
@@ -2588,6 +2784,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 206283,
+      "title_english": "The First Order 2",
+      "title_romaji": "Diyi Xulie 2",
+      "title_native": "第一序列2",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/206283",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 186822,
       "title_english": "The Guy She Was Interested In Wasn't a Guy At All",
       "title_romaji": "Ki ni Natteru Hito ga Otoko ja Nakatta",
@@ -2737,6 +2947,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/217457",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 195881,
+      "title_english": null,
+      "title_romaji": "Fanren Xiu Xian Zhuan Movie",
+      "title_native": "凡人修仙传之瀚海迷踪",
+      "season": "SPRING",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/195881",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
