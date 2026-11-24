@@ -21,8 +21,8 @@
   ],
   "summary": {
     "seasonal_titles": 235,
-    "matched_in_manifest": 31,
-    "review_required": 204
+    "matched_in_manifest": 32,
+    "review_required": 203
   },
   "titles": [
     {
@@ -266,16 +266,16 @@
     {
       "anilist_id": 213068,
       "title_english": "Dandivine",
-      "title_romaji": "Juuоu Mujin Dandivine",
+      "title_romaji": "Juuou Mujin Dandivine",
       "title_native": "獣王武神ダンデヴァイン",
       "season": "FALL",
       "season_year": 2026,
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213068",
-      "in_episode_manifest": false,
-      "review_required": true,
-      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+      "in_episode_manifest": true,
+      "review_required": false,
+      "note": "Metadata match found; verify episode-level coverage."
     },
     {
       "anilist_id": 179876,
@@ -1344,7 +1344,7 @@
     {
       "anilist_id": 152677,
       "title_english": "The Detective Is Already Dead Season 2",
-      "title_romaji": "Tantei wa mou, Shindeiru. Season 2",
+      "title_romaji": "Tantei wa Mou, Shindeiru. Season 2",
       "title_native": "探偵はもう、死んでいる。Season2",
       "season": "FALL",
       "season_year": 2026,

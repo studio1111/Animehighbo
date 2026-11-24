@@ -10,9 +10,9 @@
   },
   "metadata_only": true,
   "summary": {
-    "titles_total": 153,
+    "titles_total": 152,
     "seasonal_titles": 118,
-    "source_only_titles": 35,
+    "source_only_titles": 34,
     "titles_with_manifest_episodes": 63,
     "titles_with_candidate_episodes": 0,
     "titles_with_rss_episodes": 50,
@@ -632,7 +632,7 @@
     {
       "anilist_id": 213068,
       "title_english": "Dandivine",
-      "title_romaji": "Juuоu Mujin Dandivine",
+      "title_romaji": "Juuou Mujin Dandivine",
       "title_native": "獣王武神ダンデヴァイン",
       "season": "FALL",
       "season_year": 2026,
@@ -641,16 +641,58 @@
       "anilist_url": "https://anilist.co/anime/213068",
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 0,
-          "episodes": []
+          "distinct_episodes": 7,
+          "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-07",
+              "quality": "1080p"
+            },
+            {
+              "episode": 2,
+              "release_date": "2026-10-14",
+              "quality": "1080p"
+            },
+            {
+              "episode": 3,
+              "release_date": "2026-10-21",
+              "quality": "1080p"
+            },
+            {
+              "episode": 4,
+              "release_date": "2026-10-28",
+              "quality": "1080p"
+            },
+            {
+              "episode": 5,
+              "release_date": "2026-11-04",
+              "quality": "1080p"
+            },
+            {
+              "episode": 6,
+              "release_date": "2026-11-11",
+              "quality": "1080p"
+            },
+            {
+              "episode": 7,
+              "release_date": "2026-11-18",
+              "quality": "1080p"
+            }
+          ]
         },
         "candidate_report": {
           "distinct_episodes": 0,
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 7,
+              "release_date": "2026-11-18",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -976,32 +1018,32 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-10-10",
+              "release_date": "2026-10-09",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-10-17",
+              "release_date": "2026-10-16",
               "quality": "1080p"
             },
             {
               "episode": 3,
-              "release_date": "2026-10-24",
+              "release_date": "2026-10-23",
               "quality": "1080p"
             },
             {
               "episode": 4,
-              "release_date": "2026-10-31",
+              "release_date": "2026-10-30",
               "quality": "1080p"
             },
             {
               "episode": 5,
-              "release_date": "2026-11-07",
+              "release_date": "2026-11-06",
               "quality": "1080p"
             },
             {
               "episode": 6,
-              "release_date": "2026-11-14",
+              "release_date": "2026-11-13",
               "quality": "1080p"
             },
             {
@@ -3608,7 +3650,7 @@
     {
       "anilist_id": 152677,
       "title_english": "The Detective Is Already Dead Season 2",
-      "title_romaji": "Tantei wa mou, Shindeiru. Season 2",
+      "title_romaji": "Tantei wa Mou, Shindeiru. Season 2",
       "title_native": "探偵はもう、死んでいる。Season2",
       "season": "FALL",
       "season_year": 2026,
@@ -5176,76 +5218,6 @@
             {
               "episode": 7,
               "release_date": "2026-11-19",
-              "in_archive_manifest": true
-            }
-          ],
-          "unmatched_episodes": []
-        }
-      },
-      "review_required": false
-    },
-    {
-      "anilist_id": null,
-      "title_english": "Juuou Mujin Dandivine - 01 (1080p)",
-      "title_romaji": null,
-      "title_native": null,
-      "season": null,
-      "season_year": null,
-      "format": null,
-      "status": null,
-      "anilist_url": null,
-      "seasonal_title": false,
-      "source_coverage": {
-        "manifest": {
-          "distinct_episodes": 7,
-          "episodes": [
-            {
-              "episode": 1,
-              "release_date": "2026-10-07",
-              "quality": "1080p"
-            },
-            {
-              "episode": 2,
-              "release_date": "2026-10-14",
-              "quality": "1080p"
-            },
-            {
-              "episode": 3,
-              "release_date": "2026-10-21",
-              "quality": "1080p"
-            },
-            {
-              "episode": 4,
-              "release_date": "2026-10-28",
-              "quality": "1080p"
-            },
-            {
-              "episode": 5,
-              "release_date": "2026-11-04",
-              "quality": "1080p"
-            },
-            {
-              "episode": 6,
-              "release_date": "2026-11-11",
-              "quality": "1080p"
-            },
-            {
-              "episode": 7,
-              "release_date": "2026-11-18",
-              "quality": "1080p"
-            }
-          ]
-        },
-        "candidate_report": {
-          "distinct_episodes": 0,
-          "episodes": []
-        },
-        "rss": {
-          "distinct_episodes": 1,
-          "episodes": [
-            {
-              "episode": 7,
-              "release_date": "2026-11-18",
               "in_archive_manifest": true
             }
           ],
