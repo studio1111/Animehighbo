@@ -4,8 +4,8 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 51,
-    "matched_in_archive_manifest": 51,
+    "feed_releases": 50,
+    "matched_in_archive_manifest": 50,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
@@ -23,60 +23,6 @@
     {
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "episode": 19,
-      "release_date": "2026-11-18",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Magic Knight Rayearth (2026)",
-      "episode": 7,
-      "release_date": "2026-11-18",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Paw and Palaces",
-      "episode": 10,
-      "release_date": "2026-11-18",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Sasaki to Pii-chan S2",
-      "episode": 7,
-      "release_date": "2026-11-18",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Sekai Saikyou no Majo, Hajimemashita",
-      "episode": 7,
-      "release_date": "2026-11-18",
-      "feed_quality": "1080p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tantei wa Mou, Shindeiru. S2",
-      "episode": 7,
-      "release_date": "2026-11-18",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tensei Shitara Ken Deshita S2",
-      "episode": 8,
       "release_date": "2026-11-18",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -444,7 +390,43 @@
       "missing_from_manifest": false
     },
     {
+      "title": "Chii Fuyo",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Chitose-kun wa Ramune Bin no Naka",
+      "episode": 20,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
       "title": "Choujun! Choujou-senpai",
+      "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Dark Machine - The Animation",
+      "episode": 7,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Gensou Suikoden",
       "episode": 8,
       "release_date": "2026-11-24",
       "feed_quality": "720p",
@@ -464,6 +446,15 @@
     {
       "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
       "episode": 8,
+      "release_date": "2026-11-24",
+      "feed_quality": "720p",
+      "in_archive_manifest": true,
+      "in_candidate_report": false,
+      "missing_from_manifest": false
+    },
+    {
+      "title": "Sora wa Akai Kawa no Hotori",
+      "episode": 21,
       "release_date": "2026-11-24",
       "feed_quality": "720p",
       "in_archive_manifest": true,
