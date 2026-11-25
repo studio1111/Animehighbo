@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 236,
+    "seasonal_titles": 238,
     "matched_in_manifest": 32,
-    "review_required": 204
+    "review_required": 206
   },
   "titles": [
     {
@@ -1944,6 +1944,20 @@
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
     },
     {
+      "anilist_id": 220286,
+      "title_english": null,
+      "title_romaji": "FUNtasic Precure!",
+      "title_native": "ファンたじっくプリキュア！",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/220286",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
       "anilist_id": 217070,
       "title_english": null,
       "title_romaji": "Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den Part 2",
@@ -3325,6 +3339,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/217331",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 179294,
+      "title_english": null,
+      "title_romaji": "Watari Tori to Katatsumuri",
+      "title_native": "渡り鳥とカタツムリ",
+      "season": "SUMMER",
+      "season_year": 2027,
+      "format": "TV",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/179294",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
