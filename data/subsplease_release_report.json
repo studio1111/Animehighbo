@@ -5,9 +5,9 @@
   "metadata_only": true,
   "summary": {
     "feed_releases": 50,
-    "matched_in_archive_manifest": 44,
+    "matched_in_archive_manifest": 50,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 6
+    "missing_from_manifest": 0
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
@@ -385,36 +385,36 @@
       "episode": 8,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Kikansha no Mahou wa Tokubetsu desu",
       "episode": 20,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Magic Knight Rayearth (2026)",
       "episode": 8,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Paw and Palaces",
       "episode": 11,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "Sasaki to Pii-chan S2",
@@ -448,18 +448,18 @@
       "episode": 9,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     },
     {
       "title": "The Prince of Tennis II - U-17 World Cup Final Member Selection Match",
       "episode": 9,
       "release_date": "2026-11-25",
       "feed_quality": "720p",
-      "in_archive_manifest": false,
+      "in_archive_manifest": true,
       "in_candidate_report": false,
-      "missing_from_manifest": true
+      "missing_from_manifest": false
     }
   ]
 }
