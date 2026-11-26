@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-11-25",
+  "generated_on": "2026-11-26",
   "discovery_source": "AniList GraphQL",
   "scope": [
     {
@@ -411,7 +411,7 @@
       "season": "FALL",
       "season_year": 2026,
       "format": "ONA",
-      "status": "NOT_YET_RELEASED",
+      "status": "FINISHED",
       "anilist_url": "https://anilist.co/anime/213457",
       "in_episode_manifest": false,
       "review_required": true,
