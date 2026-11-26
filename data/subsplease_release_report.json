@@ -4,31 +4,13 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 51,
-    "matched_in_archive_manifest": 51,
+    "feed_releases": 50,
+    "matched_in_archive_manifest": 47,
     "found_in_candidate_report": 0,
-    "missing_from_manifest": 0
+    "missing_from_manifest": 3
   },
   "policy": "This report contains metadata only and compares RSS episode records with the automatic archive manifest. No media URLs are stored in the report.",
   "releases": [
-    {
-      "title": "Dark Summoner to Dekiteiru - Omake Shorts",
-      "episode": 3,
-      "release_date": "2026-11-20",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Hotaru no Yomeiri",
-      "episode": 7,
-      "release_date": "2026-11-20",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
     {
       "title": "Keroro Gunsou (2026)",
       "episode": 8,
@@ -41,24 +23,6 @@
     {
       "title": "Rilakkuma",
       "episode": 33,
-      "release_date": "2026-11-20",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Tougen Anki - Nikko Kegon no Taki-hen",
-      "episode": 8,
-      "release_date": "2026-11-20",
-      "feed_quality": "1080p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Uchi no Otouto-domo ga Sumimasen",
-      "episode": 20,
       "release_date": "2026-11-20",
       "feed_quality": "720p",
       "in_archive_manifest": true,
@@ -469,6 +433,33 @@
       "in_archive_manifest": true,
       "in_candidate_report": false,
       "missing_from_manifest": false
+    },
+    {
+      "title": "Hyouken no Majutsushi ga Sekai wo Suberu S2",
+      "episode": 8,
+      "release_date": "2026-11-26",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tetsuryou! Meet with Tetsudou Musume",
+      "episode": 8,
+      "release_date": "2026-11-26",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
+    },
+    {
+      "title": "Tsuihou sareta Tensei Juukishi wa Game Chishiki de Musou suru",
+      "episode": 22,
+      "release_date": "2026-11-26",
+      "feed_quality": "720p",
+      "in_archive_manifest": false,
+      "in_candidate_report": false,
+      "missing_from_manifest": true
     }
   ]
 }
