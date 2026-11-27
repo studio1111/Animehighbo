@@ -20,9 +20,9 @@
     }
   ],
   "summary": {
-    "seasonal_titles": 238,
+    "seasonal_titles": 240,
     "matched_in_manifest": 32,
-    "review_required": 206
+    "review_required": 208
   },
   "titles": [
     {
@@ -777,6 +777,20 @@
       "format": "TV",
       "status": "RELEASING",
       "anilist_url": "https://anilist.co/anime/213657",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 195448,
+      "title_english": null,
+      "title_romaji": "MONOGATARI Series: OFF & MONSTER Season Wazamonogatari: Karen Ogre",
+      "title_native": "〈物語〉シリーズ オフ&モンスターシーズン 業物語 かれんオウガ",
+      "season": "FALL",
+      "season_year": 2026,
+      "format": null,
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/195448",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
@@ -2352,7 +2366,7 @@
     {
       "anilist_id": 207251,
       "title_english": null,
-      "title_romaji": "Mairimashita! Iruma-kun: If Episode of Mafia",
+      "title_romaji": "Mairimashita! Iruma-kun: if Episode of Mafia",
       "title_native": "魔入りました！入間くん if Episode of 魔フィア",
       "season": "WINTER",
       "season_year": 2027,
@@ -2485,6 +2499,20 @@
       "format": "TV",
       "status": "NOT_YET_RELEASED",
       "anilist_url": "https://anilist.co/anime/213498",
+      "in_episode_manifest": false,
+      "review_required": true,
+      "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
+    },
+    {
+      "anilist_id": 217011,
+      "title_english": null,
+      "title_romaji": "Neko to Ryuu 2nd Season",
+      "title_native": "猫と竜 第2期",
+      "season": "WINTER",
+      "season_year": 2027,
+      "format": "ONA",
+      "status": "NOT_YET_RELEASED",
+      "anilist_url": "https://anilist.co/anime/217011",
       "in_episode_manifest": false,
       "review_required": true,
       "note": "Seasonal title not matched to the episode manifest. Review source availability and rights."
