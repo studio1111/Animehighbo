@@ -22698,6 +22698,62 @@
       "source_quality": "1080p",
       "published_at": 1795810009,
       "release_date": "2026-11-27"
+    },
+    "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:1080p": {
+      "title": "Toaru Anbu no Item",
+      "episode": "08",
+      "group_id": "5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "poster_identity": "archive:5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "release_date": "2026-11-27",
+      "quality": "1080p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "e78faa51acbbf9321fd9d4dda8ff07ceeebdc788729d0de3d07512f8571df072",
+      "message_id": "2622",
+      "published_at": 1795819309,
+      "bilingual_subtitles": true
+    },
+    "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:720p": {
+      "title": "Toaru Anbu no Item",
+      "episode": "08",
+      "group_id": "5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "poster_identity": "archive:5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "release_date": "2026-11-27",
+      "quality": "720p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "1740cd88b217e50eda3460bd4e343a92de0a432f92b9db0db316e04149207a2d",
+      "message_id": "2623",
+      "published_at": 1795819315,
+      "bilingual_subtitles": true
+    },
+    "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:480p": {
+      "title": "Toaru Anbu no Item",
+      "episode": "08",
+      "group_id": "5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "poster_identity": "archive:5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "release_date": "2026-11-27",
+      "quality": "480p",
+      "source_quality": "1080p",
+      "feed": "episode archive manifest",
+      "file_sha256": "86f4fe50f3efd865b8c4bc3c76c4a8ce6ca0c1b5a62f409b3d6cfb4844e22d46",
+      "message_id": "2624",
+      "published_at": 1795819318,
+      "bilingual_subtitles": true
+    },
+    "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6": {
+      "title": "Toaru Anbu no Item",
+      "episode": "08",
+      "group_id": "5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "poster_identity": "archive:5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b",
+      "complete_qualities": [
+        "1080p",
+        "720p",
+        "480p"
+      ],
+      "source_quality": "1080p",
+      "published_at": 1795819319,
+      "release_date": "2026-11-27"
     }
   },
   "seen": {
@@ -24587,7 +24643,10 @@
     "4de9d8743f9b4915bead07b4b334adecdffa0ca4e28741e293f84906b6b64de4": "3d5a672ee93cd22e30f46533c6cf8e49303f0ea22f1170537a972f8f49ef45fb:480p",
     "a22a476dc59861c27a71d960fa834a9c46042b4cd413f451e3e98acaf17cc211": "048c8cd001640c894dc6b36d41c69f14459dd4902d137d697ed00ca23ee1e4bc:1080p",
     "9888170dd7cabfcfb9e394d02ddd8bb15d09b799aa9e74f7a2698d48edd41427": "048c8cd001640c894dc6b36d41c69f14459dd4902d137d697ed00ca23ee1e4bc:720p",
-    "0a630cdffe28c92a7cc7d6c1514091d29d61bff454f7d1366ff57a02830e14f9": "048c8cd001640c894dc6b36d41c69f14459dd4902d137d697ed00ca23ee1e4bc:480p"
+    "0a630cdffe28c92a7cc7d6c1514091d29d61bff454f7d1366ff57a02830e14f9": "048c8cd001640c894dc6b36d41c69f14459dd4902d137d697ed00ca23ee1e4bc:480p",
+    "e78faa51acbbf9321fd9d4dda8ff07ceeebdc788729d0de3d07512f8571df072": "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:1080p",
+    "1740cd88b217e50eda3460bd4e343a92de0a432f92b9db0db316e04149207a2d": "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:720p",
+    "86f4fe50f3efd865b8c4bc3c76c4a8ce6ca0c1b5a62f409b3d6cfb4844e22d46": "1bbe312a421e94554247e57adc103f61aa00da2ee829e4dfe348e972e41023a6:480p"
   },
   "posters": {
     "archive:581c91943f6f88576d9aab7bb8699cf28519b82afd018f976c9ed0e1c78c7aab": {
@@ -27310,6 +27369,12 @@
       "episode": "08",
       "message_id": "2617",
       "published_at": 1795809989
+    },
+    "archive:5a6c506110ba66a1c35a6abb79d4fa4364849d72600fe8435ea5ebfd8adf637b": {
+      "title": "Toaru Anbu no Item",
+      "episode": "08",
+      "message_id": "2621",
+      "published_at": 1795819302
     }
   }
 }
