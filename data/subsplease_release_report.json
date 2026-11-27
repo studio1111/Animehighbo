@@ -4,8 +4,8 @@
   "cutoff_date": "2026-10-01",
   "metadata_only": true,
   "summary": {
-    "feed_releases": 50,
-    "matched_in_archive_manifest": 50,
+    "feed_releases": 49,
+    "matched_in_archive_manifest": 49,
     "found_in_candidate_report": 0,
     "missing_from_manifest": 0
   },
@@ -59,15 +59,6 @@
     {
       "title": "VERTEX FORCE",
       "episode": 8,
-      "release_date": "2026-11-21",
-      "feed_quality": "720p",
-      "in_archive_manifest": true,
-      "in_candidate_report": false,
-      "missing_from_manifest": false
-    },
-    {
-      "title": "Yasei no Last Boss ga Arawareta!",
-      "episode": 21,
       "release_date": "2026-11-21",
       "feed_quality": "720p",
       "in_archive_manifest": true,
