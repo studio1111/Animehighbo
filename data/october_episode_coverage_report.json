@@ -1,7 +1,7 @@
 {
-  "generated_on": "2026-11-27",
+  "generated_on": "2026-11-28",
   "cutoff_date": "2026-10-01",
-  "through_date": "2026-11-27",
+  "through_date": "2026-11-28",
   "sources": {
     "seasonal_titles": "AniList seasonal discovery report",
     "manifest": "archive_manifest.json",
@@ -15,11 +15,11 @@
     "source_only_titles": 34,
     "titles_with_manifest_episodes": 63,
     "titles_with_candidate_episodes": 0,
-    "titles_with_rss_episodes": 49,
+    "titles_with_rss_episodes": 50,
     "titles_with_unmatched_rss_episodes": 0,
-    "distinct_manifest_episodes": 455,
+    "distinct_manifest_episodes": 457,
     "distinct_candidate_episodes": 0,
-    "distinct_rss_episodes": 49,
+    "distinct_rss_episodes": 50,
     "distinct_unmatched_rss_episodes": 0,
     "titles_needing_review": 0
   },
@@ -80,7 +80,7 @@
             {
               "episode": 7,
               "release_date": "2026-11-21",
-              "quality": "1080p"
+              "quality": "720p"
             }
           ]
         },
@@ -5087,12 +5087,12 @@
           "episodes": [
             {
               "episode": 1,
-              "release_date": "2026-11-06",
+              "release_date": "2026-11-07",
               "quality": "1080p"
             },
             {
               "episode": 2,
-              "release_date": "2026-11-13",
+              "release_date": "2026-11-14",
               "quality": "1080p"
             },
             {
@@ -5386,7 +5386,7 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 8,
+          "distinct_episodes": 9,
           "episodes": [
             {
               "episode": 1,
@@ -5427,6 +5427,11 @@
               "episode": 8,
               "release_date": "2026-11-21",
               "quality": "1080p"
+            },
+            {
+              "episode": 9,
+              "release_date": "2026-11-27",
+              "quality": "1080p"
             }
           ]
         },
@@ -5435,8 +5440,14 @@
           "episodes": []
         },
         "rss": {
-          "distinct_episodes": 0,
-          "episodes": [],
+          "distinct_episodes": 1,
+          "episodes": [
+            {
+              "episode": 9,
+              "release_date": "2026-11-27",
+              "in_archive_manifest": true
+            }
+          ],
           "unmatched_episodes": []
         }
       },
@@ -6538,7 +6549,7 @@
     },
     {
       "anilist_id": null,
-      "title_english": "Tensei Shitara Ken Deshita S2 - 02 (1080p)",
+      "title_english": "Tensei Shitara Ken Deshita S2 - 01 (1080p)",
       "title_romaji": null,
       "title_native": null,
       "season": null,
@@ -6549,8 +6560,13 @@
       "seasonal_title": false,
       "source_coverage": {
         "manifest": {
-          "distinct_episodes": 8,
+          "distinct_episodes": 9,
           "episodes": [
+            {
+              "episode": 1,
+              "release_date": "2026-10-01",
+              "quality": "1080p"
+            },
             {
               "episode": 2,
               "release_date": "2026-10-07",
@@ -6742,27 +6758,27 @@
           "episodes": [
             {
               "episode": 13,
-              "release_date": "2026-10-02",
+              "release_date": "2026-10-03",
               "quality": "1080p"
             },
             {
               "episode": 14,
-              "release_date": "2026-10-09",
+              "release_date": "2026-10-10",
               "quality": "1080p"
             },
             {
               "episode": 15,
-              "release_date": "2026-10-16",
+              "release_date": "2026-10-17",
               "quality": "1080p"
             },
             {
               "episode": 16,
-              "release_date": "2026-10-23",
+              "release_date": "2026-10-24",
               "quality": "1080p"
             },
             {
               "episode": 17,
-              "release_date": "2026-10-30",
+              "release_date": "2026-10-31",
               "quality": "1080p"
             },
             {
